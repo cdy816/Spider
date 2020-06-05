@@ -1,5 +1,5 @@
 # Spider
-搭配 Mars 实时物联数据库，跨平台(Window、Linux、嵌入式设备)的传感器采集平台。
+搭配 Mars 实时物联数据库，跨平台(Window、Linux、嵌入式设备)的物联网设备采集平台。
 
 ## 支持协议列表
 1. MQTT
