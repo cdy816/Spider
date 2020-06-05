@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "7Lh3XzuqDBzEiWha2G5r9wl99kiG00CXquNrnR5ng+XscvI1d7Aq1iJAS65+vm7O1hgP9zMUlMwPeJvd8FNndw==",
+  "success": true,
+  "projectFilePath": "D:\\Project\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\chongdaoyang\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}

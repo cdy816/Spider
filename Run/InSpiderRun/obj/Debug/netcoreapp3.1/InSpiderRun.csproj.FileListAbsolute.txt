@@ -1,0 +1,13 @@
+D:\Project\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.exe
+D:\Project\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.deps.json
+D:\Project\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.runtimeconfig.json
+D:\Project\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.runtimeconfig.dev.json
+D:\Project\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.dll
+D:\Project\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.pdb
+D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csprojAssemblyReference.cache
+D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.AssemblyInfoInputs.cache
+D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.AssemblyInfo.cs
+D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csproj.CoreCompileInputs.cache
+D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.dll
+D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.pdb
+D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.genruntimeconfig.cache

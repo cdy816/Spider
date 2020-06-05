@@ -1,0 +1,9 @@
+D:\Project\Spider\Common\Cdy.Spider.Common\bin\Debug\netstandard2.1\Cdy.Spider.Common.deps.json
+D:\Project\Spider\Common\Cdy.Spider.Common\bin\Debug\netstandard2.1\Cdy.Spider.Common.dll
+D:\Project\Spider\Common\Cdy.Spider.Common\bin\Debug\netstandard2.1\Cdy.Spider.Common.pdb
+D:\Project\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.csprojAssemblyReference.cache
+D:\Project\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.AssemblyInfoInputs.cache
+D:\Project\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.AssemblyInfo.cs
+D:\Project\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.csproj.CoreCompileInputs.cache
+D:\Project\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.dll
+D:\Project\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.pdb

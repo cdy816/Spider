@@ -1,0 +1,9 @@
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\bin\Debug\netstandard2.0\Cdy.Spider.MQTTServer.deps.json
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\bin\Debug\netstandard2.0\Cdy.Spider.MQTTServer.dll
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\bin\Debug\netstandard2.0\Cdy.Spider.MQTTServer.pdb
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.csprojAssemblyReference.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.AssemblyInfoInputs.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.AssemblyInfo.cs
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.csproj.CoreCompileInputs.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.dll
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.pdb

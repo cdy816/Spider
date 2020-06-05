@@ -1,0 +1,9 @@
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\bin\Debug\netstandard2.0\Cdy.Spider.OpcClient.deps.json
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\bin\Debug\netstandard2.0\Cdy.Spider.OpcClient.dll
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\bin\Debug\netstandard2.0\Cdy.Spider.OpcClient.pdb
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.csprojAssemblyReference.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.AssemblyInfoInputs.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.AssemblyInfo.cs
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.csproj.CoreCompileInputs.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.dll
+D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.pdb

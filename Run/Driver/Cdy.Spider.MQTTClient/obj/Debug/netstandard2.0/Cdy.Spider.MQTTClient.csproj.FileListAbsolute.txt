@@ -1,0 +1,9 @@
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\bin\Debug\netstandard2.0\Cdy.Spider.MQTTClient.deps.json
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\bin\Debug\netstandard2.0\Cdy.Spider.MQTTClient.dll
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\bin\Debug\netstandard2.0\Cdy.Spider.MQTTClient.pdb
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.csprojAssemblyReference.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.AssemblyInfoInputs.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.AssemblyInfo.cs
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.csproj.CoreCompileInputs.cache
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.dll
+D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.pdb
