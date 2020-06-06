@@ -12,4 +12,4 @@
 * 开发系统：采用图形化的配置界面、CS结构,暂定采用桌面的方式实现，运行在Window系统中。
 
 ## 版本发布
-* 跟随着 [Mars 数据库](https://github.com/cdy816/mars)的开发进度进行发布。
+* 跟随着 [Mars 数据库](https://github.com/cdy816/mars)([gitee地址](https://gitee.com/chongdaoyang/mars))的开发进度进行发布。
