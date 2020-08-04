@@ -7,3 +7,12 @@ D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.S
 D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.csproj.CoreCompileInputs.cache
 D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.dll
 D:\Project\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\bin\Debug\netstandard2.0\Cdy.Spider.OpcClient.deps.json
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\bin\Debug\netstandard2.0\Cdy.Spider.OpcClient.dll
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\bin\Debug\netstandard2.0\Cdy.Spider.OpcClient.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.csprojAssemblyReference.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.AssemblyInfoInputs.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.AssemblyInfo.cs
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.csproj.CoreCompileInputs.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.dll
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.OpcClient\obj\Debug\netstandard2.0\Cdy.Spider.OpcClient.pdb

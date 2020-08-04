@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8jjU7S3RUT+6m5DLb8WtF8LGiLO78A0Kd315DQvfM/Zt9BFJsS2Rhaccc6PYUPexcFu/uHxBcIE0KuqO+VLQOg==",
+  "dgSpecHash": "79eXWJ8mmTFvM2ap6AWRBu1MIN7NYGIw328hTKT3pb3apvkaZH/+UOMsxmJkdtQBmSBApVJLZGsCanpPl1zQMA==",
   "success": true,
-  "projectFilePath": "D:\\Project\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\chongdaoyang\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

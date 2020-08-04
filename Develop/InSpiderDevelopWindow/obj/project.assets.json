@@ -13,24 +13,20 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Project\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+      "projectUniqueName": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
       "projectName": "InSpiderDevelopWindow",
-      "projectPath": "D:\\Project\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+      "projectPath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
       "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
-      "outputPath": "D:\\Project\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
+      "outputPath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress .NET Core Desktop 19.2.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\DevExpress 19.2\\.NET Core Desktop Libraries\\System\\Components\\Packages": {},
-        "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
@@ -57,12 +53,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[3.1.2, 3.1.2]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -71,7 +61,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

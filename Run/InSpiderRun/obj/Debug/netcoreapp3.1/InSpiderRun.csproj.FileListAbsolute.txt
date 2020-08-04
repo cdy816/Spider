@@ -11,3 +11,16 @@ D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csproj.Cor
 D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.dll
 D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.pdb
 D:\Project\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.genruntimeconfig.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.exe
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.deps.json
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.runtimeconfig.json
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.runtimeconfig.dev.json
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.dll
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csprojAssemblyReference.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.AssemblyInfoInputs.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.AssemblyInfo.cs
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csproj.CoreCompileInputs.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.dll
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.genruntimeconfig.cache

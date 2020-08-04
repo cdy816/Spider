@@ -7,3 +7,12 @@ D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.
 D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.csproj.CoreCompileInputs.cache
 D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.dll
 D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\bin\Debug\netstandard2.0\Cdy.Spider.MQTTClient.deps.json
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\bin\Debug\netstandard2.0\Cdy.Spider.MQTTClient.dll
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\bin\Debug\netstandard2.0\Cdy.Spider.MQTTClient.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.AssemblyInfoInputs.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.AssemblyInfo.cs
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.csproj.CoreCompileInputs.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.dll
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTClient\obj\Debug\netstandard2.0\Cdy.Spider.MQTTClient.csprojAssemblyReference.cache

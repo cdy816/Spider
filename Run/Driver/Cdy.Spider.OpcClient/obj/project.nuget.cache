@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JRXdM/FS3J6Y9IwfH2TYBDtJaLxB9xJ1m4Z1OFjhwZwN3r0m8VjIl3I07lfIblfNbdI9PWXibhA3R0ZK30kmnw==",
+  "dgSpecHash": "jdrC0zlLIGmfP1X8nPUetxhH8B1fDMYDK4F9aj90EPySYSgFtFXjoNK24lgmsWqYs9FdAZJq+Sv0R1qimK6kzA==",
   "success": true,
-  "projectFilePath": "D:\\Project\\Spider\\Run\\Driver\\Cdy.Spider.OpcClient\\Cdy.Spider.OpcClient.csproj",
+  "projectFilePath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.OpcClient\\Cdy.Spider.OpcClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"

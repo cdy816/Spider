@@ -7,3 +7,12 @@ D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.
 D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.csproj.CoreCompileInputs.cache
 D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.dll
 D:\Project\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\bin\Debug\netstandard2.0\Cdy.Spider.MQTTServer.deps.json
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\bin\Debug\netstandard2.0\Cdy.Spider.MQTTServer.dll
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\bin\Debug\netstandard2.0\Cdy.Spider.MQTTServer.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.AssemblyInfoInputs.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.AssemblyInfo.cs
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.csproj.CoreCompileInputs.cache
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.dll
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.pdb
+C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\Driver\Cdy.Spider.MQTTServer\obj\Debug\netstandard2.0\Cdy.Spider.MQTTServer.csprojAssemblyReference.cache

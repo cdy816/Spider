@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KWWmRxniKgR0Vha8OgsbcZzgwI6m3vum6vyhamtRA69CLLe/0jghGkGsyiVxaqX5w7ppEuqPxBSdDXF65JRvcA==",
+  "dgSpecHash": "1zVRvOatAriKDDbR3+dCx6rjsiekGD59f2cOieCH4b4Brsm8uUX1bVC71qnr3PiLIlJ80IhzsbwlN4SE2DMHdQ==",
   "success": true,
-  "projectFilePath": "D:\\Project\\Spider\\Run\\Driver\\Cdy.Spider.MQTTClient\\Cdy.Spider.MQTTClient.csproj",
+  "projectFilePath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.MQTTClient\\Cdy.Spider.MQTTClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"

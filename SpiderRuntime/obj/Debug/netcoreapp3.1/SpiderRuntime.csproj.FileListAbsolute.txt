@@ -1,0 +1,9 @@
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\SpiderRuntime.deps.json
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\SpiderRuntime.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\SpiderRuntime.pdb
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.csprojAssemblyReference.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.AssemblyInfoInputs.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.AssemblyInfo.cs
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.csproj.CoreCompileInputs.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.pdb

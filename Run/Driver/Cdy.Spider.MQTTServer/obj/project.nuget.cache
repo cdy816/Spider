@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QrOGL9dw/Te5dps/gBnKToBKCy+cwc7WV9hmP5fAgL9Yy6QU2T4CXDYO8yHsQGtWeN5U5qY7aSTLjI/g7BKD3g==",
+  "dgSpecHash": "VFFCpJFMDsSBk9Y2h2sF9d9btxo1Rdi1M1U8IPC60wwxRFRFfuLbRCol8oVrfXAjjbbcL9ZdusQeEJEiAazHyg==",
   "success": true,
-  "projectFilePath": "D:\\Project\\Spider\\Run\\Driver\\Cdy.Spider.MQTTServer\\Cdy.Spider.MQTTServer.csproj",
+  "projectFilePath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.MQTTServer\\Cdy.Spider.MQTTServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
