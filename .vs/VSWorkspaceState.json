@@ -1,6 +1,15 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Common",
+    "\\Common\\Cdy.Spider.Common\\Tags",
+    "\\Develop",
+    "\\Develop\\InSpiderDevelopWindow",
+    "\\Run",
+    "\\Run\\Driver",
+    "\\Run\\InSpiderRun",
+    "\\SpiderRuntime"
   ],
+  "SelectedNode": "\\Spider.sln",
   "PreviewInSolutionExplorer": false
 }

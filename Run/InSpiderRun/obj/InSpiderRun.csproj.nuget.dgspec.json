@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj": {}
+    "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj": {}
   },
   "projects": {
-    "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj": {
+    "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
+        "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
         "projectName": "InSpiderRun",
-        "projectPath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
+        "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
         "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Run\\InSpiderRun\\obj\\",
+        "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\InSpiderRun\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",

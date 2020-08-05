@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj",
+      "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj",
       "projectName": "Cdy.Spider.Common",
-      "projectPath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj",
+      "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj",
       "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chongdaoyang\\Source\\Repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\obj\\",
+      "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",

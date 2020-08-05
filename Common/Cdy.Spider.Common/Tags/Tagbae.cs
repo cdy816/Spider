@@ -134,6 +134,11 @@ namespace Cdy.Spider
         public string DatabaseName { get; set; }
 
         /// <summary>
+        /// 设备信息
+        /// </summary>
+        public string DeviceInfo { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         public abstract TagType Type { get; }
@@ -168,6 +173,7 @@ namespace Cdy.Spider
             xx.SetAttributeValue("Id", tag.Id);
             xx.SetAttributeValue("Name", tag.Name);
             xx.SetAttributeValue("DatabaseName", tag.DatabaseName);
+            xx.SetAttributeValue("DeviceInfo", tag.DeviceInfo);
             return xx;
         }
 
@@ -180,11 +186,18 @@ namespace Cdy.Spider
         {
             var type = (TagType)int.Parse(xe.Attribute("Type").Value);
             var tag = type.CreatTag();
-            tag.Id = int.Parse(xe.Attribute("Id").Value);
-            tag.Name = xe.Attribute("Name").Value;
-            if(xe.Attribute("DatabaseName") !=null)
+            if (tag != null)
             {
-                tag.DatabaseName = xe.Attribute("DatabaseName").Value;
+                tag.Id = int.Parse(xe.Attribute("Id").Value);
+                tag.Name = xe.Attribute("Name").Value;
+                if (xe.Attribute("DatabaseName") != null)
+                {
+                    tag.DatabaseName = xe.Attribute("DatabaseName").Value;
+                }
+                if (xe.Attribute("DeviceInfo") != null)
+                {
+                    tag.DeviceInfo = xe.Attribute("DeviceInfo").Value;
+                }
             }
             return tag;
         }
