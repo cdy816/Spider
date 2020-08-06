@@ -61,6 +61,7 @@ namespace Cdy.Spider
         #endregion ...Constructor...
 
         #region ... Properties ...
+
         /// <summary>
         /// 名称
         /// </summary>
@@ -71,7 +72,28 @@ namespace Cdy.Spider
         /// </summary>
         public ChannelType Type { get; set; }
 
+        /// <summary>
+        /// 通讯失败时，重试次数
+        /// </summary>
+        public int ReTryCount { get; set; }
 
+        /// <summary>
+        /// 通信失败时，重试间隔
+        /// 单位:ms
+        /// </summary>
+        public int ReTryDuration { get; set; }
+
+        /// <summary>
+        /// 无数据通信超时时间，
+        /// 单位:ms
+        /// </summary>
+        public int Timeout { get; set; }
+
+        /// <summary>
+        /// 数据发送超时
+        /// 单位:ms
+        /// </summary>
+        public int DataSendTimeout { get; set; }
 
         #endregion ...Properties...
 
@@ -86,6 +108,10 @@ namespace Cdy.Spider
             XElement xx = new XElement("Channel");
             xx.SetAttributeValue("Name", Name);
             xx.SetAttributeValue("Type", (int)Type);
+            xx.SetAttributeValue("ReTryCount", ReTryCount);
+            xx.SetAttributeValue("ReTryDuration", ReTryDuration);
+            xx.SetAttributeValue("Timeout", Timeout);
+            xx.SetAttributeValue("DataSendTimeout", DataSendTimeout);
             return xx;
         }
 
@@ -103,6 +129,26 @@ namespace Cdy.Spider
             if (xe.Attribute("Type") != null)
             {
                 this.Type = (ChannelType)(int.Parse(xe.Attribute("Type").Value));
+            }
+
+            if (xe.Attribute("ReTryCount") != null)
+            {
+                this.ReTryCount = int.Parse(xe.Attribute("ReTryCount").Value);
+            }
+
+            if (xe.Attribute("ReTryDuration") != null)
+            {
+                this.ReTryDuration = int.Parse(xe.Attribute("ReTryDuration").Value);
+            }
+
+            if (xe.Attribute("Timeout") != null)
+            {
+                this.Timeout = int.Parse(xe.Attribute("Timeout").Value);
+            }
+
+            if (xe.Attribute("DataSendTimeout") != null)
+            {
+                this.DataSendTimeout = int.Parse(xe.Attribute("DataSendTimeout").Value);
             }
         }
 

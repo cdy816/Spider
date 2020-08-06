@@ -17,7 +17,6 @@ C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netco
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.runtimeconfig.dev.json
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.dll
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\InSpiderRun.pdb
-C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csprojAssemblyReference.cache
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.AssemblyInfoInputs.cache
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.AssemblyInfo.cs
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csproj.CoreCompileInputs.cache

@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
-    public class DeviceData
+    public class DeviceData:IDisposable
     {
 
         #region ... Variables  ...
@@ -44,6 +44,8 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         public string DriverName { get; set; }
+
+
 
         #endregion ...Properties...
 
@@ -83,6 +85,14 @@ namespace Cdy.Spider
             }
             xe.Add(xx);
             return xe;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            Tags.Clear();
         }
 
         #endregion ...Methods...

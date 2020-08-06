@@ -2,10 +2,11 @@
 //  Copyright (C) 2020  Inc. All rights reserved.
 //
 //==============================================================
-//  Create by 种道洋 at 2020/8/5 13:48:48.
+//  Create by 种道洋 at 2020/8/6 8:47:09.
 //  Version 1.0
 //  种道洋
 //==============================================================
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,11 +16,11 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public interface IDriverRuntime:IDisposable
+    public abstract class TimerDriverRunner:DriverRunnerBase
     {
 
         #region ... Variables  ...
-
+        private System.Timers.Timer mTimer;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -32,15 +33,6 @@ namespace Cdy.Spider
 
         #region ... Properties ...
 
-        /// <summary>
-        /// 
-        /// </summary>
-        IDeviceForDriver Device { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        DriverData Data { get; set; }
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -48,24 +40,47 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        void Init();
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        void Start();
+        public override void Start()
+        {
+            mTimer = new System.Timers.Timer(Data.ScanCircle);
+            mTimer.Elapsed += MTimer_Elapsed;
+            mTimer.Start();
+            base.Start();
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        void Stop();
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            mTimer.Enabled = false;
+            ProcessTimerElapsed();
+            mTimer.Enabled = true;
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="deviceInfo"></param>
-        /// <param name="value"></param>
-        void WriteValue(string deviceInfo, object value);
+        protected virtual void ProcessTimerElapsed()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Stop()
+        {
+            if (mTimer != null)
+            {
+                mTimer.Stop();
+                mTimer.Dispose();
+                mTimer = null;
+            }
+            base.Stop();
+        }
 
         #endregion ...Methods...
 

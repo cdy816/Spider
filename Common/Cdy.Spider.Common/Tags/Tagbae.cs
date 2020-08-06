@@ -106,6 +106,19 @@ namespace Cdy.Spider
 
         #region ... Variables  ...
 
+        /// <summary>
+        /// 缺省值
+        /// </summary>
+        public const byte InitQuality = 0;
+        /// <summary>
+        /// 好值
+        /// </summary>
+        public const byte GoodQuality = 1;
+        /// <summary>
+        /// 通信故障
+        /// </summary>
+        public const byte BadCommQuality = 10;
+        
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -147,6 +160,16 @@ namespace Cdy.Spider
         /// 值
         /// </summary>
         public virtual object Value { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public byte Quality { get; set; }
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime Time { get; set; }
 
         #endregion ...Properties...
 

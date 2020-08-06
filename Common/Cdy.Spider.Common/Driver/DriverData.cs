@@ -48,6 +48,7 @@ namespace Cdy.Spider
 
         /// <summary>
         /// 扫描周期
+        /// 单位毫秒
         /// </summary>
         public int ScanCircle { get; set; }
 

@@ -9,11 +9,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Cdy.Spider
 {
-    public class DriverRunnerBase : IDriverRuntime
+    /// <summary>
+    /// 驱动基类
+    /// </summary>
+    public abstract class DriverRunnerBase : IDriverRuntime
     {
 
         #region ... Variables  ...
@@ -64,13 +68,8 @@ namespace Cdy.Spider
         public virtual void Init()
         {
             mComm = ServiceLocator.Locator.Resolve<ICommChannelRuntimeManager>().GetChannel(Data.ChannelName);
-
-            mComm.CommChangedCallBack = CommChanged;
-            mComm.ReceiveAsyncCallBack = ReceiveData;
-            mComm.SendDataAsyncCallBack = SendDataAsyncCallBack;
-
-
-            Device.RegistorSetValueCallBack(WriteValue);
+            mComm.CommChangedCallBack = OnCommChanged;
+            mComm.ReceiveCallBack = OnReceiveData;
 
             foreach(var vv in Device.ListTags())
             {
@@ -86,6 +85,8 @@ namespace Cdy.Spider
                     }
                 }
             }
+
+            mComm.Init();
 
         }
 
@@ -117,7 +118,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="deviceInfo"></param>
         /// <param name="value"></param>
-        protected virtual void WriteValue(string deviceInfo,object value)
+        public virtual void WriteValue(string deviceInfo,object value)
         {
 
         }
@@ -125,36 +126,83 @@ namespace Cdy.Spider
         /// <summary>
         /// 通信状态改变
         /// </summary>
-        protected virtual void CommChanged(bool result)
+        protected virtual void OnCommChanged(bool result)
         {
-
+            if(!result)
+            {
+                Device.UpdateAllTagQualityToCommBad();
+            }
         }
 
 
         /// <summary>
         /// 接收到设备数据
+        /// <paramref name="key"/>
+        /// <paramref name="data"/>
         /// </summary>
-        protected virtual void ReceiveData(byte[] data)
+        protected virtual byte[] OnReceiveData(string key,byte[] data)
         {
-
+            return null;
         }
 
         /// <summary>
-        /// 异步发送数据回调
+        /// 发送数据
         /// </summary>
-        /// <param name="result"></param>
-        protected virtual void SendDataAsyncCallBack(bool result)
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected byte[] SendData(string key,byte[] data)
         {
+            byte[] re = null;
+            if (!mComm.IsConnected) return null;
+            var tre = mComm.Take();
 
+            if (tre)
+            {
+                try
+                {
+                    re = mComm.SendAndWait(key,data);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return re;
         }
 
+        /// <summary>
+        /// 异步发送数据
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected bool SendDataAsync(string key,byte[] data)
+        {
+            if (!mComm.IsConnected) return false;
+
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    mComm.SendAsync(key,data);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return tre;
+        }
 
         /// <summary>
         /// 
         /// </summary>
         public virtual void Start()
         {
-            
+            mComm.Open();
+            mComm.Prepare(mCachTags.Keys.ToList());
         }
 
         /// <summary>
@@ -162,7 +210,17 @@ namespace Cdy.Spider
         /// </summary>
         public virtual void Stop()
         {
+            mComm.Close();
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Dispose()
+        {
+            Data = null;
+            Device = null;
+            mCachTags.Clear();
         }
     }
 }

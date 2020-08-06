@@ -1,13 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "YugUv1wwY/m4zeSJPhTF/eQuEkYBtA9naDtUHM7qEss9MQMTq2Ye4Adul4yULT/AGoVGOcQu2vRKU4yAokjNAg==",
+  "dgSpecHash": "zlONRnC/iL6Mr7pY1TUosBag7FYlpJ/Isgt6UV2rEdA07619EWdthzJpnzovFpx+NU8sIbpZ/8ErkRQNfJmgpA==",
   "success": true,
   "projectFilePath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.MQTTClient\\Cdy.Spider.MQTTClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
-    "C:\\Users\\chongdaoyang\\.nuget\\packages\\mqttnet\\3.0.11\\mqttnet.3.0.11.nupkg.sha512",
+    "C:\\Users\\chongdaoyang\\.nuget\\packages\\mqttnet\\3.0.12\\mqttnet.3.0.12.nupkg.sha512",
+    "C:\\Users\\chongdaoyang\\.nuget\\packages\\mqttnet.extensions.managedclient\\3.0.12\\mqttnet.extensions.managedclient.3.0.12.nupkg.sha512",
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\netstandard.library\\2.0.0\\netstandard.library.2.0.0.nupkg.sha512",
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
     "C:\\Users\\chongdaoyang\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.2\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",

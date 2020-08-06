@@ -35,12 +35,12 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        Action<byte[]> ReceiveAsyncCallBack { get; set; }
+        ChannelType Type { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        Action<bool> SendDataAsyncCallBack { get; set; }
+        Func<string, byte[], byte[]> ReceiveCallBack { get; set; }
 
         /// <summary>
         /// 通信失败
@@ -50,7 +50,12 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public ChannelData Data { get; set; }
+        ChannelData Data { get; set; }
+
+        /// <summary>
+        /// 是否连接上
+        /// </summary>
+        bool IsConnected { get; }
 
         #endregion ...Properties...
 
@@ -69,37 +74,59 @@ namespace Cdy.Spider
         bool Close();
 
         /// <summary>
+        /// 初始化
+        /// </summary>
+        void Init();
+
+        /// <summary>
         /// 通信预处理
         /// </summary>
         /// <param name="deviceInfos"></param>
         void Prepare(List<string> deviceInfos);
 
         /// <summary>
-        /// 异步接收数据
-        /// </summary>
-        void StartReceiveAsync();
-
-        /// <summary>
-        /// 接收数据
-        /// </summary>
-        /// <param name="timeout"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        byte[] Receive(int timeout,out bool result);
-
-        /// <summary>
         /// 发送数据
         /// </summary>
+        /// <param name="key"/>
         /// <param name="data"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        bool Send(byte[] data,int timeout);
+        byte[] SendAndWait(string key,byte[] data,int timeout);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"/>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        byte[] SendAndWait(string key,byte[] data);
 
         /// <summary>
         /// 异步发送数据
         /// </summary>
+        /// <param name="key"/>
         /// <param name="data"></param>
-        void SendAsync(byte[] data);
+        void SendAsync(string key,byte[] data);
+
+        /// <summary>
+        /// 获取控制权限
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        bool Take(int timeout);
+
+        /// <summary>
+        /// 获取控制权限
+        /// </summary>
+        /// <returns></returns>
+        bool Take();
+
+        /// <summary>
+        /// 释放控制权限
+        /// </summary>
+        /// <returns></returns>
+        void Release();
 
         #endregion ...Methods...
 

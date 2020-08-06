@@ -2,14 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\Common",
-    "\\Common\\Cdy.Spider.Common\\Tags",
-    "\\Develop",
-    "\\Develop\\InSpiderDevelopWindow",
+    "\\Common\\Cdy.Spider.Common",
+    "\\Common\\Cdy.Spider.Common\\Driver",
+    "\\Common\\Cdy.Spider.Common\\Interface",
     "\\Run",
     "\\Run\\Driver",
-    "\\Run\\InSpiderRun",
-    "\\SpiderRuntime"
+    "\\Run\\Driver\\Cdy.Spider.MQTTClient",
+    "\\Run\\Driver\\Cdy.Spider.MQTTServer",
+    "\\Run\\Driver\\Cdy.Spider.OpcClient"
   ],
-  "SelectedNode": "\\Spider.sln",
   "PreviewInSolutionExplorer": false
 }

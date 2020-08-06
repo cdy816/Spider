@@ -23,7 +23,6 @@ C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\b
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelopWindow.runtimeconfig.dev.json
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelopWindow.dll
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelopWindow.pdb
-C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.csprojAssemblyReference.cache
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\MainWindow.g.cs
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\App.g.cs
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow_MarkupCompile.cache
@@ -36,3 +35,4 @@ C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\o
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.dll
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.pdb
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.genruntimeconfig.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.csprojAssemblyReference.cache

@@ -31,21 +31,12 @@ namespace Cdy.Spider
         #endregion ...Constructor...
 
         #region ... Properties ...
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        string DriverName { get; }
 
         /// <summary>
         /// 
         /// </summary>
         string Name { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        DriverData Data { get; set; }
 
         #endregion ...Properties...
 
@@ -71,7 +62,8 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="databaTag"></param>
         /// <param name="value"></param>
-        void WriteValue(string databaseTag, object value);
+        void WriteValueByDatabaseName(string databaseTag, object value);
+
 
         /// <summary>
         /// 根据数据变量的名称读取设备的值
@@ -79,13 +71,6 @@ namespace Cdy.Spider
         /// <param name="databaseTag"></param>
         /// <returns></returns>
         object ReadValueByDatabaseName(string databaseTag);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        object ReadValue(string name);
 
         /// <summary>
         /// 
@@ -139,11 +124,12 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         void UpdateDeviceValue(List<int> id, object value);
 
+
         /// <summary>
-        /// 
+        /// 更新所有变量的质量戳为通信故障
         /// </summary>
-        /// <param name="callback"></param>
-        void RegistorSetValueCallBack(Action<string, object> callback);
+        void UpdateAllTagQualityToCommBad();
+
 
         /// <summary>
         /// 
