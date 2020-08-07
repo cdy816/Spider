@@ -23,3 +23,4 @@ C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netco
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.dll
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.pdb
 C:\Users\chongdaoyang\Source\Repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.genruntimeconfig.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csprojAssemblyReference.cache

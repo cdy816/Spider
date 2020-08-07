@@ -91,7 +91,7 @@ namespace Cdy.Spider
         /// <param name="data"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        byte[] SendAndWait(string key,byte[] data,int timeout);
+        byte[] SendAndWait(string key,byte[] data,int timeout, params string[] paras);
 
 
         /// <summary>
@@ -100,14 +100,14 @@ namespace Cdy.Spider
         /// <param name="key"/>
         /// <param name="data"></param>
         /// <returns></returns>
-        byte[] SendAndWait(string key,byte[] data);
+        byte[] SendAndWait(string key,byte[] data,params string[] paras);
 
         /// <summary>
         /// 异步发送数据
         /// </summary>
         /// <param name="key"/>
         /// <param name="data"></param>
-        void SendAsync(string key,byte[] data);
+        void SendAsync(string key,byte[] data, params string[] paras);
 
         /// <summary>
         /// 获取控制权限

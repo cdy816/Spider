@@ -27,7 +27,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        private Dictionary<string, List<int>> mCachTags = new Dictionary<string, List<int>>();
+        protected Dictionary<string, List<int>> mCachTags = new Dictionary<string, List<int>>();
 
         #endregion ...Variables...
 
@@ -44,6 +44,11 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        public abstract string TypeName { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IDeviceForDriver Device { get; set; }
 
         /// <summary>
@@ -51,6 +56,10 @@ namespace Cdy.Spider
         /// </summary>
         public virtual DriverData Data { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get { return Data.Name; } }
 
         #endregion ...Properties...
 
@@ -103,6 +112,7 @@ namespace Cdy.Spider
             }
         }
 
+
         /// <summary>
         /// 
         /// </summary>
@@ -118,9 +128,21 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="deviceInfo"></param>
         /// <param name="value"></param>
-        public virtual void WriteValue(string deviceInfo,object value)
+        public virtual void WriteValue(string deviceInfo,byte[] value,byte valueType)
         {
 
+        }
+
+        /// <summary>
+        /// 处理写硬件设备
+        /// </summary>
+        /// <param name="values"></param>
+        public virtual void WriteValue(Dictionary<string, KeyValuePair<byte[], byte>> values)
+        {
+            foreach (var vv in values)
+            {
+                WriteValue(vv.Key, vv.Value.Key, vv.Value.Value);
+            }
         }
 
         /// <summary>
@@ -199,10 +221,18 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        public virtual void Prepare()
+        {
+            mComm.Prepare(mCachTags.Keys.ToList());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void Start()
         {
             mComm.Open();
-            mComm.Prepare(mCachTags.Keys.ToList());
+            Prepare();
         }
 
         /// <summary>

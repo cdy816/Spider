@@ -167,8 +167,98 @@ namespace Cdy.Spider
             {
                 var vtag = mDatabaseMapTags[databaseTag];
                 if (vtag != null && !string.IsNullOrEmpty(vtag.DeviceInfo))
-                    Driver.WriteValue(vtag.DeviceInfo, value);
+                    Driver.WriteValue(vtag.DeviceInfo, ConvertToBytes(vtag,value),(byte)(vtag.Type));
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private byte[] ConvertToBytes(Tagbae tag,object value)
+        {
+            switch (tag.Type)
+            {
+                case TagType.Bool:
+                    return BitConverter.GetBytes((bool)value);
+                case TagType.Byte:
+                    return BitConverter.GetBytes(Convert.ToByte(value));
+                case TagType.DateTime:
+                    return BitConverter.GetBytes(Convert.ToInt64(value));
+                case TagType.Double:
+                    return BitConverter.GetBytes(Convert.ToDouble(value));
+                case TagType.Float:
+                    return BitConverter.GetBytes(Convert.ToSingle(value));
+                case TagType.Int:
+                    return BitConverter.GetBytes(Convert.ToInt32(value));
+                case TagType.Long:
+                    return BitConverter.GetBytes(Convert.ToInt64(value));
+                case TagType.Short:
+                    return BitConverter.GetBytes(Convert.ToInt16(value));
+                case TagType.String:
+                    return Encoding.UTF8.GetBytes(value.ToString());
+                case TagType.UInt:
+                    return BitConverter.GetBytes(Convert.ToUInt32(value));
+                case TagType.ULong:
+                    return BitConverter.GetBytes(Convert.ToUInt64(value));
+                case TagType.UShort:
+                    return BitConverter.GetBytes(Convert.ToUInt16(value));
+                case TagType.IntPoint:
+                    IntPoint ival = (IntPoint)value;
+                    byte[] val = new byte[8];
+                    BitConverter.GetBytes(ival.X).CopyTo(val, 0);
+                    BitConverter.GetBytes(ival.Y).CopyTo(val, 4);
+                    return val;
+                case TagType.IntPoint3:
+                    IntPoint3 ival3 = (IntPoint3)value;
+                    val = new byte[12];
+                    BitConverter.GetBytes(ival3.X).CopyTo(val, 0);
+                    BitConverter.GetBytes(ival3.Y).CopyTo(val, 4);
+                    BitConverter.GetBytes(ival3.Z).CopyTo(val, 8);
+                    return val;
+                case TagType.UIntPoint3:
+                    UIntPoint3 uival3 = (UIntPoint3)value;
+                    val = new byte[12];
+                    BitConverter.GetBytes(uival3.X).CopyTo(val, 0);
+                    BitConverter.GetBytes(uival3.Y).CopyTo(val, 4);
+                    BitConverter.GetBytes(uival3.Z).CopyTo(val, 8);
+                    return val;
+                case TagType.UIntPoint:
+                    UIntPoint uival = (UIntPoint)value;
+                    val = new byte[8];
+                    BitConverter.GetBytes(uival.X).CopyTo(val, 0);
+                    BitConverter.GetBytes(uival.Y).CopyTo(val, 4);
+                    return val;
+                case TagType.LongPoint:
+                    LongPoint lval = (LongPoint)value;
+                    val = new byte[16];
+                    BitConverter.GetBytes(lval.X).CopyTo(val, 0);
+                    BitConverter.GetBytes(lval.Y).CopyTo(val, 8);
+                    return val;
+                case TagType.LongPoint3:
+                    LongPoint3 lval3 = (LongPoint3)value;
+                    val = new byte[24];
+                    BitConverter.GetBytes(lval3.X).CopyTo(val, 0);
+                    BitConverter.GetBytes(lval3.Y).CopyTo(val, 8);
+                    BitConverter.GetBytes(lval3.Z).CopyTo(val, 16);
+                    return val;
+                case TagType.ULongPoint:
+                    ULongPoint ulval = (ULongPoint)value;
+                    val = new byte[16];
+                    BitConverter.GetBytes(ulval.X).CopyTo(val, 0);
+                    BitConverter.GetBytes(ulval.Y).CopyTo(val, 8);
+                    return val;
+                case TagType.ULongPoint3:
+                    ULongPoint3 ulval3 = (ULongPoint3)value;
+                    val = new byte[24];
+                    BitConverter.GetBytes(ulval3.X).CopyTo(val, 0);
+                    BitConverter.GetBytes(ulval3.Y).CopyTo(val, 8);
+                    BitConverter.GetBytes(ulval3.Z).CopyTo(val, 16);
+                    return val;
+            }
+            return null;
         }
 
         #region IDeviceForDriver
@@ -207,11 +297,299 @@ namespace Cdy.Spider
                 DateTime dtmp = DateTime.Now;
                 foreach(var vv in  mDeviceMapTags[deviceTag])
                 {
-                    vv.Value = value;
+                    vv.Value = ConvertValue(vv, value);
                     vv.Time = dtmp;
                     vv.Quality = Tagbae.GoodQuality;
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private object ConvertValue(Tagbae tag,object value)
+        {
+            if (value == null) return null;
+            switch (tag.Type)
+            {
+                case TagType.Bool:
+                    if(value is string)
+                    {
+                        return bool.Parse(value.ToString());
+                    }
+                    else if(value is byte[])
+                    {
+                       return  BitConverter.ToBoolean(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToBoolean(value);
+                    }
+                case TagType.Byte:
+                    if (value is string)
+                    {
+                        return byte.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return (value as byte[])[0];
+                    }
+                    else
+                    {
+                        return Convert.ToByte(value);
+                    }
+                case TagType.DateTime:
+                    if (value is string)
+                    {
+                        return DateTime.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return Convert.ToDateTime(BitConverter.ToInt64(value as byte[]));
+                    }
+                    else
+                    {
+                        return Convert.ToDateTime(value);
+                    }
+                case TagType.Double:
+                    if (value is string)
+                    {
+                        return double.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return BitConverter.ToDouble(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToBoolean(value);
+                    }
+                case TagType.Float:
+                    if (value is string)
+                    {
+                        return float.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return BitConverter.ToSingle(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToSingle(value);
+                    }
+                case TagType.Int:
+                    if (value is string)
+                    {
+                        return int.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return BitConverter.ToInt32(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToInt32(value);
+                    }
+                case TagType.Long:
+                    if (value is string)
+                    {
+                        return long.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return BitConverter.ToInt64(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToInt64(value);
+                    }
+                case TagType.Short:
+                    if (value is string)
+                    {
+                        return short.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return BitConverter.ToInt16(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToInt16(value);
+                    }
+                case TagType.String:
+                    if (value is byte[])
+                    {
+                        return Encoding.UTF8.GetString(value as byte[]);
+                    }
+                    else
+                    {
+                        return value.ToString();
+                    }
+
+                case TagType.UInt:
+                    if (value is string)
+                    {
+                        return uint.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return BitConverter.ToUInt32(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToUInt32(value);
+                    }
+                case TagType.ULong:
+                    if (value is string)
+                    {
+                        return ulong.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return BitConverter.ToUInt64(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToUInt64(value);
+                    }
+                case TagType.UShort:
+                    if (value is string)
+                    {
+                        return ushort.Parse(value.ToString());
+                    }
+                    else if (value is byte[])
+                    {
+                        return BitConverter.ToUInt16(value as byte[]);
+                    }
+                    else
+                    {
+                        return Convert.ToUInt16(value);
+                    }
+                case TagType.IntPoint:
+                    if (value is string)
+                    {
+                        string[] sval = value.ToString().Split(new char[] { ',' });
+                        return new IntPoint() { X = int.Parse(sval[0]), Y = int.Parse(sval[1]) };
+                    }
+                    else if (value is byte[])
+                    {
+                        byte[] bval = value as byte[];
+                        return new IntPoint() { X = BitConverter.ToInt32(bval.AsSpan(0, 4)), Y = BitConverter.ToInt32(bval.AsSpan(4, 4)) };
+                    }
+                    else
+                    {
+                        return (IntPoint)value;
+                    }
+                case TagType.IntPoint3:
+                    if (value is string)
+                    {
+                        string[] sval = value.ToString().Split(new char[] { ',' });
+                        return new IntPoint3() { X = int.Parse(sval[0]), Y = int.Parse(sval[1]), Z = int.Parse(sval[2]) };
+                    }
+                    else if (value is byte[])
+                    {
+                        byte[] bval = value as byte[];
+                        return new IntPoint3() { X = BitConverter.ToInt32(bval.AsSpan(0, 4)), Y = BitConverter.ToInt32(bval.AsSpan(4, 4)), Z = BitConverter.ToInt32(bval.AsSpan(8, 4)) };
+                    }
+                    else
+                    {
+                        return (IntPoint3)value;
+                    }
+                case TagType.UIntPoint:
+                    if (value is string)
+                    {
+                        string[] sval = value.ToString().Split(new char[] { ',' });
+                        return new UIntPoint() { X = uint.Parse(sval[0]), Y = uint.Parse(sval[1]) };
+                    }
+                    else if (value is byte[])
+                    {
+                        byte[] bval = value as byte[];
+                        return new UIntPoint() { X = BitConverter.ToUInt32(bval.AsSpan(0, 4)), Y = BitConverter.ToUInt32(bval.AsSpan(4, 4)) };
+                    }
+                    else
+                    {
+                        return (UIntPoint)value;
+                    }
+                case TagType.UIntPoint3:
+                    if (value is string)
+                    {
+                        string[] sval = value.ToString().Split(new char[] { ',' });
+                        return new UIntPoint3() { X = uint.Parse(sval[0]), Y = uint.Parse(sval[1]), Z = uint.Parse(sval[2]) };
+                    }
+                    else if (value is byte[])
+                    {
+                        byte[] bval = value as byte[];
+                        return new UIntPoint3() { X = BitConverter.ToUInt32(bval.AsSpan(0, 4)), Y = BitConverter.ToUInt32(bval.AsSpan(4, 4)), Z = BitConverter.ToUInt32(bval.AsSpan(8, 4)) };
+                    }
+                    else
+                    {
+                        return (UIntPoint3)value;
+                    }
+                case TagType.LongPoint:
+                    if (value is string)
+                    {
+                        string[] sval = value.ToString().Split(new char[] { ',' });
+                        return new LongPoint() { X = long.Parse(sval[0]), Y = long.Parse(sval[1]) };
+                    }
+                    else if (value is byte[])
+                    {
+                        byte[] bval = value as byte[];
+                        return new LongPoint() { X = BitConverter.ToInt64(bval.AsSpan(0, 8)), Y = BitConverter.ToInt64(bval.AsSpan(8, 8)) };
+                    }
+                    else
+                    {
+                        return (LongPoint)value;
+                    }
+                case TagType.LongPoint3:
+                    if (value is string)
+                    {
+                        string[] sval = value.ToString().Split(new char[] { ',' });
+                        return new LongPoint3() { X = long.Parse(sval[0]), Y = long.Parse(sval[1]), Z = long.Parse(sval[2]) };
+                    }
+                    else if (value is byte[])
+                    {
+                        byte[] bval = value as byte[];
+                        return new LongPoint3() { X = BitConverter.ToInt64(bval.AsSpan(0, 8)), Y = BitConverter.ToInt64(bval.AsSpan(8, 8)), Z = BitConverter.ToInt64(bval.AsSpan(16, 8)) };
+                    }
+                    else
+                    {
+                        return (LongPoint3)value;
+                    }
+                case TagType.ULongPoint:
+                    if (value is string)
+                    {
+                        string[] sval = value.ToString().Split(new char[] { ',' });
+                        return new ULongPoint() { X = ulong.Parse(sval[0]), Y = ulong.Parse(sval[1]) };
+                    }
+                    else if (value is byte[])
+                    {
+                        byte[] bval = value as byte[];
+                        return new ULongPoint() { X = BitConverter.ToUInt64(bval.AsSpan(0, 8)), Y = BitConverter.ToUInt64(bval.AsSpan(8, 8)) };
+                    }
+                    else
+                    {
+                        return (ULongPoint)value;
+                    }
+                case TagType.ULongPoint3:
+                    if (value is string)
+                    {
+                        string[] sval = value.ToString().Split(new char[] { ',' });
+                        return new ULongPoint3() { X = ulong.Parse(sval[0]), Y = ulong.Parse(sval[1]), Z = ulong.Parse(sval[2]) };
+                    }
+                    else if (value is byte[])
+                    {
+                        byte[] bval = value as byte[];
+                        return new ULongPoint3() { X = BitConverter.ToUInt64(bval.AsSpan(0, 8)), Y = BitConverter.ToUInt64(bval.AsSpan(8, 8)), Z = BitConverter.ToUInt64(bval.AsSpan(16, 8)) };
+                    }
+                    else
+                    {
+                        return (ULongPoint3)value;
+                    }
+            }
+            return null;
         }
 
         /// <summary>

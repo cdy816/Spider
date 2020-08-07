@@ -138,15 +138,14 @@ namespace Cdy.Spider.MQTTClient
         {
             if (x.ApplicationMessage.Payload != null && x.ApplicationMessage.Payload.Length > 0 && !string.IsNullOrEmpty(x.ApplicationMessage.Topic))
             {
-                if (x.ApplicationMessage.Topic.EndsWith(mData.ResponseTopicAppendString, StringComparison.OrdinalIgnoreCase))
+                if (x.ApplicationMessage.Topic.Equals(mResTopic, StringComparison.OrdinalIgnoreCase))
                 {
-                    mResTopic = x.ApplicationMessage.Topic;
                     mResDatas = x.ApplicationMessage.Payload;
                     eventreset.Set();
                 }
                 else
                 {
-                    var res = this.ReceiveCallBack(x.ApplicationMessage.Topic, x.ApplicationMessage.Payload);
+                    var res = this.ReceiveCallBack(x.ApplicationMessage.Topic.Replace(mData.ClientTopicAppendString,""), x.ApplicationMessage.Payload);
                     if (!string.IsNullOrEmpty(x.ApplicationMessage.ResponseTopic) && res != null)
                     {
                         SendToTopicDataWithoutResponse(x.ApplicationMessage.ResponseTopic, res);
@@ -164,7 +163,8 @@ namespace Cdy.Spider.MQTTClient
             base.Prepare(deviceInfos);
             foreach(var vv in deviceInfos)
             {
-                this.mqttClient.SubscribeAsync(vv+mData.ClientTopicAppendString);
+                this.mqttClient.SubscribeAsync(vv + mData.ClientTopicAppendString);
+                this.mqttClient.SubscribeAsync(vv + mData.ResponseTopicAppendString);
             }
         }
 
@@ -220,13 +220,18 @@ namespace Cdy.Spider.MQTTClient
         /// <param name="data"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(string key, byte[] data, int timeout,out bool result)
+        protected override byte[] SendInner(string key, byte[] data, int timeout,out bool result, params string[] paras)
         {
-            string skey = key + mData.ClientTopicAppendString;
+            string ss = string.IsNullOrEmpty(key) ? this.Data.Name : key;
+            string skey = ss + mData.ClientTopicAppendString;
+            string reskey = paras.Length > 0 ? paras[0] : ss + mData.ResponseTopicAppendString;
+            mResTopic = reskey;
+
             eventreset.Reset();
-            SendToTopicData(skey,skey+mData.ResponseTopicAppendString, data);
+            SendToTopicData(skey, reskey, data);
             result = eventreset.WaitOne(timeout);
-            if (result && mResTopic == skey + mData.ResponseTopicAppendString)
+
+            if (result)
             {
                 return mResDatas;
             }
@@ -244,10 +249,13 @@ namespace Cdy.Spider.MQTTClient
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <param name="result"></param>
-        protected override void SendInnerAsync(string key, byte[] data, out bool result)
+        protected override void SendInnerAsync(string key, byte[] data, out bool result, params string[] paras)
         {
-            string skey = key + mData.ClientTopicAppendString;
-            SendToTopicData(skey, skey + mData.ResponseTopicAppendString, data);
+            string ss = string.IsNullOrEmpty(key) ? this.Data.Name : key;
+            string skey = ss + mData.ClientTopicAppendString;
+            string reskey = paras.Length > 0 ? paras[0] : ss + mData.ResponseTopicAppendString;
+            mResTopic = reskey;
+            SendToTopicData(skey, reskey, data);
             base.SendInnerAsync(key, data, out result);
         }
 

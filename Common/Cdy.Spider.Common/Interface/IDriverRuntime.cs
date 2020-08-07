@@ -35,6 +35,11 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        string TypeName { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         IDeviceForDriver Device { get; set; }
 
         /// <summary>
@@ -65,8 +70,13 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="deviceInfo"></param>
         /// <param name="value"></param>
-        void WriteValue(string deviceInfo, object value);
+        void WriteValue(string deviceInfo, byte[] value,byte valueType);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="values"></param>
+        void WriteValue(Dictionary<string,KeyValuePair<byte[],byte>> values);
         #endregion ...Methods...
 
         #region ... Interfaces ...
