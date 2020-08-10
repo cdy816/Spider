@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
@@ -35,7 +36,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        string TypeName { get; }
+        string Name { get; }
 
         /// <summary>
         /// 
@@ -45,7 +46,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        DriverData Data { get; set; }
+        DriverData Data { get;}
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -77,6 +78,13 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="values"></param>
         void WriteValue(Dictionary<string,KeyValuePair<byte[],byte>> values);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        void Load(XElement xe);
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

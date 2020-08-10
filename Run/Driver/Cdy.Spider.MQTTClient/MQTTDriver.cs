@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Cdy.Spider.MQTTClient
 {
@@ -21,7 +22,7 @@ namespace Cdy.Spider.MQTTClient
     {
 
         #region ... Variables  ...
-
+        private MQTTDriverData mData;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -33,11 +34,10 @@ namespace Cdy.Spider.MQTTClient
         #endregion ...Constructor...
 
         #region ... Properties ...
-
         /// <summary>
         /// 
         /// </summary>
-        public override string TypeName => "SpiderMQTTClient";
+        public override DriverData Data => mData;
 
         #endregion ...Properties...
 
@@ -151,6 +151,17 @@ namespace Cdy.Spider.MQTTClient
             bvals[0] = type;
             value.CopyTo(bvals, 1);
             SendData(sname, bvals);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public override void Load(XElement xe)
+        {
+            mData = new MQTTDriverData();
+            mData.LoadFromXML(xe);
+            base.Load(xe);
         }
 
         #endregion ...Methods...

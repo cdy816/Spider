@@ -53,6 +53,10 @@ namespace Cdy.Spider.MQTTClient
 
         #region ... Methods    ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override XElement SaveToXML()
         {
             var xx = base.SaveToXML();
@@ -62,6 +66,10 @@ namespace Cdy.Spider.MQTTClient
             return xx;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
         public override void LoadFromXML(XElement xe)
         {
             base.LoadFromXML(xe);

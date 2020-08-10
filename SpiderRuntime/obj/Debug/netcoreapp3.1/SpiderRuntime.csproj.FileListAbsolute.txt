@@ -7,3 +7,8 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcore
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.dll
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.pdb
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.csprojAssemblyReference.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.pdb
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.csproj.CopyComplete
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\Data\Channel.cfg
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\Data\Driver.cfg

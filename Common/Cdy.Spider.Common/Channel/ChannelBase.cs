@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
@@ -57,7 +58,12 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public abstract ChannelType Type { get; }
+        public string Name { get { return Data.Name; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public  ChannelType Type { get { return Data.Type; } }
 
         /// <summary>
         /// 
@@ -73,8 +79,11 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public virtual ChannelData Data { get; set; }
+        public virtual ChannelData Data { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsConnected => mIsConnected;
 
         #endregion ...Properties...
@@ -297,6 +306,16 @@ namespace Cdy.Spider
         {
             lock (mTakeEvent)
                 mTakeEvent.Set();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public virtual void Load(XElement xe)
+        {
+            
         }
 
 

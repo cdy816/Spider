@@ -17,7 +17,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class DeviceRuner : IDeviceRuntime,IDeviceForDriver
+    public class DeviceRunner : IDeviceRuntime,IDeviceForDriver
     {
 
         #region ... Variables  ...
