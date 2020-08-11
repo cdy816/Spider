@@ -37,6 +37,8 @@ namespace Cdy.Spider
         /// </summary>
         Dictionary<int, Tagbae> mIdMapTags = new Dictionary<int, Tagbae>();
 
+        private Action<string, object> mValueCallBack;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -282,6 +284,7 @@ namespace Cdy.Spider
             {
                 vv.Quality = Tagbae.BadCommQuality;
                 vv.Time = dtmp;
+                mValueCallBack?.Invoke(vv.DatabaseName, vv.Value);
             }
         }
 
@@ -300,6 +303,8 @@ namespace Cdy.Spider
                     vv.Value = ConvertValue(vv, value);
                     vv.Time = dtmp;
                     vv.Quality = Tagbae.GoodQuality;
+
+                    mValueCallBack?.Invoke(vv.DatabaseName, value);
                 }
             }
         }
@@ -608,8 +613,28 @@ namespace Cdy.Spider
                     vvv.Value = value;
                     vvv.Quality = Tagbae.GoodQuality;
                     vvv.Time = dtmp;
+
+                    mValueCallBack?.Invoke(vvv.DatabaseName, value);
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<string> ListDatabaseNames()
+        {
+            return mDatabaseMapTags.Keys.ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callBack"></param>
+        public void RegistorCallBack(Action<string, object> callBack)
+        {
+            mValueCallBack = callBack;
         }
 
 

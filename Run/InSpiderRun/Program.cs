@@ -11,15 +11,22 @@ namespace InSpiderRun
         static SpiderRuntime.Runer mRunner;
         static void Main(string[] args)
         {
-            mRunner = new SpiderRuntime.Runer();
-            mRunner.Init();
-            mRunner.Start();
+            LogoHelper.Print();
+            Console.WriteLine(Res.Get("WelcomeMsg"));
 
             Console.CancelKeyPress += Console_CancelKeyPress;
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
+
+            mRunner = new SpiderRuntime.Runer();
+            mRunner.Init();
+            mRunner.Start();
+
+            Console.WriteLine(Res.Get("HelpMsg"));
+
             while (!mIsClosed)
             {
+                Console.Write(">");
                 while (!Console.KeyAvailable)
                 {
                     if (mIsClosed)
@@ -65,7 +72,7 @@ namespace InSpiderRun
                         break;
                 }
             }
-            Console.WriteLine("Hello World!");
+           
         }
 
         private static string GetHelpString()

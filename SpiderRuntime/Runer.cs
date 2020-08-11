@@ -37,19 +37,26 @@ namespace SpiderRuntime
         /// </summary>
         public void Init()
         {
-            Load();
-            InterfaceRegistor();
-
-            //
-            foreach(var vv in DeviceManager.Manager.Devices)
+            try
             {
-                vv.Init();
+                Load();
+                InterfaceRegistor();
+
+                //
+                foreach (var vv in DeviceManager.Manager.Devices)
+                {
+                    vv.Init();
+                }
+
+                //
+                foreach (var vv in APIManager.Manager.Apis)
+                {
+                    vv.Init();
+                }
             }
-
-            //
-            foreach (var vv in APIManager.Manager.Apis)
+            catch(Exception ex)
             {
-                vv.Init();
+                LoggerService.Service.Erro("Runer_Init", ex.Message);
             }
         }
 
@@ -61,6 +68,7 @@ namespace SpiderRuntime
             DriverManager.Manager.Load();
             ChannelManager.Manager.Load();
             DeviceManager.Manager.Load();
+            APIManager.Manager.Load();
         }
 
         /// <summary>

@@ -31,3 +31,5 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netco
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.pdb
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\SpiderRuntime.pdb
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csproj.CopyComplete
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.Properties.Resources.resources
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpiderRun.csproj.GenerateResource.cache

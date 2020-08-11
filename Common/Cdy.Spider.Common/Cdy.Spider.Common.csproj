@@ -14,8 +14,4 @@
     <EmbeddedResource Include="Logo\Logo.txt" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Api\" />
-  </ItemGroup>
-
 </Project>

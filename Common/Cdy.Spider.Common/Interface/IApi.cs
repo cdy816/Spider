@@ -10,8 +10,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
-namespace Cdy.Spider.Common
+namespace Cdy.Spider
 {
     /// <summary>
     /// 
@@ -33,6 +34,10 @@ namespace Cdy.Spider.Common
 
         #region ... Properties ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        ApiData Data { get; }
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -51,6 +56,12 @@ namespace Cdy.Spider.Common
         /// 
         /// </summary>
         void Stop();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void Load(XElement xe);
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

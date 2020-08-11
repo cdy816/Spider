@@ -2,35 +2,25 @@
 //  Copyright (C) 2020  Inc. All rights reserved.
 //
 //==============================================================
-//  Create by 种道洋 at 2020/8/10 12:41:13.
+//  Create by 种道洋 at 2020/8/11 16:53:36.
 //  Version 1.0
 //  种道洋
 //==============================================================
 
-using Cdy.Spider.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
-namespace SpiderRuntime
+namespace Cdy.Spider
 {
     /// <summary>
     /// 
     /// </summary>
-    public class APIManager
+    public abstract class ApiBase : IApi
     {
 
         #region ... Variables  ...
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static APIManager Manager = new APIManager();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private List<IApi> mApis = new List<IApi>();
 
         #endregion ...Variables...
 
@@ -47,24 +37,53 @@ namespace SpiderRuntime
         /// <summary>
         /// 
         /// </summary>
-        public List<IApi> Apis { get { return mApis; } }
+        public abstract ApiData Data { get; }
+
 
         #endregion ...Properties...
 
         #region ... Methods    ...
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Init()
+        {
+           
+        }
+
+
 
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        public virtual void Start()
         {
-
+            
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Stop()
+        {
+            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public virtual void Load(XElement xe)
+        {
+            
+        }
+
 
         #endregion ...Methods...
 
         #region ... Interfaces ...
 
         #endregion ...Interfaces...
+
     }
 }
