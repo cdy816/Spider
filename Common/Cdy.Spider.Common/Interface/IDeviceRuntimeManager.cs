@@ -52,8 +52,9 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
-        List<IDeviceRuntime> ListDriver();
+        List<IDeviceRuntime> ListDevice();
 
+        IDeviceRuntime GetDevice(string name);
 
         #endregion ...Methods...
 

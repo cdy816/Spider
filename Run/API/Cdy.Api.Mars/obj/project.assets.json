@@ -2,6 +2,23 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "Mars.SpiderDriver.ClientApi/1.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Cdy.Tag.Common.dll": {},
+          "lib/netstandard2.1/Cdy.Tag.Network.dll": {},
+          "lib/netstandard2.1/Cdy.Tag.dll": {},
+          "lib/netstandard2.1/DotNettyCore.dll": {},
+          "lib/netstandard2.1/SpiderDriver.ClientApi.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Cdy.Tag.Common.dll": {},
+          "lib/netstandard2.1/Cdy.Tag.Network.dll": {},
+          "lib/netstandard2.1/Cdy.Tag.dll": {},
+          "lib/netstandard2.1/DotNettyCore.dll": {},
+          "lib/netstandard2.1/SpiderDriver.ClientApi.dll": {}
+        }
+      },
       "Cdy.Spider.Common/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.1",
@@ -15,6 +32,22 @@
     }
   },
   "libraries": {
+    "Mars.SpiderDriver.ClientApi/1.0.2": {
+      "sha512": "pF+br3ksuN/+qhQbk8iFohPX2x9iELGlio4XisXIJ0uX12WlcTcat8bqG2rCRAY+1IJBXB3MW4DSljkb4YZd9g==",
+      "type": "package",
+      "path": "mars.spiderdriver.clientapi/1.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.1/Cdy.Tag.Common.dll",
+        "lib/netstandard2.1/Cdy.Tag.Network.dll",
+        "lib/netstandard2.1/Cdy.Tag.dll",
+        "lib/netstandard2.1/DotNettyCore.dll",
+        "lib/netstandard2.1/SpiderDriver.ClientApi.dll",
+        "mars.spiderdriver.clientapi.1.0.2.nupkg.sha512",
+        "mars.spiderdriver.clientapi.nuspec"
+      ]
+    },
     "Cdy.Spider.Common/1.0.0": {
       "type": "project",
       "path": "../../../Common/Cdy.Spider.Common/Cdy.Spider.Common.csproj",
@@ -23,7 +56,8 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "Cdy.Spider.Common >= 1.0.0"
+      "Cdy.Spider.Common >= 1.0.0",
+      "Mars.SpiderDriver.ClientApi >= 1.0.2"
     ]
   },
   "packageFolders": {
@@ -66,6 +100,12 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "dependencies": {
+          "Mars.SpiderDriver.ClientApi": {
+            "target": "Package",
+            "version": "[1.0.2, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

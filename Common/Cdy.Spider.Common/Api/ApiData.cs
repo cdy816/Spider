@@ -62,6 +62,16 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        public string ServerIp { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Port { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string UserName { get; set; }
 
         /// <summary>

@@ -10,12 +10,13 @@
 using Cdy.Spider;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
 namespace SpiderRuntime
 {
-    public class DeviceManager
+    public class DeviceManager: IDeviceRuntimeManager
     {
 
         #region ... Variables  ...
@@ -52,6 +53,8 @@ namespace SpiderRuntime
                 return mDevices.Values;
             }
         }
+
+        public string Name => throw new NotImplementedException();
 
 
         /// <summary>
@@ -112,7 +115,14 @@ namespace SpiderRuntime
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<IDeviceRuntime> ListDevice()
+        {
+            return mDevices.Values.ToList();
+        }
 
         #endregion ...Methods...
 

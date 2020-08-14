@@ -85,6 +85,12 @@ namespace Cdy.Spider
         List<string> ListDatabaseNames();
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<Tagbae> ListTags();
+
+        /// <summary>
         /// 注册值改变
         /// </summary>
         /// <param name="callBack"></param>

@@ -101,6 +101,23 @@ namespace Cdy.Spider
         ULongPoint3
     }
 
+    public enum DataTransType
+    {
+        /// <summary>
+        /// 从设备到数据库
+        /// </summary>
+        DeviceToDatabase,
+        /// <summary>
+        /// 从数据库到设备
+        /// </summary>
+        DatabaseToDevice,
+        /// <summary>
+        /// 双向
+        /// </summary>
+        Both
+    }
+
+
     public abstract class Tagbae
     {
 
@@ -171,6 +188,11 @@ namespace Cdy.Spider
         /// </summary>
         public DateTime Time { get; set; }
 
+        /// <summary>
+        /// 数据传输方向
+        /// </summary>
+        public DataTransType DataTranseDirection { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -197,6 +219,7 @@ namespace Cdy.Spider
             xx.SetAttributeValue("Name", tag.Name);
             xx.SetAttributeValue("DatabaseName", tag.DatabaseName);
             xx.SetAttributeValue("DeviceInfo", tag.DeviceInfo);
+            xx.SetAttributeValue("DataTranseDirection", (int)tag.DataTranseDirection);
             return xx;
         }
 
@@ -220,6 +243,11 @@ namespace Cdy.Spider
                 if (xe.Attribute("DeviceInfo") != null)
                 {
                     tag.DeviceInfo = xe.Attribute("DeviceInfo").Value;
+                }
+
+                if (xe.Attribute("DataTranseDirection") != null)
+                {
+                    tag.DataTranseDirection = (DataTransType)int.Parse(xe.Attribute("DataTranseDirection").Value);
                 }
             }
             return tag;
