@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Xml.Linq;
 using MQTTnet;
 using MQTTnet.Client.Connecting;
 using MQTTnet.Client.Disconnecting;
@@ -60,16 +61,16 @@ namespace Cdy.Spider.MQTTClient
 
         #region ... Properties ...
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override ChannelType Type => ChannelType.MQTTClient;
 
         /// <summary>
         /// 
         /// </summary>
-        public override ChannelData Data { get => mData; set => mData = value as MQTTChannelData; }
+        public override ChannelData Data { get => mData;}
 
+
+        #endregion ...Properties...
+
+        #region ... Methods    ...
         /// <summary>
         /// 
         /// </summary>
@@ -83,7 +84,7 @@ namespace Cdy.Spider.MQTTClient
                 IgnoreCertificateRevocationErrors = true,
                 AllowUntrustedCertificates = true
             };
-            
+
             options = new MqttClientOptions
             {
                 ClientId = Guid.NewGuid().ToString(),
@@ -145,7 +146,7 @@ namespace Cdy.Spider.MQTTClient
                 }
                 else
                 {
-                    var res = this.ReceiveCallBack(x.ApplicationMessage.Topic.Replace(mData.ClientTopicAppendString,""), x.ApplicationMessage.Payload);
+                    var res = this.ReceiveCallBack(x.ApplicationMessage.Topic.Replace(mData.ClientTopicAppendString, ""), x.ApplicationMessage.Payload);
                     if (!string.IsNullOrEmpty(x.ApplicationMessage.ResponseTopic) && res != null)
                     {
                         SendToTopicDataWithoutResponse(x.ApplicationMessage.ResponseTopic, res);
@@ -161,7 +162,7 @@ namespace Cdy.Spider.MQTTClient
         public override void Prepare(List<string> deviceInfos)
         {
             base.Prepare(deviceInfos);
-            foreach(var vv in deviceInfos)
+            foreach (var vv in deviceInfos)
             {
                 this.mqttClient.SubscribeAsync(vv + mData.ClientTopicAppendString);
                 this.mqttClient.SubscribeAsync(vv + mData.ResponseTopicAppendString);
@@ -196,7 +197,7 @@ namespace Cdy.Spider.MQTTClient
         /// </summary>
         /// <param name="topic"></param>
         /// <param name="data"></param>
-        private void SendToTopicData(string topic,string responeTopic,byte[] data)
+        private void SendToTopicData(string topic, string responeTopic, byte[] data)
         {
             var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithResponseTopic(responeTopic).WithPayload(data).WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce).WithRetainFlag().Build();
             this.mqttClient.PublishAsync(msg);
@@ -220,7 +221,7 @@ namespace Cdy.Spider.MQTTClient
         /// <param name="data"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(string key, byte[] data, int timeout,out bool result, params string[] paras)
+        protected override byte[] SendInner(string key, byte[] data, int timeout, out bool result, params string[] paras)
         {
             string ss = string.IsNullOrEmpty(key) ? this.Data.Name : key;
             string skey = ss + mData.ClientTopicAppendString;
@@ -259,9 +260,15 @@ namespace Cdy.Spider.MQTTClient
             base.SendInnerAsync(key, data, out result);
         }
 
-        #endregion ...Properties...
-
-        #region ... Methods    ...
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public override void Load(XElement xe)
+        {
+            mData = new MQTTChannelData();
+            mData.LoadFromXML(xe);
+        }
 
         #endregion ...Methods...
 

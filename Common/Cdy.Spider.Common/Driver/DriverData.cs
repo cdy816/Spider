@@ -30,11 +30,16 @@ namespace Cdy.Spider
         #endregion ...Constructor...
 
         #region ... Properties ...
-        
+
         /// <summary>
         /// 类型
         /// </summary>
-        public string Type { get; set; }
+        public string Class { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Assembly { get; set; }
 
         /// <summary>
         /// 名称
@@ -62,7 +67,8 @@ namespace Cdy.Spider
         /// <param name="xe"></param>
         public void LoadFromXML(XElement xe)
         {
-            this.Type = xe.Attribute("Type")?.Value;
+            this.Assembly = xe.Attribute("Assembly")?.Value;
+            this.Class = xe.Attribute("Class")?.Value;
             this.Name = xe.Attribute("Name")?.Value;
             this.ChannelName = xe.Attribute("ChannelName")?.Value;
             this.ScanCircle = int.Parse(xe.Attribute("ScanCircle")?.Value);
@@ -75,7 +81,8 @@ namespace Cdy.Spider
         public virtual XElement SaveToXML()
         {
             XElement xe = new XElement("Device");
-            xe.SetAttributeValue("Type", Type);
+            xe.SetAttributeValue("Assembly", Assembly);
+            xe.SetAttributeValue("Class", Class);
             xe.SetAttributeValue("Name", Name);
             xe.SetAttributeValue("ChannelName", ChannelName);
             xe.SetAttributeValue("ScanCircle", ScanCircle);

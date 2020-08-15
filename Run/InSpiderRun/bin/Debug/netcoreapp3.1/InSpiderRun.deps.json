@@ -7,14 +7,41 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {
       "InSpiderRun/1.0.0": {
+        "dependencies": {
+          "Cdy.Spider.Common": "1.0.0",
+          "SpiderRuntime": "1.0.0"
+        },
         "runtime": {
           "InSpiderRun.dll": {}
+        }
+      },
+      "Cdy.Spider.Common/1.0.0": {
+        "runtime": {
+          "Cdy.Spider.Common.dll": {}
+        }
+      },
+      "SpiderRuntime/1.0.0": {
+        "dependencies": {
+          "Cdy.Spider.Common": "1.0.0"
+        },
+        "runtime": {
+          "SpiderRuntime.dll": {}
         }
       }
     }
   },
   "libraries": {
     "InSpiderRun/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cdy.Spider.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SpiderRuntime/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

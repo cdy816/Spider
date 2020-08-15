@@ -16,7 +16,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public interface IDeviceRuntime:IDisposable
+    public interface IDeviceRuntime:IDisposable, IDeviceForApi
     {
         #region ... Variables  ...
 
@@ -57,6 +57,45 @@ namespace Cdy.Spider
         /// </summary>
         void Stop();
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        object ReadValue(int id);
+
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IDeviceForApi
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<string> ListDatabaseNames();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<Tagbae> ListTags();
+
+        /// <summary>
+        /// 注册值改变
+        /// </summary>
+        /// <param name="callBack"></param>
+        void RegistorCallBack(Action<string, object> callBack);
+
         /// <summary>
         /// 接收数据库下发值，写入到设备中
         /// </summary>
@@ -72,19 +111,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         object ReadValueByDatabaseName(string databaseTag);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        object ReadValue(int id);
-
-        #endregion ...Methods...
-
-        #region ... Interfaces ...
-
-        #endregion ...Interfaces...
     }
+
 
     /// <summary>
     /// 

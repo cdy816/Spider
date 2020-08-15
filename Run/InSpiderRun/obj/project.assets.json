@@ -1,11 +1,49 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {}
+    ".NETCoreApp,Version=v3.1": {
+      "Cdy.Spider.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "compile": {
+          "bin/placeholder/Cdy.Spider.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Cdy.Spider.Common.dll": {}
+        }
+      },
+      "SpiderRuntime/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "Cdy.Spider.Common": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SpiderRuntime.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SpiderRuntime.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Cdy.Spider.Common/1.0.0": {
+      "type": "project",
+      "path": "../../Common/Cdy.Spider.Common/Cdy.Spider.Common.csproj",
+      "msbuildProject": "../../Common/Cdy.Spider.Common/Cdy.Spider.Common.csproj"
+    },
+    "SpiderRuntime/1.0.0": {
+      "type": "project",
+      "path": "../../SpiderRuntime/SpiderRuntime.csproj",
+      "msbuildProject": "../../SpiderRuntime/SpiderRuntime.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": []
+    ".NETCoreApp,Version=v3.1": [
+      "Cdy.Spider.Common >= 1.0.0",
+      "SpiderRuntime >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\cdy81\\.nuget\\packages\\": {}
@@ -32,7 +70,14 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
+              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
+            },
+            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\SpiderRuntime\\SpiderRuntime.csproj": {
+              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\SpiderRuntime\\SpiderRuntime.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

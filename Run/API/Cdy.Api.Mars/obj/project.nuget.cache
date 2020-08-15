@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "rNYr9JbbVLFDtebwCaKu6KxCk52nkoXi3iqYnebswCz1ubwYYnWj7e5dnDbx/DXhjkVhNM9pXKwGizhuE4bXSg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\API\\Cdy.Api.Mars\\Cdy.Api.Mars.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\chongdaoyang\\.nuget\\packages\\mars.spiderdriver.clientapi\\1.0.2\\mars.spiderdriver.clientapi.1.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

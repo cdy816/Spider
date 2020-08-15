@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
@@ -44,17 +45,12 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public abstract string TypeName { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public IDeviceForDriver Device { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public virtual DriverData Data { get; set; }
+        public virtual DriverData Data { get; }
 
         /// <summary>
         /// 
@@ -248,9 +244,18 @@ namespace Cdy.Spider
         /// </summary>
         public virtual void Dispose()
         {
-            Data = null;
             Device = null;
             mCachTags.Clear();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public virtual void Load(XElement xe)
+        {
+           
         }
     }
 }

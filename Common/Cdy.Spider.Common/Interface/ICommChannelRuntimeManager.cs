@@ -13,6 +13,9 @@ using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ICommChannelRuntimeManager
     {
 
@@ -29,12 +32,6 @@ namespace Cdy.Spider
         #endregion ...Constructor...
 
         #region ... Properties ...
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        string Name { get; }
 
         #endregion ...Properties...
 

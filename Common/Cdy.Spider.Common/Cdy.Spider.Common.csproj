@@ -4,4 +4,14 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Logo\Author.txt" />
+    <None Remove="Logo\Logo.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Logo\Author.txt" />
+    <EmbeddedResource Include="Logo\Logo.txt" />
+  </ItemGroup>
+
 </Project>

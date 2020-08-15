@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
@@ -35,6 +36,11 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        string Name { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         ChannelType Type { get; }
 
         /// <summary>
@@ -50,7 +56,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        ChannelData Data { get; set; }
+        ChannelData Data { get; }
 
         /// <summary>
         /// 是否连接上
@@ -127,6 +133,12 @@ namespace Cdy.Spider
         /// </summary>
         /// <returns></returns>
         void Release();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        void Load(XElement xe);
 
         #endregion ...Methods...
 
