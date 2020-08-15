@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\chongdaoyang\\.nuget\\packages\\": {}
+    "C:\\Users\\cdy81\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
+      "projectUniqueName": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
       "projectName": "InSpiderRun",
-      "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
-      "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\InSpiderRun\\obj\\",
+      "projectPath": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
+      "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Run\\InSpiderRun\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "X64OgkHML8Sq/snKIU02Wvvo0giLCJaFbbZNdHLt1zp+nc2GOn/PM5LRbkYdgqqmYK4mTQONFMDt/Y3Sgbm5lg==",
+  "dgSpecHash": "6EObwvV48Nuc4vRqm7jTxHs8REWiL1eKcG2cJ3nNYcFGXbKNAZM0xOTXMTpnB6vqTmh0zwfy3c74mDlOwCf/tA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.OpcClient\\Cdy.Spider.OpcClient.csproj",
+  "projectFilePath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\Driver\\Cdy.Spider.OpcClient\\Cdy.Spider.OpcClient.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

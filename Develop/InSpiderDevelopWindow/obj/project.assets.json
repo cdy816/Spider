@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\chongdaoyang\\.nuget\\packages\\": {}
+    "C:\\Users\\cdy81\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+      "projectUniqueName": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
       "projectName": "InSpiderDevelopWindow",
-      "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
-      "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
+      "projectPath": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+      "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
