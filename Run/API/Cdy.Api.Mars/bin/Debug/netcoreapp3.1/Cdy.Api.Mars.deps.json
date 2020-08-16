@@ -9,13 +9,13 @@
       "Cdy.Api.Mars/1.0.0": {
         "dependencies": {
           "Cdy.Spider.Common": "1.0.0",
-          "Mars.SpiderDriver.ClientApi": "1.0.2"
+          "Mars.SpiderDriver.ClientApi": "1.0.3"
         },
         "runtime": {
           "Cdy.Api.Mars.dll": {}
         }
       },
-      "Mars.SpiderDriver.ClientApi/1.0.2": {
+      "Mars.SpiderDriver.ClientApi/1.0.3": {
         "runtime": {
           "lib/netstandard2.1/Cdy.Tag.Common.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -34,8 +34,8 @@
             "fileVersion": "1.0.0.0"
           },
           "lib/netstandard2.1/SpiderDriver.ClientApi.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "1.0.3.0",
+            "fileVersion": "1.0.3.0"
           }
         }
       },
@@ -52,12 +52,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Mars.SpiderDriver.ClientApi/1.0.2": {
+    "Mars.SpiderDriver.ClientApi/1.0.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pF+br3ksuN/+qhQbk8iFohPX2x9iELGlio4XisXIJ0uX12WlcTcat8bqG2rCRAY+1IJBXB3MW4DSljkb4YZd9g==",
-      "path": "mars.spiderdriver.clientapi/1.0.2",
-      "hashPath": "mars.spiderdriver.clientapi.1.0.2.nupkg.sha512"
+      "sha512": "sha512-kX1WGLrhaJtpfd75D+KGjlCaXkB9Goq620O6QvcSDSJtMLhZT2RlSpotkmPf/qKgME/9gl370r57dezi6R04HA==",
+      "path": "mars.spiderdriver.clientapi/1.0.3",
+      "hashPath": "mars.spiderdriver.clientapi.1.0.3.nupkg.sha512"
     },
     "Cdy.Spider.Common/1.0.0": {
       "type": "project",

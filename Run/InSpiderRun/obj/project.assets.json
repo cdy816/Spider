@@ -51,11 +51,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
+      "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
       "projectName": "InSpiderRun",
-      "projectPath": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
+      "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\InSpiderRun\\InSpiderRun.csproj",
       "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Run\\InSpiderRun\\obj\\",
+      "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\InSpiderRun\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -71,11 +71,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
-              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
+            "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
+              "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
             },
-            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\SpiderRuntime\\SpiderRuntime.csproj": {
-              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\SpiderRuntime\\SpiderRuntime.csproj"
+            "C:\\Users\\cdy81\\source\\repos\\Spider\\SpiderRuntime\\SpiderRuntime.csproj": {
+              "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\SpiderRuntime\\SpiderRuntime.csproj"
             }
           }
         }

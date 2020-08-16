@@ -94,7 +94,7 @@ namespace Cdy.Spider
         /// 注册值改变
         /// </summary>
         /// <param name="callBack"></param>
-        void RegistorCallBack(Action<string, object> callBack);
+        void RegistorCallBack(Action<string,Tagbae> callBack);
 
         /// <summary>
         /// 接收数据库下发值，写入到设备中

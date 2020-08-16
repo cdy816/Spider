@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "Mars.SpiderDriver.ClientApi/1.0.2": {
+      "Mars.SpiderDriver.ClientApi/1.0.3": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/Cdy.Tag.Common.dll": {},
@@ -32,10 +32,10 @@
     }
   },
   "libraries": {
-    "Mars.SpiderDriver.ClientApi/1.0.2": {
-      "sha512": "pF+br3ksuN/+qhQbk8iFohPX2x9iELGlio4XisXIJ0uX12WlcTcat8bqG2rCRAY+1IJBXB3MW4DSljkb4YZd9g==",
+    "Mars.SpiderDriver.ClientApi/1.0.3": {
+      "sha512": "kX1WGLrhaJtpfd75D+KGjlCaXkB9Goq620O6QvcSDSJtMLhZT2RlSpotkmPf/qKgME/9gl370r57dezi6R04HA==",
       "type": "package",
-      "path": "mars.spiderdriver.clientapi/1.0.2",
+      "path": "mars.spiderdriver.clientapi/1.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -44,7 +44,7 @@
         "lib/netstandard2.1/Cdy.Tag.dll",
         "lib/netstandard2.1/DotNettyCore.dll",
         "lib/netstandard2.1/SpiderDriver.ClientApi.dll",
-        "mars.spiderdriver.clientapi.1.0.2.nupkg.sha512",
+        "mars.spiderdriver.clientapi.1.0.3.nupkg.sha512",
         "mars.spiderdriver.clientapi.nuspec"
       ]
     },
@@ -57,23 +57,23 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "Cdy.Spider.Common >= 1.0.0",
-      "Mars.SpiderDriver.ClientApi >= 1.0.2"
+      "Mars.SpiderDriver.ClientApi >= 1.0.3"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\chongdaoyang\\.nuget\\packages\\": {}
+    "C:\\Users\\cdy81\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\API\\Cdy.Api.Mars\\Cdy.Api.Mars.csproj",
+      "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\API\\Cdy.Api.Mars\\Cdy.Api.Mars.csproj",
       "projectName": "Cdy.Api.Mars",
-      "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\API\\Cdy.Api.Mars\\Cdy.Api.Mars.csproj",
-      "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\API\\Cdy.Api.Mars\\obj\\",
+      "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\API\\Cdy.Api.Mars\\Cdy.Api.Mars.csproj",
+      "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\API\\Cdy.Api.Mars\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -86,8 +86,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
-              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
+            "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
+              "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
             }
           }
         }
@@ -103,7 +103,7 @@
         "dependencies": {
           "Mars.SpiderDriver.ClientApi": {
             "target": "Package",
-            "version": "[1.0.2, )"
+            "version": "[1.0.3, )"
           }
         },
         "imports": [

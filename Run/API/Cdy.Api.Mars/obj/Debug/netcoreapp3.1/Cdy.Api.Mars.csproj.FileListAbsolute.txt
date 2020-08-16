@@ -10,3 +10,15 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\API\Cdy.Api.Mars\obj\Debug\
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.dll
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.pdb
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.csproj.CoreCompileInputs.cache
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\bin\Debug\netcoreapp3.1\Cdy.Api.Mars.deps.json
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\bin\Debug\netcoreapp3.1\Cdy.Api.Mars.dll
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\bin\Debug\netcoreapp3.1\Cdy.Api.Mars.pdb
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.dll
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.pdb
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.csprojAssemblyReference.cache
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.AssemblyInfoInputs.cache
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.AssemblyInfo.cs
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.csproj.CoreCompileInputs.cache
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.csproj.CopyComplete
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.dll
+C:\Users\cdy81\source\repos\Spider\Run\API\Cdy.Api.Mars\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.pdb

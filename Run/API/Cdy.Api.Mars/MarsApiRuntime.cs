@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Xml.Linq;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Buffers;
 
 namespace Cdy.Api.Mars
 {
@@ -25,11 +27,15 @@ namespace Cdy.Api.Mars
 
         private Dictionary<int, string> mIdNameMape = new Dictionary<int, string>();
 
-        private Queue<string> mChangedTags = new Queue<string>();
+        private Dictionary<string, int> mNameIdMape = new Dictionary<string, int>();
+
+        private Queue<Tagbae> mChangedTags = new Queue<Tagbae>();
 
         private Dictionary<string,int> mCallBackTags = new Dictionary<string, int>();
 
-        private List<string> mAllDatabaseTagNames = new List<string>();
+        private Dictionary<string,List<string>> mAllDatabaseTagNames = new Dictionary<string,List<string>>();
+
+        private Thread mScanThread;
 
         #endregion ...Variables...
 
@@ -80,12 +86,28 @@ namespace Cdy.Api.Mars
                         mCallBackTags.Add(vvv.DatabaseName, 0);
                     }
                 }
+                
+                foreach(var vvv in vv.ListDatabaseNames())
+                {
+                    if (mAllDatabaseTagNames.ContainsKey(vvv))
+                    {
+                        mAllDatabaseTagNames[vvv].Add(vv.Name);
+                    }
+                    else
+                    {
+                        mAllDatabaseTagNames.Add(vvv, new List<string>() { vv.Name });
+                    }
+                }
 
-                mAllDatabaseTagNames.AddRange(vv.ListDatabaseNames());
+                vv.RegistorCallBack((device, tag) => {
+                    lock (mChangedTags)
+                        mChangedTags.Enqueue(tag);
+                });
             }
           
 
             mProxy = new SpiderDriver.ClientApi.DriverProxy();
+            //接受到数据库消费端修改数据
             mProxy.ValueChanged = new SpiderDriver.ClientApi.DriverProxy.ProcessDataPushDelegate((values) => { 
 
                 foreach(var vv in values)
@@ -93,11 +115,12 @@ namespace Cdy.Api.Mars
                     if(mIdNameMape.ContainsKey(vv.Key))
                     {
                         string stag = mIdNameMape[vv.Key];
-
+                        foreach(var vvd in mAllDatabaseTagNames[stag])
+                        {
+                            manager.GetDevice(vvd).WriteValueByDatabaseName(stag, vv.Value);
+                        }
                     }
                 }
-
-                //to do update value to device
             });
         }
 
@@ -111,6 +134,10 @@ namespace Cdy.Api.Mars
             mIsClosed = false;
             mProxy.Connect(mData.ServerIp, mData.Port);
             
+            mScanThread = new Thread(ThreadPro);
+            mScanThread.IsBackground = true;
+            mScanThread.Start();
+
             base.Start();
         }
 
@@ -140,19 +167,33 @@ namespace Cdy.Api.Mars
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateTagId()
         {
-            var res = mProxy.QueryTagId(mAllDatabaseTagNames);
+            mIdNameMape.Clear();
+            mNameIdMape.Clear();
+
+            var vtags = mAllDatabaseTagNames.Keys.ToList();
+            var res = mProxy.QueryTagId(vtags);
             if (res != null && res.Count > 0 && res.Count == mAllDatabaseTagNames.Count)
             {
                 for(int i=0;i<res.Count;i++)
                 {
                     int id = res[i];
-                    string stag = mAllDatabaseTagNames[id];
+                    string stag = vtags[id];
+
                     if (!mIdNameMape.ContainsKey(id))
                     {
                         mIdNameMape.Add(id, stag);
                     }
+
+                    if(!mNameIdMape.ContainsKey(stag))
+                    {
+                        mNameIdMape.Add(stag, id);
+                    }
+
                     if(mCallBackTags.ContainsKey(stag))
                     {
                         mCallBackTags[stag] = id;
@@ -161,25 +202,51 @@ namespace Cdy.Api.Mars
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateAllValue()
         {
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+            foreach (var vv in manager.ListDevice())
+            {
+                Dictionary<int, Tuple<Cdy.Tag.TagType, object,byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
+                foreach (var vvv in vv.ListTags())
+                {
+                    int id = mNameIdMape[vvv.DatabaseName];
+                    var tpu = (Cdy.Tag.TagType)((int)vvv.Type);
 
-        }
-
-        private void UpdateChangedTag()
-        {
-
+                    if (!values.ContainsKey(id))
+                    {
+                        values.Add(id, new Tuple<Tag.TagType, object,byte>(tpu, vvv.Value,vvv.Quality));
+                    }
+                }
+                mProxy.SetTagValue(values);
+            }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="tags"></param>
-        private void UpdateTagValue(List<string> tags)
+        private void UpdateChangedTag()
         {
+            Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
+            while (mChangedTags.Count>0)
+            {
+                Tagbae stag;
+                lock(mChangedTags)
+                stag = mChangedTags.Dequeue();
 
+                int id = mNameIdMape[stag.DatabaseName];
+                var tpu = (Cdy.Tag.TagType)((int)stag.Type);
+
+                if(!values.ContainsKey(id))
+                {
+                    values.Add(id, new Tuple<Tag.TagType, object, byte>(tpu, stag.Value,stag.Quality));
+                }
+            }
+            mProxy.SetTagValue(values);
         }
-
 
         /// <summary>
         /// 
