@@ -1,0 +1,8 @@
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\bin\Debug\netcoreapp3.1\InSpiderDevelop.deps.json
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\bin\Debug\netcoreapp3.1\InSpiderDevelop.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\bin\Debug\netcoreapp3.1\InSpiderDevelop.pdb
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.AssemblyInfoInputs.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.AssemblyInfo.cs
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.csproj.CoreCompileInputs.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.pdb
