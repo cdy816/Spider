@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -37,7 +38,7 @@ namespace Cdy.Spider
         /// </summary>
         Dictionary<int, Tagbae> mIdMapTags = new Dictionary<int, Tagbae>();
 
-        private Action<string, object> mValueCallBack;
+        private Action<string,Tagbae> mValueCallBack;
 
         #endregion ...Variables...
 
@@ -284,7 +285,7 @@ namespace Cdy.Spider
             {
                 vv.Quality = Tagbae.BadCommQuality;
                 vv.Time = dtmp;
-                mValueCallBack?.Invoke(vv.DatabaseName, vv.Value);
+                mValueCallBack?.Invoke(this.Name,vv);
             }
         }
 
@@ -304,7 +305,7 @@ namespace Cdy.Spider
                     vv.Time = dtmp;
                     vv.Quality = Tagbae.GoodQuality;
 
-                    mValueCallBack?.Invoke(vv.DatabaseName, value);
+                    mValueCallBack?.Invoke(this.Name,vv);
                 }
             }
         }
@@ -614,7 +615,7 @@ namespace Cdy.Spider
                     vvv.Quality = Tagbae.GoodQuality;
                     vvv.Time = dtmp;
 
-                    mValueCallBack?.Invoke(vvv.DatabaseName, value);
+                    mValueCallBack?.Invoke(this.Name,vvv);
                 }
             }
         }
@@ -632,7 +633,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="callBack"></param>
-        public void RegistorCallBack(Action<string, object> callBack)
+        public void RegistorCallBack(Action<string,Tagbae> callBack)
         {
             mValueCallBack = callBack;
         }
