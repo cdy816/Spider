@@ -34,9 +34,14 @@ namespace Cdy.Spider
         #region ... Properties ...
         
         /// <summary>
-        /// 
+        /// 名称
         /// </summary>
         string Name { get; set; }
+
+        /// <summary>
+        /// 类名称
+        /// </summary>
+        string TypeName { get; }
 
         /// <summary>
         /// 
@@ -50,6 +55,11 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        object Config();
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         XElement Save();
 
@@ -58,6 +68,46 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="xe"></param>
         void Load(XElement xe);
+
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IApiDevelopForFactory
+    {
+
+        #region ... Variables  ...
+
+        #endregion ...Variables...
+
+        #region ... Events     ...
+
+        #endregion ...Events...
+
+        #region ... Constructor...
+
+        #endregion ...Constructor...
+
+        #region ... Properties ...
+        /// <summary>
+        /// 
+        /// </summary>
+        string TypeName { get; }
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IApiDevelop NewApi();
 
         #endregion ...Methods...
 

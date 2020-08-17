@@ -67,6 +67,11 @@ namespace Cdy.Spider.MQTTClient
         /// </summary>
         public override ChannelData Data { get => mData;}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string TypeName => "MQTTClient";
+
 
         #endregion ...Properties...
 

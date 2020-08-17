@@ -39,6 +39,11 @@ namespace Cdy.Spider.MQTTClient
         /// </summary>
         public override DriverData Data => mData;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string TypeName => "MQTTClient";
+
         #endregion ...Properties...
 
         #region ... Methods    ...

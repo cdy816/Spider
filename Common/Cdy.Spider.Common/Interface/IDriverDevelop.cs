@@ -40,9 +40,14 @@ namespace Cdy.Spider
         /// </summary>
         DriverData Data { get; set; }
 
+        string TypeName { get; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        object Config();
+
         /// <summary>
         /// 
         /// </summary>
@@ -54,6 +59,43 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="xe"></param>
         void Load(XElement xe);
+
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
+    public interface IDriverDevelopForFactory
+    {
+
+        #region ... Variables  ...
+
+        #endregion ...Variables...
+
+        #region ... Events     ...
+
+        #endregion ...Events...
+
+        #region ... Constructor...
+
+        #endregion ...Constructor...
+
+        #region ... Properties ...
+        /// <summary>
+        /// 
+        /// </summary>
+        string TypeName { get; }
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IDriverDevelop NewApi();
 
         #endregion ...Methods...
 

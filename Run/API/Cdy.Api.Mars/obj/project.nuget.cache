@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "DgHVYHBIMtgz5ILQq0mOYRu1pdqDYY/EukWzaS0waZwxrKxV6h4g9COVx8UMwpnnd42hEYK1d4GYTM+TSmq8Sg==",
+  "dgSpecHash": "+Pl/VmnW8+U57ntb3aWhZsMXupXA4CMSElqRR8NK+/F65F5mEi+QzvPt6F535rnwWMhpIns8obuK/5CGqYG4gA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\API\\Cdy.Api.Mars\\Cdy.Api.Mars.csproj",
+  "projectFilePath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\API\\Cdy.Api.Mars\\Cdy.Api.Mars.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\cdy81\\.nuget\\packages\\mars.spiderdriver.clientapi\\1.0.3\\mars.spiderdriver.clientapi.1.0.3.nupkg.sha512"
+    "C:\\Users\\chongdaoyang\\.nuget\\packages\\mars.spiderdriver.clientapi\\1.0.3\\mars.spiderdriver.clientapi.1.0.3.nupkg.sha512"
   ],
   "logs": []
 }

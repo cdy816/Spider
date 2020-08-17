@@ -17,7 +17,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ApiDevelopBase : IApiDevelop
+    public abstract class ApiDevelopBase : IApiDevelop,IApiDevelopForFactory
     {
 
         #region ... Variables  ...
@@ -37,34 +37,65 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get { return Data.Name; } set { Data.Name = value; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public ApiData Data { get; set; }
+        public abstract ApiData Data { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public abstract string TypeName { get; }
 
         #endregion ...Properties...
 
         #region ... Methods    ...
 
         /// <summary>
-        /// 
+        /// 通过界面配置
         /// </summary>
-        /// <param name="xe"></param>
-        public virtual void Load(XElement xe)
+        public virtual object Config()
         {
-            
+            return null;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual XElement Save()
+        protected virtual ApiData CreatNewData()
         {
             return null;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public void Load(XElement xe)
+        {
+            Data = CreatNewData();
+            Data.LoadFromXML(xe);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public XElement Save()
+        {
+            var vv = Data.SaveToXML();
+            vv.SetAttributeValue("TypeName", TypeName);
+            return vv;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract IApiDevelop NewApi();
 
         #endregion ...Methods...
 

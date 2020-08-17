@@ -19,6 +19,16 @@ namespace SpiderRuntime
 
         #region ... Constructor...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        static Runer()
+        {
+            ApiFactory.Factory.LoadForRun();
+            DriverFactory.Factory.LoadForRun();
+            ChannelFactory.Factory.LoadForRun();
+        }
+
         #endregion ...Constructor...
 
         #region ... Properties ...

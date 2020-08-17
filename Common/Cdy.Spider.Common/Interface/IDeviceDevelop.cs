@@ -46,6 +46,9 @@ namespace Cdy.Spider
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        object Config();
+
         /// <summary>
         /// 
         /// </summary>

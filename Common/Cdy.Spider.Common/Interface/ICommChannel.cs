@@ -43,6 +43,8 @@ namespace Cdy.Spider
         /// </summary>
         ChannelType Type { get; }
 
+        string TypeName { get; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -139,6 +141,46 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="xe"></param>
         void Load(XElement xe);
+
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface ICommChannelForFactory
+    {
+
+        #region ... Variables  ...
+
+        #endregion ...Variables...
+
+        #region ... Events     ...
+
+        #endregion ...Events...
+
+        #region ... Constructor...
+
+        #endregion ...Constructor...
+
+        #region ... Properties ...
+        /// <summary>
+        /// 
+        /// </summary>
+        string TypeName { get; }
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        ICommChannel NewApi();
 
         #endregion ...Methods...
 

@@ -13,6 +13,9 @@ using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ICommChannelDevelop
     {
 
@@ -40,9 +43,13 @@ namespace Cdy.Spider
         /// </summary>
         ChannelData Data { get; set; }
 
+        string TypeName { get; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+        object Config();
+
         /// <summary>
         /// 
         /// </summary>
@@ -54,6 +61,44 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="xe"></param>
         void Load(XElement xe);
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
+
+    public interface ICommChannelDevelopForFactory
+    {
+
+        #region ... Variables  ...
+
+        #endregion ...Variables...
+
+        #region ... Events     ...
+
+        #endregion ...Events...
+
+        #region ... Constructor...
+
+        #endregion ...Constructor...
+
+        #region ... Properties ...
+        /// <summary>
+        /// 
+        /// </summary>
+        string TypeName { get; }
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        ICommChannelDevelop NewApi();
+
         #endregion ...Methods...
 
         #region ... Interfaces ...
