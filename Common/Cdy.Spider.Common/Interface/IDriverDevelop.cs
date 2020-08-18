@@ -95,7 +95,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
-        IDriverDevelop NewApi();
+        IDriverDevelop NewDriver();
 
         #endregion ...Methods...
 

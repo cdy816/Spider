@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v3.1": {
       "InSpiderDevelop/1.0.0": {
+        "dependencies": {
+          "Cdy.Spider.Common": "1.0.0"
+        },
         "runtime": {
           "InSpiderDevelop.dll": {}
+        }
+      },
+      "Cdy.Spider.Common/1.0.0": {
+        "runtime": {
+          "Cdy.Spider.Common.dll": {}
         }
       }
     }
   },
   "libraries": {
     "InSpiderDevelop/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cdy.Spider.Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

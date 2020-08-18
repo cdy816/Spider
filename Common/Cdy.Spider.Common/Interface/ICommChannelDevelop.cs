@@ -97,7 +97,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
-        ICommChannelDevelop NewApi();
+        ICommChannelDevelop NewChannel();
 
         #endregion ...Methods...
 

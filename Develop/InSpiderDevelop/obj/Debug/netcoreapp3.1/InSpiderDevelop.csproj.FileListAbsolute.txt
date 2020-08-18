@@ -6,4 +6,7 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Deb
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.csproj.CoreCompileInputs.cache
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.dll
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.pdb
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.pdb
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.csprojAssemblyReference.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelop\obj\Debug\netcoreapp3.1\InSpiderDevelop.csproj.CopyComplete

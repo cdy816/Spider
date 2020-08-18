@@ -62,7 +62,7 @@ namespace Cdy.Spider
         {
             if (mDevelopManagers.ContainsKey(type))
             {
-                return mDevelopManagers[type].NewApi();
+                return mDevelopManagers[type].NewChannel();
             }
             return null;
         }

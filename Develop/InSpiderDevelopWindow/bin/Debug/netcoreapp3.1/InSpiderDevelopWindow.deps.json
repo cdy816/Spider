@@ -9,6 +9,11 @@
       "InSpiderDevelopWindow/1.0.0": {
         "runtime": {
           "InSpiderDevelopWindow.dll": {}
+        },
+        "resources": {
+          "zh-CN/InSpiderDevelopWindow.resources.dll": {
+            "locale": "zh-CN"
+          }
         }
       }
     }

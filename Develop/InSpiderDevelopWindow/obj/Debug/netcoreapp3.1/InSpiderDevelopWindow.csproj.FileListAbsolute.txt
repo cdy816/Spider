@@ -53,4 +53,11 @@ C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netco
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.dll
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.pdb
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.genruntimeconfig.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\zh-CN\InSpiderDevelopWindow.resources.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.Properties.Resources.resources
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.Properties.Resources.zh-CN.resources
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.csproj.GenerateResource.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\zh-CN\InSpiderDevelopWindow.resources.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\Themes\Generic.baml
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.csprojAssemblyReference.cache
