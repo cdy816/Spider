@@ -27,3 +27,4 @@ C:\Users\cdy81\source\repos\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderR
 C:\Users\cdy81\source\repos\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.dll
 C:\Users\cdy81\source\repos\Spider\SpiderRuntime\obj\Debug\netcoreapp3.1\SpiderRuntime.pdb
 C:\Users\cdy81\source\repos\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\Data\Api.cfg
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\SpiderRuntime\bin\Debug\netcoreapp3.1\Data\Api.cfg

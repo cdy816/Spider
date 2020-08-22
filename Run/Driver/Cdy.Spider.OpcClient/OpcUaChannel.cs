@@ -33,6 +33,10 @@ namespace Cdy.Spider.OpcClient
 
         #region ... Properties ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string TypeName => "OpcUa";
 
         #endregion ...Properties...
 

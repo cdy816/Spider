@@ -54,6 +54,11 @@ namespace Cdy.Api.Mars
         /// </summary>
         public override ApiData Data => mData;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string TypeName => "MarsApi";
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -256,6 +261,16 @@ namespace Cdy.Api.Mars
             mIsClosed = true;
             mProxy.Close();
             base.Stop();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override IApi NewApi()
+        {
+            return new MarsApiRuntime();
         }
 
         #endregion ...Methods...

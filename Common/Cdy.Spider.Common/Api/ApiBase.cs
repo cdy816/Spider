@@ -17,7 +17,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ApiBase : IApi
+    public abstract class ApiBase : IApi, IApiForFactory
     {
 
         #region ... Variables  ...
@@ -38,6 +38,11 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         public abstract ApiData Data { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public abstract string TypeName { get; }
 
 
         #endregion ...Properties...
@@ -77,6 +82,13 @@ namespace Cdy.Spider
         {
             
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract IApi NewApi();
+        
 
 
         #endregion ...Methods...

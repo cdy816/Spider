@@ -57,6 +57,11 @@ namespace Cdy.Spider
         /// </summary>
         public string Name { get { return Data.Name; } }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public abstract string TypeName { get; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...

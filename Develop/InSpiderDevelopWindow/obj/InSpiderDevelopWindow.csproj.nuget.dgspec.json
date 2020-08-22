@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj": {}
+    "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj": {}
   },
   "projects": {
-    "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj": {
+    "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+        "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
         "projectName": "InSpiderDevelopWindow",
-        "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
-        "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
+        "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+        "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

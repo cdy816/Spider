@@ -68,6 +68,11 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        public abstract string TypeName { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Func<string,byte[],byte[]> ReceiveCallBack { get; set; }
         
         

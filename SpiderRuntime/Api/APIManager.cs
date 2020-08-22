@@ -77,15 +77,10 @@ namespace SpiderRuntime
                 XElement xx = XElement.Load(sfile);
                 foreach (var vv in xx.Elements())
                 {
-                    string ass = vv.Attribute("Assembly").Value;
-                    string cls = vv.Attribute("Class").Value;
-                    var afile = GetAssemblyPath(ass);
-                    if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
-                    {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as IApi;
-                        asb.Load(vv);
-                        mApis.Add(asb);
-                    }
+                    string tname = vv.Attribute("TypeName").Value;
+                    var asb = ServiceLocator.Locator.Resolve<IApiFactory>().GetRuntimeIntance(tname);
+                    asb.Load(vv);
+                    mApis.Add(asb);
                 }
             }
         }

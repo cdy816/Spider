@@ -50,6 +50,11 @@ namespace Cdy.Spider
         #region ... Properties ...
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// 定时周期
         /// </summary>
         public int Circle { get; set; }
@@ -90,6 +95,7 @@ namespace Cdy.Spider
         public virtual XElement SaveToXML()
         {
             XElement xx = new XElement("ApiData");
+            xx.SetAttributeValue("Name", Name);
             xx.SetAttributeValue("Type", (int)Type);
             xx.SetAttributeValue("Circle", Circle);
             xx.SetAttributeValue("UserName", UserName);
@@ -103,6 +109,11 @@ namespace Cdy.Spider
         /// <param name="xe"></param>
         public virtual void LoadFromXML(XElement xe)
         {
+            if(xe.Attribute("Name") !=null)
+            {
+                this.Name = xe.Attribute("Name").Value;
+            }
+
             if (xe.Attribute("Type") != null)
             {
                 this.Type = (TransType)(int.Parse(xe.Attribute("Name").Value));

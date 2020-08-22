@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
@@ -32,10 +33,33 @@ namespace Cdy.Spider
 
         #region ... Properties ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        DeviceData Data { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
 
+        object Config();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        XElement Save();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        void Load(XElement xe);
         #endregion ...Methods...
 
         #region ... Interfaces ...

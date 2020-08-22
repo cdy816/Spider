@@ -38,6 +38,9 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         ApiData Data { get; }
+
+        string TypeName { get; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -61,6 +64,47 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         void Load(XElement xe);
+
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IApiForFactory
+    {
+
+        #region ... Variables  ...
+
+        #endregion ...Variables...
+
+        #region ... Events     ...
+
+        #endregion ...Events...
+
+        #region ... Constructor...
+
+        #endregion ...Constructor...
+
+        #region ... Properties ...
+        /// <summary>
+        /// 
+        /// </summary>
+        string TypeName { get; }
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IApi NewApi();
 
         #endregion ...Methods...
 
