@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+      "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
       "projectName": "InSpiderDevelopWindow",
-      "projectPath": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+      "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
       "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\cdy81\\Source\\Repos\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
+      "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -61,7 +61,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
       }
     }
   }
