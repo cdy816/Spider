@@ -47,7 +47,10 @@
 
   <ItemGroup>
     <Folder Include="View\" />
-    <Folder Include="ViewModel\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

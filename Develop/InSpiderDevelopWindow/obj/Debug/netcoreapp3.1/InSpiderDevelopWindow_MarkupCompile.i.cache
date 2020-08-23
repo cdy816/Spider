@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\
 InSpiderDevelopWindow
 none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
-C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\App.xaml
-2419903590
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\App.xaml
+3-136417498
 
-141501132700
-1921654412462
-MainWindow.xaml;Themes\Generic.xaml;
+181352742702
+193-2009341295
+MainWindow.xaml;Themes\ControlStyle.xaml;Themes\Generic.xaml;
 
-True
+False
 

@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="CancelSave" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>Spider Studio</value>
+  </data>
+  <data name="Paste" xml:space="preserve">
+    <value>Paste</value>
   </data>
   <data name="Publish" xml:space="preserve">
     <value>Publish</value>
   </data>
   <data name="Reload" xml:space="preserve">
     <value>Reload</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="ReName" xml:space="preserve">
+    <value>ReName</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>

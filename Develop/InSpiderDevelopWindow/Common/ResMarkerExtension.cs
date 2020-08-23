@@ -135,7 +135,10 @@ namespace InSpiderDevelopWindow
             else
             {
                 System.Globalization.CultureInfo cinfo = Thread.CurrentThread.CurrentUICulture;
-                return Properties.Resources.ResourceManager.GetString(Key, cinfo)+ mAppendChar;
+                var res = Properties.Resources.ResourceManager.GetString(Key, cinfo);
+                if (string.IsNullOrEmpty(res))
+                    res = Key;
+                return res+ mAppendChar;
             }
         }
 

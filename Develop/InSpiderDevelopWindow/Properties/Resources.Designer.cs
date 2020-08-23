@@ -61,11 +61,47 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Add 的本地化字符串。
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel 的本地化字符串。
+        /// </summary>
+        internal static string CancelSave {
+            get {
+                return ResourceManager.GetString("CancelSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Copy 的本地化字符串。
+        /// </summary>
+        internal static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Spider Studio 的本地化字符串。
         /// </summary>
         internal static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Paste 的本地化字符串。
+        /// </summary>
+        internal static string Paste {
+            get {
+                return ResourceManager.GetString("Paste", resourceCulture);
             }
         }
         
@@ -84,6 +120,24 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Reload {
             get {
                 return ResourceManager.GetString("Reload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remove 的本地化字符串。
+        /// </summary>
+        internal static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ReName 的本地化字符串。
+        /// </summary>
+        internal static string ReName {
+            get {
+                return ResourceManager.GetString("ReName", resourceCulture);
             }
         }
         

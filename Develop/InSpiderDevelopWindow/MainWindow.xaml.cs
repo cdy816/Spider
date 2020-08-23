@@ -72,5 +72,10 @@ namespace InSpiderDevelopWindow
                 WindowState = WindowState.Maximized;
             }
         }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+           // (this.DataContext as MainViewModel).CurrentSelectGroup = tv.SelectedItem as TreeItemViewModel;
+        }
     }
 }
