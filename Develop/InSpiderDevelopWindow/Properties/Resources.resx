@@ -120,11 +120,20 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AddGroup" xml:space="preserve">
+    <value>AddGroup</value>
+  </data>
+  <data name="API" xml:space="preserve">
+    <value>API</value>
+  </data>
   <data name="CancelSave" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="Copy" xml:space="preserve">
     <value>Copy</value>
+  </data>
+  <data name="Device" xml:space="preserve">
+    <value>Device</value>
   </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>Spider Studio</value>
@@ -146,5 +155,8 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="SpiderTitle" xml:space="preserve">
+    <value>Welcome to spider</value>
   </data>
 </root>

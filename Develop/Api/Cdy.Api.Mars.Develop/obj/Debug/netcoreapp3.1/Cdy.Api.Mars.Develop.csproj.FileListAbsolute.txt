@@ -15,10 +15,10 @@ C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\bin\Debug\ne
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\bin\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.pdb
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.dll
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\bin\Debug\netcoreapp3.1\Cdy.Spider.Common.pdb
-C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.csprojAssemblyReference.cache
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.AssemblyInfoInputs.cache
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.AssemblyInfo.cs
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.csproj.CoreCompileInputs.cache
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.csproj.CopyComplete
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.dll
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.pdb
+C:\Users\cdy81\source\repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.csprojAssemblyReference.cache

@@ -61,9 +61,20 @@ namespace InSpiderDevelop
         /// </summary>
         /// <param name="baseName"></param>
         /// <returns></returns>
-        public string GetAvaiableName(string baseName)
+        public string GetAvaiableName(string baseName,string group="")
         {
-            return mDevices.Keys.GetAvaiableName(baseName);
+            return GetDeviceNames(group).GetAvaiableName(baseName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="baseName"></param>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public string GetAvaiableGroupName(string baseName, string group = "")
+        {
+            return GetDeviceGroupNames(group).GetAvaiableName(baseName);
         }
 
         /// <summary>
@@ -92,7 +103,7 @@ namespace InSpiderDevelop
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<IDeviceDevelop> ListDevices()
+        public List<IDeviceDevelop> ListAllDevices()
         {
             return mDevices.Values.ToList();
         }
@@ -105,6 +116,46 @@ namespace InSpiderDevelop
         public IDeviceDevelop GetDevice(string name)
         {
             return mDevices.ContainsKey(name) ? mDevices[name] : null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public List<IDeviceDevelop> ListDevice(string group)
+        {
+            return mDevices.Values.Where(e => e.Group == group).ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public List<DeviceGroup> ListDeviceGroup(string group)
+        {
+            return mDeviceGroups.Values.Where(e => e.Parent!=null?e.Parent.FullName== group:group=="").ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public List<string> GetDeviceNames(string group)
+        {
+            return mDevices.Values.Where(e => e.Group == group).Select(e=>e.Name).ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public List<string> GetDeviceGroupNames(string group)
+        {
+            return mDeviceGroups.Values.Where(e => e.Parent != null ? e.Parent.FullName == group : group == "").Select(e=>e.Name).ToList();
         }
 
         
@@ -293,6 +344,27 @@ namespace InSpiderDevelop
             else
             {
                 return mDeviceGroups[groupName];
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="group"></param>
+        /// <returns></returns>
+        public bool AddDeviceGroup(DeviceGroup parent,DeviceGroup group)
+        {
+            group.Parent = parent;
+            if(mDeviceGroups.ContainsKey(group.FullName))
+            {
+                mDeviceGroups.Add(group.FullName, group);
+                return true;
+            }
+            else
+            {
+                group.Parent = null;
+                return false;
             }
         }
 

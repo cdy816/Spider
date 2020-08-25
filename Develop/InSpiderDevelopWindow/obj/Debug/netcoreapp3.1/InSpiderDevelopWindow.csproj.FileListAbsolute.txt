@@ -62,7 +62,6 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\o
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\Themes\Generic.baml
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.csprojAssemblyReference.cache
 C:\Users\cdy81\Source\Repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\zh-CN\InSpiderDevelopWindow.resources.dll
-C:\Users\cdy81\Source\Repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.csprojAssemblyReference.cache
 C:\Users\cdy81\Source\Repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
 C:\Users\cdy81\Source\Repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\App.baml
 C:\Users\cdy81\Source\Repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\Themes\ControlStyle.baml
@@ -79,3 +78,8 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\b
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\App.baml
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\Themes\ControlStyle.baml
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.csproj.CopyComplete
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\InSpiderDevelopWindow.csprojAssemblyReference.cache
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\SpiderInfoView.g.cs
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\SpiderInfoView.baml
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelop.dll
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelop.pdb

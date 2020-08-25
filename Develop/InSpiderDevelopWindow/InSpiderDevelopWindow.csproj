@@ -11,14 +11,19 @@
   </Target>
 
   <ItemGroup>
+    <None Remove="Image\API.png" />
     <None Remove="Image\close.png" />
+    <None Remove="Image\devices.png" />
+    <None Remove="Image\idevices.png" />
     <None Remove="Image\max.png" />
     <None Remove="Image\maximize.png" />
     <None Remove="Image\minus.png" />
     <None Remove="Image\publish.png" />
     <None Remove="Image\reload.png" />
     <None Remove="Image\save.png" />
+    <None Remove="Image\Spider.jpg" />
     <None Remove="Image\spider.png" />
+    <None Remove="Image\文件夹.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,21 +51,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="View\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
+    <ProjectReference Include="..\InSpiderDevelop\InSpiderDevelop.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Image\API.png" />
     <Resource Include="Image\close.png" />
+    <Resource Include="Image\devices.png" />
+    <Resource Include="Image\idevices.png" />
     <Resource Include="Image\max.png" />
     <Resource Include="Image\minus.png" />
     <Resource Include="Image\publish.png" />
     <Resource Include="Image\reload.png" />
     <Resource Include="Image\save.png" />
+    <Resource Include="Image\Spider.jpg" />
     <Resource Include="Image\spider.png" />
+    <Resource Include="Image\文件夹.png" />
   </ItemGroup>
 
 </Project>

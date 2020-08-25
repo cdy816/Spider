@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Timers;
 using Cdy.Spider;
 using InSpiderDevelopWindow.ViewModel;
+using InSpiderDevelop;
 
 namespace InSpiderDevelopWindow
 {
@@ -29,7 +30,7 @@ namespace InSpiderDevelopWindow
 
         #region ... Variables  ...
 
-        private ICommand mLoginCommand;
+        //private ICommand mLoginCommand;
 
         private string mDatabase = string.Empty;
 
@@ -43,7 +44,7 @@ namespace InSpiderDevelopWindow
 
         private TreeItemViewModel mCurrentSelectTreeItem;
 
-        private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mTagGroup = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
+        private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mItems = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
 
         private ViewModelBase mContentViewModel;
 
@@ -53,11 +54,11 @@ namespace InSpiderDevelopWindow
 
         private Visibility mNotifyVisiblity = Visibility.Hidden;
 
-        private bool mIsLogin;
+        //private bool mIsLogin;
 
-        private bool mIsDatabaseRunning;
+        //private bool mIsDatabaseRunning;
 
-        private System.Timers.Timer mCheckRunningTimer;
+        //private System.Timers.Timer mCheckRunningTimer;
 
         private SpiderInfoViewModel infoModel;
 
@@ -77,7 +78,7 @@ namespace InSpiderDevelopWindow
             ServiceLocator.Locator.Registor<IProcessNotify>(this);
             infoModel = new SpiderInfoViewModel();
             mContentViewModel = infoModel;
-
+            Init();
         }
 
         
@@ -231,34 +232,14 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
-        public System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> TagGroup
+        public System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> Items
         {
             get
             {
-                return mTagGroup;
+                return mItems;
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public TreeItemViewModel CurrentSelectGroup
-        {
-            get
-            {
-                return mCurrentSelectTreeItem;
-            }
-            set
-            {
-                if (mCurrentSelectTreeItem != value)
-                {
-                    mCurrentSelectTreeItem = value;
-                   
-                    OnPropertyChanged("CurrentSelectGroup");
-                }
-            }
-        }
 
         /// <summary>
         /// 
@@ -270,7 +251,7 @@ namespace InSpiderDevelopWindow
                 if (mAddGroupCommand == null)
                 {
                     mAddGroupCommand = new RelayCommand(() => {
-                        (CurrentSelectGroup).AddCommand.Execute(null);
+                        (CurrentSelectTreeItem).AddCommand.Execute(null);
                         //  NewGroup();
                     },()=> { return mCurrentSelectTreeItem != null && mCurrentSelectTreeItem.CanAddChild(); });
                 }
@@ -288,8 +269,8 @@ namespace InSpiderDevelopWindow
                 if (mRemoveGroupCommand == null)
                 {
                     mRemoveGroupCommand = new RelayCommand(() => {
-                        (CurrentSelectGroup).RemoveCommand.Execute(null);
-                    },()=> { return CurrentSelectGroup != null && CurrentSelectGroup.CanRemove() ; });
+                        (CurrentSelectTreeItem).RemoveCommand.Execute(null);
+                    },()=> { return CurrentSelectTreeItem != null && CurrentSelectTreeItem.CanRemove() ; });
                 }
                 return mRemoveGroupCommand;
             }
@@ -313,8 +294,25 @@ namespace InSpiderDevelopWindow
             }
         }
 
-        
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public TreeItemViewModel CurrentSelectTreeItem
+        {
+            get
+            {
+                return mCurrentSelectTreeItem;
+            }
+            set
+            {
+                if (mCurrentSelectTreeItem != value)
+                {
+                    mCurrentSelectTreeItem = value;
+                    SelectContentModel();
+                    OnPropertyChanged("CurrentSelectGroup");
+                }
+            }
+        }
 
 
 
@@ -322,11 +320,36 @@ namespace InSpiderDevelopWindow
 
         #region ... Methods    ...
 
-        
 
-        
 
-       
+        private void Init()
+        {
+            DevelopManager.Manager.Load();
+            mItems.Add(new DeviceRootViewModel());
+            var vapi = new APITreeViewModel() { Model = APIManager.Manager.FirstOrNull() };
+            mItems.Add(vapi);
+        }
+
+
+        private void SelectContentModel()
+        {
+            if (ContentViewModel is IModeSwitch)
+            {
+                (ContentViewModel as IModeSwitch).DeActive();
+            }
+
+            if (mCurrentSelectTreeItem != null)
+                ContentViewModel = mCurrentSelectTreeItem.GetModel(ContentViewModel);
+
+            if (ContentViewModel == null) ContentViewModel = infoModel;
+
+            if (ContentViewModel is IModeSwitch)
+            {
+                (ContentViewModel as IModeSwitch).Active();
+            }
+
+        }
+
 
         /// <summary>
         /// 

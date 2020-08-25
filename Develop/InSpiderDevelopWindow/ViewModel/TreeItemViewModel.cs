@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace InSpiderDevelopWindow
@@ -112,7 +113,7 @@ namespace InSpiderDevelopWindow
             }
         }
 
-        public string Database { get; set; }
+        //public string Database { get; set; }
 
         /// <summary>
         /// 
@@ -125,7 +126,7 @@ namespace InSpiderDevelopWindow
                 {
                     mRenameCommand = new RelayCommand(() => {
                         IsEdit = true;
-                    });
+                    },()=> { return CanReName(); });
                 }
                 return mRenameCommand;
             }
@@ -197,6 +198,7 @@ namespace InSpiderDevelopWindow
                 if (mIsExpanded != value)
                 {
                     mIsExpanded = value;
+                    OnIsExpended();
                     OnPropertyChanged("IsExpanded");
                 }
             }
@@ -230,6 +232,14 @@ namespace InSpiderDevelopWindow
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void OnIsExpended()
+        {
+
+        }
 
         /// <summary>
         /// 
@@ -291,6 +301,15 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        public virtual bool CanReName()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void Remove()
         {
 
@@ -328,6 +347,9 @@ namespace InSpiderDevelopWindow
 
         #region ... Variables  ...
         private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mChildren = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
+
+        private bool mIsLoaded = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -351,9 +373,39 @@ namespace InSpiderDevelopWindow
                 return mChildren;
             }
         }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void PreLoadChildForExpend(bool value)
+        {
+            if (value) mChildren.Add(new TreeItemViewModel());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void OnIsExpended()
+        {
+            if(!mIsLoaded)
+            {
+                mChildren.Clear();
+                LoadData();
+                mIsLoaded = true;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void LoadData()
+        {
+
+        }
 
         public override void Dispose()
         {

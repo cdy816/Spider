@@ -23,6 +23,7 @@ namespace InSpiderDevelopWindow
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = new MainViewModel();
         }
 
         private void closeB_Click(object sender, RoutedEventArgs e)
@@ -73,9 +74,43 @@ namespace InSpiderDevelopWindow
             }
         }
 
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                (sender as TextBox).GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            }
+        }
+
+        private void TextBox_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((sender as TextBox).IsVisible)
+            {
+                (sender as TextBox).SelectAll();
+                (sender as TextBox).Focus();
+
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            (sender as TextBox).GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            (sender as TextBox).SelectAll();
+            (sender as TextBox).Focus();
+        }
+
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-           // (this.DataContext as MainViewModel).CurrentSelectGroup = tv.SelectedItem as TreeItemViewModel;
+            (this.DataContext as MainViewModel).CurrentSelectTreeItem = tv.SelectedItem as TreeItemViewModel;
         }
     }
 }

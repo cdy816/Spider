@@ -70,6 +70,24 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 AddGroup 的本地化字符串。
+        /// </summary>
+        internal static string AddGroup {
+            get {
+                return ResourceManager.GetString("AddGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 API 的本地化字符串。
+        /// </summary>
+        internal static string API {
+            get {
+                return ResourceManager.GetString("API", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Cancel 的本地化字符串。
         /// </summary>
         internal static string CancelSave {
@@ -84,6 +102,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Copy {
             get {
                 return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Device 的本地化字符串。
+        /// </summary>
+        internal static string Device {
+            get {
+                return ResourceManager.GetString("Device", resourceCulture);
             }
         }
         
@@ -147,6 +174,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Welcome to spider 的本地化字符串。
+        /// </summary>
+        internal static string SpiderTitle {
+            get {
+                return ResourceManager.GetString("SpiderTitle", resourceCulture);
             }
         }
     }

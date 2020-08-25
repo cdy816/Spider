@@ -17,7 +17,8 @@ namespace InSpiderDevelopWindow.ViewModel
     {
 
         #region ... Variables  ...
-
+        private string mTimeString;
+        private System.Timers.Timer tim;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -25,14 +26,67 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Events...
 
         #region ... Constructor...
+        /// <summary>
+        /// 
+        /// </summary>
+        public SpiderInfoViewModel()
+        {
+            tim = new System.Timers.Timer();
+            tim.Interval = 1000;
+            tim.Elapsed += Tim_Elapsed;
+            tim.Start();
+        }
+
 
         #endregion ...Constructor...
 
         #region ... Properties ...
+        /// <summary>
+        /// 
+        /// </summary>
+        public string MarsTitle
+        {
+            get
+            {
+                return Res.Get("SpiderTitle");
+            }
+        }
+
+        public string TimeString
+        {
+            get
+            {
+                return mTimeString;
+            }
+            set
+            {
+                mTimeString = value;
+                OnPropertyChanged("TimeString");
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Tim_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            TimeString = DateTime.Now.ToString();
+        }
+
 
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        public override void Dispose()
+        {
+            tim.Stop();
+            tim.Dispose();
+            base.Dispose();
+        }
 
         #endregion ...Methods...
 

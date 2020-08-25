@@ -59,6 +59,15 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        public IApiDevelop FirstOrNull()
+        {
+            return mApis.Values.Count > 0 ? mApis.Values.First() : null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         public IApiDevelop GetApi(string name)
@@ -145,6 +154,12 @@ namespace InSpiderDevelop
                     asb.Load(vv);
                     AddApi(asb);
                 }
+            }
+            if(mApis.Count==0)
+            {
+                var vff = ServiceLocator.Locator.Resolve<IApiDevelopForFactory>();
+                if(vff!=null)
+                AddApi(vff.NewApi());
             }
         }
 
