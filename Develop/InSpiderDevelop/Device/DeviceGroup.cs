@@ -2,22 +2,22 @@
 //  Copyright (C) 2020  Inc. All rights reserved.
 //
 //==============================================================
-//  Create by 种道洋 at 2020/8/17 15:12:03.
+//  Create by 种道洋 at 2020/8/24 13:05:26.
 //  Version 1.0
 //  种道洋
 //==============================================================
 
+using Cdy.Spider;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Xml.Linq;
 
-namespace Cdy.Spider
+namespace InSpiderDevelop.Device
 {
     /// <summary>
     /// 
     /// </summary>
-    public class DeviceDevelop : IDeviceDevelop
+    public class DeviceGroup
     {
 
         #region ... Variables  ...
@@ -34,25 +34,24 @@ namespace Cdy.Spider
 
         #region ... Properties ...
         /// <summary>
-        /// 
+        /// 名称
         /// </summary>
-        public string Name { get => Data.Name; set => Data.Name = value; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public DeviceData Data { get; set; }
+        public DeviceGroup Parent { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string FullName => string.IsNullOrEmpty(Group) ? Name : Group + "." + Name;
+        public string FullName { get { return Parent == null ? Name : Parent.FullName + "." + Name; } }
 
         /// <summary>
         /// 
         /// </summary>
-        public string Group { get { return Data.Group; } set { Data.Group = value; } }
-
+        public List<IDeviceDevelop> Devices { get; set; } = new List<IDeviceDevelop>();
 
         #endregion ...Properties...
 
@@ -63,33 +62,5 @@ namespace Cdy.Spider
         #region ... Interfaces ...
 
         #endregion ...Interfaces...
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public object Config()
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="xe"></param>
-        public void Load(XElement xe)
-        {
-            this.Data = new DeviceData();
-            this.Data.LoadFromXML(xe);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public XElement Save()
-        {
-            return this.Data.SaveToXML();
-        }
     }
 }

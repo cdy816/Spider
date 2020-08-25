@@ -41,6 +41,16 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        string FullName { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        string Group { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         DeviceData Data { get; set; }
 
         #endregion ...Properties...

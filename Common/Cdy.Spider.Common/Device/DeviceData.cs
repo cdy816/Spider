@@ -36,6 +36,11 @@ namespace Cdy.Spider
         public string Name { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string Group { get; set; }
+
+        /// <summary>
         /// 变量的集合
         /// </summary>
         public TagCollection Tags { get; set; }
