@@ -126,6 +126,9 @@
   <data name="API" xml:space="preserve">
     <value>API</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CancelSave" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>Spider Studio</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="Paste" xml:space="preserve">
     <value>Paste</value>

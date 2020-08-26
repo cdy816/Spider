@@ -25,6 +25,7 @@ namespace InSpiderDevelopWindow
         private bool mIsExpanded = false;
         private bool mIsEdit;
         private ICommand mAddCommand;
+        private ICommand mAddGroupCommand;
         private ICommand mRenameCommand;
         private ICommand mRemoveCommand;
         private ICommand mCopyCommand;
@@ -55,6 +56,24 @@ namespace InSpiderDevelopWindow
                 return mAddCommand;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand AddGroupCommand
+        {
+            get
+            {
+                if(mAddGroupCommand==null)
+                {
+                    mAddGroupCommand = new RelayCommand(() => {
+                        AddGroup();
+                    },()=> { return CanAddGroup(); });
+                }
+                return mAddGroupCommand;
+            }
+        }
+
 
 
         /// <summary>
@@ -199,8 +218,8 @@ namespace InSpiderDevelopWindow
                 {
                     mIsExpanded = value;
                     OnIsExpended();
-                    OnPropertyChanged("IsExpanded");
                 }
+                OnPropertyChanged("IsExpanded");
             }
         }
 
@@ -261,6 +280,14 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        public virtual void AddGroup()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void Copy()
         {
 
@@ -296,6 +323,15 @@ namespace InSpiderDevelopWindow
         public virtual bool CanAddChild()
         {
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool CanAddGroup()
+        {
+            return false;
         }
 
         /// <summary>

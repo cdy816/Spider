@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InSpiderDevelopWindow" AllowsTransparency="True" WindowStyle="None"
-        mc:Ignorable="d" Background="Transparent" Foreground="#FFFAFAFA"  FontSize="12" ResizeMode="CanResizeWithGrip"
+        mc:Ignorable="d" Background="Transparent" Foreground="#FFFAFAFA"  FontSize="12" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
         Title="{local:ResMarker MainWindowTitle}" Icon="/Image/spider.png" Height="1080" Width="1920" FontFamily="Microsoft YaHei">
     <Window.Resources>
         <local:IndexConverter x:Key="ic" />
@@ -73,70 +73,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="FocusVisual1">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2" StrokeDashArray="1 2" SnapsToDevicePixels="true" StrokeThickness="1" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <SolidColorBrush x:Key="Button.Static.Background1" Color="#FFDDDDDD"/>
-        <SolidColorBrush x:Key="Button.Static.Border1" Color="#FF707070"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background1" Color="#FFBEE6FD"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border1" Color="#FF3C7FB1"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background1" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border1" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background1" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border1" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground1" Color="#FF838383"/>
         
-        <Style x:Key="ToggleButtonStyle2" TargetType="{x:Type ToggleButton}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual1}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border1}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
-                            <Grid>
-                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                 <Popup StaysOpen="True"  IsOpen="{Binding IsChecked,Mode=TwoWay,RelativeSource={RelativeSource AncestorType=ToggleButton}}"  >
-                                    <Border BorderThickness="1" BorderBrush="{DynamicResource Window.Forground}" Background="#0FFFFFFF">
-                                        <StackPanel Orientation="Vertical">
-                                            <Button Content="{local:ResMarker AddGroup}"  Command="{Binding AddGroupCommand}" Width="92" Height="24" Margin="5" />
-                                        </StackPanel>            
-                                    </Border>
-                                </Popup>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="Button.IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#1FFFFFFF"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border1}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#3FFFFFFF"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border1}"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border1}"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground1}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
     <Border Margin="5" BorderThickness="1" BorderBrush="DarkGray">
         <Border.Background>
@@ -235,15 +172,15 @@
                     </TreeView.InputBindings>
                     <TreeView.Resources>
 
-                        <Style TargetType="{x:Type TreeViewItem}" >
-                            <Setter Property="TreeViewItem.IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <!--<Style TargetType="{x:Type TreeViewItem}" >
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                             <Setter Property="TreeViewItem.IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                             <Setter Property="Control.FontWeight" Value="Normal" />
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
                             <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
                             <Setter Property="Padding" Value="1,0,0,0"/>
-                        </Style>
+                        </Style>-->
 
                         <ContextMenu x:Key="groupMenu">
                             <MenuItem Header="{local:ResMarker Add}"  Command="{Binding AddCommand}" />
@@ -302,8 +239,12 @@
                 </TreeView>
                 <Border VerticalAlignment="Bottom" Background="#4F000000" Height="32" BorderBrush="Gray" BorderThickness="0,0,1,0">
                     <StackPanel Orientation="Horizontal" Margin="0,0,5,0"  >
-                        <StackPanel Orientation="Horizontal">
-                            <Button BorderThickness="0,0,0,2" BorderBrush="Green"  Content="{local:ResMarker Add}"    Foreground="{DynamicResource Window.Forground}" Command="{Binding AddGroupCommand}" Width="80" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5,0,0,0" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="addB" BorderThickness="0,0,0,2" BorderBrush="Green"  Content="{local:ResMarker Add}"    Foreground="{DynamicResource Window.Forground}" Command="{Binding AddCommand}" Width="80" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5,0,0,0" >
                                 <Button.ContentTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" Margin="0">
@@ -314,14 +255,28 @@
                                     </DataTemplate>
                                 </Button.ContentTemplate>
                             </Button>
-                            <ToggleButton Style="{DynamicResource ToggleButtonStyle2}" BorderThickness="0,0,0,2" Width="12"  Height="26"  BorderBrush="Green">
+                            <Popup IsOpen="{Binding IsChecked,ElementName=tbb,Mode=TwoWay}" StaysOpen="False" Placement="Bottom">
+                                <Border BorderThickness="1" BorderBrush="DarkGray">
+                                    <Button x:Name="addgB" BorderThickness="0" BorderBrush="Green"  Content="{local:ResMarker AddGroup}"    Foreground="{DynamicResource Window.Forground}" Command="{Binding AddGroupCommand}" Width="82" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5" >
+                                        <Button.ContentTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="0">
+                                                    <Image Source="/Image/Add.png" Height="12" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,4,0"/>
+                                                    <TextBlock Text="{Binding}" Grid.Column="1" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </Button.ContentTemplate>
+                                    </Button>
+                                </Border>
+                            </Popup>
+                            <ToggleButton x:Name="tbb"   Grid.Column="1" Style="{DynamicResource ToggleButtonStyle1}" BorderThickness="0,0,0,2" Width="12"  Height="26"  BorderBrush="Green">
                                 <ToggleButton.ContentTemplate>
                                     <DataTemplate>
                                         <Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" Fill="{DynamicResource Window.Forground}" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </ToggleButton.ContentTemplate>
                             </ToggleButton>
-                        </StackPanel>
+                        </Grid>
                         
                         <Button BorderThickness="0,0,0,2"  BorderBrush="IndianRed"   Content="{local:ResMarker Remove}" Foreground="{DynamicResource Window.Forground}" Command="{Binding RemoveGroupCommand}" Width="80" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5,0" >
                             <Button.ContentTemplate>

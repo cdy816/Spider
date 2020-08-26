@@ -78,7 +78,7 @@ namespace SpiderRuntime
                 foreach (var vv in xx.Elements())
                 {
                     string tname = vv.Attribute("TypeName").Value;
-                    var asb = ServiceLocator.Locator.Resolve<IApiFactory>().GetRuntimeIntance(tname);
+                    var asb = ServiceLocator.Locator.Resolve<IApiFactory>().GetRuntimeInstance(tname);
                     asb.Load(vv);
                     mApis.Add(asb);
                 }

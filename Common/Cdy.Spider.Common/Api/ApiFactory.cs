@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -60,7 +61,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IApiDevelop GetDevelopIntance(string type)
+        public IApiDevelop GetDevelopInstance(string type)
         {
             if(mDevelopManagers.ContainsKey(type))
             {
@@ -72,9 +73,18 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        public IApiDevelop GetDevelopInstance()
+        {
+            return GetDevelopInstance(mDevelopManagers.Keys.First());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IApi GetRuntimeIntance(string type)
+        public IApi GetRuntimeInstance(string type)
         {
             if(mRuntimeManagers.ContainsKey(type))
             {

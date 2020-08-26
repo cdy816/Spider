@@ -41,14 +41,21 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        IApi GetRuntimeIntance(string type);
+        IApi GetRuntimeInstance(string type);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        IApiDevelop GetDevelopIntance(string type);
+        IApiDevelop GetDevelopInstance(string type);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IApiDevelop GetDevelopInstance();
+
 
         #endregion ...Methods...
 

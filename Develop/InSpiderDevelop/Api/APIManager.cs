@@ -26,10 +26,7 @@ namespace InSpiderDevelop
         /// </summary>
         public static APIManager Manager = new APIManager();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private Dictionary<string, IApiDevelop> mApis = new Dictionary<string, IApiDevelop>();
+        private IApiDevelop mApi;
 
         #endregion ...Variables...
 
@@ -43,6 +40,11 @@ namespace InSpiderDevelop
 
         #region ... Properties ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public IApiDevelop Api { get { return mApi; } set { mApi = value; } }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -50,82 +52,9 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public List<IApiDevelop> ListApis()
-        {
-            return mApis.Values.ToList();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IApiDevelop FirstOrNull()
-        {
-            return mApis.Values.Count > 0 ? mApis.Values.First() : null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public IApiDevelop GetApi(string name)
-        {
-            return mApis.ContainsKey(name) ? mApis[name] : null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="api"></param>
-        /// <param name="newName"></param>
-        public bool ReName(IApiDevelop api,string newName)
-        {
-            if(mApis.ContainsKey(api.Name))
-            {
-                mApis.Remove(api.Name);
-                api.Name = newName;
-                mApis.Add(api.Name, api);
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="api"></param>
-        /// <returns></returns>
-        public bool AddApi(IApiDevelop api)
-        {
-            if(!mApis.ContainsKey(api.Name))
-            {
-                mApis.Add(api.Name, api);
-                return true;
-            }
-            return false;
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        public void RemoveApi(string name)
-        {
-            if(mApis.ContainsKey(name))
-            {
-                mApis.Remove(name);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public void Reload()
         {
-            this.mApis.Clear();
+            this.mApi = null;
             Load();
         }
 
@@ -150,16 +79,14 @@ namespace InSpiderDevelop
                 foreach (var vv in xx.Elements())
                 {
                     string tname = vv.Attribute("TypeName").Value;
-                    var asb = ServiceLocator.Locator.Resolve<IApiFactory>().GetDevelopIntance(tname);
+                    var asb = ServiceLocator.Locator.Resolve<IApiFactory>()?.GetDevelopInstance(tname);
                     asb.Load(vv);
-                    AddApi(asb);
+                    mApi = asb;
                 }
             }
-            if(mApis.Count==0)
+            if(mApi==null)
             {
-                var vff = ServiceLocator.Locator.Resolve<IApiDevelopForFactory>();
-                if(vff!=null)
-                AddApi(vff.NewApi());
+                mApi = ServiceLocator.Locator.Resolve<IApiFactory>()?.GetDevelopInstance();
             }
         }
 
@@ -180,10 +107,7 @@ namespace InSpiderDevelop
         {
             sfile.BackFile();
             XElement xx = new XElement("Apis");
-            foreach(var vv in mApis)
-            {
-                xx.Add(vv.Value.Save());
-            }
+            xx.Add(mApi.Save());
             xx.Save(sfile);
         }
 

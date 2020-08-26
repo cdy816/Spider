@@ -356,7 +356,7 @@ namespace InSpiderDevelop
         public bool AddDeviceGroup(DeviceGroup parent,DeviceGroup group)
         {
             group.Parent = parent;
-            if(mDeviceGroups.ContainsKey(group.FullName))
+            if(!mDeviceGroups.ContainsKey(group.FullName))
             {
                 mDeviceGroups.Add(group.FullName, group);
                 return true;
