@@ -53,7 +53,7 @@ namespace InSpiderDevelopWindow.View {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/InSpiderDevelopWindow;component/view/spiderinfoview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/InSpiderDevelopWindow;V1.0.0.0;component/view/spiderinfoview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\View\SpiderInfoView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
