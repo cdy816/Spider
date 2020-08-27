@@ -24,4 +24,3 @@ C:\Users\cdy81\source\repos\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandar
 C:\Users\cdy81\source\repos\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.dll
 C:\Users\cdy81\source\repos\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.pdb
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.csprojAssemblyReference.cache
-C:\Users\cdy81\source\repos\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.csprojAssemblyReference.cache
