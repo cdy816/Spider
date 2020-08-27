@@ -83,3 +83,7 @@ C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netco
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\SpiderInfoView.baml
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelop.dll
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelop.pdb
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelop.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\InSpiderDevelop.pdb
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\SpiderInfoView.g.cs
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\SpiderInfoView.baml

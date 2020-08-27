@@ -22,3 +22,9 @@ C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\ne
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.dll
 C:\Users\cdy81\Source\Repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.pdb
 C:\Users\cdy81\source\repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.csprojAssemblyReference.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\bin\Debug\netcoreapp3.1\Cdy.Spider.DevelopCommon.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\bin\Debug\netcoreapp3.1\Cdy.Spider.DevelopCommon.pdb
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop_MarkupCompile.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop_MarkupCompile.lref
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Themes\Generic.baml
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.g.resources

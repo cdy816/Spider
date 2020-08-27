@@ -13,6 +13,7 @@ using InSpiderDevelop.Device;
 using InSpiderDevelopWindow.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows.Input;
 
@@ -29,8 +30,6 @@ namespace InSpiderDevelopWindow
         
         private DeviceGroup mModel;
 
-        private ICommand mAddGroupCommand;
-
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -39,31 +38,9 @@ namespace InSpiderDevelopWindow
 
         #region ... Constructor...
 
-        public DeviceGroupViewModel()
-        {
-            Init();
-        }
-
         #endregion ...Constructor...
 
         #region ... Properties ...
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public ICommand AddGroupCommand
-        {
-            get
-            {
-                if(mAddGroupCommand==null)
-                {
-                    mAddGroupCommand = new RelayCommand(() => {
-                        AddGroup();
-                    });
-                }
-                return mAddGroupCommand;
-            }
-        }
 
         /// <summary>
         /// 
@@ -79,6 +56,8 @@ namespace InSpiderDevelopWindow
                 if (mModel != value)
                 {
                     mModel = value;
+                    mName = value.Name;
+                    Init();
                     OnPropertyChanged("Model");
                 }
             }
@@ -101,6 +80,20 @@ namespace InSpiderDevelopWindow
             var vcount = DeviceManager.Manager.ListDevice(this.FullName).Count + DeviceManager.Manager.ListDeviceGroup(this.FullName).Count;
             if (vcount > 0)
                 this.PreLoadChildForExpend(true);
+        }
+
+        public override bool CanAddChild()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanAddGroup()
+        {
+            return true;
         }
 
         /// <summary>
@@ -140,10 +133,12 @@ namespace InSpiderDevelopWindow
             }
         }
 
+       
+
         /// <summary>
         /// 
         /// </summary>
-        public virtual void AddGroup()
+        public override void AddGroup()
         {
             string sname = DeviceManager.Manager.GetAvaiableGroupName("Group");
             var vgd = new DeviceGroup() { Parent = this.mModel, Name = sname };
@@ -167,7 +162,7 @@ namespace InSpiderDevelopWindow
             vd.Name = sname;
             if (DeviceManager.Manager.AddDevice(vd))
             {
-                var vmm = new DeviceTreeViewModel() { Model = vd,mName=sname };
+                var vmm = new DeviceTreeViewModel() { Model = vd };
                 this.Children.Add(vmm);
                 vmm.IsSelected = true;
                 vmm.IsEdit = true;
@@ -196,10 +191,23 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public override string FullName => string.Empty;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanAddChild()
+        {
+            return true;
+        }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        public override bool CanAddGroup()
+        {
+            return true;
+        }
 
 
         /// <summary>
@@ -266,6 +274,7 @@ namespace InSpiderDevelopWindow
                 if (mModel != value)
                 {
                     mModel = value;
+                    mName = value.Name;
                     OnPropertyChanged("Model");
                 }
             }
@@ -360,6 +369,51 @@ namespace InSpiderDevelopWindow
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanAddChild()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanCopy()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanPaste()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanReName()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanRemove()
+        {
+            return false;
+        }
 
         /// <summary>
         /// 

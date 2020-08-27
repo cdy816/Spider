@@ -90,6 +90,15 @@ namespace InSpiderDevelopWindow.Properties {
         /// <summary>
         ///   查找类似 Cancel 的本地化字符串。
         /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cancel 的本地化字符串。
+        /// </summary>
         internal static string CancelSave {
             get {
                 return ResourceManager.GetString("CancelSave", resourceCulture);
@@ -120,6 +129,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 OK 的本地化字符串。
+        /// </summary>
+        internal static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         

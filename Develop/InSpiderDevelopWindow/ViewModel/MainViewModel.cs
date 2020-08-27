@@ -22,6 +22,7 @@ using System.Timers;
 using Cdy.Spider;
 using InSpiderDevelopWindow.ViewModel;
 using InSpiderDevelop;
+using System.Windows.Interop;
 
 namespace InSpiderDevelopWindow
 {
@@ -37,6 +38,8 @@ namespace InSpiderDevelopWindow
         private ICommand mSaveCommand;
 
         private ICommand mAddGroupCommand;
+
+        private ICommand mAddCommand;
         
         private ICommand mRemoveGroupCommand;
 
@@ -251,13 +254,36 @@ namespace InSpiderDevelopWindow
                 if (mAddGroupCommand == null)
                 {
                     mAddGroupCommand = new RelayCommand(() => {
-                        (CurrentSelectTreeItem).AddCommand.Execute(null);
-                        //  NewGroup();
-                    },()=> { return mCurrentSelectTreeItem != null && mCurrentSelectTreeItem.CanAddChild(); });
+                        (CurrentSelectTreeItem).IsExpanded = true;
+                        Application.Current?.Dispatcher.BeginInvoke(new Action(() => {
+                            (CurrentSelectTreeItem).AddGroupCommand.Execute(null);
+                        }));
+                        
+                    },()=> { return mCurrentSelectTreeItem != null && mCurrentSelectTreeItem.CanAddGroup(); });
                 }
                 return mAddGroupCommand;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand AddCommand
+        {
+            get
+            {
+                if(mAddCommand==null)
+                {
+                    mAddCommand = new RelayCommand(() => {
+                        (CurrentSelectTreeItem).IsExpanded = true;
+                        (CurrentSelectTreeItem).AddCommand.Execute(null);
+
+                    }, () => { return mCurrentSelectTreeItem != null && mCurrentSelectTreeItem.CanAddChild(); });
+                }
+                return mAddCommand;
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -325,9 +351,12 @@ namespace InSpiderDevelopWindow
         private void Init()
         {
             DevelopManager.Manager.Load();
-            mItems.Add(new DeviceRootViewModel());
-            var vapi = new APITreeViewModel() { Model = APIManager.Manager.FirstOrNull() };
+            var drm = new DeviceRootViewModel();
+            mItems.Add(drm);
+            var vapi = new APITreeViewModel() { Model = APIManager.Manager.Api };
             mItems.Add(vapi);
+            drm.IsSelected = true;
+           
         }
 
 

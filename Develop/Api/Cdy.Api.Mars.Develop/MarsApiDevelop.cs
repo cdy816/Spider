@@ -39,13 +39,26 @@ namespace Cdy.Api.Mars
         /// </summary>
         public override ApiData Data { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override string TypeName => "MarsApi";
 
         #endregion ...Properties...
 
         #region ... Methods    ...
 
-     
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override object Config()
+        {
+            if (Data == null) Data = new ApiData();
+
+            return new ApiConfigViewModel() { Model = Data };
+        }
+
 
         /// <summary>
         /// 
