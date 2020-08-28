@@ -17,14 +17,14 @@ using System.Xml.Linq;
 
 namespace InSpiderDevelop
 {
-    public class APIManager
+    public class APIDocument
     {
 
         #region ... Variables  ...
         /// <summary>
         /// 
         /// </summary>
-        public static APIManager Manager = new APIManager();
+        public static APIDocument Manager = new APIDocument();
 
         private IApiDevelop mApi;
 
@@ -45,6 +45,12 @@ namespace InSpiderDevelop
         /// </summary>
         public IApiDevelop Api { get { return mApi; } set { mApi = value; } }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get; set; }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -63,7 +69,7 @@ namespace InSpiderDevelop
         /// </summary>
         public void Load()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", "Api.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",Name, "Api.cfg");
             Load(sfile);
         }
 
@@ -95,8 +101,18 @@ namespace InSpiderDevelop
         /// </summary>
         public void Save()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", "Api.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg");
+            CheckDirExistOrCreat(sfile);
             Save(sfile);
+        }
+
+        private void CheckDirExistOrCreat(string sfile)
+        {
+            string sdir = System.IO.Path.GetDirectoryName(sfile);
+            if (!System.IO.Directory.Exists(sdir))
+            {
+                System.IO.Directory.CreateDirectory(sdir);
+            }
         }
 
         /// <summary>

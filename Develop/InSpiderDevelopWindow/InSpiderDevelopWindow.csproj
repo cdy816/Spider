@@ -15,6 +15,7 @@
     <None Remove="Image\API.png" />
     <None Remove="Image\cancel.png" />
     <None Remove="Image\close.png" />
+    <None Remove="Image\computer.png" />
     <None Remove="Image\devices.png" />
     <None Remove="Image\idevices.png" />
     <None Remove="Image\max.png" />
@@ -64,6 +65,7 @@
     <Resource Include="Image\API.png" />
     <Resource Include="Image\cancel.png" />
     <Resource Include="Image\close.png" />
+    <Resource Include="Image\computer.png" />
     <Resource Include="Image\devices.png" />
     <Resource Include="Image\idevices.png" />
     <Resource Include="Image\max.png" />

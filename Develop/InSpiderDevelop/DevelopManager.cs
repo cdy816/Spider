@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace InSpiderDevelop
@@ -20,10 +21,17 @@ namespace InSpiderDevelop
     {
 
         #region ... Variables  ...
+        
         /// <summary>
         /// 
         /// </summary>
         public static DevelopManager Manager = new DevelopManager();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private Dictionary<string, MachineDocument> mMachines = new Dictionary<string, MachineDocument>();
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -43,23 +51,55 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        /// <param name="name"></param>
+        public void NewMachine(string name)
         {
-            APIManager.Manager.Load();
-            ChannelManager.Manager.Load();
-            DeviceManager.Manager.Load();
-            DriverManager.Manager.Load();
+            if(!mMachines.ContainsKey(name))
+            {
+                mMachines.Add(name, new MachineDocument { Name = name });
+            }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Reload()
+        /// <returns></returns>
+        public List<string> ListMachinesNames()
         {
-            APIManager.Manager.Reload();
-            ChannelManager.Manager.Reload();
-            DeviceManager.Manager.Reload();
-            DriverManager.Manager.Reload();
+            return mMachines.Keys.ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<MachineDocument> ListMachines()
+        {
+            return mMachines.Values.ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Load()
+        {
+            var data = new System.IO.DirectoryInfo(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data"));
+            foreach (var vv in data.EnumerateDirectories())
+            {
+                mMachines.Add(vv.Name, new MachineDocument() { Name = vv.Name });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="machine"></param>
+        public void Save(string machine)
+        {
+            if(mMachines.ContainsKey(machine))
+            {
+                mMachines[machine].Save();
+            }
         }
 
         /// <summary>
@@ -67,10 +107,10 @@ namespace InSpiderDevelop
         /// </summary>
         public void Save()
         {
-            APIManager.Manager.Save();
-            ChannelManager.Manager.Save();
-            DeviceManager.Manager.Save();
-            DriverManager.Manager.Save();
+            foreach(var vv in mMachines)
+            {
+                vv.Value.Save();
+            }
         }
 
         #endregion ...Methods...
