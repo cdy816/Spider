@@ -16,14 +16,14 @@ using System.Xml.Linq;
 
 namespace InSpiderDevelop
 {
-    public class DriverManager
+    public class DriverDocument
     {
 
         #region ... Variables  ...
         /// <summary>
         /// 
         /// </summary>
-        public static DriverManager Manager = new DriverManager();
+        public static DriverDocument Manager = new DriverDocument();
 
         private Dictionary<string, IDriverDevelop> mDrivers = new Dictionary<string, IDriverDevelop>();
 
@@ -38,6 +38,8 @@ namespace InSpiderDevelop
         #endregion ...Constructor...
 
         #region ... Properties ...
+        
+        public string Name { get; set; }
 
         #endregion ...Properties...
 
@@ -145,7 +147,7 @@ namespace InSpiderDevelop
         /// </summary>
         public void Load()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", "Driver.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Driver.cfg");
             Load(sfile);
         }
 
@@ -182,8 +184,18 @@ namespace InSpiderDevelop
         /// </summary>
         public void Save()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", "Driver.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Driver.cfg");
+            CheckDirExistOrCreat(sfile);
             Save(sfile);
+        }
+
+        private void CheckDirExistOrCreat(string sfile)
+        {
+            string sdir = System.IO.Path.GetDirectoryName(sfile);
+            if(!System.IO.Directory.Exists(sdir))
+            {
+                System.IO.Directory.CreateDirectory(sdir);
+            }
         }
 
         /// <summary>

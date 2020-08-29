@@ -346,17 +346,23 @@ namespace InSpiderDevelopWindow
 
         #region ... Methods    ...
 
-
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void Init()
         {
             DevelopManager.Manager.Load();
-            var drm = new DeviceRootViewModel();
-            mItems.Add(drm);
-            var vapi = new APITreeViewModel() { Model = APIManager.Manager.Api };
-            mItems.Add(vapi);
-            drm.IsSelected = true;
-           
+            foreach(var vv in DevelopManager.Manager.ListMachines())
+            {
+                mItems.Add(new MachineViewModel { Model = vv});
+            }
+
+            if(mItems.Count>0)
+            {
+                CurrentSelectTreeItem = mItems[0];
+                mItems[0].IsSelected = true;
+                mItems[0].IsExpanded = true;
+            }
         }
 
 

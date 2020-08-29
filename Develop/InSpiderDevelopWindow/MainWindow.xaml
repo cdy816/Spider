@@ -200,6 +200,16 @@
                             <MenuItem Header="{local:ResMarker ReName}"  Command="{Binding ReNameCommand}" />
                         </ContextMenu>
 
+                        <HierarchicalDataTemplate  DataType="{x:Type local:MachineViewModel}"  ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal" Height="24">
+                                <Image Focusable="False" Source="/Image/computer.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                <Grid ContextMenu="{StaticResource deviceMenu}"  Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
+                                    <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
+                                    <TextBox Background="#FF000000" Foreground="{DynamicResource Window.Forground}" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" IsVisibleChanged="TextBox_IsVisibleChanged" Loaded="TextBox_Loaded" Text="{Binding Name,Mode=TwoWay,NotifyOnTargetUpdated=True,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Center" Visibility="{Binding IsEdit,Converter={StaticResource btv}}"  />
+                                </Grid>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+
                         <HierarchicalDataTemplate  DataType="{x:Type local:DeviceGroupViewModel}"  ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" Height="24">
                                 <Image Focusable="False" Source="/Image/文件夹.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>

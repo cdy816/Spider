@@ -16,14 +16,14 @@ using System.Xml.Linq;
 
 namespace InSpiderDevelop
 {
-    public class ChannelManager
+    public class ChannelDocument
     {
 
         #region ... Variables  ...
         /// <summary>
         /// 
         /// </summary>
-        public static ChannelManager Manager = new ChannelManager();
+        public static ChannelDocument Manager = new ChannelDocument();
 
         private Dictionary<string, ICommChannelDevelop> mChannels = new Dictionary<string, ICommChannelDevelop>();
 
@@ -38,6 +38,8 @@ namespace InSpiderDevelop
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        public string Name { get; set; }
 
         #endregion ...Properties...
 
@@ -153,7 +155,7 @@ namespace InSpiderDevelop
         /// </summary>
         public void Load()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", "Channel.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Channel.cfg");
             Load(sfile);
         }
 
@@ -181,8 +183,18 @@ namespace InSpiderDevelop
         /// </summary>
         public void Save()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", "Channel.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Channel.cfg");
+            CheckDirExistOrCreat(sfile);
             Save(sfile);
+        }
+
+        private void CheckDirExistOrCreat(string sfile)
+        {
+            string sdir = System.IO.Path.GetDirectoryName(sfile);
+            if (!System.IO.Directory.Exists(sdir))
+            {
+                System.IO.Directory.CreateDirectory(sdir);
+            }
         }
 
         /// <summary>

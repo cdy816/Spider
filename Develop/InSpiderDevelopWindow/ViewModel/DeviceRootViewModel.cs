@@ -30,6 +30,11 @@ namespace InSpiderDevelopWindow
         
         private DeviceGroup mModel;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private DeviceDocument mDocument;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -41,6 +46,23 @@ namespace InSpiderDevelopWindow
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual DeviceDocument Document
+        {
+            get
+            {
+                return mDocument;
+            }
+            set
+            {
+                mDocument = value;
+            }
+        }
 
         /// <summary>
         /// 
@@ -77,11 +99,15 @@ namespace InSpiderDevelopWindow
         /// </summary>
         protected virtual void Init()
         {
-            var vcount = DeviceManager.Manager.ListDevice(this.FullName).Count + DeviceManager.Manager.ListDeviceGroup(this.FullName).Count;
+            var vcount = mDocument.ListDevice(this.FullName).Count + mDocument.ListDeviceGroup(this.FullName).Count;
             if (vcount > 0)
                 this.PreLoadChildForExpend(true);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override bool CanAddChild()
         {
             return true;
@@ -101,7 +127,7 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public override void Remove()
         {
-            DeviceManager.Manager.RemoveGroup(this.FullName);
+            mDocument.RemoveGroup(this.FullName);
         }
 
         /// <summary>
@@ -112,7 +138,7 @@ namespace InSpiderDevelopWindow
         /// <returns></returns>
         public override bool OnRename(string oldName, string newName)
         {
-            return DeviceManager.Manager.ChangeGroupName(this.FullName, newName);
+            return mDocument.ChangeGroupName(this.FullName, newName);
         }
 
         /// <summary>
@@ -120,15 +146,15 @@ namespace InSpiderDevelopWindow
         /// </summary>
         protected override void LoadData()
         {
-            foreach (var vv in DeviceManager.Manager.ListDeviceGroup(this.FullName))
+            foreach (var vv in mDocument.ListDeviceGroup(this.FullName))
             {
-                var vmm = new DeviceGroupViewModel() { Model = vv };
+                var vmm = new DeviceGroupViewModel() {  Document = this.Document, Model = vv };
                 Children.Add(vmm);
             }
 
-            foreach (var vv in DeviceManager.Manager.ListDevice(this.FullName))
+            foreach (var vv in mDocument.ListDevice(this.FullName))
             {
-                var vvv = new DeviceTreeViewModel() { Model = vv };
+                var vvv = new DeviceTreeViewModel() {  Document = this.Document, Model = vv };
                 Children.Add(vvv);
             }
         }
@@ -140,11 +166,11 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public override void AddGroup()
         {
-            string sname = DeviceManager.Manager.GetAvaiableGroupName("Group");
+            string sname = mDocument.GetAvaiableGroupName("Group");
             var vgd = new DeviceGroup() { Parent = this.mModel, Name = sname };
-            if(DeviceManager.Manager.AddDeviceGroup(this.Model,vgd))
+            if(mDocument.AddDeviceGroup(this.Model,vgd))
             {
-                var vmm = new DeviceGroupViewModel() { Model = vgd };
+                var vmm = new DeviceGroupViewModel() {  Document = this.Document, Model = vgd };
                 this.Children.Add(vmm);
                 vmm.IsSelected = true;
                 vmm.IsEdit = true;
@@ -157,12 +183,12 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public override void Add()
         {
-            string sname = DeviceManager.Manager.GetAvaiableName("Device");
+            string sname = DeviceDocument.Manager.GetAvaiableName("Device");
             var vd = new DeviceDevelop() { Data = new DeviceData() ,Group = this.FullName};
             vd.Name = sname;
-            if (DeviceManager.Manager.AddDevice(vd))
+            if (mDocument.AddDevice(vd))
             {
-                var vmm = new DeviceTreeViewModel() { Model = vd };
+                var vmm = new DeviceTreeViewModel() { Document=this.Document, Model = vd };
                 this.Children.Add(vmm);
                 vmm.IsSelected = true;
                 vmm.IsEdit = true;
@@ -181,6 +207,9 @@ namespace InSpiderDevelopWindow
     /// </summary>
     public class DeviceRootViewModel: DeviceGroupViewModel
     {
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -190,6 +219,12 @@ namespace InSpiderDevelopWindow
         /// 
         /// </summary>
         public override string FullName => string.Empty;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override DeviceDocument Document { get { return base.Document; } set{ base.Document = value; base.Init(); } }
+
 
         /// <summary>
         /// 
@@ -248,7 +283,7 @@ namespace InSpiderDevelopWindow
         #region ... Variables  ...
        
         private IDeviceDevelop mModel;
-
+        private DeviceDocument mDocument;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -260,6 +295,19 @@ namespace InSpiderDevelopWindow
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        public virtual DeviceDocument Document
+        {
+            get
+            {
+                return mDocument;
+            }
+            set
+            {
+                mDocument = value;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -312,7 +360,7 @@ namespace InSpiderDevelopWindow
         /// <returns></returns>
         public override bool OnRename(string oldName, string newName)
         {
-            return DeviceManager.Manager.ReName(this.Model, newName);
+            return mDocument.ReName(this.Model, newName);
         }
 
         #endregion ...Methods...
