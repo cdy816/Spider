@@ -16,11 +16,12 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class TagCollection:Dictionary<int,Tagbae>
+    public class TagCollection:SortedDictionary<int,Tagbae>
     {
 
         #region ... Variables  ...
 
+        private Dictionary<string, Tagbae> mNamedTags = new Dictionary<string, Tagbae>();
 
         #endregion ...Variables...
 
@@ -42,31 +43,76 @@ namespace Cdy.Spider
 
         #region ... Methods    ...
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public IEnumerable<string> TagNames { get { return mNamedTags.Keys; } }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public void AddTag(Tagbae tag)
+        /// <returns></returns>
+        public bool UpdateOrAdd(Tagbae tag)
         {
-            if(!this.ContainsKey(tag.Id))
+            if(ContainsKey(tag.Id))
             {
-                Add(tag.Id, tag);
-                MaxId = Math.Max(tag.Id, MaxId);
+                this[tag.Id] = tag;
             }
+            else if(tag.Id>-1)
+            {
+                this.Add(tag.Id, tag);
+            }
+            return true;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public void RemoveTag(Tagbae tag)
+        public bool AddTag(Tagbae tag)
+        {
+            if(!this.ContainsKey(tag.Id) && !mNamedTags.ContainsKey(tag.Name))
+            {
+                Add(tag.Id, tag);
+                mNamedTags.Add(tag.Name, tag);
+                MaxId = Math.Max(tag.Id, MaxId);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        public bool AppendTag(Tagbae tag)
+        {
+            if(!mNamedTags.ContainsKey(tag.Name))
+            {
+                tag.Id = MaxId++;
+                Add(tag.Id, tag);
+                mNamedTags.Add(tag.Name, tag);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        public bool RemoveTag(Tagbae tag)
         {
             if(this.ContainsKey(tag.Id))
             {
                 this.Remove(tag.Id);
             }
+            if(mNamedTags.ContainsKey(tag.Name))
+            {
+                mNamedTags.Remove(tag.Name);
+            }
+            return true;
         }
 
 

@@ -64,12 +64,32 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        /// <param name="name"></param>
+        public void ReName(string name)
+        {
+            this.Name = name;
+            Api.Name = name;
+            Channel.Name = name;
+            Device.Name = name;
+            Driver.Name = name;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void New()
         {
             Api = new APIDocument() { Name = Name };
             Channel = new ChannelDocument() { Name = Name };
             Device = new DeviceDocument() { Name = Name };
             Driver = new DriverDocument() { Name = Name };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Load()
+        {
             Api.Load();
             Channel.Load();
             Device.Load();

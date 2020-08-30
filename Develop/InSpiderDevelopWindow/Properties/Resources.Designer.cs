@@ -88,6 +88,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Api type 的本地化字符串。
+        /// </summary>
+        internal static string ApiType {
+            get {
+                return ResourceManager.GetString("ApiType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Cancel 的本地化字符串。
         /// </summary>
         internal static string Cancel {
@@ -106,11 +115,38 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Channel 的本地化字符串。
+        /// </summary>
+        internal static string CommType {
+            get {
+                return ResourceManager.GetString("CommType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Communication 的本地化字符串。
+        /// </summary>
+        internal static string Communication {
+            get {
+                return ResourceManager.GetString("Communication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Copy 的本地化字符串。
         /// </summary>
         internal static string Copy {
             get {
                 return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DatabaseTagName 的本地化字符串。
+        /// </summary>
+        internal static string DatabaseTagName {
+            get {
+                return ResourceManager.GetString("DatabaseTagName", resourceCulture);
             }
         }
         
@@ -124,11 +160,65 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Direction 的本地化字符串。
+        /// </summary>
+        internal static string Direction {
+            get {
+                return ResourceManager.GetString("Direction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Driver 的本地化字符串。
+        /// </summary>
+        internal static string Driver {
+            get {
+                return ResourceManager.GetString("Driver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export 的本地化字符串。
+        /// </summary>
+        internal static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import 的本地化字符串。
+        /// </summary>
+        internal static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keyword 的本地化字符串。
+        /// </summary>
+        internal static string Keyword {
+            get {
+                return ResourceManager.GetString("Keyword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Spider Studio 的本地化字符串。
         /// </summary>
         internal static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Name 的本地化字符串。
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
@@ -151,11 +241,38 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Protocol 的本地化字符串。
+        /// </summary>
+        internal static string Protocol {
+            get {
+                return ResourceManager.GetString("Protocol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Publish 的本地化字符串。
         /// </summary>
         internal static string Publish {
             get {
                 return ResourceManager.GetString("Publish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ReadWriteMode 的本地化字符串。
+        /// </summary>
+        internal static string ReadWriteMode {
+            get {
+                return ResourceManager.GetString("ReadWriteMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Registor 的本地化字符串。
+        /// </summary>
+        internal static string Registor {
+            get {
+                return ResourceManager.GetString("Registor", resourceCulture);
             }
         }
         
@@ -201,6 +318,51 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string SpiderTitle {
             get {
                 return ResourceManager.GetString("SpiderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Tag count 的本地化字符串。
+        /// </summary>
+        internal static string TagCount {
+            get {
+                return ResourceManager.GetString("TagCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Tag export complete! 的本地化字符串。
+        /// </summary>
+        internal static string TagExportComplete {
+            get {
+                return ResourceManager.GetString("TagExportComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Query filter 的本地化字符串。
+        /// </summary>
+        internal static string TagFilter {
+            get {
+                return ResourceManager.GetString("TagFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Tags 的本地化字符串。
+        /// </summary>
+        internal static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Type 的本地化字符串。
+        /// </summary>
+        internal static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
     }

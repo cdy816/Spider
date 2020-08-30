@@ -56,6 +56,12 @@ namespace Cdy.Spider
         /// <returns></returns>
         IApiDevelop GetDevelopInstance();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<string> ListDevelopApis();
+
 
         #endregion ...Methods...
 

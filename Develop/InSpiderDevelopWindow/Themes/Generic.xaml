@@ -7,7 +7,19 @@
 
     <DataTemplate DataType="{x:Type model:SpiderInfoViewModel}" >
         <view:SpiderInfoView />
-    </DataTemplate>    
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:APIDetailViewModel}">
+        <view:APIDetailView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:DeviceDetailViewModel}">
+        <view:DeviceDetailView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:ImportModeSelectViewModel}">
+        <view:ImportModeSelectView />
+    </DataTemplate>
 
     <BooleanToVisibilityConverter x:Key="bvc" />
     <!--<SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>

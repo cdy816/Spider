@@ -36,7 +36,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        Dictionary<int, Tagbae> mIdMapTags = new Dictionary<int, Tagbae>();
+        SortedDictionary<int, Tagbae> mIdMapTags = new SortedDictionary<int, Tagbae>();
 
         private Action<string,Tagbae> mValueCallBack;
 

@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="InSpiderDevelopWindow.View.ImportModeSelectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:InSpiderDevelopWindow.View"
+            xmlns:res="clr-namespace:InSpiderDevelopWindow"
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" SnapsToDevicePixels="true" StrokeThickness="1" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <RadioButton BorderBrush="{DynamicResource Window.Forground}" Background="{x:Null}" Foreground="{DynamicResource Window.Forground}"  Content="{res:ResMarker Replace}" GroupName="gg" IsChecked="{Binding IsReplace,Mode=TwoWay}" HorizontalAlignment="Center" Margin="0,0,0,0"  VerticalAlignment="Center"/>
+        <RadioButton BorderBrush="{DynamicResource Window.Forground}" Background="{x:Null}" Foreground="{DynamicResource Window.Forground}" Content="{res:ResMarker ReplaceAll}" GroupName="gg" IsChecked="{Binding IsReplaceMode,Mode=TwoWay}" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Column="1"/>
+        <RadioButton BorderBrush="{DynamicResource Window.Forground}" Background="{x:Null}" Foreground="{DynamicResource Window.Forground}" Content="{res:ResMarker Append}" GroupName="gg"  IsChecked="{Binding IsAddMode,Mode=TwoWay}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Column="2"/>
+    </Grid>
+</UserControl>

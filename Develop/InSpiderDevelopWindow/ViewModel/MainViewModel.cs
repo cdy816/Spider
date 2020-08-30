@@ -275,10 +275,17 @@ namespace InSpiderDevelopWindow
                 if(mAddCommand==null)
                 {
                     mAddCommand = new RelayCommand(() => {
-                        (CurrentSelectTreeItem).IsExpanded = true;
-                        (CurrentSelectTreeItem).AddCommand.Execute(null);
+                        if (mCurrentSelectTreeItem != null)
+                        {
+                            (CurrentSelectTreeItem).IsExpanded = true;
+                            (CurrentSelectTreeItem).AddCommand.Execute(null);
+                        }
+                        else
+                        {
+                            AddMachine();
+                        }
 
-                    }, () => { return mCurrentSelectTreeItem != null && mCurrentSelectTreeItem.CanAddChild(); });
+                    }, () => { return mCurrentSelectTreeItem==null || (mCurrentSelectTreeItem != null && mCurrentSelectTreeItem.CanAddChild()); });
                 }
                 return mAddCommand;
             }
@@ -333,7 +340,14 @@ namespace InSpiderDevelopWindow
             {
                 if (mCurrentSelectTreeItem != value)
                 {
+                    if(mCurrentSelectTreeItem!=null)
+                    {
+                        mCurrentSelectTreeItem.IsSelected = false;
+                    }
+
                     mCurrentSelectTreeItem = value;
+
+                    
                     SelectContentModel();
                     OnPropertyChanged("CurrentSelectGroup");
                 }
@@ -349,19 +363,44 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        public void AddMachine()
+        {
+            string sname = DevelopManager.Manager.ListMachinesNames().GetAvaiableName("machine");
+            var mm = DevelopManager.Manager.NewMachine(sname);
+            var vmm = new MachineViewModel() { Model = mm,Parent=this };
+            mItems.Add(vmm);
+            vmm.IsExpanded = true;
+            vmm.IsSelected = true;
+            vmm.IsEdit = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        public void RemoveMachine(MachineViewModel model)
+        {
+            model.Parent = null;
+            DevelopManager.Manager.Remove(model.Name);
+            mItems.Remove(model);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void Init()
         {
             DevelopManager.Manager.Load();
             foreach(var vv in DevelopManager.Manager.ListMachines())
             {
-                mItems.Add(new MachineViewModel { Model = vv});
+                mItems.Add(new MachineViewModel { Model = vv,Parent=this});
             }
 
             if(mItems.Count>0)
             {
                 CurrentSelectTreeItem = mItems[0];
-                mItems[0].IsSelected = true;
-                mItems[0].IsExpanded = true;
+                CurrentSelectTreeItem.IsExpanded = true;
+                CurrentSelectTreeItem.IsSelected = true;
             }
         }
 

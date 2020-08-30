@@ -78,7 +78,8 @@ namespace InSpiderDevelopWindow
         {
             if (e.Key == Key.Enter)
             {
-                (sender as TextBox).GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                //(sender as TextBox).GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                (sender as TextBox).MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             }
         }
 
@@ -111,6 +112,12 @@ namespace InSpiderDevelopWindow
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             (this.DataContext as MainViewModel).CurrentSelectTreeItem = tv.SelectedItem as TreeItemViewModel;
+        }
+
+        private void tv_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+           
+            (this.DataContext as MainViewModel).CurrentSelectTreeItem = null;
         }
     }
 }

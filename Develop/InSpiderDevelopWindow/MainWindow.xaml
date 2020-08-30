@@ -165,22 +165,12 @@
                     <ColumnDefinition Width="194" MinWidth="30" MaxWidth="1000"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TreeView x:Name="tv" Foreground="{DynamicResource Window.Forground}" ItemContainerStyle="{DynamicResource TreeViewItemStyle1}" ItemsSource="{Binding Items}"  SelectedItemChanged="TreeView_SelectedItemChanged" BorderThickness="0,0,1,1" Margin="0,0,0,32" Background="#7F000000">
+                <TreeView x:Name="tv" Foreground="{DynamicResource Window.Forground}"  MouseLeftButtonDown="tv_MouseLeftButtonDown" ItemContainerStyle="{DynamicResource TreeViewItemStyle1}"  ItemsSource="{Binding Items}"  SelectedItemChanged="TreeView_SelectedItemChanged" BorderThickness="0,0,1,1" Margin="0,0,0,32" Background="#7F000000">
                     <TreeView.InputBindings>
                         <KeyBinding Key="F2" Command="{Binding ReNameCommand}" />
                         <KeyBinding Key="Delete" Command="{Binding RemoveCommand}" />
                     </TreeView.InputBindings>
                     <TreeView.Resources>
-
-                        <!--<Style TargetType="{x:Type TreeViewItem}" >
-                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                            <Setter Property="TreeViewItem.IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                            <Setter Property="Control.FontWeight" Value="Normal" />
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                            <Setter Property="Padding" Value="1,0,0,0"/>
-                        </Style>-->
 
                         <ContextMenu x:Key="groupMenu">
                             <MenuItem Header="{local:ResMarker Add}"  Command="{Binding AddCommand}" />
@@ -210,7 +200,7 @@
                             </StackPanel>
                         </HierarchicalDataTemplate>
 
-                        <HierarchicalDataTemplate  DataType="{x:Type local:DeviceGroupViewModel}"  ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate  DataType="{x:Type local:DeviceGroupViewModel}"  ItemsSource="{Binding View}">
                             <StackPanel Orientation="Horizontal" Height="24">
                                 <Image Focusable="False" Source="/Image/文件夹.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 <Grid ContextMenu="{StaticResource groupMenu}"  Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
@@ -219,9 +209,9 @@
                                 </Grid>
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                        
 
-                        <HierarchicalDataTemplate  DataType="{x:Type local:DeviceRootViewModel}"  ItemsSource="{Binding Children}">
+
+                        <HierarchicalDataTemplate  DataType="{x:Type local:DeviceRootViewModel}"  ItemsSource="{Binding View}">
                             <StackPanel ContextMenu="{StaticResource rootgroupMenu}" Orientation="Horizontal" Height="24">
                                 <Image Focusable="False" Source="/Image/idevices.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="18" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />

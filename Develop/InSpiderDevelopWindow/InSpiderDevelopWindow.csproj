@@ -14,6 +14,7 @@
     <None Remove="Image\add.png" />
     <None Remove="Image\API.png" />
     <None Remove="Image\cancel.png" />
+    <None Remove="Image\cellselect.png" />
     <None Remove="Image\close.png" />
     <None Remove="Image\computer.png" />
     <None Remove="Image\devices.png" />
@@ -25,6 +26,7 @@
     <None Remove="Image\publish.png" />
     <None Remove="Image\reload.png" />
     <None Remove="Image\remove.png" />
+    <None Remove="Image\rowselect.png" />
     <None Remove="Image\save.png" />
     <None Remove="Image\Spider.jpg" />
     <None Remove="Image\spider.png" />
@@ -64,6 +66,7 @@
     <Resource Include="Image\add.png" />
     <Resource Include="Image\API.png" />
     <Resource Include="Image\cancel.png" />
+    <Resource Include="Image\cellselect.png" />
     <Resource Include="Image\close.png" />
     <Resource Include="Image\computer.png" />
     <Resource Include="Image\devices.png" />
@@ -74,6 +77,7 @@
     <Resource Include="Image\publish.png" />
     <Resource Include="Image\reload.png" />
     <Resource Include="Image\remove.png" />
+    <Resource Include="Image\rowselect.png" />
     <Resource Include="Image\save.png" />
     <Resource Include="Image\Spider.jpg" />
     <Resource Include="Image\spider.png" />

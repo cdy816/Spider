@@ -126,20 +126,50 @@
   <data name="API" xml:space="preserve">
     <value>API</value>
   </data>
+  <data name="ApiType" xml:space="preserve">
+    <value>Api类型</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
   <data name="CancelSave" xml:space="preserve">
     <value>撤销</value>
   </data>
+  <data name="CommType" xml:space="preserve">
+    <value>通道</value>
+  </data>
+  <data name="Communication" xml:space="preserve">
+    <value>通信</value>
+  </data>
   <data name="Copy" xml:space="preserve">
     <value>拷贝</value>
+  </data>
+  <data name="DatabaseTagName" xml:space="preserve">
+    <value>数据库变量</value>
   </data>
   <data name="Device" xml:space="preserve">
     <value>设备</value>
   </data>
+  <data name="Direction" xml:space="preserve">
+    <value>传输方向</value>
+  </data>
+  <data name="Driver" xml:space="preserve">
+    <value>驱动</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>关键字</value>
+  </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>Spider 开发平台</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>名称</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>确定</value>
@@ -147,8 +177,17 @@
   <data name="Paste" xml:space="preserve">
     <value>粘贴</value>
   </data>
+  <data name="Protocol" xml:space="preserve">
+    <value>协议</value>
+  </data>
   <data name="Publish" xml:space="preserve">
     <value>发布</value>
+  </data>
+  <data name="ReadWriteMode" xml:space="preserve">
+    <value>读写模式</value>
+  </data>
+  <data name="Registor" xml:space="preserve">
+    <value>寄存器</value>
   </data>
   <data name="Reload" xml:space="preserve">
     <value>重新加载</value>
@@ -164,5 +203,20 @@
   </data>
   <data name="SpiderTitle" xml:space="preserve">
     <value>欢迎来到Spider开发平台</value>
+  </data>
+  <data name="TagCount" xml:space="preserve">
+    <value>变量个数</value>
+  </data>
+  <data name="TagExportComplete" xml:space="preserve">
+    <value>变量导出完成!</value>
+  </data>
+  <data name="TagFilter" xml:space="preserve">
+    <value>过滤</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>变量</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>类型</value>
   </data>
 </root>

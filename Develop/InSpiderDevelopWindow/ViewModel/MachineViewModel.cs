@@ -11,6 +11,7 @@ using InSpiderDevelop;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Controls.Ribbon;
 
 namespace InSpiderDevelopWindow
 {
@@ -21,6 +22,8 @@ namespace InSpiderDevelopWindow
     {
 
         #region ... Variables  ...
+        
+        private MachineDocument mModel;
 
         #endregion ...Variables...
 
@@ -33,16 +36,25 @@ namespace InSpiderDevelopWindow
         #endregion ...Constructor...
 
         #region ... Properties ...
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        public MachineDocument Model { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public override string Name { get => Model.Name; set => Model.Name = value; }
+        public MachineDocument Model 
+        {
+            get { return mModel; }
+            set
+            {
+                mModel = value;
+                mName = mModel.Name;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public new MainViewModel Parent { get; set; }
 
         #endregion ...Properties...
 
@@ -61,11 +73,45 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        public override void Add()
+        {
+            Parent?.AddMachine();
+            base.Add();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Remove()
+        {
+            Parent?.RemoveMachine(this);
+            base.Remove();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oldName"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
+        public override bool OnRename(string oldName, string newName)
+        {
+            return DevelopManager.Manager.ReName(oldName,newName);
+        }
+
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public override bool CanAddChild()
         {
-            return false;
+            
+            return true;
         }
+
+
 
         /// <summary>
         /// 
@@ -94,14 +140,7 @@ namespace InSpiderDevelopWindow
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Remove()
-        {
 
-            base.Remove();
-        }
 
         /// <summary>
         /// 

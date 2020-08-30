@@ -52,12 +52,65 @@ namespace InSpiderDevelop
         /// 
         /// </summary>
         /// <param name="name"></param>
-        public void NewMachine(string name)
+        public MachineDocument NewMachine(string name)
         {
             if(!mMachines.ContainsKey(name))
             {
-                mMachines.Add(name, new MachineDocument { Name = name });
+                var re = new MachineDocument { Name = name };
+                re.New();
+                mMachines.Add(name, re);
+                return re;
             }
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="machine"></param>
+        /// <returns></returns>
+        public bool Add(MachineDocument machine)
+        {
+            if(!mMachines.ContainsKey(machine.Name))
+            {
+                mMachines.Add(machine.Name, machine);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oldName"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
+        public bool ReName(string oldName,string newName)
+        {
+            if(mMachines.ContainsKey(oldName) && !mMachines.ContainsKey(newName))
+            {
+                var vitem = mMachines[oldName];
+                mMachines.Remove(oldName);
+                vitem.ReName(newName);
+                mMachines.Add(newName, vitem);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool Remove(string name)
+        {
+            if(mMachines.ContainsKey(name))
+            {
+                mMachines.Remove(name);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -84,9 +137,18 @@ namespace InSpiderDevelop
         public void Load()
         {
             var data = new System.IO.DirectoryInfo(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data"));
-            foreach (var vv in data.EnumerateDirectories())
+            if (data.Exists)
             {
-                mMachines.Add(vv.Name, new MachineDocument() { Name = vv.Name });
+                foreach (var vv in data.EnumerateDirectories())
+                {
+                    mMachines.Add(vv.Name, new MachineDocument() { Name = vv.Name });
+                }
+            }
+            else
+            {
+                var local = new MachineDocument() { Name = "local" };
+                local.New();
+                mMachines.Add("local", local);
             }
         }
 

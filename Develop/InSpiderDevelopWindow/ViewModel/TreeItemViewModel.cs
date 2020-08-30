@@ -9,9 +9,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace InSpiderDevelopWindow
@@ -42,6 +44,15 @@ namespace InSpiderDevelopWindow
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual int SortIndex { get { return 1; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
 
         public ICommand AddCommand
         {
@@ -125,6 +136,7 @@ namespace InSpiderDevelopWindow
                     if(OnRename(oldName, value))
                     {
                         mName = value;
+                        OnNameRefresh();
                     }
                 }
                 OnPropertyChanged("Name");
@@ -251,6 +263,14 @@ namespace InSpiderDevelopWindow
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected virtual void OnNameRefresh()
+        {
+
+        }
 
         /// <summary>
         /// 
@@ -386,6 +406,8 @@ namespace InSpiderDevelopWindow
 
         private bool mIsLoaded = false;
 
+        private ICollectionView mView;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -394,10 +416,19 @@ namespace InSpiderDevelopWindow
 
         #region ... Constructor...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public HasChildrenTreeItemViewModel()
+        {
+            InitView();
+        }
+
         #endregion ...Constructor...
 
         #region ... Properties ...
-        
+
+        public override int SortIndex => 0;
 
         /// <summary>
         /// 
@@ -417,6 +448,93 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        public override void Add()
+        {
+            base.Add();
+            RefreshView();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void AddGroup()
+        {
+            base.AddGroup();
+            RefreshView();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Remove()
+        {
+            base.Remove();
+            RefreshView();
+        }
+
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void InitView()
+        {
+            mView = CollectionViewSource.GetDefaultView(mChildren);
+            var des = GetSortDescription();
+            if(des!=null)
+            {
+                mView.SortDescriptions.Clear();
+                foreach(var vv in des)
+                {
+                    mView.SortDescriptions.Add(vv);
+                }
+            }
+        }
+
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICollectionView View
+        {
+            get
+            {
+                return mView;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual List<SortDescription> GetSortDescription()
+        {
+            List<SortDescription> re = new List<SortDescription>();
+            re.Add(new SortDescription("SortIndex", ListSortDirection.Ascending));
+            re.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void RefreshView()
+        {
+            mView.Refresh();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void OnNameRefresh()
+        {
+            RefreshView();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void PreLoadChildForExpend(bool value)
         {
             if (value) mChildren.Add(new TreeItemViewModel());
@@ -431,6 +549,7 @@ namespace InSpiderDevelopWindow
             {
                 mChildren.Clear();
                 LoadData();
+                RefreshView();
                 mIsLoaded = true;
             }
         }
@@ -443,6 +562,9 @@ namespace InSpiderDevelopWindow
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Dispose()
         {
             foreach(var vv in Children)

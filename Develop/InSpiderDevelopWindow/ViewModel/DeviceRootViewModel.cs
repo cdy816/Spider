@@ -99,6 +99,10 @@ namespace InSpiderDevelopWindow
         /// </summary>
         protected virtual void Init()
         {
+            if (mDocument == null)
+            {
+                return;
+            }
             var vcount = mDocument.ListDevice(this.FullName).Count + mDocument.ListDeviceGroup(this.FullName).Count;
             if (vcount > 0)
                 this.PreLoadChildForExpend(true);
@@ -148,13 +152,13 @@ namespace InSpiderDevelopWindow
         {
             foreach (var vv in mDocument.ListDeviceGroup(this.FullName))
             {
-                var vmm = new DeviceGroupViewModel() {  Document = this.Document, Model = vv };
+                var vmm = new DeviceGroupViewModel() { Document = this.Document, Model = vv, Parent = this };
                 Children.Add(vmm);
             }
 
             foreach (var vv in mDocument.ListDevice(this.FullName))
             {
-                var vvv = new DeviceTreeViewModel() {  Document = this.Document, Model = vv };
+                var vvv = new DeviceTreeViewModel() {  Document = this.Document, Model = vv, Parent = this };
                 Children.Add(vvv);
             }
         }
@@ -166,16 +170,17 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public override void AddGroup()
         {
-            string sname = mDocument.GetAvaiableGroupName("Group");
+            string sname = mDocument.GetAvaiableGroupName("Group",this.FullName);
             var vgd = new DeviceGroup() { Parent = this.mModel, Name = sname };
             if(mDocument.AddDeviceGroup(this.Model,vgd))
             {
-                var vmm = new DeviceGroupViewModel() {  Document = this.Document, Model = vgd };
+                var vmm = new DeviceGroupViewModel() {  Document = this.Document, Model = vgd,Parent=this };
                 this.Children.Add(vmm);
                 vmm.IsSelected = true;
                 vmm.IsEdit = true;
             }
             this.IsExpanded = true;
+            base.AddGroup();
         }
 
         /// <summary>
@@ -183,17 +188,18 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public override void Add()
         {
-            string sname = DeviceDocument.Manager.GetAvaiableName("Device");
+            string sname = this.Document.GetAvaiableName("Device",this.FullName);
             var vd = new DeviceDevelop() { Data = new DeviceData() ,Group = this.FullName};
             vd.Name = sname;
             if (mDocument.AddDevice(vd))
             {
-                var vmm = new DeviceTreeViewModel() { Document=this.Document, Model = vd };
+                var vmm = new DeviceTreeViewModel() { Document=this.Document, Model = vd, Parent = this };
                 this.Children.Add(vmm);
                 vmm.IsSelected = true;
                 vmm.IsEdit = true;
             }
             this.IsExpanded = true;
+            base.Add();
         }
         #endregion ...Methods...
 
@@ -296,6 +302,9 @@ namespace InSpiderDevelopWindow
 
         #region ... Properties ...
 
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual DeviceDocument Document
         {
             get
@@ -337,6 +346,14 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        protected override void OnNameRefresh()
+        {
+            (Parent as HasChildrenTreeItemViewModel)?.RefreshView();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="mode"></param>
         /// <returns></returns>
         public override ViewModelBase GetModel(ViewModelBase mode)
@@ -361,6 +378,32 @@ namespace InSpiderDevelopWindow
         public override bool OnRename(string oldName, string newName)
         {
             return mDocument.ReName(this.Model, newName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanRemove()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanAddChild()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Add()
+        {
+            Parent.AddCommand.Execute(null);
         }
 
         #endregion ...Methods...

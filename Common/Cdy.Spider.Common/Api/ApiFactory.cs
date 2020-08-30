@@ -159,6 +159,15 @@ namespace Cdy.Spider
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<string> ListDevelopApis()
+        {
+            return mDevelopManagers.Keys.ToList();
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

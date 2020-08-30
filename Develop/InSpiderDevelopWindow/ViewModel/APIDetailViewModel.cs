@@ -21,7 +21,13 @@ namespace InSpiderDevelopWindow.ViewModel
     {
 
         #region ... Variables  ...
+        
         private IApiDevelop mModel;
+
+        private List<string> mApis;
+
+        private string mSelectApiType;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -30,9 +36,21 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Constructor...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public APIDetailViewModel()
+        {
+            mApis = ServiceLocator.Locator.Resolve<IApiFactory>()?.ListDevelopApis();
+        }
+
+
+
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -47,11 +65,58 @@ namespace InSpiderDevelopWindow.ViewModel
                 if (mModel != value)
                 {
                     mModel = value;
+                    this.mSelectApiType = Model.TypeName;
                     OnPropertyChanged("Model");
+                    OnPropertyChanged("ConfigModel");
                 }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public object ConfigModel
+        {
+            get
+            {
+                return mModel?.Config();
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> Apis
+        {
+            get
+            {
+                return mApis;
+            }
+            internal set
+            {
+                mApis = value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string SelectApiType 
+        {
+            get { return mSelectApiType; } 
+            set 
+            {
+                if(mSelectApiType!=value)
+                {
+                    mSelectApiType = value;
+                    this.mModel = (ServiceLocator.Locator.Resolve<IApiFactory>().GetDevelopInstance(value) as IApiDevelopForFactory).NewApi();
+                    OnPropertyChanged("Model");
+                    OnPropertyChanged("ConfigModel");
+                }
+                OnPropertyChanged("SelectApiType");
+            }
+        }
 
         #endregion ...Properties...
 

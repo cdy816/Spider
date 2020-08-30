@@ -59,6 +59,54 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="tag"></param>
+        public bool AddTag(Tagbae tag)
+        {
+            return Tags.AddTag(tag);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        public bool UpdateOrAdd(Tagbae tag)
+        {
+            return Tags.UpdateOrAdd(tag);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        public bool AppendTag(Tagbae tag)
+        {
+            return Tags.AppendTag(tag);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        public bool RemoveTag(int id)
+        {
+            return Tags.Remove(id);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        public bool RemoveTag(Tagbae tag)
+        {
+            return Tags.RemoveTag(tag);
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="xe"></param>
         public void LoadFromXML(XElement xe)
         {
