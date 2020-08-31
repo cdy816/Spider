@@ -32,6 +32,8 @@ namespace InSpiderDevelop
         /// </summary>
         private Dictionary<string, MachineDocument> mMachines = new Dictionary<string, MachineDocument>();
 
+        private bool mIsLoaded = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -134,8 +136,21 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
+        public void ReLoad()
+        {
+            mIsLoaded = false;
+            mMachines.Clear();
+            Load();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Load()
         {
+            if (mIsLoaded) return;
+            mIsLoaded = true;
+
             var data = new System.IO.DirectoryInfo(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data"));
             if (data.Exists)
             {
@@ -156,22 +171,39 @@ namespace InSpiderDevelop
         /// 
         /// </summary>
         /// <param name="machine"></param>
-        public void Save(string machine)
+        public bool Save(string machine)
         {
-            if(mMachines.ContainsKey(machine))
+            try
             {
-                mMachines[machine].Save();
+                if (mMachines.ContainsKey(machine))
+                {
+                    mMachines[machine].Save();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Save()
+        public bool Save()
         {
-            foreach(var vv in mMachines)
+            try
             {
-                vv.Value.Save();
+                foreach (var vv in mMachines)
+                {
+                    vv.Value.Save();
+                }
+                return true;
+                    
+            }
+            catch
+            {
+                return false;
             }
         }
 

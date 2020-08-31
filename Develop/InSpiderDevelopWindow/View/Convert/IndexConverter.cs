@@ -59,7 +59,10 @@ namespace InSpiderDevelopWindow
                 {
                     mCollectionView = CollectionViewSource.GetDefaultView(values[1]) as ListCollectionView;
                 }
+                if(mCollectionView!=null)
                 return (mCollectionView.IndexOf(item) + 1).ToString();
+                else
+                return 0;
             }
             return 0;
         }

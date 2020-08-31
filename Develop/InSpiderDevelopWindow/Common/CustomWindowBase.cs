@@ -7,6 +7,7 @@
 //  种道洋
 //==============================================================
 
+using InSpiderDevelopWindow;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -25,32 +26,34 @@ namespace InSpiderDevelopWindow
     {
         #region ... Variables  ...
 
-        [DllImport("user32.dll")]
-        static extern int GetWindowLong(IntPtr hwnd, int index);
+        //[DllImport("user32.dll")]
+        //static extern int GetWindowLong(IntPtr hwnd, int index);
 
-        [DllImport("user32.dll")]
-        static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+        //[DllImport("user32.dll")]
+        //static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
-        [DllImport("user32.dll")]
-        static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
-                   int x, int y, int width, int height, uint flags);
+        //[DllImport("user32.dll")]
+        //static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
+        //           int x, int y, int width, int height, uint flags);
 
-        [DllImport("user32.dll")]
-        static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+        //[DllImport("user32.dll")]
+        //static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        private const int GWL_EXSTYLE = -20;
-        private const int WS_EX_DLGMODALFRAME = 0x0001;
-        private const int SWP_NOSIZE = 0x0001;
-        private const int SWP_NOMOVE = 0x0002;
-        private const int SWP_NOZORDER = 0x0004;
-        private const int SWP_FRAMECHANGED = 0x0020;
-        private const uint WM_SETICON = 0x0080;
+        //private const int GWL_EXSTYLE = -20;
+        //private const int WS_EX_DLGMODALFRAME = 0x0001;
+        //private const int SWP_NOSIZE = 0x0001;
+        //private const int SWP_NOMOVE = 0x0002;
+        //private const int SWP_NOZORDER = 0x0004;
+        //private const int SWP_FRAMECHANGED = 0x0020;
+        //private const uint WM_SETICON = 0x0080;
 
-        private const int GWL_STYLE = -16;
-        private const int WS_MAXIMIZEBOX = 0x00010000;
-        private const int WS_MINIMIZEBOX = 0x00020000;
+        //private const int GWL_STYLE = -16;
+        //private const int WS_MAXIMIZEBOX = 0x00010000;
+        //private const int WS_MINIMIZEBOX = 0x00020000;
 
         private ContentControl mContentHost;
+
+        private Grid mHead;
 
         #endregion ...Variables...
 
@@ -74,6 +77,9 @@ namespace InSpiderDevelopWindow
         public CustomWindowBase()
             : base()
         {
+            this.AllowsTransparency = true;
+            this.WindowStyle = WindowStyle.None;
+            this.ResizeMode = ResizeMode.CanResizeWithGrip;
             this.Loaded += new RoutedEventHandler(CustomWindowBase_Loaded);
         }
 
@@ -179,29 +185,29 @@ namespace InSpiderDevelopWindow
         #endregion ...Properties...
 
         #region ... Methods    ...
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="window"></param>
-        public static void RemoveIcon(Window window)
-        {
-            IntPtr hwnd = new WindowInteropHelper(window).Handle;
-            int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-            SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_DLGMODALFRAME);
-            SendMessage(hwnd, WM_SETICON, new IntPtr(1), IntPtr.Zero);
-            SendMessage(hwnd, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="window"></param>
+        //public static void RemoveIcon(Window window)
+        //{
+        //    IntPtr hwnd = new WindowInteropHelper(window).Handle;
+        //    int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+        //    SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_DLGMODALFRAME);
+        //    SendMessage(hwnd, WM_SETICON, new IntPtr(1), IntPtr.Zero);
+        //    SendMessage(hwnd, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
+        //}
 
-        /// <summary>
-        /// Disables the minimizebox.
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public static void DisableMinimizebox(Window window)
-        {
-            var hwnd = new WindowInteropHelper(window).Handle;
-            var value = GetWindowLong(hwnd, GWL_STYLE);
-            SetWindowLong(hwnd, GWL_STYLE, (int)(value & ~WS_MINIMIZEBOX));
-        }
+        ///// <summary>
+        ///// Disables the minimizebox.
+        ///// </summary>
+        ///// <param name="window">The window.</param>
+        //public static void DisableMinimizebox(Window window)
+        //{
+        //    var hwnd = new WindowInteropHelper(window).Handle;
+        //    var value = GetWindowLong(hwnd, GWL_STYLE);
+        //    SetWindowLong(hwnd, GWL_STYLE, (int)(value & ~WS_MINIMIZEBOX));
+        //}
 
         /// <summary>
         /// 
@@ -211,18 +217,9 @@ namespace InSpiderDevelopWindow
         private void CustomWindowBase_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= (CustomWindowBase_Loaded);
-            if (string.IsNullOrEmpty(IconString))
-            {
-                RemoveIcon(this);
-            }
-            else
+            if (!string.IsNullOrEmpty(IconString))
             {
                 this.Icon = new BitmapImage(new Uri(IconString));
-            }
-
-            if (IsEnableMax)
-            {
-                DisableMinimizebox(this);
             }
             this.Activate();
         }
@@ -234,6 +231,73 @@ namespace InSpiderDevelopWindow
         {
             base.OnApplyTemplate();
             mContentHost = this.GetTemplateChild("content_host") as ContentControl;
+            mHead = this.GetTemplateChild("head") as Grid;
+            mHead.MouseLeftButtonDown += MHead_MouseLeftButtonDown;
+            (this.GetTemplateChild("minB") as Button).Click += minB_Click;
+            if (this.IsEnableMax)
+            {
+                (this.GetTemplateChild("maxB") as Button).Click += maxB_Click;
+            }
+            else
+            {
+                (this.GetTemplateChild("maxB") as Button).Visibility = Visibility.Collapsed;
+            }
+
+            (this.GetTemplateChild("closeB") as Button).Click += closeB_Click;
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void closeB_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void maxB_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
+            }
+        }
+
+        private void minB_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+
+
+        private void MHead_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ClickCount > 1 && IsEnableMax)
+            {
+                if (WindowState == WindowState.Maximized)
+                {
+                    WindowState = WindowState.Normal;
+                }
+                else
+                {
+                    WindowState = WindowState.Maximized;
+                }
+            }
+            else
+            {
+                this.DragMove();
+            }
         }
 
         /// <summary>

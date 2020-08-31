@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Remove="Image\add.png" />
+    <None Remove="Image\AllSelect.png" />
     <None Remove="Image\API.png" />
     <None Remove="Image\cancel.png" />
     <None Remove="Image\cellselect.png" />
@@ -64,6 +65,7 @@
 
   <ItemGroup>
     <Resource Include="Image\add.png" />
+    <Resource Include="Image\AllSelect.png" />
     <Resource Include="Image\API.png" />
     <Resource Include="Image\cancel.png" />
     <Resource Include="Image\cellselect.png" />

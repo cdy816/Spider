@@ -67,7 +67,7 @@
         <Setter Property="IsCancel" Value="{Binding IsCancel}" />
         <Setter Property="Title" Value="{Binding Title}" />
         <Setter Property="IconString" Value="{Binding Icon}" />
-        <Setter Property="Icon" Value="/Image/mrdbd.ico" />
+        <Setter Property="Icon" Value="/Image/spider.png" />
         <Setter Property="IsClosed" Value="{Binding IsClosed}" />
         <Setter Property="SizeToContent" Value="WidthAndHeight" />
         <Setter Property="IsEnableMax" Value="{Binding IsEnableMax}" />

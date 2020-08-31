@@ -43,7 +43,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 变量的集合
         /// </summary>
-        public TagCollection Tags { get; set; }
+        public TagCollection Tags { get; set; } = new TagCollection();
 
         /// <summary>
         /// 
@@ -90,7 +90,7 @@ namespace Cdy.Spider
         /// <param name="id"></param>
         public bool RemoveTag(int id)
         {
-            return Tags.Remove(id);
+            return Tags.RemoveTagById(id);
         }
 
         /// <summary>

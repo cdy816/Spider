@@ -86,7 +86,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Background="#9F000000"  MouseLeftButtonDown="Grid_MouseLeftButtonDown" MouseLeftButtonUp="Grid_MouseLeftButtonUp">
-            <Image Margin="5,0"  Source="/Image/spider.png" Height="20" HorizontalAlignment="Left" Width="20" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
+                <ProgressBar x:Name="pb" Maximum="100"  Minimum="0" Value="{Binding ProcessNotify}" Background="Transparent" VerticalAlignment="Top" Height="32" BorderThickness="0" BorderBrush="Transparent" />
+                <Image Margin="5,0"  Source="/Image/spider.png" Height="20" HorizontalAlignment="Left" Width="20" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
             <Label Margin="30,0,115,0" VerticalContentAlignment="Center" Content="{Binding Title,RelativeSource={RelativeSource AncestorType=Window}}" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Window}}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -123,7 +124,7 @@
         </Grid>
             <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="LightGray" Background="#4F000000">
             <Grid>
-                    <ProgressBar x:Name="pb" Maximum="100"  Minimum="0" Value="{Binding ProcessNotify}" Background="Transparent" VerticalAlignment="Top" Height="32" BorderThickness="0" BorderBrush="Transparent" />
+                    
                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
                     <Button BorderThickness="0"  Command="{Binding SaveCommand}" HorizontalAlignment="Left"  Margin="10,0,0,0"  VerticalAlignment="Stretch" Width="80" >
                         <Button.ContentTemplate>

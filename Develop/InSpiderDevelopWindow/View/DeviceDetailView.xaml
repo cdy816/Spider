@@ -14,12 +14,15 @@
         <ContextMenu x:Key="ctxmenu">
             <MenuItem Header="{local:ResMarker Add}" Command="{Binding AddCommand}" />
             <MenuItem Header="{local:ResMarker Remove}" Command="{Binding RemoveCommand}" />
-            <MenuItem Header="{local:ResMarker Import}" Command="{Binding ImportCommand}" />
-            <MenuItem Header="{local:ResMarker Export}" Command="{Binding ExportCommand}" />
+            
             <MenuItem Header="{local:ResMarker Copy}" Command="{Binding CopyCommand}" />
             <MenuItem Header="{local:ResMarker Paste}" Command="{Binding PasteCommand}" />
             <MenuItem Header="{local:ResMarker PropertyCopy}" Command="{Binding CellCopyCommand}" />
             <MenuItem Header="{local:ResMarker PropertyPaste}" Command="{Binding CellPasteCommand}" />
+            
+            
+            <MenuItem Header="{local:ResMarker Import}" Command="{Binding ImportCommand}" />
+            <MenuItem Header="{local:ResMarker Export}" Command="{Binding ExportCommand}" />
         </ContextMenu>
     </UserControl.Resources>
     <Grid>
@@ -64,7 +67,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="32" />
                     </Grid.RowDefinitions>
-                    <Grid  VerticalAlignment="Stretch" >
+                    <Grid  VerticalAlignment="Stretch" IsEnabled="{Binding EnableFilter}" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24"/>
                             <RowDefinition Height="Auto" x:Name="row2"/>
@@ -90,10 +93,10 @@
                             <TextBox x:Name="kwinput" VerticalContentAlignment="Center" CaretBrush="White" Margin="10,0"  Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" Grid.Column="1" Text="{Binding FilterKeyName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="160" HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" KeyDown="kwinput_KeyDown" />
 
                             <CheckBox Background="Transparent" HorizontalAlignment="Right" Foreground="{DynamicResource Window.Forground}" Grid.Column="2" IsChecked="{Binding TagTypeFilterEnable}" Content="{local:ResMarker Type,:}" VerticalAlignment="Center" Margin="10,0" />
-                            <ComboBox VerticalAlignment="Center"   Grid.Column="3" Margin="10,0" Width="100"  BorderThickness="1" IsEnabled="{Binding TagTypeFilterEnable}" ItemsSource="{Binding TagTypeList}" SelectedIndex="{Binding FilterType}" />
+                            <ComboBox VerticalAlignment="Center"   Grid.Column="3" Margin="10,0" Width="160"  BorderThickness="1" IsEnabled="{Binding TagTypeFilterEnable}" ItemsSource="{Binding TagTypeList}" SelectedIndex="{Binding FilterType}" />
 
-                            <CheckBox Background="Transparent" HorizontalAlignment="Right"  Foreground="{DynamicResource Window.Forground}" Grid.Column="4" IsChecked="{Binding ReadWriteModeFilterEnable}" Content="{local:ResMarker Direction}" VerticalAlignment="Center" Margin="10,0" />
-                            <ComboBox  VerticalAlignment="Center"  Grid.Column="5" Margin="10,0" Width="100"  BorderThickness="1" IsEnabled="{Binding ReadWriteModeFilterEnable}" ItemsSource="{Binding ReadWriteModeList}" SelectedIndex="{Binding FilterReadWriteMode}" />
+                            <CheckBox Background="Transparent" HorizontalAlignment="Right"  Foreground="{DynamicResource Window.Forground}" Grid.Column="4" IsChecked="{Binding DirectionFilterEnable,Mode=TwoWay}" Content="{local:ResMarker Direction}" VerticalAlignment="Center" Margin="10,0" />
+                            <ComboBox  VerticalAlignment="Center"  Grid.Column="5" Margin="10,0" Width="160"  BorderThickness="1" IsEnabled="{Binding DirectionFilterEnable}" ItemsSource="{Binding DirectionList}" SelectedIndex="{Binding DirectionFilter}" />
 
                             
                             <CheckBox Background="Transparent" Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker Registor}" IsChecked="{Binding RegistorFilterEnable}" HorizontalAlignment="Left" Grid.Column="7" Grid.Row="0" VerticalAlignment="Center" Margin="10,0" />
@@ -111,7 +114,7 @@
                         </Grid>
                     </Grid>
                     <GridSplitter HorizontalAlignment="Stretch" Height="5" VerticalAlignment="Bottom" Background="Transparent" />
-                    <DataGrid x:Name="dg" Grid.Row="1"  SelectedCellsChanged="dg_SelectedCellsChanged"  RowHeaderWidth="36" SelectionUnit="{Binding SelectMode}" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" ScrollViewer.CanContentScroll="True" ContextMenu="{StaticResource ctxmenu}" VerticalScrollBarVisibility="Auto"   VirtualizingPanel.IsVirtualizing="True" RowDetailsVisibilityMode="VisibleWhenSelected" MinRowHeight="24" Margin="0,0,0,0" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding SelectGroupTags}" SelectedItem="{Binding CurrentSelectTag,Mode=TwoWay}"   BorderThickness="0,1,0,1" Background="Transparent" >
+                    <DataGrid x:Name="dg" Grid.Row="1"  ScrollViewer.ScrollChanged="dg_ScrollChanged" SelectedCellsChanged="dg_SelectedCellsChanged"  RowHeaderWidth="36" SelectionUnit="{Binding SelectMode}" Style="{DynamicResource DataGridStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" RowHeaderStyle="{DynamicResource DataGridRowHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}" ScrollViewer.CanContentScroll="True" ContextMenu="{StaticResource ctxmenu}" VerticalScrollBarVisibility="Auto"   VirtualizingPanel.IsVirtualizing="True" RowDetailsVisibilityMode="VisibleWhenSelected" MinRowHeight="24" Margin="0,0,0,0" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding Tags}" SelectedItem="{Binding CurrentSelectTag,Mode=TwoWay}"   BorderThickness="0,1,0,0" Background="Transparent" >
                         <DataGrid.InputBindings>
                             <KeyBinding Command="{Binding CopyCommand}" Key="C" Modifiers="Ctrl" />
                             <KeyBinding Command="{Binding CellCopyCommand}" Key="C" Modifiers="Alt" />
@@ -128,7 +131,7 @@
                                     <TextBlock.Text>
                                         <MultiBinding Converter="{StaticResource ic}">
                                             <Binding />
-                                            <Binding Path="DataContext.SelectGroupTags" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" />
+                                            <Binding Path="DataContext.Tags" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" />
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -146,7 +149,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Margin="0,0"   CaretBrush="White" Background="#1FFFFFFF" Foreground="{DynamicResource Window.Forground}" Padding="4,0" BorderThickness="0" Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"  />
+                                        <TextBox  Loaded="TextBox_Loaded" Margin="0,0"   CaretBrush="White" Background="#1FFFFFFF" Foreground="{DynamicResource Window.Forground}" Padding="3,0" BorderThickness="0" Text="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"  />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -160,25 +163,25 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ComboBox Margin="0" Background="#1FFFFFFF"  BorderThickness="0"  ItemsSource="{Binding TagTypeList}" SelectedIndex="{Binding Type,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                        <ComboBox  VerticalContentAlignment="Center" Padding="5,0" Margin="0" Background="#1FFFFFFF"  BorderThickness="0"  ItemsSource="{Binding TagTypeList}" SelectedIndex="{Binding Type,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="{local:ResMarker Direction}" MinWidth="100">
+                            <DataGridTemplateColumn Header="{local:ResMarker Direction}" MinWidth="160">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Margin="5,0" Foreground="{DynamicResource Window.Forground}" Text="{Binding DataTranseDirection}" VerticalAlignment="Center" />
+                                        <TextBlock Margin="5,0" Foreground="{DynamicResource Window.Forground}" Text="{Binding DirectionString}" VerticalAlignment="Center" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ComboBox Margin="0" Background="#1FFFFFFF"  BorderThickness="0" ItemsSource="{Binding DataTranseDirectionList}" SelectedIndex="{Binding DataTranseDirection,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                        <ComboBox Margin="0" VerticalContentAlignment="Center" Padding="5,0" Background="#1FFFFFFF"  BorderThickness="0" ItemsSource="{Binding DataTranseDirectionList}" SelectedIndex="{Binding Direction,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="{local:ResMarker DatabaseTagName}" Width="300"  IsReadOnly="{Binding IsNumberTag,Converter={StaticResource biv}}">
+                            <DataGridTemplateColumn Header="{local:ResMarker DatabaseTagName}" Width="300" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Margin="5,0" Foreground="{DynamicResource Window.Forground}" Text="{Binding DatabaseName}"  VerticalAlignment="Center" />
@@ -186,7 +189,14 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox  CaretBrush="White" Background="#1FFFFFFF" Margin="-1" Foreground="{DynamicResource Window.Forground}" Text="{Binding DatabaseName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}"  VerticalAlignment="Stretch" VerticalContentAlignment="Center" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Padding="3,0"  Loaded="TextBox_Loaded" CaretBrush="White" Background="#1FFFFFFF" Margin="-1" Foreground="{DynamicResource Window.Forground}" Text="{Binding DatabaseName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}"  VerticalAlignment="Stretch" VerticalContentAlignment="Center" />
+                                            <Button Grid.Column="1" Margin="4,0" Background="#1FFFFFFF" Foreground="{DynamicResource Window.Forground}" Content="..." VerticalAlignment="Center" Height="18" VerticalContentAlignment="Top" Command="{Binding DatabaseBrowserCommand}" Width="24" />
+                                        </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -200,7 +210,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ComboBox Background="#1FFFFFFF"  Margin="0" VerticalContentAlignment="Center" BorderThickness="0" ItemsSource="{Binding RegistorList}"  IsEditable="True" Text="{Binding DeviceInfo,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                        <ComboBox Loaded="ComboBox_Loaded" Background="#1FFFFFFF"  Margin="0" VerticalContentAlignment="Center" BorderThickness="0" ItemsSource="{Binding RegistorList}"  IsEditable="True" Text="{Binding DeviceInfo,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>

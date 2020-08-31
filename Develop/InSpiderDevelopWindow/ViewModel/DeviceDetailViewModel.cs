@@ -12,6 +12,8 @@ using InSpiderDevelop;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -20,6 +22,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace InSpiderDevelopWindow.ViewModel
@@ -27,7 +30,7 @@ namespace InSpiderDevelopWindow.ViewModel
     /// <summary>
     /// 
     /// </summary>
-    public class DeviceDetailViewModel:ViewModelBase
+    public class DeviceDetailViewModel:ViewModelBase, IModeSwitch
     {
 
         #region ... Variables  ...
@@ -60,6 +63,23 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private int mTagCount = 0;
 
+        private bool mIsLoaded = false;
+
+        private int mPerPageCount = 200;
+
+        private int mCurrentPage = 0;
+
+        private string mFilterRegistorName;
+        private bool mRegistorFilterEnable;
+        private int mFilterType=-1;
+        private string mFilterKeyName;
+        private bool mTagTypeFilterEnable;
+
+        private int mDirectionFilter=-1;
+        private bool mDirectionFilterEnable;
+
+        private List<int> mIdCach = new List<int>();
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -68,9 +88,192 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Constructor...
 
+
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        public string[] TagTypeList
+        {
+            get
+            {
+                return TagViewModel.mTagTypeList;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string[] DirectionList { get { return TagViewModel.mDataTranseDirection; }  }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FilterRegistorName
+        {
+            get
+            {
+                return mFilterRegistorName;
+            }
+            set
+            {
+                if (mFilterRegistorName != value)
+                {
+                    mFilterRegistorName = value;
+                    NewQueryTags();
+                    OnPropertyChanged("FilterRegistorName");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool RegistorFilterEnable
+        {
+            get
+            {
+                return mRegistorFilterEnable;
+            }
+            set
+            {
+                if (mRegistorFilterEnable != value)
+                {
+                    mRegistorFilterEnable = value;
+                    NewQueryTags();
+                    if (!value) mFilterRegistorName = string.Empty;
+                    OnPropertyChanged("RegistorFilterEnable");
+                    OnPropertyChanged("FilterRegistorName");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int FilterType
+        {
+            get
+            {
+                return mFilterType;
+            }
+            set
+            {
+                if (mFilterType != value)
+                {
+                    mFilterType = value;
+                    NewQueryTags();
+                }
+                OnPropertyChanged("FilterType");
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool TagTypeFilterEnable
+        {
+            get
+            {
+                return mTagTypeFilterEnable;
+            }
+            set
+            {
+                if (mTagTypeFilterEnable != value)
+                {
+                    mTagTypeFilterEnable = value;
+                    if (!value)
+                    {
+                        mFilterType = -1;
+                        NewQueryTags();
+                    }
+                }
+                OnPropertyChanged("TagTypeFilterEnable");
+                OnPropertyChanged("FilterType");
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FilterKeyName
+        {
+            get
+            {
+                return mFilterKeyName;
+            }
+            set
+            {
+                if (mFilterKeyName != value)
+                {
+                    mFilterKeyName = value;
+                    NewQueryTags();
+                }
+                OnPropertyChanged("FilterKeyName");
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public int DirectionFilter
+        {
+            get
+            {
+                return mDirectionFilter;
+            }
+            set
+            {
+                if (mDirectionFilter != value)
+                {
+                    mDirectionFilter = value;
+                    NewQueryTags();
+                    OnPropertyChanged("DirectionFilter");
+                }
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public bool DirectionFilterEnable
+        {
+            get
+            {
+                return mDirectionFilterEnable;
+            }
+            set
+            {
+                if (mDirectionFilterEnable != value)
+                {
+                    mDirectionFilterEnable = value;
+                    if (!value)
+                    {
+                        mDirectionFilter = -1;
+                        NewQueryTags();
+                    }
+                    OnPropertyChanged("DirectionFilterEnable");
+                    OnPropertyChanged("DirectionFilter");
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<TagViewModel> Tags
+        {
+            get
+            {
+                return mTags;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -90,6 +293,9 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool RowSelectMode
         {
             get
@@ -144,6 +350,9 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand CopyCommand
         {
             get
@@ -279,6 +488,8 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        
+
         /// <summary>
         /// 
         /// </summary>
@@ -328,6 +539,26 @@ namespace InSpiderDevelopWindow.ViewModel
         public DataGrid grid { get; set; }
 
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public bool EnableFilter
+        {
+            get
+            {
+                return mEnableFilter;
+            }
+            set
+            {
+                if (mEnableFilter != value)
+                {
+                    mEnableFilter = value;
+                    OnPropertyChanged("EnableFilter");
+                }
+            }
+        }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -335,19 +566,174 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
         /// 
         /// </summary>
-        private void Init()
+        /// <param name="tag"></param>
+        private void CachTagModelId(Tagbae tag)
         {
+            if(!mIdCach.Contains(tag.Id))
+            {
+                mIdCach.Add(tag.Id);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void NewQueryTags()
+        {
+            EnableFilter = false;
+            
+            Task.Run(() => {
+                ReLoad();
+                Application.Current?.Dispatcher.Invoke(new Action(() => {
+                    EnableFilter = true;
+                }));
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Init()
+        {
+            if (!mIsLoaded) mIsLoaded = true;
+            else return;
             mTags.Clear();
-            TagCount = 0;
-            Task.Run(() => { 
-                
-                foreach(var vv in mModel.Data.Tags)
+            mIdCach.Clear();
+
+            mCurrentPage = 0;
+            Task.Run(() =>
+            {
+                var vpp = GetTag(mCurrentPage);
+                if (vpp != null)
                 {
-                    Application.Current?.Dispatcher.Invoke(new Action(() => {
-                        mTags.Add(new TagViewModel() { Model = vv.Value });
-                    }));
+                    foreach (var vv in vpp)
+                    {
+                        Application.Current?.Dispatcher.Invoke(new Action(() =>
+                        {
+                            mTags.Add(new TagViewModel() { Model = vv, Document = mModel.Data });
+                        }));
+                    }
                 }
             });
+            TagCount = mModel.Data.Tags.Count;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private bool Filter(object obj)
+        {
+            KeyValuePair<int, Tagbae> kvals = (KeyValuePair<int, Tagbae>)obj;
+            bool re = true;
+            
+            if(!string.IsNullOrEmpty(mFilterKeyName))
+            {
+                re &= (kvals.Value.Name.Contains(mFilterKeyName) || kvals.Value.DatabaseName.Contains(mFilterKeyName) || kvals.Value.DeviceInfo.Contains(mFilterKeyName));
+            }
+
+            if(mDirectionFilterEnable)
+            {
+                re &= DirectionFilter == (int)kvals.Value.DataTranseDirection;
+            }
+
+            if(mRegistorFilterEnable && !string.IsNullOrEmpty(mFilterRegistorName))
+            {
+                re &= kvals.Value.DeviceInfo.Contains(mFilterRegistorName);
+            }
+
+            if(mTagTypeFilterEnable)
+            {
+                re &= (int)kvals.Value.Type == mFilterType;
+            }
+
+            return re;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public IEnumerable<Tagbae> GetTag(int page)
+        {
+            int count = mModel.Data.Tags.Where(e => Filter(e)).Count();
+            //Application.Current?.Dispatcher.Invoke(new Action(() =>
+            //{
+            //    count = mFilterView.Count;
+            //}));
+          
+            int pagecount = count / mPerPageCount;
+            pagecount = count % mPerPageCount > 0 ? pagecount + 1 : pagecount;
+
+            if(page<pagecount)
+            {
+                int icount = pagecount;
+                if((page+1)*mPerPageCount> count)
+                {
+                    icount = count - page * mPerPageCount;
+                }
+                return mModel.Data.Tags.Where(e=>Filter(e)).Skip(page * pagecount).Take(icount).Select(e=>e.Value);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ReLoad()
+        {
+            foreach (var vv in mTags) vv.Dispose();
+            Application.Current?.Dispatcher.Invoke(new Action(() =>
+            {
+                mTags.Clear();
+            }));
+            mIdCach.Clear();
+            mCurrentPage = -1;
+            ContinueLoad();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool CanContinueLoadData()
+        {
+            var count = mModel.Data.Tags.Where(e => Filter(e)).Count();
+            int pagecount = count / mPerPageCount;
+            pagecount = count % mPerPageCount > 0 ? pagecount + 1 : pagecount;
+            return mCurrentPage < pagecount;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ContinueLoad()
+        {
+            mCurrentPage++;
+            Task.Run(() =>
+            {
+                var vpp = GetTag(mCurrentPage);
+                if (vpp != null)
+                {
+                    foreach (var vv in vpp)
+                    {
+                        if (mIdCach.Contains(vv.Id))
+                        {
+                            mIdCach.Remove(vv.Id);
+                            continue;
+                        }
+
+                        Application.Current?.Dispatcher.Invoke(new Action(() =>
+                        {
+                            mTags.Add(new TagViewModel() { Model = vv,Document=mModel.Data });
+                        }));
+                    }
+                }
+            });
+            TagCount = mModel.Data.Tags.Count;
         }
 
         private void ExportToFile()
@@ -376,6 +762,9 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ImportFromFile()
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -391,6 +780,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     if (!string.IsNullOrEmpty(sval))
                     {
                         TagViewModel tm = TagViewModel.LoadFromCSVString(sval);
+                        tm.Document = this.mModel.Data;
                         ltmp.Add(tm);
                     }
                 }
@@ -408,8 +798,6 @@ namespace InSpiderDevelopWindow.ViewModel
                 return;
             }
 
-
-
             StringBuilder sb = new StringBuilder();
 
             Task.Run(() =>
@@ -420,6 +808,15 @@ namespace InSpiderDevelopWindow.ViewModel
                 if (mode == 1)
                 {
                     mModel.Data.Tags.Clear();
+                    Application.Current?.Dispatcher.Invoke(new Action(() =>
+                    {
+                        foreach (var vv in this.mTags)
+                        {
+                            vv.Dispose();
+                        }
+                        this.mTags.Clear();
+                    }));
+                    
                 }
 
                 //var tags = mSelectGroupTags.ToDictionary(e => e.RealTagMode.Name);
@@ -429,17 +826,29 @@ namespace InSpiderDevelopWindow.ViewModel
                 
                 foreach (var vv in ltmp)
                 {
-                   
-                    //更新数据
-                    if (!mModel.Data.UpdateOrAdd(vv.Model))
+                    vv.Document = this.Model.Data;
+                    if (mode == 2)
                     {
-                        sb.AppendLine(string.Format(Res.Get("AddTagFail"), vv.Model.Name));
-                        haserro = true;
+                        vv.Model.Name = GetNewName();
+                        if(!mModel.Data.AppendTag(vv.Model))
+                        {
+                            sb.AppendLine(string.Format(Res.Get("AddTagFail"), vv.Model.Name));
+                            haserro = true;
+                        }
                     }
                     else
                     {
-                        vv.IsNew = false;
-                        vv.IsChanged = false;
+                        //更新数据
+                        if (!mModel.Data.UpdateOrAdd(vv.Model))
+                        {
+                            sb.AppendLine(string.Format(Res.Get("AddTagFail"), vv.Model.Name));
+                            haserro = true;
+                        }
+                        else
+                        {
+                            vv.IsNew = false;
+                            vv.IsChanged = false;
+                        }
                     }
 
                     icount++;
@@ -462,6 +871,7 @@ namespace InSpiderDevelopWindow.ViewModel
                         }
                     }
                 }
+                ReLoad();
                 Application.Current?.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     ServiceLocator.Locator.Resolve<IProcessNotify>().EndShowNotify();
@@ -471,6 +881,9 @@ namespace InSpiderDevelopWindow.ViewModel
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void PasteTagProperty()
         {
             if (mPropertyCopy != null)
@@ -534,6 +947,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
                 List<TagViewModel> ll = new List<TagViewModel>();
 
+                var vtag = CurrentSelectTag;
+
                 foreach (var vv in grid.SelectedItems)
                 {
                     ll.Add(vv as TagViewModel);
@@ -543,7 +958,9 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     if (this.mModel.Data.RemoveTag(vvv.Model.Id))
                     {
-                        mTags.Remove(CurrentSelectTag);
+                        vtag = vvv;
+                        mTags.Remove(vtag);
+                        vtag.Dispose();
                         icount++;
                     }
                 }
@@ -554,6 +971,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     if (this.mModel.Data.RemoveTag(CurrentSelectTag.Model.Id))
                     {
                         mTags.Remove(CurrentSelectTag);
+                        vtag.Dispose();
                         icount++;
                     }
                 }
@@ -564,13 +982,8 @@ namespace InSpiderDevelopWindow.ViewModel
                 }
                 else
                 {
-                    CurrentSelectTag = mTags.Last();
+                    CurrentSelectTag = mTags.Count > 0 ? mTags.Last() : null;
                 }
-
-                //if (DevelopServiceHelper.Helper.Remove(GroupModel.Database, CurrentSelectTag.RealTagMode.Id))
-                //{
-                //    SelectGroupTags.Remove(CurrentSelectTag);
-                //}
             }
             else
             {
@@ -580,6 +993,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     if (this.mModel.Data.RemoveTag(vvt.Model.Id))
                     {
                         mTags.Remove(vvt);
+                        vvt.Dispose();
                         icount++;
                     }
                 }
@@ -626,22 +1040,25 @@ namespace InSpiderDevelopWindow.ViewModel
                 var vtag = CurrentSelectTag.Clone();           
                 vtag.Name = GetNewName();
                 vtag.IsNew = true;
+                vtag.Document = mModel.Data;
                 
                 if(mModel.Data.AppendTag(vtag.Model))
                 {
                     mTags.Add(vtag);
                     CurrentSelectTag = vtag;
+                    CachTagModelId(vtag.Model);
                 }
 
             }
             else
             {
                 var tag = new DoubleTag() { Name = GetNewName() };
-                TagViewModel vtag = new TagViewModel() { Model = tag };
+                TagViewModel vtag = new TagViewModel() { Model = tag, Document = mModel.Data };
                 if (mModel.Data.AppendTag(vtag.Model))
                 {
                     mTags.Add(vtag);
                     CurrentSelectTag = vtag;
+                    CachTagModelId(vtag.Model);
                 }
             }
             TagCount++;
@@ -721,6 +1138,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     if (mModel.Data.AppendTag(vtag.Model))
                     {
                         mTags.Add(vtag);
+                        CachTagModelId(vtag.Model);
                     }
                 }
                 if (tm != null)
@@ -728,6 +1146,30 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             TagCount += mCopyTags.Count;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Active()
+        {
+            Init();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void DeActive()
+        {
+            foreach(var vv in mTags)
+            {
+                vv.Dispose();
+            }
+            mTags.Clear();
+            mIsLoaded = false;
+        }
+
+
+
 
         #endregion ...Methods...
 
@@ -746,6 +1188,11 @@ namespace InSpiderDevelopWindow.ViewModel
         
         private Tagbae mModel;
 
+        public static string[] mTagTypeList;
+
+        public static string[] mDataTranseDirection;
+
+        private ICommand mDatabaseBrowserCommand;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -754,9 +1201,39 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Constructor...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        static TagViewModel()
+        {
+            mTagTypeList = Enum.GetNames(typeof(TagType));
+            mDataTranseDirection = Enum.GetNames(typeof(DataTransType)).Select(e=>Res.Get(e.ToString())).ToArray();
+        }
+
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string[] DataTranseDirectionList
+        {
+            get { return mDataTranseDirection; }
+          
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string[] TagTypeList
+        {
+            get
+            {
+                return mTagTypeList;
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -833,25 +1310,39 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
             /// 
             /// </summary>
-        public DataTransType Direction
+        public int Direction
         {
             get
             {
-                return mModel.DataTranseDirection;
+                return (int)mModel.DataTranseDirection;
             }
             set
             {
-                if (mModel.DataTranseDirection != value)
+                if ((int)mModel.DataTranseDirection != value)
                 {
-                    mModel.DataTranseDirection = value;
-                    OnPropertyChanged("DataTranseDirection");
+                    mModel.DataTranseDirection = (DataTransType)value;
+                    IsChanged = true;
+                    OnPropertyChanged("Direction");
+                    OnPropertyChanged("DirectionString");
                 }
             }
         }
 
         /// <summary>
-            /// 
-            /// </summary>
+        /// 
+        /// </summary>
+        public string DirectionString
+        {
+            get
+            {
+                return Res.Get(mModel.DataTranseDirection.ToString());
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string DeviceInfo
         {
             get
@@ -863,6 +1354,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 if (mModel.DeviceInfo != value)
                 {
                     mModel.DeviceInfo = value;
+                    IsChanged = true;
                     OnPropertyChanged("DeviceInfo");
                 }
             }
@@ -900,6 +1392,24 @@ namespace InSpiderDevelopWindow.ViewModel
                 return mModel.Type.ToString();
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand DatabaseBrowserCommand
+        {
+            get
+            {
+                if(mDatabaseBrowserCommand==null)
+                {
+                    mDatabaseBrowserCommand = new RelayCommand(() => { 
+                        
+                    });
+                }
+                return mDatabaseBrowserCommand;
+            }
+        }
+
 
 
         #endregion ...Properties...
@@ -1066,6 +1576,13 @@ namespace InSpiderDevelopWindow.ViewModel
         }
 
 
+        public override void Dispose()
+        {
+            Document = null;
+            mModel = null;
+            base.Dispose();
+        }
+
 
         /// <summary>
         /// 
@@ -1080,7 +1597,6 @@ namespace InSpiderDevelopWindow.ViewModel
             sb.Append(mModel.DatabaseName + ",");
             sb.Append(mModel.DeviceInfo + ",");
             sb.Append(mModel.DataTranseDirection);
-            sb.Length = sb.Length > 0 ? sb.Length - 1 : sb.Length;
             return sb.ToString();
         }
 

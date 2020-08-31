@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj": {}
+    "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj": {}
   },
   "projects": {
-    "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
+    "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj",
+        "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj",
         "projectName": "Cdy.Spider.Common",
-        "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj",
-        "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\obj\\",
+        "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj",
+        "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -56,17 +56,17 @@
         }
       }
     },
-    "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj": {
+    "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+        "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
         "projectName": "InSpiderDevelopWindow",
-        "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
-        "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
+        "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\InSpiderDevelopWindow.csproj",
+        "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelopWindow\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -79,11 +79,11 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
-                "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
+              "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
+                "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
               },
-              "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj": {
-                "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj"
+              "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj": {
+                "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj"
               }
             }
           }
@@ -118,17 +118,17 @@
         }
       }
     },
-    "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj": {
+    "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj",
+        "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj",
         "projectName": "InSpiderDevelop",
-        "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj",
-        "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\InSpiderDevelop\\obj\\",
+        "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelop\\InSpiderDevelop.csproj",
+        "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\InSpiderDevelop\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -141,8 +141,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
-                "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
+              "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
+                "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
               }
             }
           }

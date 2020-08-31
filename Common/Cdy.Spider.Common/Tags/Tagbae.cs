@@ -161,12 +161,12 @@ namespace Cdy.Spider
         /// <summary>
         /// 数据库变量名称
         /// </summary>
-        public string DatabaseName { get; set; }
+        public string DatabaseName { get; set; } = "";
 
         /// <summary>
         /// 设备信息
         /// </summary>
-        public string DeviceInfo { get; set; }
+        public string DeviceInfo { get; set; } = "";
 
         /// <summary>
         /// 

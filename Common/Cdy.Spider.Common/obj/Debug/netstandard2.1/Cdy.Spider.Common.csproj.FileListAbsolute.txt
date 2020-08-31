@@ -18,7 +18,6 @@ C:\Users\cdy81\source\repos\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandar
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Common\Cdy.Spider.Common\bin\Debug\netstandard2.1\Cdy.Spider.Common.deps.json
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Common\Cdy.Spider.Common\bin\Debug\netstandard2.1\Cdy.Spider.Common.dll
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Common\Cdy.Spider.Common\bin\Debug\netstandard2.1\Cdy.Spider.Common.pdb
-C:\Users\chongdaoyang\source\repos\cdy816\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.csprojAssemblyReference.cache
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.AssemblyInfoInputs.cache
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.AssemblyInfo.cs
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Common\Cdy.Spider.Common\obj\Debug\netstandard2.1\Cdy.Spider.Common.csproj.CoreCompileInputs.cache

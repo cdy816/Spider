@@ -129,6 +129,9 @@
   <data name="ApiType" xml:space="preserve">
     <value>Api type</value>
   </data>
+  <data name="Both" xml:space="preserve">
+    <value>Both</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -147,8 +150,14 @@
   <data name="DatabaseTagName" xml:space="preserve">
     <value>DatabaseTagName</value>
   </data>
+  <data name="DatabaseToDevice" xml:space="preserve">
+    <value>DatabaseToDevice</value>
+  </data>
   <data name="Device" xml:space="preserve">
     <value>Device</value>
+  </data>
+  <data name="DeviceToDatabase" xml:space="preserve">
+    <value>DeviceToDatabase</value>
   </data>
   <data name="Direction" xml:space="preserve">
     <value>Direction</value>
@@ -156,11 +165,20 @@
   <data name="Driver" xml:space="preserve">
     <value>Driver</value>
   </data>
+  <data name="erro" xml:space="preserve">
+    <value>erro</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>
+  </data>
+  <data name="ImportErroMsg" xml:space="preserve">
+    <value>Some erro has happened,do you see erro.txt for detail?</value>
+  </data>
+  <data name="ImportMode" xml:space="preserve">
+    <value>Import mode</value>
   </data>
   <data name="Keyword" xml:space="preserve">
     <value>Keyword</value>
@@ -176,6 +194,12 @@
   </data>
   <data name="Paste" xml:space="preserve">
     <value>Paste</value>
+  </data>
+  <data name="PropertyCopy" xml:space="preserve">
+    <value>PropertyCopy</value>
+  </data>
+  <data name="PropertyPaste" xml:space="preserve">
+    <value>PropertyPaste</value>
   </data>
   <data name="Protocol" xml:space="preserve">
     <value>Protocol</value>
@@ -200,6 +224,15 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="Savefailed" xml:space="preserve">
+    <value>save failed!</value>
+  </data>
+  <data name="saveprompt" xml:space="preserve">
+    <value>Data is changed,do you want to save?</value>
+  </data>
+  <data name="SaveSucessfull" xml:space="preserve">
+    <value>save sucessfull!</value>
   </data>
   <data name="SpiderTitle" xml:space="preserve">
     <value>Welcome to spider</value>

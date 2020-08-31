@@ -54,7 +54,7 @@ namespace InSpiderDevelopWindow.View {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/InSpiderDevelopWindow;component/view/importmodeselectview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/InSpiderDevelopWindow;V1.0.0.0;component/view/importmodeselectview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\View\ImportModeSelectView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

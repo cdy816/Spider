@@ -97,6 +97,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Both 的本地化字符串。
+        /// </summary>
+        internal static string Both {
+            get {
+                return ResourceManager.GetString("Both", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Cancel 的本地化字符串。
         /// </summary>
         internal static string Cancel {
@@ -151,11 +160,29 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 DatabaseToDevice 的本地化字符串。
+        /// </summary>
+        internal static string DatabaseToDevice {
+            get {
+                return ResourceManager.GetString("DatabaseToDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Device 的本地化字符串。
         /// </summary>
         internal static string Device {
             get {
                 return ResourceManager.GetString("Device", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DeviceToDatabase 的本地化字符串。
+        /// </summary>
+        internal static string DeviceToDatabase {
+            get {
+                return ResourceManager.GetString("DeviceToDatabase", resourceCulture);
             }
         }
         
@@ -178,6 +205,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 erro 的本地化字符串。
+        /// </summary>
+        internal static string erro {
+            get {
+                return ResourceManager.GetString("erro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Export 的本地化字符串。
         /// </summary>
         internal static string Export {
@@ -192,6 +228,24 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Import {
             get {
                 return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Some erro has happened,do you see erro.txt for detail? 的本地化字符串。
+        /// </summary>
+        internal static string ImportErroMsg {
+            get {
+                return ResourceManager.GetString("ImportErroMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import mode 的本地化字符串。
+        /// </summary>
+        internal static string ImportMode {
+            get {
+                return ResourceManager.GetString("ImportMode", resourceCulture);
             }
         }
         
@@ -237,6 +291,24 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Paste {
             get {
                 return ResourceManager.GetString("Paste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 PropertyCopy 的本地化字符串。
+        /// </summary>
+        internal static string PropertyCopy {
+            get {
+                return ResourceManager.GetString("PropertyCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 PropertyPaste 的本地化字符串。
+        /// </summary>
+        internal static string PropertyPaste {
+            get {
+                return ResourceManager.GetString("PropertyPaste", resourceCulture);
             }
         }
         
@@ -309,6 +381,33 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 save failed! 的本地化字符串。
+        /// </summary>
+        internal static string Savefailed {
+            get {
+                return ResourceManager.GetString("Savefailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Data is changed,do you want to save? 的本地化字符串。
+        /// </summary>
+        internal static string saveprompt {
+            get {
+                return ResourceManager.GetString("saveprompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 save sucessfull! 的本地化字符串。
+        /// </summary>
+        internal static string SaveSucessfull {
+            get {
+                return ResourceManager.GetString("SaveSucessfull", resourceCulture);
             }
         }
         

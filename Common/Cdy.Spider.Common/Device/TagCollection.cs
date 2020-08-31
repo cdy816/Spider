@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Cdy.Spider
@@ -57,11 +58,36 @@ namespace Cdy.Spider
         {
             if(ContainsKey(tag.Id))
             {
+                var vtag = this[tag.Id];
+
                 this[tag.Id] = tag;
+                if(!mNamedTags.ContainsKey(tag.Name))
+                {
+                    if(mNamedTags.ContainsKey(vtag.Name))
+                    {
+                        mNamedTags.Remove(vtag.Name);
+                    }
+
+                    mNamedTags.Add(tag.Name, tag);
+                }
+                else
+                {
+                    mNamedTags[tag.Name] = tag;
+                }
             }
             else if(tag.Id>-1)
             {
                 this.Add(tag.Id, tag);
+                if (!mNamedTags.ContainsKey(tag.Name))
+                {
+                    mNamedTags.Add(tag.Name, tag);
+                }
+                else
+                {
+                    tag.Name = this.TagNames.ToList().GetAvaiableName("tag");
+                    mNamedTags.Add(tag.Name, tag);
+                }
+                MaxId = Math.Max(tag.Id, MaxId);
             }
             return true;
         }
@@ -90,7 +116,7 @@ namespace Cdy.Spider
         {
             if(!mNamedTags.ContainsKey(tag.Name))
             {
-                tag.Id = MaxId++;
+                tag.Id = ++MaxId;
                 Add(tag.Id, tag);
                 mNamedTags.Add(tag.Name, tag);
                 return true;
@@ -107,10 +133,32 @@ namespace Cdy.Spider
             if(this.ContainsKey(tag.Id))
             {
                 this.Remove(tag.Id);
+
             }
             if(mNamedTags.ContainsKey(tag.Name))
             {
                 mNamedTags.Remove(tag.Name);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool RemoveTagById(int id)
+        {
+            if(this.ContainsKey(id))
+            {
+                var tag = this[id];
+
+                if (mNamedTags.ContainsKey(tag.Name))
+                {
+                    mNamedTags.Remove(tag.Name);
+                }
+
+                this.Remove(id);
             }
             return true;
         }

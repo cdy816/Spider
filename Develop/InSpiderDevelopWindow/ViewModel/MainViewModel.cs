@@ -102,7 +102,8 @@ namespace InSpiderDevelopWindow
                     mCancelCommand = new RelayCommand(() => { 
                         if(MessageBox.Show(Res.Get("canceltosavemsg"),"",MessageBoxButton.YesNo)== MessageBoxResult.Yes)
                         {
-                           
+                            DevelopManager.Manager.Load();
+                            Init();
                         }
                     },()=> { return !string.IsNullOrEmpty(mDatabase); });
                 }
@@ -320,6 +321,14 @@ namespace InSpiderDevelopWindow
                 {
                     mSaveCommand = new RelayCommand(() => {
 
+                        if (DevelopManager.Manager.Save())
+                        {
+                            MessageBox.Show(Res.Get("SaveSucessfull"));
+                        }
+                        else
+                        {
+                            MessageBox.Show(Res.Get("Savefailed"), Res.Get("erro"), MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                         
                     }, () => { return string.IsNullOrEmpty(Database); });
                 }
