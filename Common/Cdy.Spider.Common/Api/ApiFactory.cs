@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -108,7 +109,7 @@ namespace Cdy.Spider
         /// </summary>
         public void LoadForRun()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "ApiRuntime.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "ApiRuntime.cfg");
             if(System.IO.File.Exists(sfile))
             {
                 XElement xx = XElement.Load(sfile);
@@ -119,7 +120,7 @@ namespace Cdy.Spider
                     var afile = GetAssemblyPath(ass);
                     if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
                     {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as IApiForFactory;
+                        var asb = Assembly.LoadFrom(afile).CreateInstance(cls) as IApiForFactory;
                         
                         if(!mRuntimeManagers.ContainsKey(asb.TypeName))
                         {
@@ -136,7 +137,7 @@ namespace Cdy.Spider
         /// </summary>
         public void LoadForDevelop()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "ApiDevelop.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location),"Config", "ApiDevelop.cfg");
             if (System.IO.File.Exists(sfile))
             {
                 XElement xx = XElement.Load(sfile);
@@ -147,11 +148,19 @@ namespace Cdy.Spider
                     var afile = GetAssemblyPath(ass);
                     if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
                     {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as IApiDevelopForFactory;
-
-                        if (!mDevelopManagers.ContainsKey(asb.TypeName))
+                        try
                         {
-                            mDevelopManagers.Add(asb.TypeName, asb);
+                            var asb = Assembly.LoadFrom(afile);
+                            var css = asb.CreateInstance(cls) as IApiDevelopForFactory;
+
+                            if (!mDevelopManagers.ContainsKey(css.TypeName))
+                            {
+                                mDevelopManagers.Add(css.TypeName, css);
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            Debug.Print(ex.Message);
                         }
 
                     }

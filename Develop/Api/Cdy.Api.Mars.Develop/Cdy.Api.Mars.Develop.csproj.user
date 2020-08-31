@@ -2,6 +2,14 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="ApiConfigView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ApiConfigView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Themes\Generic.xaml">
       <SubType>Designer</SubType>
     </Page>

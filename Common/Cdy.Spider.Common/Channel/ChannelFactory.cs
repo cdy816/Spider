@@ -96,7 +96,7 @@ namespace Cdy.Spider
         /// </summary>
         public void LoadForRun()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "ChannelRuntime.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "ChannelRuntime.cfg");
             if (System.IO.File.Exists(sfile))
             {
                 XElement xx = XElement.Load(sfile);
@@ -107,7 +107,7 @@ namespace Cdy.Spider
                     var afile = GetAssemblyPath(ass);
                     if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
                     {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as ICommChannelForFactory;
+                        var asb = Assembly.LoadFrom(afile).CreateInstance(cls) as ICommChannelForFactory;
 
                         if (!mRuntimeManagers.ContainsKey(asb.TypeName))
                         {
@@ -124,7 +124,7 @@ namespace Cdy.Spider
         /// </summary>
         public void LoadForDevelop()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "ChannelDevelop.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "ChannelDevelop.cfg");
             if (System.IO.File.Exists(sfile))
             {
                 XElement xx = XElement.Load(sfile);
@@ -135,7 +135,7 @@ namespace Cdy.Spider
                     var afile = GetAssemblyPath(ass);
                     if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
                     {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as ICommChannelDevelopForFactory;
+                        var asb = Assembly.LoadFrom(afile).CreateInstance(cls) as ICommChannelDevelopForFactory;
 
                         if (!mDevelopManagers.ContainsKey(asb.TypeName))
                         {

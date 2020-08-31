@@ -1,0 +1,55 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "InSpiderDevelopWindow/1.0.0": {
+        "dependencies": {
+          "Cdy.Spider.Common": "1.0.0",
+          "InSpiderDevelop": "1.0.0"
+        },
+        "runtime": {
+          "InSpiderDevelopWindow.dll": {}
+        },
+        "resources": {
+          "zh-CN/InSpiderDevelopWindow.resources.dll": {
+            "locale": "zh-CN"
+          }
+        }
+      },
+      "Cdy.Spider.Common/1.0.0": {
+        "runtime": {
+          "Cdy.Spider.Common.dll": {}
+        }
+      },
+      "InSpiderDevelop/1.0.0": {
+        "dependencies": {
+          "Cdy.Spider.Common": "1.0.0"
+        },
+        "runtime": {
+          "InSpiderDevelop.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "InSpiderDevelopWindow/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cdy.Spider.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "InSpiderDevelop/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -99,3 +99,6 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\o
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\APIDetailView.baml
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\DeviceDetailView.baml
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\ImportModeSelectView.baml
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\ApiDevelop.cfg
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\ChannelDevelop.cfg
+C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\DriverDevelop.cfg

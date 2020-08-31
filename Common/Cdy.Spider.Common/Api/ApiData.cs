@@ -100,6 +100,8 @@ namespace Cdy.Spider
             xx.SetAttributeValue("Circle", Circle);
             xx.SetAttributeValue("UserName", UserName);
             xx.SetAttributeValue("Password", Password);
+            xx.SetAttributeValue("ServerIp", ServerIp);
+            xx.SetAttributeValue("Port", Port);
             return xx;
         }
 
@@ -120,6 +122,8 @@ namespace Cdy.Spider
             }
             this.UserName = xe.Attribute("UserName")?.Value;
             this.Password = xe.Attribute("Password")?.Value;
+            this.ServerIp = xe.Attribute("ServerIp")?.Value;
+            this.Port = int.Parse(xe.Attribute("Port")?.Value);
             if (xe.Attribute("Circle") != null)
             {
                 this.Circle = int.Parse(xe.Attribute("Circle").Value);

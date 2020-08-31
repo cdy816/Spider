@@ -13,6 +13,11 @@
         },
         "runtime": {
           "Cdy.Api.Mars.Develop.dll": {}
+        },
+        "resources": {
+          "zh-CN/Cdy.Api.Mars.Develop.resources.dll": {
+            "locale": "zh-CN"
+          }
         }
       },
       "Cdy.Spider.Common/1.0.0": {

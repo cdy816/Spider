@@ -3,5 +3,7 @@
                     xmlns:local="clr-namespace:Cdy.Api.Mars"
                      >
 
-   
+    <DataTemplate DataType="{x:Type local:ApiConfigViewModel}">
+        <local:ApiConfigView />
+    </DataTemplate>
 </ResourceDictionary>

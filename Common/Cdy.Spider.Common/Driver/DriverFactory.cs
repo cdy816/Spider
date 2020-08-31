@@ -95,7 +95,7 @@ namespace Cdy.Spider
         /// </summary>
         public void LoadForRun()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "DriverRuntime.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "DriverRuntime.cfg");
             if (System.IO.File.Exists(sfile))
             {
                 XElement xx = XElement.Load(sfile);
@@ -106,7 +106,7 @@ namespace Cdy.Spider
                     var afile = GetAssemblyPath(ass);
                     if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
                     {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as IDriverForFactory;
+                        var asb = Assembly.LoadFrom(afile).CreateInstance(cls) as IDriverForFactory;
                         if (!mRuntimeManagers.ContainsKey(asb.TypeName))
                         {
                             mRuntimeManagers.Add(asb.TypeName, asb);
@@ -121,7 +121,7 @@ namespace Cdy.Spider
         /// </summary>
         public void LoadForDevelop()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "DriverDevelop.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "DriverDevelop.cfg");
             if (System.IO.File.Exists(sfile))
             {
                 XElement xx = XElement.Load(sfile);
@@ -132,7 +132,7 @@ namespace Cdy.Spider
                     var afile = GetAssemblyPath(ass);
                     if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
                     {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as IDriverDevelopForFactory;
+                        var asb = Assembly.LoadFrom(afile).CreateInstance(cls) as IDriverDevelopForFactory;
                         if (!mDevelopManagers.ContainsKey(asb.TypeName))
                         {
                             mDevelopManagers.Add(asb.TypeName, asb);

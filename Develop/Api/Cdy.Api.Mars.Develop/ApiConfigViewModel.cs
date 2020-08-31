@@ -10,7 +10,9 @@
 using Cdy.Spider;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace Cdy.Api.Mars
 {
@@ -24,6 +26,8 @@ namespace Cdy.Api.Mars
         
         private ApiData mModel;
 
+        private List<string> mTransTypes;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -31,7 +35,10 @@ namespace Cdy.Api.Mars
         #endregion ...Events...
 
         #region ... Constructor...
-
+        public ApiConfigViewModel()
+        {
+            mTransTypes = Enum.GetNames(typeof(ApiData.TransType)).ToList();
+        }
         #endregion ...Constructor...
 
         #region ... Properties ...
@@ -54,17 +61,158 @@ namespace Cdy.Api.Mars
             }
         }
 
-        #endregion ...Properties...
+        /// <summary>
+            /// 
+            /// </summary>
+        public string ServerIp
+        {
+            get
+            {
+                return mModel.ServerIp;
+            }
+            set
+            {
+                if (mModel.ServerIp != value)
+                {
+                    mModel.ServerIp = value;
+                    OnPropertyChanged("ServerIp");
+                }
+            }
+        }
 
-        #region ... Methods    ...
+        /// <summary>
+            /// 
+            /// </summary>
+        public int Port
+        {
+            get
+            {
+                return mModel.Port;
+            }
+            set
+            {
+                if (mModel.Port != value)
+                {
+                    mModel.Port = value;
+                    OnPropertyChanged("Port");
+                }
+            }
+        }
+
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return mModel.UserName;
+            }
+            set
+            {
+                if (mModel.UserName != value)
+                {
+                    mModel.UserName = value;
+                    OnPropertyChanged("UserName");
+                }
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string Password
+        {
+            get
+            {
+                return mModel.Password;
+            }
+            set
+            {
+                if (mModel.Password != value)
+                {
+                    mModel.Password = value;
+                    OnPropertyChanged("Password");
+                }
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public int Circle
+        {
+            get
+            {
+                return mModel.Circle;
+            }
+            set
+            {
+                if (mModel.Circle != value)
+                {
+                    mModel.Circle = value;
+                    OnPropertyChanged("Circle");
+                }
+            }
+        }
+
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public int TransType
+        {
+            get
+            {
+                return (int)mModel.Type;
+            }
+            set
+            {
+                if ((int)Model.Type != value)
+                {
+                    Model.Type = (ApiData.TransType)value;
+                    OnPropertyChanged("TransType");
+                    OnPropertyChanged("CircleVisiable");
+                }
+            }
+        }
+
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public List<string> TransTypes
+        {
+            get
+            {
+                return mTransTypes;
+            }
+            set
+            {
+                if (mTransTypes != value)
+                {
+                    mTransTypes = value;
+                    OnPropertyChanged("TransTypes");
+                }
+            }
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        private void Init()
+        public Visibility CircleVisiable
         {
-
+            get
+            {
+                return Model.Type == ApiData.TransType.Timer ? Visibility.Visible : Visibility.Collapsed;
+            }
         }
+
+
+        #endregion ...Properties...
+
+        #region ... Methods    ...
 
         #endregion ...Methods...
 
