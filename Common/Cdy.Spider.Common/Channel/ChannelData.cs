@@ -63,16 +63,6 @@ namespace Cdy.Spider
         #region ... Properties ...
 
         /// <summary>
-        /// 
-        /// </summary>
-        public string Assembly { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Class { get; set; }
-
-        /// <summary>
         /// 名称
         /// </summary>
         public string Name { get; set; }
@@ -80,7 +70,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 通道类型
         /// </summary>
-        public ChannelType Type { get; set; }
+        public virtual ChannelType Type { get; }
 
         /// <summary>
         /// 通讯失败时，重试次数
@@ -117,8 +107,6 @@ namespace Cdy.Spider
         {
             XElement xx = new XElement("Channel");
             xx.SetAttributeValue("Name", Name);
-            xx.SetAttributeValue("Assembly", Assembly);
-            xx.SetAttributeValue("Class", Class);
             xx.SetAttributeValue("Type", (int)Type);
             xx.SetAttributeValue("ReTryCount", ReTryCount);
             xx.SetAttributeValue("ReTryDuration", ReTryDuration);
@@ -136,14 +124,6 @@ namespace Cdy.Spider
             if(xe.Attribute("Name") !=null)
             {
                 this.Name = xe.Attribute("Name").Value;
-            }
-
-            this.Assembly = xe.Attribute("Assembly")?.Value;
-            this.Class = xe.Attribute("Class")?.Value;
-
-            if (xe.Attribute("Type") != null)
-            {
-                this.Type = (ChannelType)(int.Parse(xe.Attribute("Type").Value));
             }
 
             if (xe.Attribute("ReTryCount") != null)

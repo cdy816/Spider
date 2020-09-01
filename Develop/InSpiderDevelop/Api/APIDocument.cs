@@ -58,6 +58,14 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
+        public void New()
+        {
+            Api = ServiceLocator.Locator.Resolve<IApiFactory>().GetDevelopInstance();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Reload()
         {
             this.mApi = null;

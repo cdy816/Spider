@@ -69,7 +69,8 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="xe"></param>
-        void Load(XElement xe);
+        /// <param name="context"></param>
+        void Load(XElement xe, Context context);
         #endregion ...Methods...
 
         #region ... Interfaces ...

@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Cdy.Spider.MQTTClient.Develop">
+    <DataTemplate DataType="{x:Type local:MQTTClientChannelConfigViewModel}">
+        <local:MQTTClientChannelConfigView />
+    </DataTemplate>
+
+</ResourceDictionary>

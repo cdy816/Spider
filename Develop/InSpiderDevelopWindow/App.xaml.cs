@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cdy.Spider;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -23,11 +24,14 @@ namespace InSpiderDevelopWindow
         #endregion ...Events...
 
         #region ... Constructor...
+
+        /// <summary>
+        /// 
+        /// </summary>
         public App()
         {
             this.Startup += App_Startup;
         }
-
 
         #endregion ...Constructor...
 
@@ -37,11 +41,27 @@ namespace InSpiderDevelopWindow
 
         #region ... Methods    ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void App_Startup(object sender, StartupEventArgs e)
         {
             Cdy.Spider.ApiFactory.Factory.LoadForDevelop();
             Cdy.Spider.ChannelFactory.Factory.LoadForDevelop();
             Cdy.Spider.DriverFactory.Factory.LoadForDevelop();
+            RegsiteService();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void RegsiteService()
+        {
+            ServiceLocator.Locator.Registor<IApiFactory>(ApiFactory.Factory);
+            ServiceLocator.Locator.Registor<ICommChannelFactory>(ChannelFactory.Factory);
+            ServiceLocator.Locator.Registor<IDriverFactory>(DriverFactory.Factory);
         }
 
         #endregion ...Methods...

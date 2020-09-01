@@ -17,7 +17,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ChannelDevelopBase : ICommChannelDevelop
+    public abstract class ChannelDevelopBase : ICommChannelDevelop, ICommChannelDevelopForFactory
     {
 
         #region ... Variables  ...
@@ -98,6 +98,10 @@ namespace Cdy.Spider
             return this.Data.SaveToXML();
         }
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract ICommChannelDevelop NewChannel();
     }
 }

@@ -17,7 +17,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public abstract class DriverDevelop : IDriverDevelop
+    public abstract class DriverDevelop : IDriverDevelop, IDriverDevelopForFactory
     {
 
         #region ... Variables  ...
@@ -84,7 +84,13 @@ namespace Cdy.Spider
             return this.Data.SaveToXML();
         }
 
-       
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract IDriverDevelop NewDriver();
+
+
 
         #endregion ...Methods...
 

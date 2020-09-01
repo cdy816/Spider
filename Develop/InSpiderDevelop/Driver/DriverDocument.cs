@@ -16,7 +16,7 @@ using System.Xml.Linq;
 
 namespace InSpiderDevelop
 {
-    public class DriverDocument
+    public class DriverDocument: IDriverDevelopManager
     {
 
         #region ... Variables  ...
@@ -145,26 +145,26 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        public void Load(Context context)
         {
             string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Driver.cfg");
-            Load(sfile);
+            Load(sfile,context);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Reload()
+        public void Reload(Context context)
         {
             this.mDrivers.Clear();
-            Load();
+            Load(context);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sfile"></param>
-        public void Load(string sfile)
+        public void Load(string sfile, Context context)
         {
             if (System.IO.File.Exists(sfile))
             {
@@ -176,6 +176,7 @@ namespace InSpiderDevelop
                     asb.Load(vv);
                     AddDriver(asb);
                 }
+                context.Add(typeof(IDriverDevelopManager), this);
             }
         }
 

@@ -102,3 +102,6 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\o
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\ApiDevelop.cfg
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\ChannelDevelop.cfg
 C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\DriverDevelop.cfg
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\ApiDevelop.cfg
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\ChannelDevelop.cfg
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\DriverDevelop.cfg

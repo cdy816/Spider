@@ -13,16 +13,18 @@ using System.Text;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Cdy.Spider.MQTTClient
+namespace Cdy.Spider
 {
     /// <summary>
     /// 
     /// </summary>
-    public class MQTTDriver: DriverRunnerBase
+    public class SystemDriver: DriverRunnerBase
     {
 
         #region ... Variables  ...
-        private MQTTDriverData mData;
+
+        private SystemDriverData mData;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -42,7 +44,7 @@ namespace Cdy.Spider.MQTTClient
         /// <summary>
         /// 
         /// </summary>
-        public override string TypeName => "MQTTClient";
+        public override string TypeName => "SystemDriver";
 
         #endregion ...Properties...
 
@@ -164,9 +166,18 @@ namespace Cdy.Spider.MQTTClient
         /// <param name="xe"></param>
         public override void Load(XElement xe)
         {
-            mData = new MQTTDriverData();
+            mData = new SystemDriverData();
             mData.LoadFromXML(xe);
             base.Load(xe);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override IDriverRuntime NewApi()
+        {
+            return new SystemDriver();
         }
 
         #endregion ...Methods...

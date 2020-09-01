@@ -7,6 +7,7 @@
 //  种道洋
 //==============================================================
 
+using Cdy.Spider;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -80,6 +81,7 @@ namespace InSpiderDevelop
         public void New()
         {
             Api = new APIDocument() { Name = Name };
+            Api.New();
             Channel = new ChannelDocument() { Name = Name };
             Device = new DeviceDocument() { Name = Name };
             Driver = new DriverDocument() { Name = Name };
@@ -90,10 +92,13 @@ namespace InSpiderDevelop
         /// </summary>
         public void Load()
         {
-            Api.Load();
-            Channel.Load();
-            Device.Load();
-            Driver.Load();
+            using (Context context = new Context())
+            {
+                Api.Load();
+                Channel.Load(context);
+                Driver.Load(context);
+                Device.Load(context);
+            }
         }
 
         /// <summary>
@@ -101,10 +106,13 @@ namespace InSpiderDevelop
         /// </summary>
         public void Reload()
         {
-            Api.Reload();
-            Channel.Reload();
-            Device.Reload();
-            Driver.Reload();
+            using (Context context = new Context())
+            {
+                Api.Reload();
+                Channel.Reload(context);
+                Driver.Reload(context);
+                Device.Reload(context);
+            }
         }
 
         /// <summary>
@@ -119,8 +127,8 @@ namespace InSpiderDevelop
             }
             Api.Save();
             Channel.Save();
-            Device.Save();
             Driver.Save();
+            Device.Save();
         }
 
         #endregion ...Methods...

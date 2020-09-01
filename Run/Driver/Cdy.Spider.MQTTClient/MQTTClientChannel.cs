@@ -151,10 +151,21 @@ namespace Cdy.Spider.MQTTClient
                 }
                 else
                 {
-                    var res = this.ReceiveCallBack(x.ApplicationMessage.Topic.Replace(mData.ClientTopicAppendString, ""), x.ApplicationMessage.Payload);
+                    var vtop = x.ApplicationMessage.Topic;
+
+                    if(vtop.EndsWith(mData.ResponseTopicAppendString))
+                    {
+                        return;
+                    }
+
+                    var res = this.ReceiveCallBack(vtop.Replace(mData.ServerTopicAppendString, ""), x.ApplicationMessage.Payload);
                     if (!string.IsNullOrEmpty(x.ApplicationMessage.ResponseTopic) && res != null)
                     {
                         SendToTopicDataWithoutResponse(x.ApplicationMessage.ResponseTopic, res);
+                    }
+                    else if (res != null)
+                    {
+                        SendToTopicDataWithoutResponse(vtop + mData.ResponseTopicAppendString, res);
                     }
                 }
             }
@@ -169,8 +180,12 @@ namespace Cdy.Spider.MQTTClient
             base.Prepare(deviceInfos);
             foreach (var vv in deviceInfos)
             {
-                this.mqttClient.SubscribeAsync(vv + mData.ClientTopicAppendString);
-                this.mqttClient.SubscribeAsync(vv + mData.ResponseTopicAppendString);
+                //将本机认值服务器角色，下位设备认作客户端角色
+                //订购服务器端主题
+                this.mqttClient.SubscribeAsync(vv + mData.ServerTopicAppendString);
+
+                //订购客户端回复主题
+                this.mqttClient.SubscribeAsync(vv + mData.ClientTopicAppendString + mData.ResponseTopicAppendString);
             }
         }
 
@@ -230,7 +245,7 @@ namespace Cdy.Spider.MQTTClient
         {
             string ss = string.IsNullOrEmpty(key) ? this.Data.Name : key;
             string skey = ss + mData.ClientTopicAppendString;
-            string reskey = paras.Length > 0 ? paras[0] : ss + mData.ResponseTopicAppendString;
+            string reskey = paras.Length > 0 ? paras[0] : skey + mData.ResponseTopicAppendString;
             mResTopic = reskey;
 
             eventreset.Reset();
@@ -273,6 +288,15 @@ namespace Cdy.Spider.MQTTClient
         {
             mData = new MQTTChannelData();
             mData.LoadFromXML(xe);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override ICommChannel NewApi()
+        {
+            return new MQTTClientChannel();
         }
 
         #endregion ...Methods...

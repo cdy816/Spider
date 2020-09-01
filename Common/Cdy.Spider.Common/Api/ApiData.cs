@@ -57,7 +57,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 定时周期
         /// </summary>
-        public int Circle { get; set; }
+        public int Circle { get; set; } = 500;
 
         /// <summary>
         /// 传输类型
@@ -67,22 +67,22 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public string ServerIp { get; set; }
+        public string ServerIp { get; set; } = "127.0.0.1";
 
         /// <summary>
         /// 
         /// </summary>
-        public int Port { get; set; }
+        public int Port { get; set; } = 3600;
 
         /// <summary>
         /// 
         /// </summary>
-        public string UserName { get; set; }
+        public string UserName { get; set; } = "Admin";
 
         /// <summary>
         /// 
         /// </summary>
-        public string Password { get; set; }
+        public string Password { get; set; } = "";
 
         #endregion ...Properties...
 

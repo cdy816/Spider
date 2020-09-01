@@ -8,9 +8,11 @@
   <ItemGroup>
     <None Remove="Image\cancel.png" />
     <None Remove="Image\close.png" />
+    <None Remove="Image\hidden.png" />
     <None Remove="Image\max.png" />
     <None Remove="Image\minus.png" />
     <None Remove="Image\ok.png" />
+    <None Remove="Image\show.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,9 +22,11 @@
   <ItemGroup>
     <Resource Include="Image\cancel.png" />
     <Resource Include="Image\close.png" />
+    <Resource Include="Image\hidden.png" />
     <Resource Include="Image\max.png" />
     <Resource Include="Image\minus.png" />
     <Resource Include="Image\ok.png" />
+    <Resource Include="Image\show.png" />
   </ItemGroup>
 
   <ItemGroup>

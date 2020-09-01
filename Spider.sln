@@ -35,7 +35,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Api.Mars.Develop", "Dev
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{59C072B0-0327-4483-8AA6-E90AADCF9546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.DevelopCommon", "Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj", "{442E5AE8-4D01-4E3A-B242-5125B31FCD2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.DevelopCommon", "Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj", "{442E5AE8-4D01-4E3A-B242-5125B31FCD2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{AD24B2A3-9440-45D2-971D-D806942C5B4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.MQTTClient.Develop", "Develop\Drivers\Cdy.Spider.MQTTClient.Develop\Cdy.Spider.MQTTClient.Develop.csproj", "{55ED0518-E3D7-444E-9431-11F051CD1FEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.SystemDriver", "Run\Driver\Cdy.Spider.SystemDriver\Cdy.Spider.SystemDriver.csproj", "{4B2D53A1-5EA6-436E-A1BF-D1664C427287}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.SystemDriver.Develop", "Develop\Drivers\Cdy.Spider.SystemDriver.Develop\Cdy.Spider.SystemDriver.Develop.csproj", "{917BF9E3-7188-4179-B321-E9D976864C7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +95,18 @@ Global
 		{442E5AE8-4D01-4E3A-B242-5125B31FCD2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{442E5AE8-4D01-4E3A-B242-5125B31FCD2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{442E5AE8-4D01-4E3A-B242-5125B31FCD2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55ED0518-E3D7-444E-9431-11F051CD1FEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55ED0518-E3D7-444E-9431-11F051CD1FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55ED0518-E3D7-444E-9431-11F051CD1FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55ED0518-E3D7-444E-9431-11F051CD1FEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B2D53A1-5EA6-436E-A1BF-D1664C427287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B2D53A1-5EA6-436E-A1BF-D1664C427287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B2D53A1-5EA6-436E-A1BF-D1664C427287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B2D53A1-5EA6-436E-A1BF-D1664C427287}.Release|Any CPU.Build.0 = Release|Any CPU
+		{917BF9E3-7188-4179-B321-E9D976864C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{917BF9E3-7188-4179-B321-E9D976864C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{917BF9E3-7188-4179-B321-E9D976864C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{917BF9E3-7188-4179-B321-E9D976864C7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +126,10 @@ Global
 		{D9845AC0-AA17-4BF4-8050-5500A3E8E926} = {59C072B0-0327-4483-8AA6-E90AADCF9546}
 		{59C072B0-0327-4483-8AA6-E90AADCF9546} = {A65432DA-5927-478E-8F2C-CD211FFA37F9}
 		{442E5AE8-4D01-4E3A-B242-5125B31FCD2E} = {00CB9EFC-90E7-4555-B068-F434943241C6}
+		{AD24B2A3-9440-45D2-971D-D806942C5B4A} = {A65432DA-5927-478E-8F2C-CD211FFA37F9}
+		{55ED0518-E3D7-444E-9431-11F051CD1FEF} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
+		{4B2D53A1-5EA6-436E-A1BF-D1664C427287} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
+		{917BF9E3-7188-4179-B321-E9D976864C7C} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}

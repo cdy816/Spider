@@ -1,0 +1,37 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.1/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.1": {},
+    ".NETStandard,Version=v2.1/": {
+      "Cdy.Spider.SystemDriver/1.0.0": {
+        "dependencies": {
+          "Cdy.Spider.Common": "1.0.0"
+        },
+        "runtime": {
+          "Cdy.Spider.SystemDriver.dll": {}
+        }
+      },
+      "Cdy.Spider.Common/1.0.0": {
+        "runtime": {
+          "Cdy.Spider.Common.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Cdy.Spider.SystemDriver/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cdy.Spider.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

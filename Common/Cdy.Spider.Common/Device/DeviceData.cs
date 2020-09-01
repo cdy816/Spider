@@ -48,9 +48,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public string DriverName { get; set; }
-
-
+        public string ChannelName { get; set; }
 
         #endregion ...Properties...
 
@@ -111,7 +109,7 @@ namespace Cdy.Spider
         public void LoadFromXML(XElement xe)
         {
             this.Name = xe.Attribute("Name")?.Value;
-            this.DriverName = xe.Attribute("DriverName")?.Value;
+            this.ChannelName = xe.Attribute("ChannelName")?.Value;
             Tags = new TagCollection();
             foreach (var vv in xe.Elements())
             {
@@ -127,7 +125,7 @@ namespace Cdy.Spider
         {
             XElement xe = new XElement("Device");
             xe.SetAttributeValue("Name", Name);
-            xe.SetAttributeValue("DriverName", DriverName);
+            xe.SetAttributeValue("ChannelName", ChannelName);
             XElement xx = new XElement("Tags");
             if (Tags != null)
             {

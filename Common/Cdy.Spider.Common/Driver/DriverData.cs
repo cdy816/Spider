@@ -14,6 +14,23 @@ using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
+
+    /// <summary>
+    /// 工作方式
+    /// </summary>
+    public enum WorkMode
+    {
+        /// <summary>
+        /// 主动
+        /// </summary>
+        Active,
+        /// <summary>
+        /// 被动
+        /// </summary>
+        Passivity
+    }
+
+
     public abstract class DriverData
     {
 
@@ -32,24 +49,14 @@ namespace Cdy.Spider
         #region ... Properties ...
 
         /// <summary>
-        /// 类型
-        /// </summary>
-        public string Class { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Assembly { get; set; }
-
-        /// <summary>
         /// 名称
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// 通道名称
+        /// 工作模式
         /// </summary>
-        public string ChannelName { get; set; }
+        public WorkMode Model { get; set; }
 
         /// <summary>
         /// 扫描周期
@@ -67,11 +74,9 @@ namespace Cdy.Spider
         /// <param name="xe"></param>
         public void LoadFromXML(XElement xe)
         {
-            this.Assembly = xe.Attribute("Assembly")?.Value;
-            this.Class = xe.Attribute("Class")?.Value;
             this.Name = xe.Attribute("Name")?.Value;
-            this.ChannelName = xe.Attribute("ChannelName")?.Value;
             this.ScanCircle = int.Parse(xe.Attribute("ScanCircle")?.Value);
+            this.Model = (WorkMode)int.Parse(xe.Attribute("Model")?.Value);
         }
 
         /// <summary>
@@ -81,10 +86,8 @@ namespace Cdy.Spider
         public virtual XElement SaveToXML()
         {
             XElement xe = new XElement("Device");
-            xe.SetAttributeValue("Assembly", Assembly);
-            xe.SetAttributeValue("Class", Class);
             xe.SetAttributeValue("Name", Name);
-            xe.SetAttributeValue("ChannelName", ChannelName);
+            xe.SetAttributeValue("Model", (int)Model);
             xe.SetAttributeValue("ScanCircle", ScanCircle);
             return xe;
         }

@@ -16,7 +16,7 @@ using System.Xml.Linq;
 
 namespace InSpiderDevelop
 {
-    public class ChannelDocument
+    public class ChannelDocument: ICommChannelDevelopManager
     {
 
         #region ... Variables  ...
@@ -144,26 +144,27 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Reload()
+        public void Reload(Context context)
         {
             this.mChannels.Clear();
-            Load();
+            Load(context);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        public void Load(Context context)
         {
             string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Channel.cfg");
-            Load(sfile);
+            Load(sfile,context);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sfile"></param>
-        public void Load(string sfile)
+        /// <param name="context"></param>
+        public void Load(string sfile, Context context)
         {
             if (System.IO.File.Exists(sfile))
             {

@@ -235,7 +235,7 @@
     <value>保存成功!</value>
   </data>
   <data name="SpiderTitle" xml:space="preserve">
-    <value>欢迎来到Spider开发平台</value>
+    <value>欢迎来到 Spider 开发平台</value>
   </data>
   <data name="TagCount" xml:space="preserve">
     <value>变量个数</value>

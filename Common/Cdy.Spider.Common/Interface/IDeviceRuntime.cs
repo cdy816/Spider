@@ -66,6 +66,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         object ReadValue(int id);
 
+
+
         #endregion ...Methods...
 
         #region ... Interfaces ...
@@ -166,6 +168,11 @@ namespace Cdy.Spider
         List<Tagbae> ListTags();
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        ICommChannel GetCommChannel();
 
         #endregion ...Methods...
 

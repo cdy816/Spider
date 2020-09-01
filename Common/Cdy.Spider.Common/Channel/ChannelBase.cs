@@ -19,7 +19,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ChannelBase : ICommChannel
+    public abstract class ChannelBase : ICommChannel, ICommChannelForFactory
     {
 
         #region ... Variables  ...
@@ -323,6 +323,11 @@ namespace Cdy.Spider
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract ICommChannel NewApi();
 
         #endregion ...Methods...
 

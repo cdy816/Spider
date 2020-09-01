@@ -11,12 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cdy.Spider.MQTTClient
+namespace Cdy.Spider
 {
     /// <summary>
     /// 
     /// </summary>
-    public class MQTTDriverData: DriverData
+    public class SystemDriverData: DriverData
     {
 
         #region ... Variables  ...

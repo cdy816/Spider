@@ -18,7 +18,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 驱动基类
     /// </summary>
-    public abstract class DriverRunnerBase : IDriverRuntime
+    public abstract class DriverRunnerBase : IDriverRuntime, IDriverForFactory
     {
 
         #region ... Variables  ...
@@ -77,27 +77,28 @@ namespace Cdy.Spider
         /// </summary>
         public virtual void Init()
         {
-            mComm = ServiceLocator.Locator.Resolve<ICommChannelRuntimeManager>().GetChannel(Data.ChannelName);
-            mComm.CommChangedCallBack = OnCommChanged;
-            mComm.ReceiveCallBack = OnReceiveData;
-
-            foreach(var vv in Device.ListTags())
+            mComm = Device.GetCommChannel();
+            if (mComm != null)
             {
-                if(!string.IsNullOrEmpty(vv.DeviceInfo))
+                mComm.CommChangedCallBack = OnCommChanged;
+                mComm.ReceiveCallBack = OnReceiveData;
+
+                foreach (var vv in Device.ListTags())
                 {
-                    if(mCachTags.ContainsKey(vv.DeviceInfo))
+                    if (!string.IsNullOrEmpty(vv.DeviceInfo))
                     {
-                        mCachTags[vv.DeviceInfo].Add(vv.Id);
-                    }
-                    else
-                    {
-                        mCachTags.Add(vv.DeviceInfo, new List<int>() { vv.Id });
+                        if (mCachTags.ContainsKey(vv.DeviceInfo))
+                        {
+                            mCachTags[vv.DeviceInfo].Add(vv.Id);
+                        }
+                        else
+                        {
+                            mCachTags.Add(vv.DeviceInfo, new List<int>() { vv.Id });
+                        }
                     }
                 }
+                mComm.Init();
             }
-
-            mComm.Init();
-
         }
 
         /// <summary>
@@ -262,5 +263,11 @@ namespace Cdy.Spider
         {
            
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract IDriverRuntime NewApi();
     }
 }

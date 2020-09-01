@@ -52,6 +52,8 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         DriverData Data { get;}
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...

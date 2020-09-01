@@ -34,6 +34,8 @@ namespace Cdy.Spider.MQTTClient
 
         #region ... Properties ...
 
+        
+
         /// <summary>
         /// 服务端主题附件字符串
         /// </summary>

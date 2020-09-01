@@ -507,26 +507,26 @@ namespace InSpiderDevelop
         }
 
 
-        public void Reload()
+        public void Reload(Context context)
         {
             this.mDevices.Clear();
-            Load();
+            Load(context);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        public void Load(Context context)
         {
             string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
-            Load(sfile);
+            Load(sfile, context);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sfile"></param>
-        public void Load(string sfile)
+        public void Load(string sfile, Context context)
         {
             if (System.IO.File.Exists(sfile))
             {
@@ -534,7 +534,7 @@ namespace InSpiderDevelop
                 foreach (var vv in xx.Elements())
                 {
                     DeviceDevelop asb = new DeviceDevelop();
-                    asb.Load(vv);
+                    asb.Load(vv,context);
                     AddDevice(asb);
                 }
             }
@@ -550,6 +550,10 @@ namespace InSpiderDevelop
             Save(sfile);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sfile"></param>
         private void CheckDirExistOrCreat(string sfile)
         {
             string sdir = System.IO.Path.GetDirectoryName(sfile);

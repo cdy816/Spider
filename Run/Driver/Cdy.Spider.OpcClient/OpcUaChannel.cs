@@ -50,6 +50,15 @@ namespace Cdy.Spider.OpcClient
             base.Init();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override ICommChannel NewApi()
+        {
+            return new OpcUaChannel();
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

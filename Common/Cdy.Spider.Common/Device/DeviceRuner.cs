@@ -38,6 +38,9 @@ namespace Cdy.Spider
         /// </summary>
         SortedDictionary<int, Tagbae> mIdMapTags = new SortedDictionary<int, Tagbae>();
 
+        /// <summary>
+        /// 
+        /// </summary>
         private Action<string,Tagbae> mValueCallBack;
 
         #endregion ...Variables...
@@ -66,6 +69,11 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         public IDriverRuntime Driver { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommChannel Channel { get; set; }
 
         #endregion ...Properties...
 
@@ -105,9 +113,10 @@ namespace Cdy.Spider
                     mDeviceMapTags.Add(dvname, ll);
                 }
             }
-            Driver = ServiceLocator.Locator.Resolve<IDriverRuntimeManager>().GetDriver(Device.DriverName);
+
+            Channel = ServiceLocator.Locator.Resolve<ICommChannelRuntimeManager>().GetChannel(Device.ChannelName);
+            Driver = ServiceLocator.Locator.Resolve<IDriverRuntimeManager>().GetDriver(Device.Name);
             Driver.Device = this;
-            
             Driver.Init();
         }
 
@@ -636,6 +645,15 @@ namespace Cdy.Spider
         public void RegistorCallBack(Action<string,Tagbae> callBack)
         {
             mValueCallBack = callBack;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ICommChannel GetCommChannel()
+        {
+            return Channel;
         }
 
 

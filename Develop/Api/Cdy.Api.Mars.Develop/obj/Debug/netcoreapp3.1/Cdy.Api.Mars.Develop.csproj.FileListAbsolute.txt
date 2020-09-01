@@ -42,3 +42,11 @@ C:\Users\cdy81\source\repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\ne
 C:\Users\cdy81\source\repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\bin\Debug\netcoreapp3.1\zh-CN\Cdy.Api.Mars.Develop.resources.dll
 C:\Users\cdy81\source\repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.Properties.Resources.zh-CN.resources
 C:\Users\cdy81\source\repos\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\zh-CN\Cdy.Api.Mars.Develop.resources.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\bin\Debug\netcoreapp3.1\zh-CN\Cdy.Api.Mars.Develop.resources.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\ApiConfigView.g.cs
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\ApiConfigView.baml
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.Properties.Resources.resources
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.Properties.Resources.zh-CN.resources
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\Cdy.Api.Mars.Develop.csproj.GenerateResource.cache
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Api\Cdy.Api.Mars.Develop\obj\Debug\netcoreapp3.1\zh-CN\Cdy.Api.Mars.Develop.resources.dll

@@ -21,7 +21,7 @@ namespace Cdy.Spider
     {
 
         #region ... Variables  ...
-
+        private ICommChannelDevelop mCommChannel;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -33,10 +33,23 @@ namespace Cdy.Spider
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+
         /// <summary>
         /// 
         /// </summary>
-        public string Name { get => Data.Name; set => Data.Name = value; }
+        public string Name
+        {
+            get
+            {
+                return Data.Name;
+            }
+            set
+            {
+                Data.Name = value;
+                UpdateDriverName();
+            }
+        }
 
         /// <summary>
         /// 
@@ -53,16 +66,43 @@ namespace Cdy.Spider
         /// </summary>
         public string Group { get { return Data.Group; } set { Data.Group = value; } }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommChannelDevelop Channel 
+        {
+            get 
+            {
+                return mCommChannel;
+            }
+            set
+            {
+                mCommChannel =value;
+                Data.ChannelName = value.Name;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IDriverDevelop Driver 
+        {
+            get;
+            set;
+        }
 
         #endregion ...Properties...
 
         #region ... Methods    ...
 
-        #endregion ...Methods...
-
-        #region ... Interfaces ...
-
-        #endregion ...Interfaces...
+        /// <summary>
+        /// 
+        /// </summary>
+        public void UpdateDriverName()
+        {
+            if (this.Driver != null)
+                this.Driver.Name = FullName;
+        }
 
         /// <summary>
         /// 
@@ -77,10 +117,19 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="xe"></param>
-        public void Load(XElement xe)
+        /// <param name="context"></param>
+        public void Load(XElement xe, Context context)
         {
             this.Data = new DeviceData();
             this.Data.LoadFromXML(xe);
+            if (!string.IsNullOrEmpty(this.Data.ChannelName))
+            {
+                this.mCommChannel = context.Get<ICommChannelDevelopManager>().GetChannel(this.Data.ChannelName);
+            }
+            if (!string.IsNullOrEmpty(this.Name))
+            {
+                this.Driver = context.Get<IDriverDevelopManager>().GetDriver(this.Name);
+            }
         }
 
         /// <summary>
@@ -91,5 +140,12 @@ namespace Cdy.Spider
         {
             return this.Data.SaveToXML();
         }
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+
+
     }
 }

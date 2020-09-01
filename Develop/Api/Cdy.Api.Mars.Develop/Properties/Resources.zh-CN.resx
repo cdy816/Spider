@@ -121,7 +121,7 @@
     <value>周期</value>
   </data>
   <data name="DataTransType" xml:space="preserve">
-    <value>数据传输类型</value>
+    <value>传输类型</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>密码</value>

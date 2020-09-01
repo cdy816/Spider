@@ -1182,7 +1182,7 @@
                             <Setter Property="Panel.ZIndex" Value="1"/>
                             <Setter Property="Margin" Value="0,-1"/>
                             <Setter Property="Background" TargetName="mainBorder" Value="#0FE5E5E5"/>
-                            <Setter Property="BorderThickness" TargetName="mainBorder" Value="0,2,0,0"/>
+                            <Setter Property="BorderThickness" TargetName="mainBorder" Value="0,3,0,0"/>
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
@@ -1200,7 +1200,7 @@
                             <Setter Property="Panel.ZIndex" Value="1"/>
                             <Setter Property="Margin" Value="0,-1"/>
                             <Setter Property="Background" TargetName="mainBorder" Value="#0FE5E5E5"/>
-                            <Setter Property="BorderThickness" TargetName="mainBorder" Value="0,0,0,2"/>
+                            <Setter Property="BorderThickness" TargetName="mainBorder" Value="0,0,0,3"/>
                         </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
