@@ -354,18 +354,34 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private MachineViewModel GetMachineViewModel(TreeItemViewModel model)
+        {
+            if (model is MachineViewModel) return model as MachineViewModel;
+            else
+            {
+                return GetMachineViewModel(model.Parent);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="mode"></param>
         /// <returns></returns>
         public override ViewModelBase GetModel(ViewModelBase mode)
         {
+            var vmm = GetMachineViewModel(this);
             if (mode is DeviceDetailViewModel)
             {
                 (mode as DeviceDetailViewModel).Model = this.Model;
+                (mode as DeviceDetailViewModel).MachineModel = vmm.Model;
                 return mode;
             }
             else
             {
-                return new DeviceDetailViewModel() { Model = this.Model };
+                return new DeviceDetailViewModel() { Model = this.Model,MachineModel = vmm.Model };
             }
         }
 

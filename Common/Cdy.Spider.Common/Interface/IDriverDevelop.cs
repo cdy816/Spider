@@ -40,7 +40,15 @@ namespace Cdy.Spider
         /// </summary>
         DriverData Data { get; set; }
 
+        /// <summary>
+        /// Protocol 类型
+        /// </summary>
         string TypeName { get; }
+
+        /// <summary>
+        /// 支持的通道类型
+        /// </summary>
+        ChannelType[] SupportChannelTypes { get; }
 
         #endregion ...Properties...
 

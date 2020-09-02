@@ -46,6 +46,12 @@ namespace Cdy.Spider
         /// <returns></returns>
         ICommChannelDevelop GetDevelopIntance(string type);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<ICommChannelDevelop> ListDevelopInstance();
+
 
         #endregion ...Methods...
 

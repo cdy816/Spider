@@ -43,6 +43,7 @@ namespace InSpiderDevelopWindow.ViewModel
         private ICommand mRemoveCommand;
         private ICommand mImportCommand;
         private ICommand mExportCommand;
+        private ICommand mShareChannelCommand;
 
         private ICommand mCopyCommand;
         private ICommand mCellCopyCommand;
@@ -80,6 +81,23 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private List<int> mIdCach = new List<int>();
 
+        static List<string> mChannelList = new List<string>();
+        static List<string> mProtocolList = new List<string>();
+
+        private ICollectionView mChannelView;
+
+        private MachineDocument mMachineModel;
+
+        private string mProtocolName;
+        private string mChannelName;
+
+        private object mDriverConfig;
+        private object mChannelConfig;
+
+        private string mShareChannel;
+
+        private List<string> mSupportChannels = new List<string>();
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -88,10 +106,50 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Constructor...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        static DeviceDetailViewModel()
+        {
+            mProtocolList.AddRange(ServiceLocator.Locator.Resolve<IDriverFactory>().ListDevelopInstance().Select(e=>e.TypeName));
+            mChannelList.AddRange(ServiceLocator.Locator.Resolve<ICommChannelFactory>().ListDevelopInstance().Select(e => e.TypeName));
+        }
 
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICollectionView ChannelView
+        {
+            get
+            {
+                if(mChannelView==null)
+                {
+                    mChannelView = CollectionViewSource.GetDefaultView(mChannelList);
+                    mChannelView.Filter = new Predicate<object>((e) => 
+                    {
+                        return mSupportChannels.Contains(e);
+                    });
+                }
+                return mChannelView;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> ProtocolList
+        {
+            get
+            {
+                return mProtocolList;
+            }
+        }
+
 
         public string[] TagTypeList
         {
@@ -292,6 +350,26 @@ namespace InSpiderDevelopWindow.ViewModel
                 }
             }
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public MachineDocument MachineModel
+        {
+            get
+            {
+                return mMachineModel;
+            }
+            set
+            {
+                if (mMachineModel != value)
+                {
+                    mMachineModel = value;
+                    OnPropertyChanged("MachineModel");
+                }
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -488,7 +566,25 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ShareChannelCommand
+        {
+            get
+            {
+                if(mShareChannelCommand==null)
+                {
+                    mShareChannelCommand = new RelayCommand(() => {
+
+                        SelectShareChannel();
+                    });
+                }
+                return mShareChannelCommand;
+            }
+        }
+
+
 
         /// <summary>
         /// 
@@ -558,10 +654,197 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public string ProtocolName
+        {
+            get
+            {
+                return mProtocolName;
+            }
+            set
+            {
+                if (mProtocolName != value)
+                {
+                    mProtocolName = value;
+                    ChangedProtocol(value);
+                    OnPropertyChanged("ProtocolName");
+                }
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string ChannelName
+        {
+            get
+            {
+                return mChannelName;
+            }
+            set
+            {
+                if (mChannelName != value)
+                {
+                    mChannelName = value;
+                    ChangedChannel(value);
+                    OnPropertyChanged("ChannelName");
+                }
+            }
+        }
+
+       
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public object DriverConfig
+        {
+            get
+            {
+                return mDriverConfig;
+            }
+            set
+            {
+                if (mDriverConfig != value)
+                {
+                    mDriverConfig = value;
+                    OnPropertyChanged("DriverConfig");
+                }
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public object ChannelConfig
+        {
+            get
+            {
+                return mChannelConfig;
+            }
+            set
+            {
+                if (mChannelConfig != value)
+                {
+                    mChannelConfig = value;
+                    OnPropertyChanged("ChannelConfig");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ShareChannel
+        {
+            get
+            {
+                return mShareChannel;
+            }
+            set
+            {
+                if (mShareChannel != value)
+                {
+                    mShareChannel = value;
+                    OnPropertyChanged("ShareChannel");
+                }
+            }
+        }
+
 
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newProtocol"></param>
+        private void ChangedProtocol(string newProtocol)
+        {
+            mMachineModel.Driver.RemoveDriver(Model.FullName);
+            var dd = ServiceLocator.Locator.Resolve<IDriverFactory>().GetDevelopInstance(newProtocol);
+            dd.Name = Model.FullName;
+            mMachineModel.Driver.AddDriver(dd);
+            DriverConfig = dd.Config();
+            UpdateSupportChannel(dd);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newchannel"></param>
+        private void ChangedChannel(string newchannel)
+        {
+            mMachineModel.Channel.RemoveChannel(Model.Data.ChannelName);
+            var dd = ServiceLocator.Locator.Resolve<ICommChannelFactory>().GetDevelopIntance(newchannel);
+            dd.Name = string.IsNullOrEmpty(Model.Data.ChannelName)?mMachineModel.Channel.GetAvaiableName(newchannel):Model.Data.ChannelName;
+            mMachineModel.Channel.AddChannel(dd);
+
+            ChannelConfig = dd.Config();
+
+            UpdateShareChannelText();
+        }
+
+        private void UpdateSupportChannel(IDriverDevelop driver)
+        {
+            mSupportChannels.Clear();
+
+            if (driver == null)
+            {
+                ChannelView.Refresh();
+                return;
+            }
+            if (driver.SupportChannelTypes != null)
+            {
+                var vlist = ServiceLocator.Locator.Resolve<ICommChannelFactory>().ListDevelopInstance();
+                if(vlist!=null && vlist.Count>0)
+                {
+                    foreach(var vv in vlist)
+                    {
+                        if(driver.SupportChannelTypes.Contains(vv.Data.Type))
+                        {
+                            mSupportChannels.Add(vv.Data.Type.ToString());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                mSupportChannels.AddRange(mChannelList);
+            }
+
+            ChannelView.Refresh();
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private void SelectShareChannel()
+        {
+            UpdateShareChannelText();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateShareChannelText()
+        {
+            if (string.IsNullOrEmpty(this.Model.Data.ChannelName)) return;
+
+            var names = mMachineModel.Device.ListAllDevices().Where(e => e.Data.ChannelName == this.Model.Data.ChannelName).Select(e => e.FullName);
+            StringBuilder sb = new StringBuilder();
+            foreach(var vv in names)
+            {
+                sb.Append(vv + ",");
+            }
+            sb.Length = sb.Length > 0 ? sb.Length - 1 : sb.Length;
+            ShareChannel = sb.ToString();
+        }
 
         /// <summary>
         /// 
@@ -616,6 +899,22 @@ namespace InSpiderDevelopWindow.ViewModel
                 }
             });
             TagCount = mModel.Data.Tags.Count;
+
+            var channel = mMachineModel.Channel.GetChannel(mModel.Data.ChannelName);
+            if(channel!=null)
+            {
+                mChannelName = channel.TypeName;
+                ChannelConfig = channel.Config();
+            }
+
+            var driver = mMachineModel.Driver.GetDriver(mModel.FullName);
+            if(driver!=null)
+            {
+                mProtocolName = driver.TypeName;
+                DriverConfig = driver.Config();
+            }
+            UpdateShareChannelText();
+            UpdateSupportChannel(driver);
         }
 
         /// <summary>

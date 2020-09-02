@@ -37,14 +37,20 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        IDriverRuntime GetRuntimeIntance(string type);
+        IDriverRuntime GetRuntimeInstance(string type);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        IDriverDevelop GetDevelopIntance(string type);
+        IDriverDevelop GetDevelopInstance(string type);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<IDriverDevelop> ListDevelopInstance();
 
         #endregion ...Methods...
 

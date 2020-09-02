@@ -234,6 +234,9 @@
   <data name="SaveSucessfull" xml:space="preserve">
     <value>保存成功!</value>
   </data>
+  <data name="ShareChannel" xml:space="preserve">
+    <value>共享通道</value>
+  </data>
   <data name="SpiderTitle" xml:space="preserve">
     <value>欢迎来到 Spider 开发平台</value>
   </data>

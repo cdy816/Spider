@@ -172,7 +172,7 @@ namespace InSpiderDevelop
                 foreach (var vv in xx.Elements())
                 {
                     string tname = vv.Attribute("TypeName").Value;
-                    var asb = ServiceLocator.Locator.Resolve<IDriverFactory>().GetDevelopIntance(tname);
+                    var asb = ServiceLocator.Locator.Resolve<IDriverFactory>().GetDevelopInstance(tname);
                     asb.Load(vv);
                     AddDriver(asb);
                 }

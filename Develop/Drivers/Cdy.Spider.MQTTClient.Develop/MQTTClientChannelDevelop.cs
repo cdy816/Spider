@@ -67,7 +67,7 @@ namespace Cdy.Spider.MQTTClient.Develop
         /// <returns></returns>
         public override ICommChannelDevelop NewChannel()
         {
-            return new MQTTClientChannelDevelop();
+            return new MQTTClientChannelDevelop() { Data = CreatNewData() };
         }
 
         /// <summary>

@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
@@ -18,7 +19,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class ChannelFactory
+    public class ChannelFactory: ICommChannelFactory
     {
 
         #region ... Variables  ...
@@ -145,6 +146,15 @@ namespace Cdy.Spider
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<ICommChannelDevelop> ListDevelopInstance()
+        {
+            return mDevelopManagers.Values.Select(e => e.NewChannel()).ToList();
         }
 
         #endregion ...Methods...

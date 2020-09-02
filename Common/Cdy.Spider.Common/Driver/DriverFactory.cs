@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
@@ -56,7 +57,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IDriverDevelop GetDevelopIntance(string type)
+        public IDriverDevelop GetDevelopInstance(string type)
         {
             if (mDevelopManagers.ContainsKey(type))
             {
@@ -70,7 +71,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IDriverRuntime GetRuntimeIntance(string type)
+        public IDriverRuntime GetRuntimeInstance(string type)
         {
             if (mRuntimeManagers.ContainsKey(type))
             {
@@ -79,6 +80,14 @@ namespace Cdy.Spider
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<IDriverDevelop> ListDevelopInstance()
+        {
+            return mDevelopManagers.Values.Select(e => e.NewDriver()).ToList();
+        }
 
         /// <summary>
         /// 

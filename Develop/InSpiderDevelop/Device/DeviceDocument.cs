@@ -118,6 +118,7 @@ namespace InSpiderDevelop
         /// <returns></returns>
         public IDeviceDevelop GetDevice(string name)
         {
+            if (string.IsNullOrEmpty(name)) return null;
             return mDevices.ContainsKey(name) ? mDevices[name] : null;
         }
 

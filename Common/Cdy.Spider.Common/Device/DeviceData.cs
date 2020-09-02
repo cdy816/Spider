@@ -48,7 +48,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public string ChannelName { get; set; }
+        public string ChannelName { get; set; } = "";
 
         #endregion ...Properties...
 

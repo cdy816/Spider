@@ -412,6 +412,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 ShareChannel 的本地化字符串。
+        /// </summary>
+        internal static string ShareChannel {
+            get {
+                return ResourceManager.GetString("ShareChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Welcome to spider 的本地化字符串。
         /// </summary>
         internal static string SpiderTitle {

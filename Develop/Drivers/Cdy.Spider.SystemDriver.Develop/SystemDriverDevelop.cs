@@ -45,6 +45,11 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// </summary>
         public override string TypeName => "SystemDriver";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override ChannelType[] SupportChannelTypes => null;
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -65,7 +70,7 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// <returns></returns>
         public override IDriverDevelop NewDriver()
         {
-            return new SystemDriverDevelop();
+            return new SystemDriverDevelop() { Data = new SystemDriverData() };
         }
 
         /// <summary>

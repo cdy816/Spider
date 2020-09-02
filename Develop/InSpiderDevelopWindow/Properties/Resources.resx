@@ -234,6 +234,9 @@
   <data name="SaveSucessfull" xml:space="preserve">
     <value>save sucessfull!</value>
   </data>
+  <data name="ShareChannel" xml:space="preserve">
+    <value>ShareChannel</value>
+  </data>
   <data name="SpiderTitle" xml:space="preserve">
     <value>Welcome to spider</value>
   </data>

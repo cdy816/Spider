@@ -93,6 +93,7 @@ namespace InSpiderDevelop
         /// <returns></returns>
         public ICommChannelDevelop GetChannel(string name)
         {
+            if (string.IsNullOrEmpty(name)) return null;
             return mChannels.ContainsKey(name) ? mChannels[name] : null;
         }
 

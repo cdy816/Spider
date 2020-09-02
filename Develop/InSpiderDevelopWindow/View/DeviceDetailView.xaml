@@ -14,13 +14,13 @@
         <ContextMenu x:Key="ctxmenu">
             <MenuItem Header="{local:ResMarker Add}" Command="{Binding AddCommand}" />
             <MenuItem Header="{local:ResMarker Remove}" Command="{Binding RemoveCommand}" />
-            
+
             <MenuItem Header="{local:ResMarker Copy}" Command="{Binding CopyCommand}" />
             <MenuItem Header="{local:ResMarker Paste}" Command="{Binding PasteCommand}" />
             <MenuItem Header="{local:ResMarker PropertyCopy}" Command="{Binding CellCopyCommand}" />
             <MenuItem Header="{local:ResMarker PropertyPaste}" Command="{Binding CellPasteCommand}" />
-            
-            
+
+
             <MenuItem Header="{local:ResMarker Import}" Command="{Binding ImportCommand}" />
             <MenuItem Header="{local:ResMarker Export}" Command="{Binding ExportCommand}" />
         </ContextMenu>
@@ -41,7 +41,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{local:ResMarker Protocol,:}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0" />
-                        <ComboBox  Grid.Column="1" Width="300"  HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding RegistorList}"  Text="{Binding RegistorName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                        <ComboBox  Grid.Column="1" Width="300"  HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding ProtocolList}"  SelectedItem="{Binding ProtocolName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Grid.Row="1">
                         <ContentControl Content="{Binding DriverConfig}" />
@@ -49,14 +49,24 @@
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="gg"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{local:ResMarker CommType,:}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0" />
-                        <ComboBox  Grid.Column="1" Width="300"  HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding RegistorList}"  Text="{Binding RegistorName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                        <ComboBox  Grid.Column="1" Width="300"  HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding ChannelView}"  SelectedItem="{Binding ChannelName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="10,0" Text="{local:ResMarker ShareChannel,:}" Grid.Column="2"  HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <TextBlock Margin="10,0" Text="{Binding ShareChannel}" Grid.Column="3"  HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <Button Command="{Binding ShareChannelCommand}" Style="{DynamicResource ButtonStyle1}" Foreground="{DynamicResource Window.Forground}" Grid.Column="4" Content="..." VerticalAlignment="Center" HorizontalAlignment="Left"  MinWidth="40" Background="#1FFFFFFF" />
 
                     </Grid>
                     <Grid Grid.Row="3">
-                        <ContentControl Content="{Binding ChannelConfig}" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="397*"/>
+                            <ColumnDefinition Width="981*"/>
+                        </Grid.ColumnDefinitions>
+                        <ContentControl Content="{Binding ChannelConfig}" Grid.ColumnSpan="2" />
                     </Grid>
                 </Grid>
             </TabItem>
@@ -98,7 +108,7 @@
                             <CheckBox Background="Transparent" HorizontalAlignment="Right"  Foreground="{DynamicResource Window.Forground}" Grid.Column="4" IsChecked="{Binding DirectionFilterEnable,Mode=TwoWay}" Content="{local:ResMarker Direction}" VerticalAlignment="Center" Margin="10,0" />
                             <ComboBox  VerticalAlignment="Center"  Grid.Column="5" Margin="10,0" Width="160"  BorderThickness="1" IsEnabled="{Binding DirectionFilterEnable}" ItemsSource="{Binding DirectionList}" SelectedIndex="{Binding DirectionFilter}" />
 
-                            
+
                             <CheckBox Background="Transparent" Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker Registor}" IsChecked="{Binding RegistorFilterEnable}" HorizontalAlignment="Left" Grid.Column="7" Grid.Row="0" VerticalAlignment="Center" Margin="10,0" />
                             <ComboBox VerticalAlignment="Center" HorizontalAlignment="Left" IsEditable="False" Grid.Row="0" Grid.Column="8" Margin="10,0" Width="200" IsEnabled="{Binding RegistorFilterEnable}" BorderThickness="1" ItemsSource="{Binding RegistorList}" Text="{Binding FilterRegistorName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
@@ -201,7 +211,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                           
+
                             <DataGridTemplateColumn Header="{local:ResMarker Registor}" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -267,7 +277,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            
+
         </TabControl>
 
     </Grid>

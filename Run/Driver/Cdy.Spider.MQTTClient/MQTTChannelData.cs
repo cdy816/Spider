@@ -34,7 +34,11 @@ namespace Cdy.Spider.MQTTClient
 
         #region ... Properties ...
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        public override ChannelType Type => ChannelType.MQTTClient;
+
 
         /// <summary>
         /// 服务端主题附件字符串
