@@ -44,6 +44,59 @@ namespace Cdy.Spider.SystemDriver.Develop
 
         #region ... Methods    ...
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public int WorkModel
+        {
+            get
+            {
+                return (int)Model.Model;
+            }
+            set
+            {
+                if ((int)Model.Model != value)
+                {
+                    Model.Model = (WorkMode) value;
+                    OnPropertyChanged("WorkModel");
+                    OnPropertyChanged("ScanCircleVisibility");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public System.Windows.Visibility ScanCircleVisibility
+        {
+            get
+            {
+                return Model.Model == WorkMode.Active ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            }
+        }
+
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public int ScanCircle
+        {
+            get
+            {
+                return Model.ScanCircle;
+            }
+            set
+            {
+                if (Model.ScanCircle != value)
+                {
+                    Model.ScanCircle = value;
+                    OnPropertyChanged("ScanCircle");
+                }
+            }
+        }
+
+
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

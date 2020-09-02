@@ -75,25 +75,25 @@ namespace Cdy.Spider
         /// <summary>
         /// 通讯失败时，重试次数
         /// </summary>
-        public int ReTryCount { get; set; }
+        public int ReTryCount { get; set; } = 3;
 
         /// <summary>
         /// 通信失败时，重试间隔
         /// 单位:ms
         /// </summary>
-        public int ReTryDuration { get; set; }
+        public int ReTryDuration { get; set; } = 1000;
 
         /// <summary>
         /// 无数据通信超时时间，
         /// 单位:ms
         /// </summary>
-        public int Timeout { get; set; }
+        public int Timeout { get; set; } = 30000;
 
         /// <summary>
         /// 数据发送超时
         /// 单位:ms
         /// </summary>
-        public int DataSendTimeout { get; set; }
+        public int DataSendTimeout { get; set; } = 2000;
 
         #endregion ...Properties...
 

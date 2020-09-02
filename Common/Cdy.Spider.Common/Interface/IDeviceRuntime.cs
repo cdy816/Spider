@@ -135,11 +135,14 @@ namespace Cdy.Spider
         #endregion ...Constructor...
 
         #region ... Properties ...
-
+        /// <summary>
+        /// 
+        /// </summary>
+        string Name { get; }
         #endregion ...Properties...
 
         #region ... Methods    ...
-        
+
         /// <summary>
         /// 驱动解析完数据，更新到数据库中
         /// </summary>

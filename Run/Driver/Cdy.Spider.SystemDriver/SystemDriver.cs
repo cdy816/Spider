@@ -12,13 +12,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Xml.Linq;
+using System.Buffers;
+using System.Threading;
 
 namespace Cdy.Spider
 {
     /// <summary>
     /// 
     /// </summary>
-    public class SystemDriver: DriverRunnerBase
+    public class SystemDriver: TimerDriverRunner
     {
 
         #region ... Variables  ...
@@ -55,20 +57,16 @@ namespace Cdy.Spider
         /// </summary>
         public override void Prepare()
         {
-            var vv = this.mCachTags.Keys.Select(e => this.Name + "/" + e).ToList();
-            vv.Add(this.Name);
+            var vv = this.mCachTags.Keys.Select(e => this.Device.Name + "/" + e).ToList();
+            vv.Add(this.Device.Name);
             mComm.Prepare(vv);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="data"></param>
+        ///
         /// <returns></returns>
-        protected override byte[] OnReceiveData(string key, byte[] data)
+        protected override byte[] OnReceiveData(string key, byte[] data,out bool handled)
         {
-            if(key == this.Name)
+            if(key == this.Device.Name)
             {
                 //处理多个数据标签
                 var vdata = Encoding.UTF8.GetString(data);
@@ -78,15 +76,162 @@ namespace Cdy.Spider
                     string[] sss = vv.Split(new char[] { ',' });
                     UpdateValue(sss[0], sss[1]);
                 }
+                handled = true;
+                return null;
             }
-            else
+            else if(key.StartsWith(this.Device.Name))
             {
-                string devicename = key.Replace(this.Name + "/", "");
+                string devicename = key.Replace(this.Device.Name + "/", "");
                 
                 UpdateValue(devicename, DecodeValue(data));
+
+                handled = true;
+                return null;
+            }
+            return base.OnReceiveData(key, data, out handled);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void ProcessTimerElapsed()
+        {
+            int count = this.mCachTags.Count/100;
+            count = this.mCachTags.Count % 100 > 0 ? count + 1 : count;
+
+            for(int i=0;i<count;i++)
+            {
+                int icount = (i + 1) * 100;
+                if(icount>this.mCachTags.Count)
+                {
+                    icount = this.mCachTags.Count - i * 100;
+                }
+                var vkeys = this.mCachTags.Keys.Skip(i * 100).Take(icount);
+                SendGroupTags(vkeys);
+                Thread.Sleep(10);
             }
 
-            return base.OnReceiveData(key, data);
+            base.ProcessTimerElapsed();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tags"></param>
+        private void SendGroupTags(IEnumerable<string> tags)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(var vv in tags)
+            {
+                sb.Append(vv + ";");
+            }
+            sb.Length = sb.Length > 0 ? sb.Length - 1 : sb.Length;
+            var res = SendData(this.Device.Name, Encoding.UTF8.GetBytes(sb.ToString()));
+            if(res!=null && res.Length>0)
+            {
+                int idx = 0;
+                foreach(var vv in tags)
+                {
+                    DecodeValue(res, ref idx);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
+        private object DecodeValue(byte[] value,ref int startIndex)
+        {
+            TagType bval = (TagType)(value[startIndex]);
+            object re = null;
+            switch (bval)
+            {
+                case TagType.Bool:
+                    re = BitConverter.ToBoolean(value.AsSpan(startIndex+1));
+                    startIndex += 2;
+                    break;
+                case TagType.Byte:
+                    re = (value as byte[])[startIndex + 1];
+                    startIndex += 2;
+                    break;
+                case TagType.DateTime:
+                    re = Convert.ToDateTime(BitConverter.ToInt64(value.AsSpan(startIndex + 1)));
+                    startIndex += 9;
+                    break;
+                case TagType.Double:
+                    re = BitConverter.ToDouble(value.AsSpan(startIndex + 1));
+                    startIndex += 9;
+                    break;
+                case TagType.Float:
+                    re = BitConverter.ToSingle(value.AsSpan(startIndex + 1));
+                    startIndex += 5;
+                    break;
+                case TagType.Int:
+                    re = BitConverter.ToInt32(value.AsSpan(startIndex + 1));
+                    startIndex += 5;
+                    break;
+                case TagType.Long:
+                    re = BitConverter.ToInt64(value.AsSpan(startIndex + 1));
+                    startIndex += 9;
+                    break;
+                case TagType.Short:
+                    re = BitConverter.ToInt16(value.AsSpan(startIndex + 1));
+                    startIndex += 3;
+                    break;
+                case TagType.String:
+                    var vsize = BitConverter.ToInt16(value.AsSpan(startIndex + 1));
+                    re = Encoding.UTF8.GetString(value.AsSpan(startIndex + 3,vsize));
+                    startIndex += (3 + vsize);
+                    break;
+                case TagType.UInt:
+                    re = BitConverter.ToUInt32(value.AsSpan(startIndex + 1));
+                    startIndex += 5;
+                    break;
+                case TagType.ULong:
+                    re = BitConverter.ToUInt64(value.AsSpan(startIndex + 1));
+                    startIndex += 9;
+                    break;
+                case TagType.UShort:
+                    re = BitConverter.ToUInt16(value.AsSpan(startIndex + 1));
+                    startIndex += 3;
+                    break;
+                case TagType.IntPoint:
+                    re = new IntPoint() { X = BitConverter.ToInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToInt32(value.AsSpan(startIndex + 5, 4)) };
+                    startIndex += 9;
+                    break;
+                case TagType.IntPoint3:
+                    re = new IntPoint3() { X = BitConverter.ToInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToInt32(value.AsSpan(startIndex + 5, 4)), Z = BitConverter.ToInt32(value.AsSpan(startIndex + 9, 4)) };
+                    startIndex += 13;
+                    break;
+                case TagType.UIntPoint:
+                    re = new UIntPoint() { X = BitConverter.ToUInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(startIndex + 5, 4)) };
+                    startIndex += 9;
+                    break;
+                case TagType.UIntPoint3:
+                    re = new UIntPoint3() { X = BitConverter.ToUInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(startIndex + 5, 4)), Z = BitConverter.ToUInt32(value.AsSpan(startIndex + 9, 4)) };
+                    startIndex += 13;
+                    break;
+                case TagType.LongPoint:
+                    re = new LongPoint() { X = BitConverter.ToInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToInt64(value.AsSpan(startIndex + 9, 8)) };
+                    startIndex += 17;
+                    break;
+                case TagType.LongPoint3:
+                    re = new LongPoint3() { X = BitConverter.ToInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToInt64(value.AsSpan(startIndex + 9, 8)), Z = BitConverter.ToInt64(value.AsSpan(startIndex + 17, 8)) };
+                    startIndex += 25;
+                    break;
+                case TagType.ULongPoint:
+                    re = new ULongPoint() { X = BitConverter.ToUInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(startIndex + 9, 8)) };
+                    startIndex += 17;
+                    break;
+                case TagType.ULongPoint3:
+                    re = new ULongPoint3() { X = BitConverter.ToUInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(startIndex + 9, 8)), Z = BitConverter.ToUInt64(value.AsSpan(startIndex + 17, 8)) };
+                    startIndex += 25;
+                    break;
+            }
+            return re;
         }
 
         /// <summary>
@@ -102,7 +247,7 @@ namespace Cdy.Spider
                 case TagType.Bool:
                     return BitConverter.ToBoolean(value.AsSpan(1));
                 case TagType.Byte:
-                    return (value as byte[])[0];
+                    return (value as byte[])[1];
                 case TagType.DateTime:
                     return Convert.ToDateTime(BitConverter.ToInt64(value.AsSpan(1)));
                 case TagType.Double:
@@ -150,14 +295,16 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         public override void WriteValue(string deviceInfo, byte[] value,byte type)
         {
-            string sname = this.Name;
+            string sname = this.Device.Name;
             
             if (!string.IsNullOrEmpty(deviceInfo))
                 sname += ("/" + deviceInfo);
-            byte[] bvals = new byte[value.Length + 1];
+
+            var bvals = ArrayPool<byte>.Shared.Rent(value.Length + 1);
             bvals[0] = type;
             value.CopyTo(bvals, 1);
             SendData(sname, bvals);
+            ArrayPool<byte>.Shared.Return(bvals);
         }
 
         /// <summary>

@@ -7,6 +7,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker WorkModel,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Visibility="{Binding ScanCircleVisibility}"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker ScanCircle,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="1"/>
+        <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="5,0,0,0" SelectedIndex="{Binding WorkModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="190">
+            <ComboBoxItem Content="{local:ResMarker Active}" />
+            <ComboBoxItem Content="{local:ResMarker Passivity}" />
+        </ComboBox>
+        <TextBox Visibility="{Binding ScanCircleVisibility}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="1" Text="{Binding ScanCircle,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        <Label Visibility="{Binding ScanCircleVisibility}"  Foreground="{DynamicResource Window.Forground}" Content="ms" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="200,0,0,0"/>
+
     </Grid>
 </UserControl>

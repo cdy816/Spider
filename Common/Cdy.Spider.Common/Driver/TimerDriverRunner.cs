@@ -42,9 +42,12 @@ namespace Cdy.Spider
         /// </summary>
         public override void Start()
         {
-            mTimer = new System.Timers.Timer(Data.ScanCircle);
-            mTimer.Elapsed += MTimer_Elapsed;
-            mTimer.Start();
+            if (Data.Model == WorkMode.Active)
+            {
+                mTimer = new System.Timers.Timer(Data.ScanCircle);
+                mTimer.Elapsed += MTimer_Elapsed;
+                mTimer.Start();
+            }
             base.Start();
         }
 

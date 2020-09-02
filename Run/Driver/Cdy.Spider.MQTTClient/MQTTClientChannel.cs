@@ -158,7 +158,7 @@ namespace Cdy.Spider.MQTTClient
                         return;
                     }
 
-                    var res = this.ReceiveCallBack(vtop.Replace(mData.ServerTopicAppendString, ""), x.ApplicationMessage.Payload);
+                    var res = this.OnReceiveCallBack(vtop.Replace(mData.ServerTopicAppendString, ""), x.ApplicationMessage.Payload);
                     if (!string.IsNullOrEmpty(x.ApplicationMessage.ResponseTopic) && res != null)
                     {
                         SendToTopicDataWithoutResponse(x.ApplicationMessage.ResponseTopic, res);

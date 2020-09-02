@@ -30,12 +30,12 @@
             <TabItem Header="{local:ResMarker Communication}">
                 <Grid  Background="#0FE5E5E5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="36"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="36"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid>
+                    <Grid   Background="#0FE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="gg"/>
                             <ColumnDefinition Width="*" />
@@ -44,9 +44,9 @@
                         <ComboBox  Grid.Column="1" Width="300"  HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding ProtocolList}"  SelectedItem="{Binding ProtocolName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Grid.Row="1">
-                        <ContentControl Content="{Binding DriverConfig}" />
+                        <ContentControl Margin="10,1" Content="{Binding DriverConfig}" />
                     </Grid>
-                    <Grid Grid.Row="2">
+                    <Grid Grid.Row="2"  Background="#0FE5E5E5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="gg"/>
                             <ColumnDefinition Width="Auto" />
@@ -58,15 +58,10 @@
                         <ComboBox  Grid.Column="1" Width="300"  HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding ChannelView}"  SelectedItem="{Binding ChannelName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Margin="10,0" Text="{local:ResMarker ShareChannel,:}" Grid.Column="2"  HorizontalAlignment="Left" VerticalAlignment="Center" />
                         <TextBlock Margin="10,0" Text="{Binding ShareChannel}" Grid.Column="3"  HorizontalAlignment="Left" VerticalAlignment="Center" />
-                        <Button Command="{Binding ShareChannelCommand}" Style="{DynamicResource ButtonStyle1}" Foreground="{DynamicResource Window.Forground}" Grid.Column="4" Content="..." VerticalAlignment="Center" HorizontalAlignment="Left"  MinWidth="40" Background="#1FFFFFFF" />
-
+                        <Button Command="{Binding ShareChannelCommand}"  Foreground="{DynamicResource Window.Forground}" Grid.Column="4" Content="..." VerticalContentAlignment="Top" VerticalAlignment="Center" HorizontalAlignment="Left"  MinWidth="40" Background="#1FFFFFFF" />
                     </Grid>
                     <Grid Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="397*"/>
-                            <ColumnDefinition Width="981*"/>
-                        </Grid.ColumnDefinitions>
-                        <ContentControl Content="{Binding ChannelConfig}" Grid.ColumnSpan="2" />
+                        <ContentControl Margin="10,0" Content="{Binding ChannelConfig}"/>
                     </Grid>
                 </Grid>
             </TabItem>

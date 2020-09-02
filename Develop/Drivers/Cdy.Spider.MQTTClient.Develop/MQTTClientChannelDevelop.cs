@@ -76,7 +76,7 @@ namespace Cdy.Spider.MQTTClient.Develop
         /// <returns></returns>
         protected override ChannelData CreatNewData()
         {
-            return new MQTTChannelData();
+            return new MQTTChannelData() { Port = 1883 };
         }
     }
 }

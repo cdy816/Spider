@@ -62,7 +62,7 @@ namespace Cdy.Spider
         /// 扫描周期
         /// 单位毫秒
         /// </summary>
-        public int ScanCircle { get; set; }
+        public int ScanCircle { get; set; } = 1000;
 
         #endregion ...Properties...
 

@@ -21,6 +21,13 @@ namespace Cdy.Spider
 
         #region ... Variables  ...
 
+        public delegate byte[] DataReceiveCallBackDelegate(string key, byte[] date,out bool handled);
+
+        /// <summary>
+        /// 通信状态改变事件
+        /// </summary>
+        public event EventHandler CommChangedEvent;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -43,17 +50,15 @@ namespace Cdy.Spider
         /// </summary>
         ChannelType Type { get; }
 
-        string TypeName { get; }
-
         /// <summary>
         /// 
         /// </summary>
-        Func<string, byte[], byte[]> ReceiveCallBack { get; set; }
+        string TypeName { get; }
 
-        /// <summary>
-        /// 通信失败
-        /// </summary>
-        Action<bool> CommChangedCallBack { get; set; }
+        ///// <summary>
+        ///// 通信失败
+        ///// </summary>
+        //Action<bool> CommChangedCallBack { get; set; }
 
         /// <summary>
         /// 
@@ -85,6 +90,12 @@ namespace Cdy.Spider
         /// 初始化
         /// </summary>
         void Init();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callBack"></param>
+        void  RegistorReceiveCallBack(DataReceiveCallBackDelegate callBack);
 
         /// <summary>
         /// 通信预处理

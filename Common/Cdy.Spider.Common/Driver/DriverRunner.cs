@@ -80,8 +80,8 @@ namespace Cdy.Spider
             mComm = Device.GetCommChannel();
             if (mComm != null)
             {
-                mComm.CommChangedCallBack = OnCommChanged;
-                mComm.ReceiveCallBack = OnReceiveData;
+                mComm.CommChangedEvent += MComm_CommChangedEvent;
+                mComm.RegistorReceiveCallBack(OnReceiveData);
 
                 foreach (var vv in Device.ListTags())
                 {
@@ -99,6 +99,16 @@ namespace Cdy.Spider
                 }
                 mComm.Init();
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MComm_CommChangedEvent(object sender, EventArgs e)
+        {
+            OnCommChanged(mComm.IsConnected);
         }
 
         /// <summary>
@@ -164,8 +174,9 @@ namespace Cdy.Spider
         /// <paramref name="key"/>
         /// <paramref name="data"/>
         /// </summary>
-        protected virtual byte[] OnReceiveData(string key,byte[] data)
+        protected virtual byte[] OnReceiveData(string key,byte[] data,out bool handled)
         {
+            handled = false;
             return null;
         }
 

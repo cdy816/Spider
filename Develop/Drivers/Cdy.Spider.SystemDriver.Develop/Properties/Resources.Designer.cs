@@ -59,5 +59,41 @@ namespace Cdy.Spider.SystemDriver.Develop.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Active 的本地化字符串。
+        /// </summary>
+        internal static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Passivity 的本地化字符串。
+        /// </summary>
+        internal static string Passivity {
+            get {
+                return ResourceManager.GetString("Passivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ScanCircle 的本地化字符串。
+        /// </summary>
+        internal static string ScanCircle {
+            get {
+                return ResourceManager.GetString("ScanCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 WorkModel 的本地化字符串。
+        /// </summary>
+        internal static string WorkModel {
+            get {
+                return ResourceManager.GetString("WorkModel", resourceCulture);
+            }
+        }
     }
 }

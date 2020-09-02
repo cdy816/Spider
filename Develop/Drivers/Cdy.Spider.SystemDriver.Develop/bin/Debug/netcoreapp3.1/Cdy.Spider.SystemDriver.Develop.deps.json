@@ -14,6 +14,11 @@
         },
         "runtime": {
           "Cdy.Spider.SystemDriver.Develop.dll": {}
+        },
+        "resources": {
+          "zh-CN/Cdy.Spider.SystemDriver.Develop.resources.dll": {
+            "locale": "zh-CN"
+          }
         }
       },
       "Cdy.Spider.Common/1.0.0": {
