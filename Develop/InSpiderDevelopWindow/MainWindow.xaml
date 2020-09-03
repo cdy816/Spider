@@ -147,7 +147,7 @@
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-                    <Border BorderBrush="LightGray" BorderThickness="1,0,0,0" Width="1" VerticalAlignment="Stretch" Margin="3,4" />
+                    <!--<Border BorderBrush="LightGray" BorderThickness="1,0,0,0" Width="1" VerticalAlignment="Stretch" Margin="3,4" />
                         <Button  BorderThickness="0"  Command="{Binding PublishCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"  VerticalAlignment="Stretch"  Width="80" >
                             <Button.ContentTemplate>
                                 <DataTemplate>
@@ -157,7 +157,7 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </Button.ContentTemplate>
-                        </Button>
+                        </Button>-->
                     </StackPanel>
             </Grid>
         </Border>
@@ -282,7 +282,7 @@
                             </ToggleButton>
                         </Grid>
                         
-                        <Button BorderThickness="0,0,0,2"  BorderBrush="IndianRed"   Content="{local:ResMarker Remove}" Foreground="{DynamicResource Window.Forground}" Command="{Binding RemoveGroupCommand}" Width="80" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5,0" >
+                        <Button BorderThickness="0,0,0,2"  BorderBrush="IndianRed"   Content="{local:ResMarker Remove}" Foreground="{DynamicResource Window.Forground}" Command="{Binding RemoveCommand}" Width="80" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5,0" >
                             <Button.ContentTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="0">

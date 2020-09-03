@@ -41,7 +41,7 @@ namespace InSpiderDevelopWindow
 
         private ICommand mAddCommand;
         
-        private ICommand mRemoveGroupCommand;
+        private ICommand mRemoveCommand;
 
         private ICommand mCancelCommand;
 
@@ -300,17 +300,17 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
-        public ICommand RemoveGroupCommand
+        public ICommand RemoveCommand
         {
             get
             {
-                if (mRemoveGroupCommand == null)
+                if (mRemoveCommand == null)
                 {
-                    mRemoveGroupCommand = new RelayCommand(() => {
+                    mRemoveCommand = new RelayCommand(() => {
                         (CurrentSelectTreeItem).RemoveCommand.Execute(null);
                     },()=> { return CurrentSelectTreeItem != null && CurrentSelectTreeItem.CanRemove() ; });
                 }
-                return mRemoveGroupCommand;
+                return mRemoveCommand;
             }
         }
 

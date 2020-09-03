@@ -110,6 +110,8 @@ namespace Cdy.Spider
         {
             this.Name = xe.Attribute("Name")?.Value;
             this.ChannelName = xe.Attribute("ChannelName")?.Value;
+            this.Group = xe.Attribute("Group")?.Value;
+
             Tags = new TagCollection();
             if (xe.Element("Tags") != null)
             {
@@ -129,6 +131,7 @@ namespace Cdy.Spider
             XElement xe = new XElement("Device");
             xe.SetAttributeValue("Name", Name);
             xe.SetAttributeValue("ChannelName", ChannelName);
+            xe.SetAttributeValue("Group", Group);
             XElement xx = new XElement("Tags");
             if (Tags != null)
             {

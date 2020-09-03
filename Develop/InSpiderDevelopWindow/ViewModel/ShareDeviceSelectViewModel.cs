@@ -45,7 +45,7 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             Title = Res.Get("ShareDeviceSelectTitle");
             DefaultWidth = 1024;
-            DefaultHeight = 768;
+            DefaultHeight = 600;
             IsEnableMax = false;
         }
 

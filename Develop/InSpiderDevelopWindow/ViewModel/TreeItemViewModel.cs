@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -44,6 +45,16 @@ namespace InSpiderDevelopWindow
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string NamePrev { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int NameAfter { get; set; }
 
         /// <summary>
         /// 
@@ -136,6 +147,7 @@ namespace InSpiderDevelopWindow
                     if(OnRename(oldName, value))
                     {
                         mName = value;
+                        ParseName(value);
                         OnNameRefresh();
                     }
                 }
@@ -144,7 +156,9 @@ namespace InSpiderDevelopWindow
             }
         }
 
-        //public string Database { get; set; }
+
+        
+
 
         /// <summary>
         /// 
@@ -180,6 +194,9 @@ namespace InSpiderDevelopWindow
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsEdit
         {
             get
@@ -263,6 +280,53 @@ namespace InSpiderDevelopWindow
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        public void ParseName(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                NameAfter = GetNumberInt(value);
+                NamePrev = value.Replace(NameAfter.ToString(), "");
+            }
+            else
+            {
+                NameAfter = 0;
+                NamePrev = "";
+            }
+        }
+
+        /// <summary>
+        /// 获取字符串中的数字
+        /// </summary>
+        /// <param name="str">字符串</param>
+        /// <returns>数字</returns>
+        public  int GetNumberInt(string str)
+        {
+            int result = -1;
+            if (str != null && str != string.Empty)
+            {
+                // 正则表达式剔除非数字字符（不包含小数点.）
+                str = Regex.Replace(str, @"[^\d.\d]", "");
+                // 如果是数字，则转换为decimal类型
+                if (Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(str))
+                            result = int.Parse(str);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+            return result;
+        }
 
         /// <summary>
         /// 
@@ -512,7 +576,8 @@ namespace InSpiderDevelopWindow
         {
             List<SortDescription> re = new List<SortDescription>();
             re.Add(new SortDescription("SortIndex", ListSortDirection.Ascending));
-            re.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            re.Add(new SortDescription("NamePrev", ListSortDirection.Ascending));
+            re.Add(new SortDescription("NameAfter", ListSortDirection.Ascending));
             return re;
         }
 
