@@ -98,22 +98,16 @@ namespace SpiderRuntime
                 XElement xx = XElement.Load(file);
                 foreach(var vv in xx.Elements())
                 {
-                    string ass = vv.Attribute("Assembly").Value;
-                    string cls = vv.Attribute("Class").Value;
-
-                    var afile = GetAssemblyPath(ass);
-                    if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
+                    string tname = vv.Attribute("TypeName").Value;
+                    var asb = ServiceLocator.Locator.Resolve<ICommChannelFactory>().GetRuntimeIntance(tname);
+                    asb.Load(vv);
+                    if (mChannels.ContainsKey(asb.Name))
                     {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as ICommChannel;
-                        asb.Load(vv);
-                        if (mChannels.ContainsKey(asb.Name))
-                        {
-                            mChannels[asb.Name] = asb;
-                        }
-                        else
-                        {
-                            mChannels.Add(asb.Name, asb);
-                        }
+                        mChannels[asb.Name] = asb;
+                    }
+                    else
+                    {
+                        mChannels.Add(asb.Name, asb);
                     }
                 }
             }

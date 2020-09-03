@@ -13,6 +13,9 @@
     <Compile Update="View\DeviceDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\ShareDeviceSelectView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\SpiderInfoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -28,6 +31,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ImportModeSelectView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ShareDeviceSelectView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\SpiderInfoView.xaml">

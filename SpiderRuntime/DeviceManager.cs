@@ -25,7 +25,12 @@ namespace SpiderRuntime
         /// </summary>
         public static DeviceManager Manager = new DeviceManager();
 
+        /// <summary>
+        /// 
+        /// </summary>
         private Dictionary<string, IDeviceRuntime> mDevices = new Dictionary<string, IDeviceRuntime>();
+
+        private string mName = "";
 
         #endregion ...Variables...
 
@@ -54,7 +59,7 @@ namespace SpiderRuntime
             }
         }
 
-        public string Name => throw new NotImplementedException();
+        public string Name => mName;
 
 
         /// <summary>
@@ -105,10 +110,14 @@ namespace SpiderRuntime
             if(System.IO.File.Exists(sfile))
             {
                 XElement xx = XElement.Load(sfile);
-                foreach(var vv in xx.Elements())
+                
+                mName = xx.Attribute("Name")?.Value;
+
+                foreach (var vv in xx.Element("Devices").Elements())
                 {
                     DeviceData data = new DeviceData();
                     data.LoadFromXML(vv);
+                    data.Name = string.IsNullOrEmpty(data.Group) ? data.Name : data.Group + "." + data.Name;
                     DeviceRunner runner = new DeviceRunner() { Device = data };
                     AddDevice(runner);
                 }

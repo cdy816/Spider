@@ -105,3 +105,5 @@ C:\Users\cdy81\source\repos\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netco
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\ApiDevelop.cfg
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\ChannelDevelop.cfg
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\bin\Debug\netcoreapp3.1\Config\DriverDevelop.cfg
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\ShareDeviceSelectView.g.cs
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\InSpiderDevelopWindow\obj\Debug\netcoreapp3.1\View\ShareDeviceSelectView.baml

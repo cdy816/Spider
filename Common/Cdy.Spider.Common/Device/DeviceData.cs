@@ -38,7 +38,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public string Group { get; set; }
+        public string Group { get; set; } = "";
 
         /// <summary>
         /// 变量的集合
@@ -111,9 +111,12 @@ namespace Cdy.Spider
             this.Name = xe.Attribute("Name")?.Value;
             this.ChannelName = xe.Attribute("ChannelName")?.Value;
             Tags = new TagCollection();
-            foreach (var vv in xe.Elements())
+            if (xe.Element("Tags") != null)
             {
-                Tags.AddTag(vv.CreatFromXML());
+                foreach (var vv in xe.Element("Tags").Elements())
+                {
+                    Tags.AddTag(vv.CreatFromXML());
+                }
             }
         }
 
@@ -144,6 +147,18 @@ namespace Cdy.Spider
         public void Dispose()
         {
             Tags.Clear();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual DeviceData Clone()
+        {
+            var xx = this.SaveToXML();
+            DeviceData dd = new DeviceData();
+            dd.LoadFromXML(xx);
+            return dd;
         }
 
         #endregion ...Methods...

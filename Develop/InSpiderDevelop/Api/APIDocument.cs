@@ -77,7 +77,7 @@ namespace InSpiderDevelop
         /// </summary>
         public void Load()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",Name, "Api.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg");
             Load(sfile);
         }
 

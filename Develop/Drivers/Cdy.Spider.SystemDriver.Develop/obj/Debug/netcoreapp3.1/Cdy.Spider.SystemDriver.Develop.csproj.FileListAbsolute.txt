@@ -51,3 +51,6 @@ C:\Users\cdy81\source\repos\Spider\Develop\Drivers\Cdy.Spider.SystemDriver.Devel
 C:\Users\cdy81\source\repos\Spider\Develop\Drivers\Cdy.Spider.SystemDriver.Develop\bin\Debug\netcoreapp3.1\zh-CN\Cdy.Spider.SystemDriver.Develop.resources.dll
 C:\Users\cdy81\source\repos\Spider\Develop\Drivers\Cdy.Spider.SystemDriver.Develop\obj\Debug\netcoreapp3.1\Cdy.Spider.SystemDriver.Develop.Properties.Resources.zh-CN.resources
 C:\Users\cdy81\source\repos\Spider\Develop\Drivers\Cdy.Spider.SystemDriver.Develop\obj\Debug\netcoreapp3.1\zh-CN\Cdy.Spider.SystemDriver.Develop.resources.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Drivers\Cdy.Spider.SystemDriver.Develop\bin\Debug\netcoreapp3.1\zh-CN\Cdy.Spider.SystemDriver.Develop.resources.dll
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Drivers\Cdy.Spider.SystemDriver.Develop\obj\Debug\netcoreapp3.1\Cdy.Spider.SystemDriver.Develop.Properties.Resources.zh-CN.resources
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Drivers\Cdy.Spider.SystemDriver.Develop\obj\Debug\netcoreapp3.1\zh-CN\Cdy.Spider.SystemDriver.Develop.resources.dll

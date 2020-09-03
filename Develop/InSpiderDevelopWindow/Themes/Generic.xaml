@@ -21,6 +21,10 @@
         <view:ImportModeSelectView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type model:ShareDeviceSelectViewModel}">
+        <view:ShareDeviceSelectView />
+    </DataTemplate>
+
     <BooleanToVisibilityConverter x:Key="bvc" />
     <!--<SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>

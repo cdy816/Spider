@@ -14,11 +14,50 @@ using InSpiderDevelopWindow.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
 
 namespace InSpiderDevelopWindow
 {
+
+    public class CopyPasteHelper
+    {
+
+        #region ... Variables  ...
+        /// <summary>
+        /// 
+        /// </summary>
+        public static CopyPasteHelper Helper = new CopyPasteHelper();
+        #endregion ...Variables...
+
+        #region ... Events     ...
+
+        #endregion ...Events...
+
+        #region ... Constructor...
+
+        #endregion ...Constructor...
+
+        #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public object CopyObj { get; set; }
+
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+
+
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
 
     /// <summary>
     /// 
@@ -124,6 +163,117 @@ namespace InSpiderDevelopWindow
         public override bool CanAddGroup()
         {
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanCopy()
+        {
+            return true;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanPaste()
+        {
+            return CopyPasteHelper.Helper.CopyObj != null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Copy()
+        {
+            CopyPasteHelper.Helper.CopyObj = this.Model;
+            base.Copy();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Paste()
+        {
+            ProcessPaste();
+            base.Paste();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private MachineViewModel GetMachineViewModel(TreeItemViewModel model)
+        {
+            if (model is MachineViewModel) return model as MachineViewModel;
+            else
+            {
+                return GetMachineViewModel(model.Parent);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ProcessPaste()
+        {
+            if (CopyPasteHelper.Helper.CopyObj is IDeviceDevelop)
+            {
+                var vv = (CopyPasteHelper.Helper.CopyObj as IDeviceDevelop).Clone();
+                vv.Group = this.FullName;
+                vv.Name = mDocument.GetAvaiableName(vv.Name, vv.Group);
+
+                if (Document.AddDevice(vv))
+                {
+                    var vvv = new DeviceTreeViewModel() { Document = this.Document, Model = vv, Parent = this.Parent };
+                    this.Children.Add(vvv);
+                    OnNameRefresh();
+
+                    var driver = (vv as DeviceDevelop).Driver;
+                    var driverdoc = GetMachineViewModel(this).Model.Driver;
+                    driverdoc?.AddDriver(driver);
+                }
+            }
+            else if (CopyPasteHelper.Helper.CopyObj is DeviceGroup)
+            {
+                DeviceGroup dgg = CopyPasteHelper.Helper.CopyObj as DeviceGroup;
+                PasteGroup(dgg,this);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="group"></param>
+        private void PasteGroup(DeviceGroup group,DeviceGroupViewModel parentViewModel)
+        {
+            var vgg = mDocument.GetGroups(group);
+            var ggg = group.Clone();
+
+            DeviceGroup parent = (this.Parent is DeviceGroupViewModel) ? (Parent as DeviceGroupViewModel).Model : null;
+
+            Document.AddDeviceGroup(parent, ggg);
+            var vmodel = new DeviceGroupViewModel() { Model = ggg };
+            parentViewModel.Children.Add(vmodel);
+            
+
+            foreach (IDeviceDevelop vv in ggg.Devices)
+            {
+                vv.Group = ggg.FullName;
+                Document.AddDevice(vv);
+
+                vmodel.Children.Add(new DeviceTreeViewModel() { Model = vv });
+            }
+
+            foreach (var vv in vgg)
+            {
+                PasteGroup(vv, vmodel);
+            }
+            parentViewModel.RefreshView();
         }
 
         /// <summary>
@@ -394,6 +544,103 @@ namespace InSpiderDevelopWindow
         public override bool OnRename(string oldName, string newName)
         {
             return mDocument.ReName(this.Model, newName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanCopy()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanPaste()
+        {
+            return CopyPasteHelper.Helper.CopyObj!=null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Copy()
+        {
+            CopyPasteHelper.Helper.CopyObj = this.Model;
+            base.Copy();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Paste()
+        {
+            ProcessPaste();
+            base.Paste();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ProcessPaste()
+        {
+            if(CopyPasteHelper.Helper.CopyObj is IDeviceDevelop)
+            {
+                var vv = (CopyPasteHelper.Helper.CopyObj as IDeviceDevelop).Clone();
+                vv.Group = this.Parent != null ? this.Parent.FullName : string.Empty;
+                vv.Name = mDocument.GetAvaiableName(vv.Name, vv.Group);
+
+                if (Document.AddDevice(vv))
+                {
+                    var vvv = new DeviceTreeViewModel() { Document = this.Document, Model = vv, Parent = this.Parent };
+                    (Parent as HasChildrenTreeItemViewModel).Children.Add(vvv);
+                    OnNameRefresh();
+                    var driver = (vv as DeviceDevelop).Driver;
+                    if (driver!=null)
+                    {
+                        var driverdoc = GetMachineViewModel(this).Model.Driver;
+                        driverdoc?.AddDriver(driver);
+                    }
+                }
+            }
+            else if(CopyPasteHelper.Helper.CopyObj is DeviceGroup)
+            {
+                DeviceGroup dgg = CopyPasteHelper.Helper.CopyObj as DeviceGroup;
+                PasteGroup(dgg,this.Parent as DeviceGroupViewModel);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="group"></param>
+        private void PasteGroup(DeviceGroup group, DeviceGroupViewModel parentViewModel)
+        {
+            var vgg = mDocument.GetGroups(group);
+            var ggg = group.Clone();
+
+            DeviceGroup parent = (this.Parent is DeviceGroupViewModel) ? (Parent as DeviceGroupViewModel).Model : null;
+
+            Document.AddDeviceGroup(parent, ggg);
+
+            var vmodel = new DeviceGroupViewModel() { Model = ggg };
+            parentViewModel.Children.Add(vmodel);
+
+            foreach (IDeviceDevelop vv in ggg.Devices)
+            {
+                vv.Group = ggg.FullName;
+                Document.AddDevice(vv);
+                vmodel.Children.Add(new DeviceTreeViewModel() { Model = vv });
+            }
+
+            foreach(var vv in vgg)
+            {
+                PasteGroup(vv, vmodel);
+            }
+
         }
 
         /// <summary>

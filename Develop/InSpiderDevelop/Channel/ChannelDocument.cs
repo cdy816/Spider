@@ -177,6 +177,7 @@ namespace InSpiderDevelop
                     asb.Load(vv);
                     AddChannel(asb);
                 }
+                context.Add(typeof(ICommChannelDevelopManager), this);
             }
         }
 
@@ -189,6 +190,7 @@ namespace InSpiderDevelop
             CheckDirExistOrCreat(sfile);
             Save(sfile);
         }
+
 
         private void CheckDirExistOrCreat(string sfile)
         {
@@ -207,6 +209,7 @@ namespace InSpiderDevelop
         {
             sfile.BackFile();
             XElement xx = new XElement("Channels");
+            
             foreach (var vv in mChannels)
             {
                 xx.Add(vv.Value.Save());

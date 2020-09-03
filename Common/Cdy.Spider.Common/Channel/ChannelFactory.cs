@@ -61,7 +61,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public ICommChannelDevelop GetDevelopIntance(string type)
         {
-            if (mDevelopManagers.ContainsKey(type))
+            if (!string.IsNullOrEmpty(type) && mDevelopManagers.ContainsKey(type))
             {
                 return mDevelopManagers[type].NewChannel();
             }

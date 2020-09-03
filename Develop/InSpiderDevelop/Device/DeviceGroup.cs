@@ -10,6 +10,7 @@
 using Cdy.Spider;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace InSpiderDevelop.Device
@@ -56,6 +57,23 @@ namespace InSpiderDevelop.Device
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public DeviceGroup Clone()
+        {
+            DeviceGroup dg = new DeviceGroup() { Name = Name };
+            if (Devices != null)
+            {
+                foreach (var vv in Devices)
+                {
+                    dg.Devices.Add(vv.Clone());
+                }
+            }
+            return dg;
+        }
 
         #endregion ...Methods...
 

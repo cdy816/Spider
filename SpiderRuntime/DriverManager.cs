@@ -99,21 +99,19 @@ namespace SpiderRuntime
                 XElement xx = XElement.Load(file);
                 foreach(var vv in xx.Elements())
                 {
-                    string ass = vv.Attribute("Assembly").Value;
-                    string cls = vv.Attribute("Class").Value;
-                    var afile = GetAssemblyPath(ass);
-                    if (System.IO.File.Exists(afile) && !string.IsNullOrEmpty(cls))
+                    //string ass = vv.Attribute("Assembly").Value;
+                    //string cls = vv.Attribute("Class").Value;
+                    //var afile = GetAssemblyPath(ass);
+                    string tname = vv.Attribute("TypeName").Value;
+                    var asb = ServiceLocator.Locator.Resolve<IDriverFactory>().GetRuntimeInstance(tname);
+                    asb.Load(vv);
+                    if (mDrivers.ContainsKey(asb.Name))
                     {
-                        var asb = Assembly.Load(afile).CreateInstance(cls) as IDriverRuntime;
-                        asb.Load(vv);
-                        if (mDrivers.ContainsKey(asb.Name))
-                        {
-                            mDrivers[asb.Name] = asb;
-                        }
-                        else
-                        {
-                            mDrivers.Add(asb.Name, asb);
-                        }
+                        mDrivers[asb.Name] = asb;
+                    }
+                    else
+                    {
+                        mDrivers.Add(asb.Name, asb);
                     }
                 }
             }

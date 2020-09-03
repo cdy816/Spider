@@ -86,7 +86,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public XElement Save()
         {
-            return this.Data.SaveToXML();
+            var re = this.Data.SaveToXML();
+            re.SetAttributeValue("TypeName", this.TypeName);
+            return re;
         }
 
         /// <summary>
@@ -95,7 +97,27 @@ namespace Cdy.Spider
         /// <returns></returns>
         public abstract IDriverDevelop NewDriver();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IDriverDevelop Clone()
+        {
+            var dd = NewDriver();
+            var xx = dd.Save();
+            dd.Load(xx);
+            return dd;
+        }
 
+
+        /// <summary>
+        /// 校验变量的设备信息
+        /// </summary>
+        /// <param name="tag"></param>
+        public virtual void CheckTagDeviceInfo(Tagbae tag)
+        {
+
+        }
 
         #endregion ...Methods...
 

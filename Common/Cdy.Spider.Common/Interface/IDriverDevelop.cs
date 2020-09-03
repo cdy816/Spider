@@ -54,6 +54,12 @@ namespace Cdy.Spider
 
         #region ... Methods    ...
 
+        /// <summary>
+        /// 校验变量的设备信息
+        /// </summary>
+        /// <param name="tag"></param>
+        void CheckTagDeviceInfo(Tagbae tag);
+
         object Config();
 
         /// <summary>
@@ -67,6 +73,12 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="xe"></param>
         void Load(XElement xe);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IDriverDevelop Clone();
 
         #endregion ...Methods...
 

@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <StartupObject>InSpiderDevelopWindow.App</StartupObject>
+    <ApplicationIcon>Image\spider.ico</ApplicationIcon>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
@@ -30,6 +31,7 @@
     <None Remove="Image\remove.png" />
     <None Remove="Image\rowselect.png" />
     <None Remove="Image\save.png" />
+    <None Remove="Image\spider.ico" />
     <None Remove="Image\Spider.jpg" />
     <None Remove="Image\spider.png" />
     <None Remove="Image\文件夹.png" />
@@ -82,6 +84,7 @@
     <Resource Include="Image\remove.png" />
     <Resource Include="Image\rowselect.png" />
     <Resource Include="Image\save.png" />
+    <Resource Include="Image\spider.ico" />
     <Resource Include="Image\Spider.jpg" />
     <Resource Include="Image\spider.png" />
     <Resource Include="Image\文件夹.png" />

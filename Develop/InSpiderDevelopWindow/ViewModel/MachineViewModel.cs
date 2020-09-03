@@ -65,6 +65,8 @@ namespace InSpiderDevelopWindow
         /// </summary>
         protected override void LoadData()
         {
+            this.Model.Load();
+
             Children.Add(new DeviceRootViewModel() { Document = Model.Device, Parent = this });
             Children.Add(new APITreeViewModel() { Model = Model.Api.Api, Parent = this });
             base.LoadData();

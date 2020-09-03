@@ -9,6 +9,7 @@
 
 using Cdy.Spider;
 using InSpiderDevelop.Device;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -507,10 +508,15 @@ namespace InSpiderDevelop
             return false;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public void Reload(Context context)
         {
             this.mDevices.Clear();
+            this.mDeviceGroups.Clear();
+
             Load(context);
         }
 
@@ -532,12 +538,13 @@ namespace InSpiderDevelop
             if (System.IO.File.Exists(sfile))
             {
                 XElement xx = XElement.Load(sfile);
-                foreach (var vv in xx.Elements())
+                foreach (var vv in xx.Element("Devices").Elements())
                 {
                     DeviceDevelop asb = new DeviceDevelop();
                     asb.Load(vv,context);
                     AddDevice(asb);
                 }
+              
             }
         }
 
@@ -571,11 +578,14 @@ namespace InSpiderDevelop
         public void Save(string sfile)
         {
             sfile.BackFile();
-            XElement xx = new XElement("Devices");
+            XElement xx = new XElement("DeviceDocument");
+            xx.SetAttributeValue("Name", this.Name);
+            var xe = new XElement("Devices");
             foreach (var vv in mDevices)
             {
-                xx.Add(vv.Value.Save());
+                xe.Add(vv.Value.Save());
             }
+            xx.Add(xe);
             xx.Save(sfile);
         }
 

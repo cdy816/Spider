@@ -45,6 +45,10 @@ namespace InSpiderDevelopWindow
 
         private ICommand mCancelCommand;
 
+        private ICommand mCopyCommand;
+
+        private ICommand mPasteCommand;
+
         private TreeItemViewModel mCurrentSelectTreeItem;
 
         private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mItems = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
@@ -336,6 +340,47 @@ namespace InSpiderDevelopWindow
             }
         }
 
+        public ICommand PasteCommand
+        {
+            get
+            {
+                if(mPasteCommand==null)
+                {
+                    mPasteCommand = new RelayCommand(() => {
+                        CurrentSelectTreeItem.PasteCommand.Execute(null);
+                    },
+                    () => 
+                    {
+                        return CurrentSelectTreeItem != null && CurrentSelectTreeItem.PasteCommand.CanExecute(null); 
+                    });
+                }
+                return mPasteCommand;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand CopyCommand
+        {
+            get
+            {
+                if(mCopyCommand==null)
+                {
+                    mCopyCommand = new RelayCommand(() =>
+                    {
+                        CurrentSelectTreeItem.CopyCommand.Execute(null);
+                    },
+                    () =>
+                    { 
+                        return CurrentSelectTreeItem != null && CurrentSelectTreeItem.CopyCommand.CanExecute(null);
+                    });
+                }
+                return mCopyCommand;
+            }
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -397,7 +442,7 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
-        private void Init()
+        public void Init()
         {
             DevelopManager.Manager.Load();
             foreach(var vv in DevelopManager.Manager.ListMachines())

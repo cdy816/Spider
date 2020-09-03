@@ -22,6 +22,8 @@ namespace InSpiderDevelop
 
         #region ... Variables  ...
 
+        private bool mIsLoad = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -92,8 +94,15 @@ namespace InSpiderDevelop
         /// </summary>
         public void Load()
         {
+            if (mIsLoad) return;
+            mIsLoad = true;
             using (Context context = new Context())
             {
+                Api = new APIDocument() { Name = Name };
+                Channel = new ChannelDocument() { Name = Name };
+                Device = new DeviceDocument() { Name = Name };
+                Driver = new DriverDocument() { Name = Name };
+
                 Api.Load();
                 Channel.Load(context);
                 Driver.Load(context);

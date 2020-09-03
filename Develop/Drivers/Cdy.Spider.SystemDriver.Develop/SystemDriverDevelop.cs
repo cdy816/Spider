@@ -82,6 +82,15 @@ namespace Cdy.Spider.SystemDriver.Develop
             return new SystemDriverData();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        public override void CheckTagDeviceInfo(Tagbae tag)
+        {
+            tag.DeviceInfo = tag.Name;
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

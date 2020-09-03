@@ -170,6 +170,8 @@
                     <TreeView.InputBindings>
                         <KeyBinding Key="F2" Command="{Binding ReNameCommand}" />
                         <KeyBinding Key="Delete" Command="{Binding RemoveCommand}" />
+                        <KeyBinding Key="C" Modifiers="Ctrl" Command="{Binding CopyCommand}" />
+                        <KeyBinding Key="V" Modifiers="Ctrl" Command="{Binding PasteCommand}" />
                     </TreeView.InputBindings>
                     <TreeView.Resources>
 
@@ -189,6 +191,7 @@
                         <ContextMenu x:Key="deviceMenu">
                             <MenuItem Header="{local:ResMarker Remove}"  Command="{Binding RemoveCommand}" />
                             <MenuItem Header="{local:ResMarker ReName}"  Command="{Binding ReNameCommand}" />
+                            <MenuItem Header="{local:ResMarker Copy}" Command="{Binding CopyCommand}" />
                         </ContextMenu>
 
                         <HierarchicalDataTemplate  DataType="{x:Type local:MachineViewModel}"  ItemsSource="{Binding Children}">

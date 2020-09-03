@@ -412,11 +412,29 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
-        ///   查找类似 ShareChannel 的本地化字符串。
+        ///   查找类似 Selected 的本地化字符串。
+        /// </summary>
+        internal static string Selected {
+            get {
+                return ResourceManager.GetString("Selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ChannelShare 的本地化字符串。
         /// </summary>
         internal static string ShareChannel {
             get {
                 return ResourceManager.GetString("ShareChannel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select channel shared device 的本地化字符串。
+        /// </summary>
+        internal static string ShareDeviceSelectTitle {
+            get {
+                return ResourceManager.GetString("ShareDeviceSelectTitle", resourceCulture);
             }
         }
         

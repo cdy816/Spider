@@ -57,6 +57,9 @@ namespace Cdy.Spider
 
         #region ... Methods    ...
 
+
+
+
         object Config();
 
         /// <summary>
@@ -71,6 +74,13 @@ namespace Cdy.Spider
         /// <param name="xe"></param>
         /// <param name="context"></param>
         void Load(XElement xe, Context context);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IDeviceDevelop Clone();
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

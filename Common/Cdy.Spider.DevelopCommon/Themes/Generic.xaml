@@ -174,17 +174,18 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="DarkGray" />
         <Setter Property="Background" Value="#1FFFFFFF" />
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:PasswordControl}">
-                    <Grid>
+                    <Grid Focusable="False">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <PasswordBox  CaretBrush="White" x:Name="pb" Foreground="{TemplateBinding Foreground}"  Background="{TemplateBinding Background}" VerticalContentAlignment="Center" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"  />
                         <TextBox  CaretBrush="White" Foreground="{TemplateBinding Foreground}"  Background="{TemplateBinding Background}" x:Name="tb" VerticalContentAlignment="Center"  Text="{Binding Password,Mode=TwoWay,RelativeSource={RelativeSource Mode=TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" />
-                        <ToggleButton Style="{StaticResource ToggleButtonStyle1}"  Background="Transparent" BorderThickness="0" Margin="10,0,0,0"  Grid.Column="1"   IsChecked="{Binding IsShowPassword,Mode=TwoWay,RelativeSource={RelativeSource Mode=TemplatedParent},UpdateSourceTrigger=PropertyChanged}" Width="30" Height="24" >
+                        <ToggleButton Focusable="False" Style="{StaticResource ToggleButtonStyle1}"  Background="Transparent" BorderThickness="0" Margin="10,0,0,0"  Grid.Column="1"   IsChecked="{Binding IsShowPassword,Mode=TwoWay,RelativeSource={RelativeSource Mode=TemplatedParent},UpdateSourceTrigger=PropertyChanged}" Width="30" Height="24" >
                             <Image Source="/Cdy.Spider.DevelopCommon;component/Image/show.png" />
                         </ToggleButton>
                     </Grid>

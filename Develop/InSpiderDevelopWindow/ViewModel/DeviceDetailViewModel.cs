@@ -98,6 +98,9 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private List<string> mSupportChannels = new List<string>();
 
+
+        private IDriverDevelop mDriver;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -111,7 +114,9 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         static DeviceDetailViewModel()
         {
+            mProtocolList.Add("");
             mProtocolList.AddRange(ServiceLocator.Locator.Resolve<IDriverFactory>().ListDevelopInstance().Select(e=>e.TypeName));
+            mChannelList.Insert(0, "");
             mChannelList.AddRange(ServiceLocator.Locator.Resolve<ICommChannelFactory>().ListDevelopInstance().Select(e => e.TypeName));
         }
 
@@ -150,7 +155,9 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public string[] TagTypeList
         {
             get
@@ -578,7 +585,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     mShareChannelCommand = new RelayCommand(() => {
 
                         SelectShareChannel();
-                    });
+                    },()=> { return !string.IsNullOrEmpty(this.Model.Data.ChannelName); });
                 }
                 return mShareChannelCommand;
             }
@@ -766,10 +773,29 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             mMachineModel.Driver.RemoveDriver(Model.FullName);
             var dd = ServiceLocator.Locator.Resolve<IDriverFactory>().GetDevelopInstance(newProtocol);
-            dd.Name = Model.FullName;
-            mMachineModel.Driver.AddDriver(dd);
-            DriverConfig = dd.Config();
+            if (dd != null)
+            {
+                dd.Name = Model.FullName;
+                mMachineModel.Driver.AddDriver(dd);
+                DriverConfig = dd.Config();
+
+                foreach(var vv in (mModel as DeviceDevelop).Data.Tags)
+                {
+                    dd.CheckTagDeviceInfo(vv.Value);
+                }
+
+                foreach(var vv in mTags)
+                {
+                    vv.FreshDeviceInfo();
+                }
+            }
+            else
+            {
+                DriverConfig = null;
+            }
             UpdateSupportChannel(dd);
+            (Model as DeviceDevelop).Driver = dd;
+            mDriver = dd;
         }
 
         /// <summary>
@@ -780,20 +806,40 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             mMachineModel.Channel.RemoveChannel(Model.Data.ChannelName);
             var dd = ServiceLocator.Locator.Resolve<ICommChannelFactory>().GetDevelopIntance(newchannel);
-            dd.Name = string.IsNullOrEmpty(Model.Data.ChannelName)?mMachineModel.Channel.GetAvaiableName(newchannel):Model.Data.ChannelName;
-            mMachineModel.Channel.AddChannel(dd);
+            if (dd != null)
+            {
+                dd.Name = string.IsNullOrEmpty(Model.Data.ChannelName) ? mMachineModel.Channel.GetAvaiableName(newchannel) : Model.Data.ChannelName;
+                mMachineModel.Channel.AddChannel(dd);
 
-            ChannelConfig = dd.Config();
+                (Model as DeviceDevelop).Channel = dd;
+                (Model as DeviceDevelop).Data.ChannelName = dd.Name;
 
+                ChannelConfig = dd.Config();
+            }
+            if(string.IsNullOrEmpty(newchannel))
+            {
+                (Model as DeviceDevelop).Data.ChannelName = "";
+                (Model as DeviceDevelop).Channel = null;
+                ChannelConfig = null;
+            }
             UpdateShareChannelText();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="driver"></param>
         private void UpdateSupportChannel(IDriverDevelop driver)
         {
             mSupportChannels.Clear();
 
             if (driver == null)
             {
+                var vlist = ServiceLocator.Locator.Resolve<ICommChannelFactory>().ListDevelopInstance();
+                foreach (var vv in vlist)
+                {
+                    mSupportChannels.Add(vv.Data.Type.ToString());
+                }
                 ChannelView.Refresh();
                 return;
             }
@@ -826,6 +872,27 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <returns></returns>
         private void SelectShareChannel()
         {
+            ShareDeviceSelectViewModel smm = new ShareDeviceSelectViewModel();
+            var names = mMachineModel.Device.ListAllDevices().Where(e => e != this.Model).Where(e => e.Data.ChannelName == this.Model.Data.ChannelName).Select(e => e.FullName);
+            smm.SetDevices(names.ToList(), mMachineModel.Device.ListAllDevices().Where(e=>e !=this.Model).Select(e => e.FullName).ToList());
+            if(smm.ShowDialog().Value)
+            {
+                var sels = smm.GetSelectDevice();
+                foreach (var vss in sels)
+                {
+                    var vdd = mMachineModel.Device.GetDevice(vss);
+                    //vdd.Data.ChannelName = this.Model.Data.ChannelName;
+                    (vdd as DeviceDevelop).Channel = (this.Model as DeviceDevelop).Channel;
+                }
+
+                foreach(var vvs in names.Where(e=> !sels.Contains(e)))
+                {
+                    var vdd = mMachineModel.Device.GetDevice(vvs);
+                    //vdd.Data.ChannelName = string.Empty;
+                    (vdd as DeviceDevelop).Channel = null;
+                }
+
+            }
             UpdateShareChannelText();
         }
 
@@ -834,7 +901,11 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         private void UpdateShareChannelText()
         {
-            if (string.IsNullOrEmpty(this.Model.Data.ChannelName)) return;
+            if (string.IsNullOrEmpty(this.Model.Data.ChannelName))
+            {
+                ShareChannel = string.Empty;
+                return;
+            }
 
             var names = mMachineModel.Device.ListAllDevices().Where(e => e.Data.ChannelName == this.Model.Data.ChannelName).Select(e => e.FullName);
             StringBuilder sb = new StringBuilder();
@@ -884,6 +955,41 @@ namespace InSpiderDevelopWindow.ViewModel
             mIdCach.Clear();
 
             mCurrentPage = 0;
+
+
+            var channel = mMachineModel.Channel.GetChannel(mModel.Data.ChannelName);
+            if(channel!=null)
+            {
+                mChannelName = channel.TypeName;
+                ChannelConfig = channel.Config();
+            }
+            else
+            {
+                ChannelConfig = null;
+                mChannelName = string.Empty;
+            }
+            OnPropertyChanged("ChannelName");
+
+            var driver = mMachineModel.Driver.GetDriver(mModel.FullName);
+            if(driver!=null)
+            {
+                mProtocolName = driver.TypeName;
+                DriverConfig = driver.Config();
+                foreach(var vv in mModel.Data.Tags)
+                {
+                    driver.CheckTagDeviceInfo(vv.Value);
+                }
+            }
+            else
+            {
+                DriverConfig = null;
+                mProtocolName = string.Empty;
+            }
+            OnPropertyChanged("ProtocolName");
+            UpdateShareChannelText();
+            UpdateSupportChannel(driver);
+            mDriver = driver;
+
             Task.Run(() =>
             {
                 var vpp = GetTag(mCurrentPage);
@@ -899,22 +1005,6 @@ namespace InSpiderDevelopWindow.ViewModel
                 }
             });
             TagCount = mModel.Data.Tags.Count;
-
-            var channel = mMachineModel.Channel.GetChannel(mModel.Data.ChannelName);
-            if(channel!=null)
-            {
-                mChannelName = channel.TypeName;
-                ChannelConfig = channel.Config();
-            }
-
-            var driver = mMachineModel.Driver.GetDriver(mModel.FullName);
-            if(driver!=null)
-            {
-                mProtocolName = driver.TypeName;
-                DriverConfig = driver.Config();
-            }
-            UpdateShareChannelText();
-            UpdateSupportChannel(driver);
         }
 
         /// <summary>
@@ -1126,10 +1216,12 @@ namespace InSpiderDevelopWindow.ViewModel
                 foreach (var vv in ltmp)
                 {
                     vv.Document = this.Model.Data;
+                    mDriver?.CheckTagDeviceInfo(vv.Model);
                     if (mode == 2)
                     {
                         vv.Model.Name = GetNewName();
-                        if(!mModel.Data.AppendTag(vv.Model))
+
+                        if (!mModel.Data.AppendTag(vv.Model))
                         {
                             sb.AppendLine(string.Format(Res.Get("AddTagFail"), vv.Model.Name));
                             haserro = true;
@@ -1137,6 +1229,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     }
                     else
                     {
+                        
                         //更新数据
                         if (!mModel.Data.UpdateOrAdd(vv.Model))
                         {
@@ -1340,8 +1433,10 @@ namespace InSpiderDevelopWindow.ViewModel
                 vtag.Name = GetNewName();
                 vtag.IsNew = true;
                 vtag.Document = mModel.Data;
-                
-                if(mModel.Data.AppendTag(vtag.Model))
+
+                mDriver?.CheckTagDeviceInfo(vtag.Model);
+
+                if (mModel.Data.AppendTag(vtag.Model))
                 {
                     mTags.Add(vtag);
                     CurrentSelectTag = vtag;
@@ -1353,6 +1448,7 @@ namespace InSpiderDevelopWindow.ViewModel
             {
                 var tag = new DoubleTag() { Name = GetNewName() };
                 TagViewModel vtag = new TagViewModel() { Model = tag, Document = mModel.Data };
+                mDriver?.CheckTagDeviceInfo(vtag.Model);
                 if (mModel.Data.AppendTag(vtag.Model))
                 {
                     mTags.Add(vtag);
@@ -1431,7 +1527,8 @@ namespace InSpiderDevelopWindow.ViewModel
                 foreach (var vv in mCopyTags)
                 {
                     var vtag = vv.Clone();
-                  
+                    mDriver?.CheckTagDeviceInfo(vtag.Model);
+
                     vtag.Name = GetNewName(vv.Name);
                     vtag.IsNew = true;
                     if (mModel.Data.AppendTag(vtag.Model))
@@ -1715,6 +1812,18 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Methods    ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void FreshDeviceInfo()
+        {
+            OnPropertyChanged("DeviceInfo");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tagType"></param>
         private void ChangeTagType(TagType tagType)
         {
             Tagbae ntag = null;
@@ -1874,7 +1983,9 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Dispose()
         {
             Document = null;

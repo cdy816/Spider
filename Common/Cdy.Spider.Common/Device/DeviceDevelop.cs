@@ -64,7 +64,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public string Group { get { return Data.Group; } set { Data.Group = value; } }
+        public string Group { get { return Data.Group; } set { Data.Group = value; UpdateDriverName(); } }
 
         /// <summary>
         /// 
@@ -78,7 +78,14 @@ namespace Cdy.Spider
             set
             {
                 mCommChannel =value;
-                Data.ChannelName = value.Name;
+                if (value != null)
+                {
+                    Data.ChannelName = value.Name;
+                }
+                else
+                {
+                    Data.ChannelName = string.Empty;
+                }
             }
         }
 
@@ -140,6 +147,18 @@ namespace Cdy.Spider
         {
             return this.Data.SaveToXML();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual IDeviceDevelop Clone()
+        {
+            return new DeviceDevelop() { Data = this.Data.Clone(), Driver = Driver != null ? Driver.Clone() : null };
+        }
+
+
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

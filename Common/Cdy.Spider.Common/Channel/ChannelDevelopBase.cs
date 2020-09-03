@@ -95,7 +95,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public XElement Save()
         {
-            return this.Data.SaveToXML();
+            var re = this.Data.SaveToXML();
+            re.SetAttributeValue("TypeName", this.TypeName);
+            return re;
         }
 
         /// <summary>

@@ -118,7 +118,7 @@ namespace Cdy.Spider
 
             if (xe.Attribute("Type") != null)
             {
-                this.Type = (TransType)(int.Parse(xe.Attribute("Name").Value));
+                this.Type = (TransType)(int.Parse(xe.Attribute("Type").Value));
             }
             this.UserName = xe.Attribute("UserName")?.Value;
             this.Password = xe.Attribute("Password")?.Value;

@@ -234,8 +234,14 @@
   <data name="SaveSucessfull" xml:space="preserve">
     <value>save sucessfull!</value>
   </data>
+  <data name="Selected" xml:space="preserve">
+    <value>Selected</value>
+  </data>
   <data name="ShareChannel" xml:space="preserve">
-    <value>ShareChannel</value>
+    <value>ChannelShare</value>
+  </data>
+  <data name="ShareDeviceSelectTitle" xml:space="preserve">
+    <value>Select channel shared device</value>
   </data>
   <data name="SpiderTitle" xml:space="preserve">
     <value>Welcome to spider</value>

@@ -234,8 +234,14 @@
   <data name="SaveSucessfull" xml:space="preserve">
     <value>保存成功!</value>
   </data>
+  <data name="Selected" xml:space="preserve">
+    <value>选择</value>
+  </data>
   <data name="ShareChannel" xml:space="preserve">
-    <value>共享通道</value>
+    <value>通道共享</value>
+  </data>
+  <data name="ShareDeviceSelectTitle" xml:space="preserve">
+    <value>选择要共享通道的设备</value>
   </data>
   <data name="SpiderTitle" xml:space="preserve">
     <value>欢迎来到 Spider 开发平台</value>
