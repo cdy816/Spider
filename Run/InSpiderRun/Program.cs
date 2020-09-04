@@ -18,9 +18,15 @@ namespace InSpiderRun
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
 
-            mRunner = new SpiderRuntime.Runer();
-            mRunner.Init();
-            mRunner.Start();
+          
+            
+            if(args.Length>0)
+            {
+                mRunner = new SpiderRuntime.Runer() { Name = args[1] };
+                mRunner.Name = args[0];
+                mRunner.Init();
+                mRunner.Start();
+            }
 
             Console.WriteLine(Res.Get("HelpMsg"));
 
@@ -46,22 +52,28 @@ namespace InSpiderRun
                 switch (scmd)
                 {
                     case "exit":
-                        if (mRunner.IsStarted)
+                        if (mRunner!=null && mRunner.IsStarted)
                         {
                             mRunner.Stop();
                         }
                         mIsClosed = true;
                         break;
                     case "stop":
-                        if (mRunner.IsStarted)
+                        if (mRunner != null && mRunner.IsStarted)
                         {
                             mRunner.Stop();
                         }
                         break;
                     case "start":
-                        if (!mRunner.IsStarted)
+                        if (cmd.Length > 0)
                         {
-                            mRunner.Start();
+                            if (mRunner == null)
+                                mRunner = new SpiderRuntime.Runer() { Name = cmd[1] };
+                            if (!mRunner.IsStarted)
+                            {
+                                mRunner.Init();
+                                mRunner.Start();
+                            }
                         }
                         break;
                     case "h":

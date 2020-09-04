@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InSpiderDevelopWindow" AllowsTransparency="True" WindowStyle="None"
         mc:Ignorable="d" Background="Transparent" Foreground="#FFFAFAFA"  FontSize="12" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
-        Title="{local:ResMarker MainWindowTitle}" Icon="/Image/spider.png" Height="1080" Width="1920" FontFamily="Microsoft YaHei">
+        Title="{local:ResMarker MainWindowTitle}" Icon="/Image/spider.png" WindowState="Maximized" Height="1080" Width="1920" FontFamily="Microsoft YaHei">
     <Window.Resources>
         <local:IndexConverter x:Key="ic" />
         <BooleanToVisibilityConverter x:Key="btv" />
@@ -195,9 +195,9 @@
                         </ContextMenu>
 
                         <HierarchicalDataTemplate  DataType="{x:Type local:MachineViewModel}"  ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal" Height="24">
-                                <Image Focusable="False" Source="/Image/computer.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                <Grid ContextMenu="{StaticResource deviceMenu}"  Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
+                            <StackPanel Background="Transparent" Orientation="Horizontal" ContextMenu="{StaticResource deviceMenu}" Height="24">
+                                <Image  IsHitTestVisible="False" Focusable="False" Source="/Image/computer.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                <Grid   Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
                                     <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
                                     <TextBox Background="#FF000000" Foreground="{DynamicResource Window.Forground}" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" IsVisibleChanged="TextBox_IsVisibleChanged" Loaded="TextBox_Loaded" Text="{Binding Name,Mode=TwoWay,NotifyOnTargetUpdated=True,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Center" Visibility="{Binding IsEdit,Converter={StaticResource btv}}"  />
                                 </Grid>
@@ -205,9 +205,9 @@
                         </HierarchicalDataTemplate>
 
                         <HierarchicalDataTemplate  DataType="{x:Type local:DeviceGroupViewModel}"  ItemsSource="{Binding View}">
-                            <StackPanel Orientation="Horizontal" Height="24">
-                                <Image Focusable="False" Source="/Image/文件夹.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                <Grid ContextMenu="{StaticResource groupMenu}"  Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
+                            <StackPanel Background="Transparent" Orientation="Horizontal" Height="24" ContextMenu="{StaticResource groupMenu}">
+                                <Image IsHitTestVisible="False" Focusable="False" Source="/Image/文件夹.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                <Grid   Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
                                     <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
                                     <TextBox Background="#FF000000" Foreground="{DynamicResource Window.Forground}" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" IsVisibleChanged="TextBox_IsVisibleChanged" Loaded="TextBox_Loaded" Text="{Binding Name,Mode=TwoWay,NotifyOnTargetUpdated=True,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Center" Visibility="{Binding IsEdit,Converter={StaticResource btv}}"  />
                                 </Grid>
@@ -216,16 +216,16 @@
 
 
                         <HierarchicalDataTemplate  DataType="{x:Type local:DeviceRootViewModel}"  ItemsSource="{Binding View}">
-                            <StackPanel ContextMenu="{StaticResource rootgroupMenu}" Orientation="Horizontal" Height="24">
-                                <Image Focusable="False" Source="/Image/idevices.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="18" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            <StackPanel  Background="Transparent" ContextMenu="{StaticResource rootgroupMenu}" Orientation="Horizontal" Height="24">
+                                <Image  IsHitTestVisible="False" Focusable="False" Source="/Image/idevices.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="18" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
 
                         <DataTemplate  DataType="{x:Type local:DeviceTreeViewModel}">
-                            <StackPanel Orientation="Horizontal" Height="24">
-                                <Image Focusable="False" Source="/Image/devices.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                <Grid ContextMenu="{StaticResource deviceMenu}"  Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
+                            <StackPanel  Background="Transparent" Orientation="Horizontal" Height="24" ContextMenu="{StaticResource deviceMenu}">
+                                <Image  IsHitTestVisible="False" Focusable="False" Source="/Image/devices.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                <Grid  Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
                                     <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
                                     <TextBox Background="#FF000000" Foreground="{DynamicResource Window.Forground}" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" IsVisibleChanged="TextBox_IsVisibleChanged" Loaded="TextBox_Loaded" Text="{Binding Name,Mode=TwoWay,NotifyOnTargetUpdated=True,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Center" Visibility="{Binding IsEdit,Converter={StaticResource btv}}"  />
                                 </Grid>
@@ -233,8 +233,8 @@
                         </DataTemplate>
 
                         <DataTemplate  DataType="{x:Type local:APITreeViewModel}">
-                            <StackPanel Orientation="Horizontal" Height="24">
-                                <Image Focusable="False" Source="/Image/API.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            <StackPanel   Background="Transparent" Orientation="Horizontal" Height="24">
+                                <Image  IsHitTestVisible="False" Focusable="False" Source="/Image/API.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
                             </StackPanel>
                         </DataTemplate>

@@ -109,7 +109,9 @@ namespace InSpiderDevelop
         {
             if(mMachines.ContainsKey(name))
             {
+                var vfile = mMachines[name];
                 mMachines.Remove(name);
+                vfile.Remove();
                 return true;
             }
             return false;

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -108,7 +109,8 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             mDataView = CollectionViewSource.GetDefaultView(mItems);
             mDataView.SortDescriptions.Add(new SortDescription() { PropertyName = "IsChecked", Direction = ListSortDirection.Descending });
-            mDataView.SortDescriptions.Add(new SortDescription() { PropertyName = "Name", Direction = ListSortDirection.Ascending });
+            mDataView.SortDescriptions.Add(new SortDescription() { PropertyName = "NamePrev", Direction = ListSortDirection.Ascending });
+            mDataView.SortDescriptions.Add(new SortDescription() { PropertyName = "NameAfter", Direction = ListSortDirection.Ascending });
         }
 
         /// <summary>
@@ -132,6 +134,7 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Variables  ...
         private bool mIsChecked;
+        private string mName;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -163,12 +166,72 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string NamePrev { get; set; }
 
-        public string Name { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public int NameAfter { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get { return mName; } set { mName = value; ParseName(value); } }
 
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        public void ParseName(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                NameAfter = GetNumberInt(value);
+                NamePrev = value.Replace(NameAfter.ToString(), "");
+            }
+            else
+            {
+                NameAfter = 0;
+                NamePrev = "";
+            }
+        }
+
+        /// <summary>
+        /// 获取字符串中的数字
+        /// </summary>
+        /// <param name="str">字符串</param>
+        /// <returns>数字</returns>
+        public int GetNumberInt(string str)
+        {
+            int result = -1;
+            if (str != null && str != string.Empty)
+            {
+                // 正则表达式剔除非数字字符（不包含小数点.）
+                str = Regex.Replace(str, @"[^\d.\d]", "");
+                // 如果是数字，则转换为decimal类型
+                if (Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(str))
+                            result = int.Parse(str);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+            }
+            return result;
+        }
 
         #endregion ...Methods...
 

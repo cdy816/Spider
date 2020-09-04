@@ -30,8 +30,6 @@ namespace SpiderRuntime
         /// </summary>
         private Dictionary<string, IDeviceRuntime> mDevices = new Dictionary<string, IDeviceRuntime>();
 
-        private string mName = "";
-
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -59,7 +57,10 @@ namespace SpiderRuntime
             }
         }
 
-        public string Name => mName;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get; set; }
 
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace SpiderRuntime
         /// </summary>
         public void Load()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", "Device.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
             Load(sfile);
         }
 
@@ -111,8 +112,6 @@ namespace SpiderRuntime
             {
                 XElement xx = XElement.Load(sfile);
                 
-                mName = xx.Attribute("Name")?.Value;
-
                 foreach (var vv in xx.Element("Devices").Elements())
                 {
                     DeviceData data = new DeviceData();

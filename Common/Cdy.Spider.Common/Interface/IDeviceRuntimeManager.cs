@@ -34,10 +34,6 @@ namespace Cdy.Spider
 
         #region ... Properties ...
 
-        /// <summary>
-        /// 
-        /// </summary>
-        string Name { get; }
 
         #endregion ...Properties...
 

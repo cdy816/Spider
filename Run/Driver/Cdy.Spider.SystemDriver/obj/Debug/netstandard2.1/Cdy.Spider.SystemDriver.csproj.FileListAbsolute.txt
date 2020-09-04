@@ -6,7 +6,6 @@ C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDri
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.csprojAssemblyReference.cache
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.AssemblyInfoInputs.cache
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.AssemblyInfo.cs
-C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.csproj.CoreCompileInputs.cache
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.csproj.CopyComplete
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.dll
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.pdb
@@ -22,3 +21,4 @@ C:\Users\cdy81\source\repos\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\
 C:\Users\cdy81\source\repos\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.csproj.CopyComplete
 C:\Users\cdy81\source\repos\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.dll
 C:\Users\cdy81\source\repos\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.pdb
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.csproj.CoreCompileInputs.cache

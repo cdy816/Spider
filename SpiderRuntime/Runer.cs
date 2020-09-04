@@ -11,6 +11,12 @@ namespace SpiderRuntime
 
         #region ... Variables  ...
         private bool mIsStarted = false;
+
+        private DriverManager mDriver;
+        private ChannelManager mChannel;
+        private DeviceManager mDevice;
+        private APIManager mApi;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -38,6 +44,11 @@ namespace SpiderRuntime
         /// </summary>
         public bool IsStarted { get { return mIsStarted; } }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -49,6 +60,13 @@ namespace SpiderRuntime
         {
             try
             {
+
+                mDriver = new DriverManager() { Name = Name };
+                mDevice = new DeviceManager() { Name = Name };
+                mChannel = new ChannelManager() { Name = Name };
+                mApi = new APIManager() { Name = Name };
+
+
                 Load();
                 InterfaceRegistor();
 
@@ -75,10 +93,10 @@ namespace SpiderRuntime
         /// </summary>
         private void Load()
         {
-            DriverManager.Manager.Load();
-            ChannelManager.Manager.Load();
-            DeviceManager.Manager.Load();
-            APIManager.Manager.Load();
+            mDriver.Load();
+            mChannel.Load();
+            mDevice.Load();
+            mApi.Load();
         }
 
         /// <summary>
@@ -86,9 +104,9 @@ namespace SpiderRuntime
         /// </summary>
         private void InterfaceRegistor()
         {
-            ServiceLocator.Locator.Registor<IDriverRuntimeManager>(DriverManager.Manager);
-            ServiceLocator.Locator.Registor<ICommChannelRuntimeManager>(ChannelManager.Manager);
-            ServiceLocator.Locator.Registor<IDeviceRuntimeManager>(DeviceManager.Manager);
+            ServiceLocator.Locator.Registor<IDriverRuntimeManager>(mDriver);
+            ServiceLocator.Locator.Registor<ICommChannelRuntimeManager>(mChannel);
+            ServiceLocator.Locator.Registor<IDeviceRuntimeManager>(mDevice);
         }
 
         /// <summary>

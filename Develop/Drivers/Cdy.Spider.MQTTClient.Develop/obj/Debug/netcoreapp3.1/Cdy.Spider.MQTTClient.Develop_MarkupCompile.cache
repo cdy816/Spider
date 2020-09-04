@@ -4,7 +4,7 @@
 library
 C#
 .cs
-C:\Users\cdy81\source\repos\Spider\Develop\Drivers\Cdy.Spider.MQTTClient.Develop\obj\Debug\netcoreapp3.1\
+C:\Users\chongdaoyang\source\repos\cdy816\Spider\Develop\Drivers\Cdy.Spider.MQTTClient.Develop\obj\Debug\netcoreapp3.1\
 Cdy.Spider.MQTTClient.Develop
 none
 false
@@ -13,7 +13,7 @@ TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 2-1068407150
 
 71722005585
-198-2019515791
+198-11922910
 MQTTClientChannelConfigView.xaml;Themes\Generic.xaml;
 
 False

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Buffers;
 using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace Cdy.Spider
 {
@@ -68,27 +69,131 @@ namespace Cdy.Spider
         {
             if(key == this.Device.Name)
             {
+
+                //{'tag1':{1:1},'tag2':{ 0:'true'},'tag3':{ 12:[10,11]}}
+                //{{变量:{数据类型:值}}，{变量:{数据类型:值}}}
+
                 //处理多个数据标签
                 var vdata = Encoding.UTF8.GetString(data);
-                string[] ss = vdata.Split(new char[] { ';' });
-                foreach(var vv in ss)
+
+                var vdatas = JObject.Parse(vdata).ToObject<string[]>();
+                
+                foreach(var vv in vdatas)
                 {
-                    string[] sss = vv.Split(new char[] { ',' });
-                    UpdateValue(sss[0], sss[1]);
+                    var vjj = JObject.Parse(vv);
+                    
+                    foreach(var vvv in vjj.Properties())
+                    {
+                        string skey = vvv.Name;
+                        var sobj = DecodeSingleValue(vvv.Value.ToObject<JObject>());
+                        UpdateValue(skey, sobj);
+                    }
                 }
                 handled = true;
                 return null;
             }
             else if(key.StartsWith(this.Device.Name))
             {
+                //{1:1},{数据类型:值}
                 string devicename = key.Replace(this.Device.Name + "/", "");
-                
-                UpdateValue(devicename, DecodeValue(data));
-
+                var val = DecodeSingleValue(JObject.Parse(Encoding.UTF8.GetString(data)));
+                UpdateValue(devicename, val);
                 handled = true;
                 return null;
             }
             return base.OnReceiveData(key, data, out handled);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        private object DecodeSingleValue(JObject obj)
+        {
+            object re=null;
+
+            var pps = obj.Properties().ToList();
+            int bval = 0;
+            if(pps.Count>0)
+            {
+                bval = int.Parse(pps[0].Name);
+                var val = pps[0].Value;
+
+                switch ((TagType)bval)
+                {
+                    case TagType.Bool:
+                        re = val.ToObject<bool>();
+                        break;
+                    case TagType.Byte:
+                        re = val.ToObject<byte>();
+                        break;
+                    case TagType.DateTime:
+                        re = val.ToObject<DateTime>();
+                        break;
+                    case TagType.Double:
+                        re = val.ToObject<double>();
+                        break;
+                    case TagType.Float:
+                        re = val.ToObject<float>();
+                        break;
+                    case TagType.Int:
+                        re = val.ToObject<int>();
+                        break;
+                    case TagType.Long:
+                        re = val.ToObject<long>();
+                        break;
+                    case TagType.Short:
+                        re = val.ToObject<short>();
+                        break;
+                    case TagType.String:
+                        re = val.ToObject<string>();
+                        break;
+                    case TagType.UInt:
+                        re = val.ToObject<uint>();
+                        break;
+                    case TagType.ULong:
+                        re = val.ToObject<ulong>();
+                        break;
+                    case TagType.UShort:
+                        re = val.ToObject<ushort>();
+                        break;
+                    case TagType.IntPoint:
+                        var vvs = val.ToObject<int[]>();
+                        re = new IntPoint() { X = vvs[0], Y = vvs[1] };
+                        break;
+                    case TagType.IntPoint3:
+                        var vvs1 = val.ToObject<int[]>();
+                        re = new IntPoint3() { X = vvs1[0], Y = vvs1[1], Z = vvs1[2] };
+                        break;
+                    case TagType.UIntPoint:
+                        var vvs2 = val.ToObject<uint[]>();
+                        re = new UIntPoint() { X = vvs2[0], Y = vvs2[1] };
+                        break;
+                    case TagType.UIntPoint3:
+                        var vvs3 = val.ToObject<uint[]>();
+                        re = new UIntPoint3() { X = vvs3[0], Y = vvs3[1], Z = vvs3[2] };
+                        break;
+                    case TagType.LongPoint:
+                        var vvs4 = val.ToObject<long[]>();
+                        re = new LongPoint() { X = vvs4[0], Y = vvs4[1] };
+                        break;
+                    case TagType.LongPoint3:
+                        var vvs5 = val.ToObject<long[]>();
+                        re = new LongPoint3() { X = vvs5[0], Y = vvs5[1], Z = vvs5[2] };
+                        break;
+                    case TagType.ULongPoint:
+                        var vvs6 = val.ToObject<ulong[]>();
+                        re = new ULongPoint() { X = vvs6[0], Y = vvs6[1] };
+                        break;
+                    case TagType.ULongPoint3:
+                        var vvs7 = val.ToObject<ulong[]>();
+                        re = new ULongPoint3() { X = vvs7[0], Y = vvs7[1], Z = vvs7[2] };
+                        break;
+                }
+
+            }
+            return re;
         }
 
         /// <summary>
@@ -120,173 +225,192 @@ namespace Cdy.Spider
         /// <param name="tags"></param>
         private void SendGroupTags(IEnumerable<string> tags)
         {
+            //发送数据格式
+            //{'tags':['tag1','tag2']} 
+            //{'tags':['变量名称','变量名称']}
+
+            if (tags.Count() < 1 ) return;
+
             StringBuilder sb = new StringBuilder();
+            sb.Append("{'tags':[");
             foreach(var vv in tags)
             {
-                sb.Append(vv + ";");
+                sb.Append("'"+vv + "',");
             }
-            sb.Length = sb.Length > 0 ? sb.Length - 1 : sb.Length;
+            sb.Length = sb.Length - 1;
+            sb.Append("]}");
+
             var res = SendData(this.Device.Name, Encoding.UTF8.GetBytes(sb.ToString()));
             if(res!=null && res.Length>0)
             {
-                int idx = 0;
-                foreach(var vv in tags)
+                var vdata = Encoding.UTF8.GetString(res);
+
+                var vdatas = JObject.Parse(vdata).ToObject<string[]>();
+
+                foreach (var vv in vdatas)
                 {
-                    DecodeValue(res, ref idx);
+                    var vjj = JObject.Parse(vv);
+
+                    foreach (var vvv in vjj.Properties())
+                    {
+                        string skey = vvv.Name;
+                        var sobj = DecodeSingleValue(vvv.Value.ToObject<JObject>());
+                        UpdateValue(skey, sobj);
+                    }
                 }
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="startIndex"></param>
-        /// <returns></returns>
-        private object DecodeValue(byte[] value,ref int startIndex)
-        {
-            TagType bval = (TagType)(value[startIndex]);
-            object re = null;
-            switch (bval)
-            {
-                case TagType.Bool:
-                    re = BitConverter.ToBoolean(value.AsSpan(startIndex+1));
-                    startIndex += 2;
-                    break;
-                case TagType.Byte:
-                    re = (value as byte[])[startIndex + 1];
-                    startIndex += 2;
-                    break;
-                case TagType.DateTime:
-                    re = Convert.ToDateTime(BitConverter.ToInt64(value.AsSpan(startIndex + 1)));
-                    startIndex += 9;
-                    break;
-                case TagType.Double:
-                    re = BitConverter.ToDouble(value.AsSpan(startIndex + 1));
-                    startIndex += 9;
-                    break;
-                case TagType.Float:
-                    re = BitConverter.ToSingle(value.AsSpan(startIndex + 1));
-                    startIndex += 5;
-                    break;
-                case TagType.Int:
-                    re = BitConverter.ToInt32(value.AsSpan(startIndex + 1));
-                    startIndex += 5;
-                    break;
-                case TagType.Long:
-                    re = BitConverter.ToInt64(value.AsSpan(startIndex + 1));
-                    startIndex += 9;
-                    break;
-                case TagType.Short:
-                    re = BitConverter.ToInt16(value.AsSpan(startIndex + 1));
-                    startIndex += 3;
-                    break;
-                case TagType.String:
-                    var vsize = BitConverter.ToInt16(value.AsSpan(startIndex + 1));
-                    re = Encoding.UTF8.GetString(value.AsSpan(startIndex + 3,vsize));
-                    startIndex += (3 + vsize);
-                    break;
-                case TagType.UInt:
-                    re = BitConverter.ToUInt32(value.AsSpan(startIndex + 1));
-                    startIndex += 5;
-                    break;
-                case TagType.ULong:
-                    re = BitConverter.ToUInt64(value.AsSpan(startIndex + 1));
-                    startIndex += 9;
-                    break;
-                case TagType.UShort:
-                    re = BitConverter.ToUInt16(value.AsSpan(startIndex + 1));
-                    startIndex += 3;
-                    break;
-                case TagType.IntPoint:
-                    re = new IntPoint() { X = BitConverter.ToInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToInt32(value.AsSpan(startIndex + 5, 4)) };
-                    startIndex += 9;
-                    break;
-                case TagType.IntPoint3:
-                    re = new IntPoint3() { X = BitConverter.ToInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToInt32(value.AsSpan(startIndex + 5, 4)), Z = BitConverter.ToInt32(value.AsSpan(startIndex + 9, 4)) };
-                    startIndex += 13;
-                    break;
-                case TagType.UIntPoint:
-                    re = new UIntPoint() { X = BitConverter.ToUInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(startIndex + 5, 4)) };
-                    startIndex += 9;
-                    break;
-                case TagType.UIntPoint3:
-                    re = new UIntPoint3() { X = BitConverter.ToUInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(startIndex + 5, 4)), Z = BitConverter.ToUInt32(value.AsSpan(startIndex + 9, 4)) };
-                    startIndex += 13;
-                    break;
-                case TagType.LongPoint:
-                    re = new LongPoint() { X = BitConverter.ToInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToInt64(value.AsSpan(startIndex + 9, 8)) };
-                    startIndex += 17;
-                    break;
-                case TagType.LongPoint3:
-                    re = new LongPoint3() { X = BitConverter.ToInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToInt64(value.AsSpan(startIndex + 9, 8)), Z = BitConverter.ToInt64(value.AsSpan(startIndex + 17, 8)) };
-                    startIndex += 25;
-                    break;
-                case TagType.ULongPoint:
-                    re = new ULongPoint() { X = BitConverter.ToUInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(startIndex + 9, 8)) };
-                    startIndex += 17;
-                    break;
-                case TagType.ULongPoint3:
-                    re = new ULongPoint3() { X = BitConverter.ToUInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(startIndex + 9, 8)), Z = BitConverter.ToUInt64(value.AsSpan(startIndex + 17, 8)) };
-                    startIndex += 25;
-                    break;
-            }
-            return re;
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="value"></param>
+        ///// <param name="startIndex"></param>
+        ///// <returns></returns>
+        //private object DecodeValue(byte[] value,ref int startIndex)
+        //{
+        //    TagType bval = (TagType)(value[startIndex]);
+        //    object re = null;
+        //    switch (bval)
+        //    {
+        //        case TagType.Bool:
+        //            re = BitConverter.ToBoolean(value.AsSpan(startIndex+1));
+        //            startIndex += 2;
+        //            break;
+        //        case TagType.Byte:
+        //            re = (value as byte[])[startIndex + 1];
+        //            startIndex += 2;
+        //            break;
+        //        case TagType.DateTime:
+        //            re = Convert.ToDateTime(BitConverter.ToInt64(value.AsSpan(startIndex + 1)));
+        //            startIndex += 9;
+        //            break;
+        //        case TagType.Double:
+        //            re = BitConverter.ToDouble(value.AsSpan(startIndex + 1));
+        //            startIndex += 9;
+        //            break;
+        //        case TagType.Float:
+        //            re = BitConverter.ToSingle(value.AsSpan(startIndex + 1));
+        //            startIndex += 5;
+        //            break;
+        //        case TagType.Int:
+        //            re = BitConverter.ToInt32(value.AsSpan(startIndex + 1));
+        //            startIndex += 5;
+        //            break;
+        //        case TagType.Long:
+        //            re = BitConverter.ToInt64(value.AsSpan(startIndex + 1));
+        //            startIndex += 9;
+        //            break;
+        //        case TagType.Short:
+        //            re = BitConverter.ToInt16(value.AsSpan(startIndex + 1));
+        //            startIndex += 3;
+        //            break;
+        //        case TagType.String:
+        //            var vsize = BitConverter.ToInt16(value.AsSpan(startIndex + 1));
+        //            re = Encoding.UTF8.GetString(value.AsSpan(startIndex + 3,vsize));
+        //            startIndex += (3 + vsize);
+        //            break;
+        //        case TagType.UInt:
+        //            re = BitConverter.ToUInt32(value.AsSpan(startIndex + 1));
+        //            startIndex += 5;
+        //            break;
+        //        case TagType.ULong:
+        //            re = BitConverter.ToUInt64(value.AsSpan(startIndex + 1));
+        //            startIndex += 9;
+        //            break;
+        //        case TagType.UShort:
+        //            re = BitConverter.ToUInt16(value.AsSpan(startIndex + 1));
+        //            startIndex += 3;
+        //            break;
+        //        case TagType.IntPoint:
+        //            re = new IntPoint() { X = BitConverter.ToInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToInt32(value.AsSpan(startIndex + 5, 4)) };
+        //            startIndex += 9;
+        //            break;
+        //        case TagType.IntPoint3:
+        //            re = new IntPoint3() { X = BitConverter.ToInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToInt32(value.AsSpan(startIndex + 5, 4)), Z = BitConverter.ToInt32(value.AsSpan(startIndex + 9, 4)) };
+        //            startIndex += 13;
+        //            break;
+        //        case TagType.UIntPoint:
+        //            re = new UIntPoint() { X = BitConverter.ToUInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(startIndex + 5, 4)) };
+        //            startIndex += 9;
+        //            break;
+        //        case TagType.UIntPoint3:
+        //            re = new UIntPoint3() { X = BitConverter.ToUInt32(value.AsSpan(startIndex + 1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(startIndex + 5, 4)), Z = BitConverter.ToUInt32(value.AsSpan(startIndex + 9, 4)) };
+        //            startIndex += 13;
+        //            break;
+        //        case TagType.LongPoint:
+        //            re = new LongPoint() { X = BitConverter.ToInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToInt64(value.AsSpan(startIndex + 9, 8)) };
+        //            startIndex += 17;
+        //            break;
+        //        case TagType.LongPoint3:
+        //            re = new LongPoint3() { X = BitConverter.ToInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToInt64(value.AsSpan(startIndex + 9, 8)), Z = BitConverter.ToInt64(value.AsSpan(startIndex + 17, 8)) };
+        //            startIndex += 25;
+        //            break;
+        //        case TagType.ULongPoint:
+        //            re = new ULongPoint() { X = BitConverter.ToUInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(startIndex + 9, 8)) };
+        //            startIndex += 17;
+        //            break;
+        //        case TagType.ULongPoint3:
+        //            re = new ULongPoint3() { X = BitConverter.ToUInt64(value.AsSpan(startIndex + 1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(startIndex + 9, 8)), Z = BitConverter.ToUInt64(value.AsSpan(startIndex + 17, 8)) };
+        //            startIndex += 25;
+        //            break;
+        //    }
+        //    return re;
+        //}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private object DecodeValue(byte[] value)
-        {
-            TagType bval = (TagType)(value[0]);
-            switch (bval)
-            {
-                case TagType.Bool:
-                    return BitConverter.ToBoolean(value.AsSpan(1));
-                case TagType.Byte:
-                    return (value as byte[])[1];
-                case TagType.DateTime:
-                    return Convert.ToDateTime(BitConverter.ToInt64(value.AsSpan(1)));
-                case TagType.Double:
-                    return BitConverter.ToDouble(value.AsSpan(1));
-                case TagType.Float:
-                    return BitConverter.ToSingle(value.AsSpan(1));
-                case TagType.Int:
-                    return BitConverter.ToInt32(value.AsSpan(1));
-                case TagType.Long:
-                    return BitConverter.ToInt64(value.AsSpan(1));
-                case TagType.Short:
-                    return BitConverter.ToInt16(value.AsSpan(1));
-                case TagType.String:
-                    return Encoding.UTF8.GetString(value.AsSpan(1));
-                case TagType.UInt:
-                    return BitConverter.ToUInt32(value.AsSpan(1));
-                case TagType.ULong:
-                    return BitConverter.ToUInt64(value.AsSpan(1));
-                case TagType.UShort:
-                    return BitConverter.ToUInt16(value.AsSpan(1));
-                case TagType.IntPoint:
-                    return new IntPoint() { X = BitConverter.ToInt32(value.AsSpan(1, 4)), Y = BitConverter.ToInt32(value.AsSpan(5, 4)) };
-                case TagType.IntPoint3:
-                    return new IntPoint3() { X = BitConverter.ToInt32(value.AsSpan(1, 4)), Y = BitConverter.ToInt32(value.AsSpan(5, 4)), Z = BitConverter.ToInt32(value.AsSpan(9, 4)) };
-                case TagType.UIntPoint:
-                    return new UIntPoint() { X = BitConverter.ToUInt32(value.AsSpan(1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(5, 4)) };
-                case TagType.UIntPoint3:
-                    return new UIntPoint3() { X = BitConverter.ToUInt32(value.AsSpan(1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(5, 4)), Z = BitConverter.ToUInt32(value.AsSpan(9, 4)) };
-                case TagType.LongPoint:
-                    return new LongPoint() { X = BitConverter.ToInt64(value.AsSpan(1, 8)), Y = BitConverter.ToInt64(value.AsSpan(9, 8)) };
-                case TagType.LongPoint3:
-                    return new LongPoint3() { X = BitConverter.ToInt64(value.AsSpan(1, 8)), Y = BitConverter.ToInt64(value.AsSpan(9, 8)), Z = BitConverter.ToInt64(value.AsSpan(17, 8)) };
-                case TagType.ULongPoint:
-                    return new ULongPoint() { X = BitConverter.ToUInt64(value.AsSpan(1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(9, 8)) };
-                case TagType.ULongPoint3:
-                    return new ULongPoint3() { X = BitConverter.ToUInt64(value.AsSpan(1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(9, 8)), Z = BitConverter.ToUInt64(value.AsSpan(17, 8)) };
-            }
-            return null;
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //private object DecodeValue(byte[] value)
+        //{
+        //    TagType bval = (TagType)(value[0]);
+        //    switch (bval)
+        //    {
+        //        case TagType.Bool:
+        //            return BitConverter.ToBoolean(value.AsSpan(1));
+        //        case TagType.Byte:
+        //            return (value as byte[])[1];
+        //        case TagType.DateTime:
+        //            return Convert.ToDateTime(BitConverter.ToInt64(value.AsSpan(1)));
+        //        case TagType.Double:
+        //            return BitConverter.ToDouble(value.AsSpan(1));
+        //        case TagType.Float:
+        //            return BitConverter.ToSingle(value.AsSpan(1));
+        //        case TagType.Int:
+        //            return BitConverter.ToInt32(value.AsSpan(1));
+        //        case TagType.Long:
+        //            return BitConverter.ToInt64(value.AsSpan(1));
+        //        case TagType.Short:
+        //            return BitConverter.ToInt16(value.AsSpan(1));
+        //        case TagType.String:
+        //            return Encoding.UTF8.GetString(value.AsSpan(1));
+        //        case TagType.UInt:
+        //            return BitConverter.ToUInt32(value.AsSpan(1));
+        //        case TagType.ULong:
+        //            return BitConverter.ToUInt64(value.AsSpan(1));
+        //        case TagType.UShort:
+        //            return BitConverter.ToUInt16(value.AsSpan(1));
+        //        case TagType.IntPoint:
+        //            return new IntPoint() { X = BitConverter.ToInt32(value.AsSpan(1, 4)), Y = BitConverter.ToInt32(value.AsSpan(5, 4)) };
+        //        case TagType.IntPoint3:
+        //            return new IntPoint3() { X = BitConverter.ToInt32(value.AsSpan(1, 4)), Y = BitConverter.ToInt32(value.AsSpan(5, 4)), Z = BitConverter.ToInt32(value.AsSpan(9, 4)) };
+        //        case TagType.UIntPoint:
+        //            return new UIntPoint() { X = BitConverter.ToUInt32(value.AsSpan(1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(5, 4)) };
+        //        case TagType.UIntPoint3:
+        //            return new UIntPoint3() { X = BitConverter.ToUInt32(value.AsSpan(1, 4)), Y = BitConverter.ToUInt32(value.AsSpan(5, 4)), Z = BitConverter.ToUInt32(value.AsSpan(9, 4)) };
+        //        case TagType.LongPoint:
+        //            return new LongPoint() { X = BitConverter.ToInt64(value.AsSpan(1, 8)), Y = BitConverter.ToInt64(value.AsSpan(9, 8)) };
+        //        case TagType.LongPoint3:
+        //            return new LongPoint3() { X = BitConverter.ToInt64(value.AsSpan(1, 8)), Y = BitConverter.ToInt64(value.AsSpan(9, 8)), Z = BitConverter.ToInt64(value.AsSpan(17, 8)) };
+        //        case TagType.ULongPoint:
+        //            return new ULongPoint() { X = BitConverter.ToUInt64(value.AsSpan(1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(9, 8)) };
+        //        case TagType.ULongPoint3:
+        //            return new ULongPoint3() { X = BitConverter.ToUInt64(value.AsSpan(1, 8)), Y = BitConverter.ToUInt64(value.AsSpan(9, 8)), Z = BitConverter.ToUInt64(value.AsSpan(17, 8)) };
+        //    }
+        //    return null;
+        //}
 
         /// <summary>
         /// 
@@ -333,4 +457,5 @@ namespace Cdy.Spider
 
         #endregion ...Interfaces...
     }
+
 }

@@ -70,12 +70,23 @@ namespace InSpiderDevelop
         /// <param name="name"></param>
         public void ReName(string name)
         {
+            string sname = this.Name;
             this.Name = name;
             Api.Name = name;
             Channel.Name = name;
             Device.Name = name;
             Driver.Name = name;
+
+            var sfile1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", sname);
+            var sfile2 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", name);
+            if (sfile1 != sfile2 && System.IO.Directory.Exists(sfile1))
+            {
+                System.IO.Directory.Move(sfile1, sfile2);
+            }
+
         }
+
+        
 
         /// <summary>
         /// 
@@ -121,6 +132,18 @@ namespace InSpiderDevelop
                 Channel.Reload(context);
                 Driver.Reload(context);
                 Device.Reload(context);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Remove()
+        {
+            var sfile1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", this.Name);
+            if (System.IO.Directory.Exists(sfile1))
+            {
+                System.IO.Directory.Delete(sfile1,true);
             }
         }
 

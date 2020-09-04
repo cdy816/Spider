@@ -46,6 +46,16 @@ namespace SpiderRuntime
 
         #region ... Properties ...
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public string Name
+        {
+            get;
+            set;
+        }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -83,7 +93,7 @@ namespace SpiderRuntime
         /// </summary>
         public void Load()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", "Channel.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Channel.cfg");
             Load(sfile);
         }
 
