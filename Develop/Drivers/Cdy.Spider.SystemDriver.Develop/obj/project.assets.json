@@ -65,19 +65,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\chongdaoyang\\.nuget\\packages\\": {}
+    "C:\\Users\\cdy81\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\Drivers\\Cdy.Spider.SystemDriver.Develop\\Cdy.Spider.SystemDriver.Develop.csproj",
+      "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\Drivers\\Cdy.Spider.SystemDriver.Develop\\Cdy.Spider.SystemDriver.Develop.csproj",
       "projectName": "Cdy.Spider.SystemDriver.Develop",
-      "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\Drivers\\Cdy.Spider.SystemDriver.Develop\\Cdy.Spider.SystemDriver.Develop.csproj",
-      "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Develop\\Drivers\\Cdy.Spider.SystemDriver.Develop\\obj\\",
+      "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\Drivers\\Cdy.Spider.SystemDriver.Develop\\Cdy.Spider.SystemDriver.Develop.csproj",
+      "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Develop\\Drivers\\Cdy.Spider.SystemDriver.Develop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -90,14 +90,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
-              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
+            "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
+              "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
             },
-            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.DevelopCommon\\Cdy.Spider.DevelopCommon.csproj": {
-              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.DevelopCommon\\Cdy.Spider.DevelopCommon.csproj"
+            "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.DevelopCommon\\Cdy.Spider.DevelopCommon.csproj": {
+              "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.DevelopCommon\\Cdy.Spider.DevelopCommon.csproj"
             },
-            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.SystemDriver\\Cdy.Spider.SystemDriver.csproj": {
-              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.SystemDriver\\Cdy.Spider.SystemDriver.csproj"
+            "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\Driver\\Cdy.Spider.SystemDriver\\Cdy.Spider.SystemDriver.csproj": {
+              "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\Driver\\Cdy.Spider.SystemDriver\\Cdy.Spider.SystemDriver.csproj"
             }
           }
         }

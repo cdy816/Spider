@@ -796,6 +796,15 @@ namespace InSpiderDevelopWindow.ViewModel
             UpdateSupportChannel(dd);
             (Model as DeviceDevelop).Driver = dd;
             mDriver = dd;
+
+            if (mDriver != null)
+            {
+                TagViewModel.mRegistorList = mDriver.SupportRegistors;
+            }
+            else
+            {
+                TagViewModel.mRegistorList = null;
+            }
         }
 
         /// <summary>
@@ -907,7 +916,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 return;
             }
 
-            var names = mMachineModel.Device.ListAllDevices().Where(e => e.Data.ChannelName == this.Model.Data.ChannelName).Select(e => e.FullName);
+            var names = mMachineModel.Device.ListAllDevices().Where(e => e.Data.ChannelName == this.Model.Data.ChannelName && e!=this.Model).Select(e => e.FullName);
             StringBuilder sb = new StringBuilder();
             foreach(var vv in names)
             {
@@ -989,6 +998,14 @@ namespace InSpiderDevelopWindow.ViewModel
             UpdateShareChannelText();
             UpdateSupportChannel(driver);
             mDriver = driver;
+            if (mDriver != null)
+            {
+                TagViewModel.mRegistorList = mDriver.SupportRegistors;
+            }
+            else
+            {
+                TagViewModel.mRegistorList = null;
+            }
 
             Task.Run(() =>
             {
@@ -1588,6 +1605,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
         public static string[] mDataTranseDirection;
 
+        public static string[] mRegistorList;
+
         private ICommand mDatabaseBrowserCommand;
         #endregion ...Variables...
 
@@ -1609,6 +1628,18 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string[] RegistorList
+        {
+            get
+            {
+                return mRegistorList;
+            }
+        }
+
 
         /// <summary>
         /// 

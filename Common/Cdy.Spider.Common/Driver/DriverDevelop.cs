@@ -54,6 +54,11 @@ namespace Cdy.Spider
         /// </summary>
         public abstract ChannelType[] SupportChannelTypes { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual string[] SupportRegistors => null;
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -124,12 +129,6 @@ namespace Cdy.Spider
         #region ... Interfaces ...
 
         #endregion ...Interfaces...
-
-
-
-
-
-
 
     }
 }

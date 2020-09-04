@@ -118,6 +118,7 @@ namespace InSpiderDevelopWindow
                 {
                     mModel = value;
                     mName = value.Name;
+                    this.ParseName(mName);
                     Init();
                     OnPropertyChanged("Model");
                 }
@@ -187,6 +188,15 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        public override bool CanRemove()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Copy()
         {
             CopyPasteHelper.Helper.CopyObj = this.Model;
@@ -229,7 +239,7 @@ namespace InSpiderDevelopWindow
 
                 if (Document.AddDevice(vv))
                 {
-                    var vvv = new DeviceTreeViewModel() { Document = this.Document, Model = vv, Parent = this.Parent };
+                    var vvv = new DeviceTreeViewModel() { Document = this.Document, Model = vv, Parent = this };
                     this.Children.Add(vvv);
                     OnNameRefresh();
 
@@ -256,17 +266,26 @@ namespace InSpiderDevelopWindow
 
             DeviceGroup parent = (this.Parent is DeviceGroupViewModel) ? (Parent as DeviceGroupViewModel).Model : null;
 
+            ggg.Name = Document.GetAvaiableGroupName(ggg.Name, parent != null ? parent.FullName : string.Empty);
+
             Document.AddDeviceGroup(parent, ggg);
-            var vmodel = new DeviceGroupViewModel() { Model = ggg };
+            var vmodel = new DeviceGroupViewModel() { Model = ggg,Document=this.Document,Parent=parentViewModel };
             parentViewModel.Children.Add(vmodel);
             
 
-            foreach (IDeviceDevelop vv in ggg.Devices)
+            foreach (IDeviceDevelop vv in ggg.Devices.ToArray())
             {
                 vv.Group = ggg.FullName;
                 Document.AddDevice(vv);
 
-                vmodel.Children.Add(new DeviceTreeViewModel() { Model = vv });
+                vmodel.Children.Add(new DeviceTreeViewModel() { Model = vv, Document = this.Document,Parent=vmodel });
+
+                var driver = (vv as DeviceDevelop).Driver;
+                if (driver != null)
+                {
+                    var driverdoc = GetMachineViewModel(this).Model.Driver;
+                    driverdoc?.AddDriver(driver);
+                }
             }
 
             foreach (var vv in vgg)
@@ -282,6 +301,7 @@ namespace InSpiderDevelopWindow
         public override void Remove()
         {
             mDocument.RemoveGroup(this.FullName);
+            (Parent as HasChildrenTreeItemViewModel).Children.Remove(this);
         }
 
         /// <summary>
@@ -482,6 +502,7 @@ namespace InSpiderDevelopWindow
                 {
                     mModel = value;
                     mName = value.Name;
+                    this.ParseName(mName);
                     OnPropertyChanged("Model");
                 }
             }
@@ -624,16 +645,24 @@ namespace InSpiderDevelopWindow
 
             DeviceGroup parent = (this.Parent is DeviceGroupViewModel) ? (Parent as DeviceGroupViewModel).Model : null;
 
+            ggg.Name = Document.GetAvaiableGroupName(ggg.Name, parent != null ? parent.FullName : "");
+
             Document.AddDeviceGroup(parent, ggg);
 
-            var vmodel = new DeviceGroupViewModel() { Model = ggg };
+            var vmodel = new DeviceGroupViewModel() { Model = ggg, Document = this.Document,Parent=parentViewModel };
             parentViewModel.Children.Add(vmodel);
 
-            foreach (IDeviceDevelop vv in ggg.Devices)
+            foreach (IDeviceDevelop vv in ggg.Devices.ToArray())
             {
                 vv.Group = ggg.FullName;
                 Document.AddDevice(vv);
-                vmodel.Children.Add(new DeviceTreeViewModel() { Model = vv });
+                vmodel.Children.Add(new DeviceTreeViewModel() { Model = vv, Document = this.Document,Parent=vmodel });
+                var driver = (vv as DeviceDevelop).Driver;
+                if (driver != null)
+                {
+                    var driverdoc = GetMachineViewModel(this).Model.Driver;
+                    driverdoc?.AddDriver(driver);
+                }
             }
 
             foreach(var vv in vgg)
@@ -650,6 +679,33 @@ namespace InSpiderDevelopWindow
         public override bool CanRemove()
         {
             return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Remove()
+        {
+            mDocument.RemoveDevice(this.Model.FullName);
+
+            var vp = (Parent as HasChildrenTreeItemViewModel);
+            int id = vp.Children.IndexOf(this);
+            if (id > 0)
+            {
+                if (id >= vp.Children.Count - 1)
+                {
+                    id = vp.Children.Count - 2;
+                }
+                if (id < 0) id = 0;
+            }
+            vp.Children.Remove(this);
+
+            if(vp.Children.Count>id)
+            {
+                vp.Children[id].IsSelected = true;
+            }
+
+            base.Remove();
         }
 
         /// <summary>

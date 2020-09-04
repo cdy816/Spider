@@ -50,6 +50,11 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// </summary>
         public override ChannelType[] SupportChannelTypes => null;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string[] SupportRegistors => null;
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -96,10 +101,6 @@ namespace Cdy.Spider.SystemDriver.Develop
         #region ... Interfaces ...
 
         #endregion ...Interfaces...
-
-
-
-
 
     }
 }

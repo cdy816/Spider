@@ -50,6 +50,11 @@ namespace Cdy.Spider
         /// </summary>
         ChannelType[] SupportChannelTypes { get; }
 
+        /// <summary>
+        /// 支持的寄存器列表
+        /// </summary>
+        string[] SupportRegistors { get; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -60,6 +65,10 @@ namespace Cdy.Spider
         /// <param name="tag"></param>
         void CheckTagDeviceInfo(Tagbae tag);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         object Config();
 
         /// <summary>

@@ -188,7 +188,11 @@ namespace InSpiderDevelop
         /// <returns></returns>
         public bool AddDevice(IDeviceDevelop Device)
         {
-            CheckAndAddGroup(Device.Group)?.Devices.Add(Device);
+            var dds = CheckAndAddGroup(Device.Group)?.Devices;
+            
+            if (dds!=null && !dds.Contains(Device))
+                dds.Add(Device);
+
             if (!mDevices.ContainsKey(Device.FullName))
             {
                 mDevices.Add(Device.FullName, Device);
