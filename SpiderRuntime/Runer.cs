@@ -30,9 +30,16 @@ namespace SpiderRuntime
         /// </summary>
         static Runer()
         {
+            ServiceLocator.Locator.Registor<ILog>(new ConsoleLogger());
+
             ApiFactory.Factory.LoadForRun();
             DriverFactory.Factory.LoadForRun();
             ChannelFactory.Factory.LoadForRun();
+
+
+            ServiceLocator.Locator.Registor<IApiFactory>(ApiFactory.Factory);
+            ServiceLocator.Locator.Registor<ICommChannelFactory>(ChannelFactory.Factory);
+            ServiceLocator.Locator.Registor<IDriverFactory>(DriverFactory.Factory);
         }
 
         #endregion ...Constructor...
@@ -71,13 +78,13 @@ namespace SpiderRuntime
                 InterfaceRegistor();
 
                 //
-                foreach (var vv in DeviceManager.Manager.Devices)
+                foreach (var vv in mDevice.Devices)
                 {
                     vv.Init();
                 }
 
                 //
-                foreach (var vv in APIManager.Manager.Apis)
+                foreach (var vv in mApi.Apis)
                 {
                     vv.Init();
                 }
@@ -114,18 +121,25 @@ namespace SpiderRuntime
         /// </summary>
         public void Start()
         {
-            //
-            foreach(var vv in DeviceManager.Manager.Devices)
+            try
             {
-                vv.Start();
-            }
+                LoggerService.Service.Info("Runner", "Ready to start " + Name);
 
-            //
-            foreach(var vv in APIManager.Manager.Apis)
+                foreach (var vv in mDevice.Devices)
+                {
+                    vv.Start();
+                }
+
+                
+                foreach (var vv in mApi.Apis)
+                {
+                    vv.Start();
+                }
+            }
+            catch(Exception ex)
             {
-                vv.Start();
+                LoggerService.Service.Info("Runner", "Start failed." + ex.Message);
             }
-
             mIsStarted = true;
         }
 
@@ -135,12 +149,12 @@ namespace SpiderRuntime
         /// </summary>
         public void Stop()
         {
-            foreach (var vv in APIManager.Manager.Apis)
+            foreach (var vv in mApi.Apis)
             {
                 vv.Stop();
             }
 
-            foreach (var vv in DeviceManager.Manager.Devices)
+            foreach (var vv in mDevice.Devices)
             {
                 vv.Stop();
             }

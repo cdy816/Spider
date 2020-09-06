@@ -9,7 +9,9 @@
       "Cdy.Spider.MQTTServer/1.0.0": {
         "dependencies": {
           "Cdy.Spider.Common": "1.0.0",
-          "MQTTnet": "3.0.11"
+          "MQTTnet": "3.0.12",
+          "MQTTnet.Extensions.ManagedClient": "3.0.12",
+          "Newtonsoft.Json": "12.0.3"
         },
         "runtime": {
           "Cdy.Spider.MQTTServer.dll": {}
@@ -24,7 +26,7 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "MQTTnet/3.0.11": {
+      "MQTTnet/3.0.12": {
         "dependencies": {
           "NETStandard.Library": "2.0.0",
           "System.Net.Security": "4.3.2",
@@ -33,14 +35,33 @@
         },
         "runtime": {
           "lib/netstandard2.1/MQTTnet.dll": {
-            "assemblyVersion": "3.0.11.0",
-            "fileVersion": "3.0.11.0"
+            "assemblyVersion": "3.0.12.0",
+            "fileVersion": "3.0.12.0"
+          }
+        }
+      },
+      "MQTTnet.Extensions.ManagedClient/3.0.12": {
+        "dependencies": {
+          "MQTTnet": "3.0.12"
+        },
+        "runtime": {
+          "lib/netstandard2.0/MQTTnet.Extensions.ManagedClient.dll": {
+            "assemblyVersion": "3.0.12.0",
+            "fileVersion": "3.0.12.0"
           }
         }
       },
       "NETStandard.Library/2.0.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "Newtonsoft.Json/12.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.3.23909"
+          }
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
@@ -595,12 +616,19 @@
       "path": "microsoft.win32.primitives/4.3.0",
       "hashPath": "microsoft.win32.primitives.4.3.0.nupkg.sha512"
     },
-    "MQTTnet/3.0.11": {
+    "MQTTnet/3.0.12": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-OxKzVY9/ob1ofBgzf+9P1CWDhAz1qY/KfXMoWrwG5BEGatsi5PluhDsEn4u7+QUucDUdoleRdAWQv/llCl63Wg==",
-      "path": "mqttnet/3.0.11",
-      "hashPath": "mqttnet.3.0.11.nupkg.sha512"
+      "sha512": "sha512-6puc9QAZKkEwCbVKM7cVRz3P72prlCvxdyrfnJyfILwZc4f/mqGEdq/THYV1WaSggy1TBn7pSnw/KWnJWSfpfw==",
+      "path": "mqttnet/3.0.12",
+      "hashPath": "mqttnet.3.0.12.nupkg.sha512"
+    },
+    "MQTTnet.Extensions.ManagedClient/3.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cNtomTOqR7UtpwxLYWUQUOzp+XzPObUc/dCAR4PVhKBQdEynI1wBz0JuNZjD2+0XZS3/IDVc5Fw2JLismrp0Zw==",
+      "path": "mqttnet.extensions.managedclient/3.0.12",
+      "hashPath": "mqttnet.extensions.managedclient.3.0.12.nupkg.sha512"
     },
     "NETStandard.Library/2.0.0": {
       "type": "package",
@@ -608,6 +636,13 @@
       "sha512": "sha512-7jnbRU+L08FXKMxqUflxEXtVymWvNOrS8yHgu9s6EM8Anr6T/wIX4nZ08j/u3Asz+tCufp3YVwFSEvFTPYmBPA==",
       "path": "netstandard.library/2.0.0",
       "hashPath": "netstandard.library.2.0.0.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "path": "newtonsoft.json/12.0.3",
+      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
       "type": "package",

@@ -17,8 +17,8 @@ namespace InSpiderRun
             Console.CancelKeyPress += Console_CancelKeyPress;
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
-
-          
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+           
             
             if(args.Length>0)
             {
@@ -57,6 +57,7 @@ namespace InSpiderRun
                             mRunner.Stop();
                         }
                         mIsClosed = true;
+
                         break;
                     case "stop":
                         if (mRunner != null && mRunner.IsStarted)
@@ -85,6 +86,11 @@ namespace InSpiderRun
                 }
             }
            
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine(e.ExceptionObject.ToString());
         }
 
         private static string GetHelpString()

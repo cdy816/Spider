@@ -17,7 +17,7 @@ namespace Cdy.Api.Mars
     /// <summary>
     /// 
     /// </summary>
-    public class MarsApiDevelop : Cdy.Spider.ApiDevelopBase
+    public class MarsApiDevelop : Cdy.Spider.ApiDevelopBase, IAPIDatabaseBrowser
     {
 
         #region ... Variables  ...
@@ -77,6 +77,18 @@ namespace Cdy.Api.Mars
         public override IApiDevelop NewApi()
         {
             return new MarsApiDevelop();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileter"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public IEnumerable<string> ListTags(string fileter, int start, int count)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion ...Methods...

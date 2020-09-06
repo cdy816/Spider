@@ -116,8 +116,11 @@ namespace Cdy.Spider
 
             Channel = ServiceLocator.Locator.Resolve<ICommChannelRuntimeManager>().GetChannel(Device.ChannelName);
             Driver = ServiceLocator.Locator.Resolve<IDriverRuntimeManager>().GetDriver(Device.Name);
-            Driver.Device = this;
-            Driver.Init();
+            if (Driver != null)
+            {
+                Driver.Device = this;
+                Driver.Init();
+            }
         }
 
 

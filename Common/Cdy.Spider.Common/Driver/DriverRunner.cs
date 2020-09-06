@@ -55,7 +55,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public string Name { get { return Data.Name; } }
+        public string Name { get { return Data.Name; }set { Data.Name = value; } }
 
         /// <summary>
         /// 

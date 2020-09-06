@@ -55,6 +55,12 @@ namespace Cdy.Spider.MQTTClient
         /// </summary>
         public string ResponseTopicAppendString { get; set; } = "/r";
 
+
+        /// <summary>
+        /// 主题前缀字符串
+        /// </summary>
+        public string TopicHeadString { get; set; } = "";
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -69,6 +75,7 @@ namespace Cdy.Spider.MQTTClient
             xx.SetAttributeValue("ServerTopicAppendString", ServerTopicAppendString);
             xx.SetAttributeValue("ClientTopicAppendString", ClientTopicAppendString);
             xx.SetAttributeValue("ResponseTopicAppendString", ResponseTopicAppendString);
+            xx.SetAttributeValue("TopicHeadString", TopicHeadString);
             return xx;
         }
 
@@ -87,12 +94,17 @@ namespace Cdy.Spider.MQTTClient
 
             if (xe.Attribute("ClientTopicAppendString") != null)
             {
-                ServerTopicAppendString = xe.Attribute("ClientTopicAppendString").Value;
+                ClientTopicAppendString = xe.Attribute("ClientTopicAppendString").Value;
             }
 
             if (xe.Attribute("ResponseTopicAppendString") != null)
             {
-                ServerTopicAppendString = xe.Attribute("ResponseTopicAppendString").Value;
+                ResponseTopicAppendString = xe.Attribute("ResponseTopicAppendString").Value;
+            }
+
+            if (xe.Attribute("TopicHeadString") != null)
+            {
+                TopicHeadString = xe.Attribute("TopicHeadString").Value;
             }
         }
 

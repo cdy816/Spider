@@ -158,7 +158,12 @@ namespace Cdy.Spider.MQTTClient
                         return;
                     }
 
-                    var res = this.OnReceiveCallBack(vtop.Replace(mData.ServerTopicAppendString, ""), x.ApplicationMessage.Payload);
+                    var vss = string.IsNullOrEmpty(mData.ServerTopicAppendString) ? vtop : vtop.Replace(mData.ServerTopicAppendString, "");
+
+                    vss = string.IsNullOrEmpty(mData.TopicHeadString) ? vss : vss.Replace(mData.TopicHeadString, "");
+
+
+                    var res = this.OnReceiveCallBack(vss, x.ApplicationMessage.Payload);
                     if (!string.IsNullOrEmpty(x.ApplicationMessage.ResponseTopic) && res != null)
                     {
                         SendToTopicDataWithoutResponse(x.ApplicationMessage.ResponseTopic, res);
@@ -182,10 +187,10 @@ namespace Cdy.Spider.MQTTClient
             {
                 //将本机认值服务器角色，下位设备认作客户端角色
                 //订购服务器端主题
-                this.mqttClient.SubscribeAsync(vv + mData.ServerTopicAppendString);
+                this.mqttClient.SubscribeAsync(mData.TopicHeadString +  vv + mData.ServerTopicAppendString);
 
                 //订购客户端回复主题
-                this.mqttClient.SubscribeAsync(vv + mData.ClientTopicAppendString + mData.ResponseTopicAppendString);
+                this.mqttClient.SubscribeAsync(mData.TopicHeadString + vv + mData.ClientTopicAppendString + mData.ResponseTopicAppendString);
             }
         }
 
@@ -244,7 +249,7 @@ namespace Cdy.Spider.MQTTClient
         protected override byte[] SendInner(string key, byte[] data, int timeout, out bool result, params string[] paras)
         {
             string ss = string.IsNullOrEmpty(key) ? this.Data.Name : key;
-            string skey = ss + mData.ClientTopicAppendString;
+            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
             string reskey = paras.Length > 0 ? paras[0] : skey + mData.ResponseTopicAppendString;
             mResTopic = reskey;
 
@@ -273,7 +278,7 @@ namespace Cdy.Spider.MQTTClient
         protected override void SendInnerAsync(string key, byte[] data, out bool result, params string[] paras)
         {
             string ss = string.IsNullOrEmpty(key) ? this.Data.Name : key;
-            string skey = ss + mData.ClientTopicAppendString;
+            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
             string reskey = paras.Length > 0 ? paras[0] : ss + mData.ResponseTopicAppendString;
             mResTopic = reskey;
             SendToTopicData(skey, reskey, data);

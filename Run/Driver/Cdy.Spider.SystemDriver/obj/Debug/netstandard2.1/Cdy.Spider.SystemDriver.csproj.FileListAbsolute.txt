@@ -22,3 +22,4 @@ C:\Users\cdy81\source\repos\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\
 C:\Users\cdy81\source\repos\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.dll
 C:\Users\cdy81\source\repos\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.pdb
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\Driver\Cdy.Spider.SystemDriver\obj\Debug\netstandard2.1\Cdy.Spider.SystemDriver.csproj.CoreCompileInputs.cache
+C:\Users\cdy81\source\repos\Spider\Run\Driver\Cdy.Spider.SystemDriver\bin\Debug\netstandard2.1\Newtonsoft.Json.dll

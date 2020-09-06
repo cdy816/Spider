@@ -151,6 +151,15 @@ namespace Cdy.Spider.MQTTClient.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 TopicHeadString 的本地化字符串。
+        /// </summary>
+        internal static string TopicHeadString {
+            get {
+                return ResourceManager.GetString("TopicHeadString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 UserName 的本地化字符串。
         /// </summary>
         internal static string UserName {

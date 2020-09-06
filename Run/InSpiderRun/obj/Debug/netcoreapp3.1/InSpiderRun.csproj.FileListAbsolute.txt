@@ -60,3 +60,6 @@ C:\Users\cdy81\source\repos\Spider\Run\InSpiderRun\obj\Debug\netcoreapp3.1\InSpi
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\Config\ApiRuntime.cfg
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\Config\ChannelRuntime.cfg
 C:\Users\chongdaoyang\source\repos\cdy816\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\Config\DriverRuntime.cfg
+C:\Users\cdy81\source\repos\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\Config\ApiRuntime.cfg
+C:\Users\cdy81\source\repos\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\Config\ChannelRuntime.cfg
+C:\Users\cdy81\source\repos\Spider\Run\InSpiderRun\bin\Debug\netcoreapp3.1\Config\DriverRuntime.cfg

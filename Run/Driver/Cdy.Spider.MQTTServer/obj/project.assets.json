@@ -31,7 +31,7 @@
           "ref/netstandard1.3/_._": {}
         }
       },
-      "MQTTnet/3.0.11": {
+      "MQTTnet/3.0.12": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "2.0.0",
@@ -44,6 +44,18 @@
         },
         "runtime": {
           "lib/netstandard2.1/MQTTnet.dll": {}
+        }
+      },
+      "MQTTnet.Extensions.ManagedClient/3.0.12": {
+        "type": "package",
+        "dependencies": {
+          "MQTTnet": "3.0.12"
+        },
+        "compile": {
+          "lib/netstandard2.0/MQTTnet.Extensions.ManagedClient.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MQTTnet.Extensions.ManagedClient.dll": {}
         }
       },
       "NETStandard.Library/2.0.0": {
@@ -59,6 +71,15 @@
         },
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
+        }
+      },
+      "Newtonsoft.Json/12.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
@@ -1097,10 +1118,10 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "MQTTnet/3.0.11": {
-      "sha512": "OxKzVY9/ob1ofBgzf+9P1CWDhAz1qY/KfXMoWrwG5BEGatsi5PluhDsEn4u7+QUucDUdoleRdAWQv/llCl63Wg==",
+    "MQTTnet/3.0.12": {
+      "sha512": "6puc9QAZKkEwCbVKM7cVRz3P72prlCvxdyrfnJyfILwZc4f/mqGEdq/THYV1WaSggy1TBn7pSnw/KWnJWSfpfw==",
       "type": "package",
-      "path": "mqttnet/3.0.11",
+      "path": "mqttnet/3.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1116,8 +1137,28 @@
         "lib/netstandard2.1/MQTTnet.dll",
         "lib/uap10.0/MQTTnet.dll",
         "lib/uap10.0/MQTTnet.pri",
-        "mqttnet.3.0.11.nupkg.sha512",
+        "mqttnet.3.0.12.nupkg.sha512",
         "mqttnet.nuspec"
+      ]
+    },
+    "MQTTnet.Extensions.ManagedClient/3.0.12": {
+      "sha512": "cNtomTOqR7UtpwxLYWUQUOzp+XzPObUc/dCAR4PVhKBQdEynI1wBz0JuNZjD2+0XZS3/IDVc5Fw2JLismrp0Zw==",
+      "type": "package",
+      "path": "mqttnet.extensions.managedclient/3.0.12",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "images/Logo_128x128.png",
+        "lib/net452/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/netstandard1.3/MQTTnet.Extensions.ManagedClient.deps.json",
+        "lib/netstandard1.3/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/netstandard2.0/MQTTnet.Extensions.ManagedClient.deps.json",
+        "lib/netstandard2.0/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/uap10.0/MQTTnet.Extensions.ManagedClient.dll",
+        "lib/uap10.0/MQTTnet.Extensions.ManagedClient.pri",
+        "mqttnet.extensions.managedclient.3.0.12.nupkg.sha512",
+        "mqttnet.extensions.managedclient.nuspec"
       ]
     },
     "NETStandard.Library/2.0.0": {
@@ -1248,6 +1289,37 @@
         "lib/netstandard1.0/_._",
         "netstandard.library.2.0.0.nupkg.sha512",
         "netstandard.library.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/12.0.3": {
+      "sha512": "6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "type": "package",
+      "path": "newtonsoft.json/12.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.12.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
@@ -3751,23 +3823,25 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "Cdy.Spider.Common >= 1.0.0",
-      "MQTTnet >= 3.0.11"
+      "MQTTnet >= 3.0.12",
+      "MQTTnet.Extensions.ManagedClient >= 3.0.12",
+      "Newtonsoft.Json >= 12.0.3"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\chongdaoyang\\.nuget\\packages\\": {}
+    "C:\\Users\\cdy81\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.MQTTServer\\Cdy.Spider.MQTTServer.csproj",
+      "projectUniqueName": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\Driver\\Cdy.Spider.MQTTServer\\Cdy.Spider.MQTTServer.csproj",
       "projectName": "Cdy.Spider.MQTTServer",
-      "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.MQTTServer\\Cdy.Spider.MQTTServer.csproj",
-      "packagesPath": "C:\\Users\\chongdaoyang\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.MQTTServer\\obj\\",
+      "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\Driver\\Cdy.Spider.MQTTServer\\Cdy.Spider.MQTTServer.csproj",
+      "packagesPath": "C:\\Users\\cdy81\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\Driver\\Cdy.Spider.MQTTServer\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\chongdaoyang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\cdy81\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3780,8 +3854,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
-              "projectPath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
+            "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj": {
+              "projectPath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Common\\Cdy.Spider.Common\\Cdy.Spider.Common.csproj"
             }
           }
         }
@@ -3797,7 +3871,15 @@
         "dependencies": {
           "MQTTnet": {
             "target": "Package",
-            "version": "[3.0.11, )"
+            "version": "[3.0.12, )"
+          },
+          "MQTTnet.Extensions.ManagedClient": {
+            "target": "Package",
+            "version": "[3.0.12, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[12.0.3, )"
           }
         },
         "imports": [

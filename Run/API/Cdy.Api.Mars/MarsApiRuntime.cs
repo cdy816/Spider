@@ -162,6 +162,14 @@ namespace Cdy.Api.Mars
                         mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
                         UpdateAllValue();
                     }
+                    else
+                    {
+                        lock (mChangedTags)
+                        {
+                            if (mCallBackTags.Count > 100) 
+                                mCallBackTags.Clear();
+                        }
+                    }
                 }
                 else
                 {

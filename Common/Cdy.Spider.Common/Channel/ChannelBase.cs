@@ -153,15 +153,24 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool Open()
         {
-            lock (mOpenLock)
+            LoggerService.Service.Info("Channel", "Start to Open channel " + this.Name);
+            try
             {
-                if (!mIsOpened)
+                lock (mOpenLock)
                 {
-                    mIsOpened = true;
-                    return InnerOpen();
+                    if (!mIsOpened)
+                    {
+                        mIsOpened = true;
+                        return InnerOpen();
+                    }
+                    mOpenCount++;
+                    return true;
                 }
-                mOpenCount++;
-                return true;
+            }
+            catch(Exception ex)
+            {
+                LoggerService.Service.Info("Channel", "Open channel " + this.Name+" failed."+ex.Message);
+                return false;
             }
         }
 

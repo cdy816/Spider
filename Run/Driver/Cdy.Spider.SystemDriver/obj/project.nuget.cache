@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "LohqMPdkC96s/C7EOWOMR3HC+5MMFBTvFz8Y+dpURpOnvNjfJ3lCbFwGF28U4vE0yvdYuA23yb8WLgYxcn4xFw==",
+  "dgSpecHash": "MRLPboNkMnDv3QGKQ1IDN92vJq4QNCA3j/Vam2pkYUiYpb3biQbGu2UcVoXAeXMPQXeVBy07jiSfQqGBMRdUXw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\chongdaoyang\\source\\repos\\cdy816\\Spider\\Run\\Driver\\Cdy.Spider.SystemDriver\\Cdy.Spider.SystemDriver.csproj",
+  "projectFilePath": "C:\\Users\\cdy81\\source\\repos\\Spider\\Run\\Driver\\Cdy.Spider.SystemDriver\\Cdy.Spider.SystemDriver.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\chongdaoyang\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+    "C:\\Users\\cdy81\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
   ],
   "logs": []
 }

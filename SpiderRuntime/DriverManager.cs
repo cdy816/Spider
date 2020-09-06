@@ -86,7 +86,7 @@ namespace SpiderRuntime
         /// </summary>
         public void Load()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location),"Data", "Driver.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location),"Data",Name, "Driver.cfg");
             Load(sfile);
         }
 
@@ -107,6 +107,9 @@ namespace SpiderRuntime
                     string tname = vv.Attribute("TypeName").Value;
                     var asb = ServiceLocator.Locator.Resolve<IDriverFactory>().GetRuntimeInstance(tname);
                     asb.Load(vv);
+
+                    asb.Name = this.Name +"."+ asb.Name;
+
                     if (mDrivers.ContainsKey(asb.Name))
                     {
                         mDrivers[asb.Name] = asb;

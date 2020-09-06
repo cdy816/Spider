@@ -272,6 +272,26 @@ namespace Cdy.Spider.MQTTClient.Develop
             }
         }
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public string TopicHeadString
+        {
+            get
+            {
+                return mModel.TopicHeadString;
+            }
+            set
+            {
+                if (mModel.TopicHeadString != value)
+                {
+                    mModel.TopicHeadString = value;
+                    OnPropertyChanged("TopicHeadString");
+                }
+            }
+        }
+
+
 
         #endregion ...Methods...
 
