@@ -72,7 +72,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public int Port { get; set; } = 3600;
+        public int Port { get; set; } = 8800;
 
         /// <summary>
         /// 

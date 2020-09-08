@@ -35,6 +35,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Variables  ...
 
+        public static DataGrid mGrid;
+
         private System.Collections.ObjectModel.ObservableCollection<TagViewModel> mTags = new System.Collections.ObjectModel.ObservableCollection<TagViewModel>();
 
         private IDeviceDevelop mModel;
@@ -1565,6 +1567,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public void Active()
         {
+            this.grid = mGrid;
             Init();
         }
 
@@ -1573,12 +1576,14 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public void DeActive()
         {
-            foreach(var vv in mTags)
+            mGrid = this.grid;
+            foreach (var vv in mTags)
             {
                 vv.Dispose();
             }
             mTags.Clear();
             mIsLoaded = false;
+            this.grid = null;
         }
 
 

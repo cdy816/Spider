@@ -69,6 +69,12 @@ namespace Cdy.Spider
         /// <param name="xe"></param>
         void Load(XElement xe);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        string ConfigTags();
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

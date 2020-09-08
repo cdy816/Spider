@@ -164,12 +164,14 @@ namespace Cdy.Api.Mars
                     }
                     else
                     {
+                        //mProxy.Connect(mData.ServerIp, mData.Port);
                         lock (mChangedTags)
                         {
                             if (mCallBackTags.Count > 100) 
                                 mCallBackTags.Clear();
                         }
                     }
+                    Thread.Sleep(2000);
                 }
                 else
                 {
@@ -226,12 +228,15 @@ namespace Cdy.Api.Mars
                 Dictionary<int, Tuple<Cdy.Tag.TagType, object,byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
                 foreach (var vvv in vv.ListTags())
                 {
-                    int id = mNameIdMape[vvv.DatabaseName];
-                    var tpu = (Cdy.Tag.TagType)((int)vvv.Type);
-
-                    if (!values.ContainsKey(id))
+                    if (mNameIdMape.ContainsKey(vvv.DatabaseName))
                     {
-                        values.Add(id, new Tuple<Tag.TagType, object,byte>(tpu, vvv.Value,vvv.Quality));
+                        int id = mNameIdMape[vvv.DatabaseName];
+                        var tpu = (Cdy.Tag.TagType)((int)vvv.Type);
+
+                        if (!values.ContainsKey(id))
+                        {
+                            values.Add(id, new Tuple<Tag.TagType, object, byte>(tpu, vvv.Value, vvv.Quality));
+                        }
                     }
                 }
                 mProxy.SetTagValue(values);

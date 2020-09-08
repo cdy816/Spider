@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:InSpiderDevelopWindow"
              mc:Ignorable="d" Background="#7F000000"
-             d:DesignHeight="524" d:DesignWidth="1378.333">
+             d:DesignHeight="524" d:DesignWidth="1378">
     <UserControl.Resources>
         <local:IndexConverter x:Key="ic" />
         <BooleanToVisibilityConverter x:Key="btv" />

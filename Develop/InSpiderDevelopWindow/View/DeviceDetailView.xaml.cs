@@ -28,6 +28,7 @@ namespace InSpiderDevelopWindow.View
             InitializeComponent();
             this.Loaded += DeviceDetailView_Loaded;
         }
+               
 
         private void DeviceDetailView_Loaded(object sender, RoutedEventArgs e)
         {

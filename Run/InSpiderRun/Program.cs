@@ -111,7 +111,7 @@ namespace InSpiderRun
         /// <param name="e"></param>
         private static void CurrentDomain_ProcessExit(object sender, EventArgs e)
         {
-            if (mRunner.IsStarted)
+            if (mRunner!=null && mRunner.IsStarted)
             {
                 mRunner.Stop();
             }
@@ -125,7 +125,7 @@ namespace InSpiderRun
         /// <param name="e"></param>
         private static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
-            if (mRunner.IsStarted)
+            if (mRunner != null && mRunner.IsStarted)
             {
                 mRunner.Stop();
             }

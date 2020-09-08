@@ -17,7 +17,7 @@ namespace Cdy.Api.Mars
     /// <summary>
     /// 
     /// </summary>
-    public class MarsApiDevelop : Cdy.Spider.ApiDevelopBase, IAPIDatabaseBrowser
+    public class MarsApiDevelop : Cdy.Spider.ApiDevelopBase
     {
 
         #region ... Variables  ...

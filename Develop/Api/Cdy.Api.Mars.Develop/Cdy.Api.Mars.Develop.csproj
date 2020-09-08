@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mars.DBDevelopClientWebApi" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj" />
   </ItemGroup>

@@ -97,6 +97,15 @@ namespace Cdy.Spider
         /// <returns></returns>
         public abstract IApiDevelop NewApi();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual string ConfigTags()
+        {
+            return string.Empty;
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...
