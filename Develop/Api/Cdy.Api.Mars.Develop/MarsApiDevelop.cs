@@ -37,7 +37,7 @@ namespace Cdy.Api.Mars
         /// <summary>
         /// 
         /// </summary>
-        public override ApiData Data { get; set; }
+        public override ApiData Data { get; set; } = new ApiData();
 
         /// <summary>
         /// 

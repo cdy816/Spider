@@ -164,7 +164,8 @@ namespace Cdy.Api.Mars
                     }
                     else
                     {
-                        //mProxy.Connect(mData.ServerIp, mData.Port);
+                        if (mProxy.NeedReConnected)
+                            mProxy.Connect(mData.ServerIp, mData.Port);
                         lock (mChangedTags)
                         {
                             if (mCallBackTags.Count > 100) 
@@ -197,7 +198,7 @@ namespace Cdy.Api.Mars
                 for(int i=0;i<res.Count;i++)
                 {
                     int id = res[i];
-                    string stag = vtags[id];
+                    string stag = vtags[i];
 
                     if (!mIdNameMape.ContainsKey(id))
                     {
@@ -263,6 +264,7 @@ namespace Cdy.Api.Mars
                     values.Add(id, new Tuple<Tag.TagType, object, byte>(tpu, stag.Value,stag.Quality));
                 }
             }
+            if(values.Count>0)
             mProxy.SetTagValue(values);
         }
 

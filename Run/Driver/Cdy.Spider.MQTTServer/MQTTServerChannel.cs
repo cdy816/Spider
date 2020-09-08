@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using MQTTnet;
 using MQTTnet.Client.Connecting;
@@ -44,6 +45,8 @@ namespace Cdy.Spider.MQTTServer
         private ManualResetEvent eventreset = new ManualResetEvent(false);
         private MQTTServer mServer;
 
+        private List<string> deviceInfosCach;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -73,6 +76,7 @@ namespace Cdy.Spider.MQTTServer
         /// </summary>
         public override string TypeName => "MQTTServer";
 
+        
 
         #endregion ...Properties...
 
@@ -128,6 +132,21 @@ namespace Cdy.Spider.MQTTServer
         private void OnConnected(MqttClientConnectedEventArgs x)
         {
             ConnectedChanged(true);
+            Task.Run(() => {
+                if (deviceInfosCach != null)
+                {
+                    foreach (var vv in deviceInfosCach)
+                    {
+                        //将本机认值服务器角色，下位设备认作客户端角色
+                        //订购服务器端主题
+                        this.mqttClient.SubscribeAsync(mData.TopicHeadString + vv + mData.ServerTopicAppendString);
+
+                        //订购客户端回复主题
+                        this.mqttClient.SubscribeAsync(mData.TopicHeadString + vv + mData.ClientTopicAppendString + mData.ResponseTopicAppendString);
+                    }
+                }
+            });
+            
         }
 
         /// <summary>
@@ -186,14 +205,21 @@ namespace Cdy.Spider.MQTTServer
         public override void Prepare(List<string> deviceInfos)
         {
             base.Prepare(deviceInfos);
-            foreach (var vv in deviceInfos)
+            if (IsConnected)
             {
-                //将本机认值服务器角色，下位设备认作客户端角色
-                //订购服务器端主题
-                this.mqttClient.SubscribeAsync(mData.TopicHeadString +  vv + mData.ServerTopicAppendString);
+                foreach (var vv in deviceInfos)
+                {
+                    //将本机认值服务器角色，下位设备认作客户端角色
+                    //订购服务器端主题
+                    this.mqttClient.SubscribeAsync(mData.TopicHeadString + vv + mData.ServerTopicAppendString);
 
-                //订购客户端回复主题
-                this.mqttClient.SubscribeAsync(mData.TopicHeadString + vv + mData.ClientTopicAppendString + mData.ResponseTopicAppendString);
+                    //订购客户端回复主题
+                    this.mqttClient.SubscribeAsync(mData.TopicHeadString + vv + mData.ClientTopicAppendString + mData.ResponseTopicAppendString);
+                }
+            }
+            else
+            {
+                deviceInfosCach = deviceInfos;
             }
         }
 
@@ -207,7 +233,6 @@ namespace Cdy.Spider.MQTTServer
             mServer.UserName = mData.UserName;
             mServer.Password = mData.Password;
             mServer.Start();
-
             this.mqttClient.StartAsync(new ManagedMqttClientOptions
             {
                 ClientOptions = options
