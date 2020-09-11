@@ -120,8 +120,26 @@
   <data name="Circle" xml:space="preserve">
     <value>周期</value>
   </data>
+  <data name="Database" xml:space="preserve">
+    <value>数据库</value>
+  </data>
   <data name="DataTransType" xml:space="preserve">
     <value>传输类型</value>
+  </data>
+  <data name="Desc" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>关键字</value>
+  </data>
+  <data name="MaxValue" xml:space="preserve">
+    <value>最大值</value>
+  </data>
+  <data name="MinValue" xml:space="preserve">
+    <value>最小值</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>名称</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>密码</value>
@@ -129,8 +147,17 @@
   <data name="Port" xml:space="preserve">
     <value>端口</value>
   </data>
+  <data name="ReadWriteMode" xml:space="preserve">
+    <value>读写模式</value>
+  </data>
   <data name="Server" xml:space="preserve">
     <value>服务器</value>
+  </data>
+  <data name="TagFilter" xml:space="preserve">
+    <value>变量过滤</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>类型</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>用户名</value>

@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Image\文件夹.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Mars.DBDevelopClientWebApi" Version="1.0.0" />
   </ItemGroup>
 
@@ -37,6 +41,10 @@
     <Page Update="Themes\Generic.xaml">
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\文件夹.png" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -6,4 +6,9 @@
     <DataTemplate DataType="{x:Type local:ApiConfigViewModel}">
         <local:ApiConfigView />
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:TagBrowserViewModel}">
+        <local:TagBrowserView />
+    </DataTemplate>
+    
 </ResourceDictionary>

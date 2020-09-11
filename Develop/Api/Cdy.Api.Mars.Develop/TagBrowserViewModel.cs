@@ -12,16 +12,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Cdy.Spider.DevelopCommon;
 
-namespace Cdy.Api.Mars.Develop
+namespace Cdy.Api.Mars
 {
     /// <summary>
     /// 
     /// </summary>
-    public class TagBrowserViewModel:ViewModelBase
+    public class TagBrowserViewModel:WindowViewModelBase
     {
 
         #region ... Variables  ...
@@ -32,7 +33,19 @@ namespace Cdy.Api.Mars.Develop
 
         private List<string> mDatabase;
 
+        /// <summary>
+        /// 
+        /// </summary>
         private ObservableCollection<TagGroupViewModel> mTagGroups = new ObservableCollection<TagGroupViewModel>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private ObservableCollection<TagViewModel> mTags = new ObservableCollection<TagViewModel>();
+
+        private string mCurrentGroup;
+
+        private TagViewModel mCurrentSelectTag;
 
         #endregion ...Variables...
 
@@ -42,9 +55,39 @@ namespace Cdy.Api.Mars.Develop
 
         #region ... Constructor...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public TagBrowserViewModel()
+        {
+            Title = Res.Get("TagBrowser");
+            DefaultWidth = 1024;
+            DefaultHeight = 768;
+        }
+
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public TagViewModel CurrentSelectTag
+        {
+            get
+            {
+                return mCurrentSelectTag;
+            }
+            set
+            {
+                if (mCurrentSelectTag != value)
+                {
+                    mCurrentSelectTag = value;
+                    OnPropertyChanged("CurrentSelectTag");
+                }
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -65,12 +108,59 @@ namespace Cdy.Api.Mars.Develop
                 if (mCurrentDatabase != value)
                 {
                     mCurrentDatabase = value;
+                    mCurrentGroup = "";
+                    UpdateTagGroup();
+                    UpdateTags();
                     OnPropertyChanged("CurrentDatabase");
                 }
             }
         }
 
-        public List<string> Databases { get { return mDatabase; } set { mDatabase = value; OnPropertyChanged("Databases"); } }
+        public List<string> Databases 
+        { 
+            get { return mDatabase; }
+            set 
+            { 
+                mDatabase = value;
+                OnPropertyChanged("Databases");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CurrentGroup
+        {
+            get
+            {
+                return mCurrentGroup;
+            }
+            set
+            {
+                if (mCurrentGroup != value)
+                {
+                    mCurrentGroup = value;
+                    OnPropertyChanged("CurrentGroup");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public DataGrid Grid { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string SelectTagName
+        {
+            get
+            {
+                return Grid.SelectedItem != null ? (Grid.SelectedItem as TagViewModel).FullName : string.Empty;
+            }
+        }
+
 
         #endregion ...Properties...
 
@@ -109,18 +199,56 @@ namespace Cdy.Api.Mars.Develop
         /// </summary>
         public void UpdateTagGroup()
         {
-            mTagGroups.Clear();
-            if(!string.IsNullOrEmpty(CurrentDatabase))
+            Task.Run(() => { QueryGroups(); });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void QueryGroups()
+        {
+            Application.Current?.Dispatcher.Invoke(() => {
+                this.mTagGroups.Clear();
+            });
+
+            var vv = mHelper.GetTagGroup(CurrentDatabase);
+            if (vv != null)
             {
-                var database = mHelper.GetTagGroup(CurrentDatabase);
-                if(database!=null)
+                foreach (var vvv in vv.Where(e => string.IsNullOrEmpty(e.Parent)))
                 {
-                    foreach(var vvv in database)
-                    {
-                        mTagGroups.Add(new TagGroupViewModel() { Name = vvv.Name });
-                    }
+                    Application.Current?.Dispatcher.Invoke(() => {
+                        TagGroupViewModel groupViewModel = new TagGroupViewModel() { Name = vvv.Name, Database = CurrentDatabase };
+                        mTagGroups.Add(groupViewModel);
+                        groupViewModel.InitData(vv);
+                    });
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UpdateTags()
+        {
+            mTags.Clear();
+            var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup, 0);
+            if(tags!=null)
+            {
+                foreach(var vv in tags)
+                {
+                    mTags.Add(new TagViewModel() { Name = vv.Item1.Name, Desc = vv.Item1.Desc,Type = vv.Item1.Type.ToString() });
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected override bool CanOKCommandProcess()
+        {
+            return Grid != null && Grid.SelectedItem != null;
         }
 
         #endregion ...Methods...
@@ -142,6 +270,9 @@ namespace Cdy.Api.Mars.Develop
 
         private bool mIsExpended;
 
+        /// <summary>
+        /// 
+        /// </summary>
         private ObservableCollection<TagGroupViewModel> mChildren = new ObservableCollection<TagGroupViewModel>();
 
         private bool mIsInited = false;
@@ -169,6 +300,16 @@ namespace Cdy.Api.Mars.Develop
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FullName
+        {
+            get
+            {
+                return Parent != null ? Parent.FullName + "." + this.Name : this.Name;
+            }
+        }
 
         /// <summary>
         /// 
@@ -177,8 +318,18 @@ namespace Cdy.Api.Mars.Develop
         public string Name { get; set; }
 
         /// <summary>
-            /// 
-            /// </summary>
+        /// 
+        /// </summary>
+        public TagGroupViewModel Parent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Database { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsSelected
         {
             get
@@ -196,8 +347,8 @@ namespace Cdy.Api.Mars.Develop
         }
 
         /// <summary>
-            /// 
-            /// </summary>
+        /// 
+        /// </summary>
         public bool IsExpended
         {
             get
@@ -209,7 +360,6 @@ namespace Cdy.Api.Mars.Develop
                 if (mIsExpended != value)
                 {
                     mIsExpended = value;
-                    LoadChild();
                     OnPropertyChanged("IsExpended");
                 }
             }
@@ -220,14 +370,13 @@ namespace Cdy.Api.Mars.Develop
 
         #region ... Methods    ...
 
-        /// <summary>
-        /// 
-        /// </summary>
-        private void LoadChild()
+        public void InitData(List<DBDevelopClientWebApi.TagGroup> groups)
         {
-            if(!mIsInited)
+            foreach (var vv in groups.Where(e => e.Parent == this.FullName))
             {
-                mIsInited = true;
+                TagGroupViewModel groupViewModel = new TagGroupViewModel() { Name = vv.Name, Database = Database };
+                groupViewModel.Parent = this;
+                this.Children.Add(groupViewModel);
             }
         }
 
@@ -261,6 +410,11 @@ namespace Cdy.Api.Mars.Develop
         /// <summary>
         /// 
         /// </summary>
+        public string Group { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string Name { get; set; }
 
         /// <summary>
@@ -272,6 +426,19 @@ namespace Cdy.Api.Mars.Develop
         /// 
         /// </summary>
         public string Type { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FullName
+        {
+            get
+            {
+                return string.IsNullOrEmpty(Group) ? Name : Group + "." + Name;
+            }
+        }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...

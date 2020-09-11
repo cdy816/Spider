@@ -120,8 +120,26 @@
   <data name="Circle" xml:space="preserve">
     <value>Circle</value>
   </data>
+  <data name="Database" xml:space="preserve">
+    <value>Database</value>
+  </data>
   <data name="DataTransType" xml:space="preserve">
     <value>DataTransType</value>
+  </data>
+  <data name="Desc" xml:space="preserve">
+    <value>Desc</value>
+  </data>
+  <data name="Keyword" xml:space="preserve">
+    <value>Keyword</value>
+  </data>
+  <data name="MaxValue" xml:space="preserve">
+    <value>MaxValue</value>
+  </data>
+  <data name="MinValue" xml:space="preserve">
+    <value>MinValue</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -129,8 +147,17 @@
   <data name="Port" xml:space="preserve">
     <value>Port</value>
   </data>
+  <data name="ReadWriteMode" xml:space="preserve">
+    <value>ReadWriteMode</value>
+  </data>
   <data name="Server" xml:space="preserve">
     <value>Server</value>
+  </data>
+  <data name="TagFilter" xml:space="preserve">
+    <value>TagFilter</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>UserName</value>

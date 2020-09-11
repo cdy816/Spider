@@ -70,11 +70,65 @@ namespace Cdy.Api.Mars.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Database 的本地化字符串。
+        /// </summary>
+        internal static string Database {
+            get {
+                return ResourceManager.GetString("Database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 DataTransType 的本地化字符串。
         /// </summary>
         internal static string DataTransType {
             get {
                 return ResourceManager.GetString("DataTransType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Desc 的本地化字符串。
+        /// </summary>
+        internal static string Desc {
+            get {
+                return ResourceManager.GetString("Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Keyword 的本地化字符串。
+        /// </summary>
+        internal static string Keyword {
+            get {
+                return ResourceManager.GetString("Keyword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 MaxValue 的本地化字符串。
+        /// </summary>
+        internal static string MaxValue {
+            get {
+                return ResourceManager.GetString("MaxValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 MinValue 的本地化字符串。
+        /// </summary>
+        internal static string MinValue {
+            get {
+                return ResourceManager.GetString("MinValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Name 的本地化字符串。
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
@@ -97,11 +151,38 @@ namespace Cdy.Api.Mars.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 ReadWriteMode 的本地化字符串。
+        /// </summary>
+        internal static string ReadWriteMode {
+            get {
+                return ResourceManager.GetString("ReadWriteMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Server 的本地化字符串。
         /// </summary>
         internal static string Server {
             get {
                 return ResourceManager.GetString("Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 TagFilter 的本地化字符串。
+        /// </summary>
+        internal static string TagFilter {
+            get {
+                return ResourceManager.GetString("TagFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Type 的本地化字符串。
+        /// </summary>
+        internal static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         
