@@ -198,9 +198,13 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBox Padding="3,0"  Loaded="TextBox_Loaded" CaretBrush="White" Background="#1FFFFFFF" Margin="-1" Foreground="{DynamicResource Window.Forground}" Text="{Binding DatabaseName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}"  VerticalAlignment="Stretch" VerticalContentAlignment="Center" />
                                             <Button Grid.Column="1" Margin="4,0" Background="#1FFFFFFF" Foreground="{DynamicResource Window.Forground}" Content="..." VerticalAlignment="Center" Height="18" VerticalContentAlignment="Top" Command="{Binding DatabaseBrowserCommand}" Width="24" />
+                                            <Button Grid.Column="2" Margin="4,0" Background="#1FFFFFFF" VerticalAlignment="Center" Height="18" Command="{Binding DatabaseRemoveCommand}" Width="24" >
+                                                <Image Height="16" Source="/Image/cancel.png" />
+                                            </Button>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>

@@ -13,6 +13,7 @@
     <None Remove="Image\minus.png" />
     <None Remove="Image\ok.png" />
     <None Remove="Image\show.png" />
+    <None Remove="Image\spider.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
     <Resource Include="Image\minus.png" />
     <Resource Include="Image\ok.png" />
     <Resource Include="Image\show.png" />
+    <Resource Include="Image\spider.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.zh-CN.resx">
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -10,7 +10,7 @@
         <Setter Property="IsCancel" Value="{Binding IsCancel}" />
         <Setter Property="Title" Value="{Binding Title}" />
         <Setter Property="IconString" Value="{Binding Icon}" />
-        <Setter Property="Icon" Value="/Image/mrdbd.ico" />
+        <Setter Property="Icon" Value="/Image/spider.png" />
         <Setter Property="IsClosed" Value="{Binding IsClosed}" />
         <Setter Property="SizeToContent" Value="WidthAndHeight" />
         <Setter Property="IsEnableMax" Value="{Binding IsEnableMax}" />
@@ -18,91 +18,108 @@
         <Setter Property="IsHidden" Value="{Binding IsHidden}" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
-        <!--<Setter Property="ResizeMode" Value="CanResizeWithGrip" />-->
         <Setter Property="Background" Value="#CF000000" />
         <Setter Property="Foreground" Value="{DynamicResource Window.Forground}" />
-        <!--<Setter Property="ResizeMode" Value="{Binding IsEnableMax,Converter={StaticResource BoolToResize}}" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:CustomWindowBase}">
-                    <Border BorderThickness="1" BorderBrush="DarkGray">
-                        <Grid Background="{TemplateBinding Background}" x:Name="head" >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="32" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid Background="#9F000000">
-                                <Image Margin="5,0"  Source="{Binding Icon,RelativeSource={RelativeSource AncestorType=Window}}" Height="16" HorizontalAlignment="Left" Width="24" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
-                                <Label Margin="30,0,115,0" VerticalContentAlignment="Center" Content="{Binding Title,RelativeSource={RelativeSource AncestorType=Window}}" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Window}}"/>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Style="{DynamicResource ButtonStyle1}" x:Name="minB" BorderThickness="0" Background="Transparent"   Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
-                                        <Button.ContentTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Image/minus.png" Height="12" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </Button.ContentTemplate>
-                                    </Button>
+                    <Border Background="#01000000">
+                        <Border BorderThickness="1" BorderBrush="DarkGray" Margin="1" x:Name="bd" Background="MintCream" >
+                            <Grid>
+                                <Grid Background="{TemplateBinding Background}" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="32" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid Background="#9F000000" x:Name="head" >
+                                        <Image Margin="5,0"  Source="{Binding Icon,RelativeSource={RelativeSource AncestorType=Window}}" Height="16" HorizontalAlignment="Left" Width="24" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
+                                        <Label Margin="30,0,115,0" VerticalContentAlignment="Center" Content="{Binding Title,RelativeSource={RelativeSource AncestorType=Window}}" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button Style="{DynamicResource ButtonStyle1}" x:Name="minB" BorderThickness="0" Background="Transparent"   Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
+                                                <Button.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="/Image/minus.png" Height="12" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Button.ContentTemplate>
+                                            </Button>
 
-                                    <Button Style="{DynamicResource ButtonStyle1}" x:Name="maxB" BorderThickness="0"  Background="Transparent" Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="0,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
-                                        <Button.ContentTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Image/max.png" Height="16" RenderOptions.BitmapScalingMode="HighQuality" Stretch="None" />
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </Button.ContentTemplate>
-                                    </Button>
+                                            <Button Style="{DynamicResource ButtonStyle1}" x:Name="maxB" BorderThickness="0"  Background="Transparent" Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="0,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
+                                                <Button.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="/Image/max.png" Height="16" RenderOptions.BitmapScalingMode="HighQuality" Stretch="None" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Button.ContentTemplate>
+                                            </Button>
 
-                                    <Button Style="{DynamicResource ButtonStyle1}" x:Name="closeB" BorderThickness="0"  Background="Transparent"    HorizontalAlignment="Left"  Margin="0,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
-                                        <Button.ContentTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Image/close.png" Height="16" RenderOptions.BitmapScalingMode="HighQuality" Stretch="None"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </Button.ContentTemplate>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                            <Grid Background="#0FFFFFFF" Grid.Row="1">
-                                <ContentControl  x:Name="content_host" Content="{Binding}" Margin="0" />
-                            </Grid>
-
-                            <Border   Height="32"  Grid.Row="2" BorderBrush="Gray" BorderThickness="0,1,0,0"  Visibility="{Binding IsOkCancel,Converter={StaticResource bvc}}">
-                                <Grid  Margin="0" >
-                                    <Label  Content="{Binding Message}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,200,0" />
-                                    <Button  Style="{DynamicResource ButtonStyle1}" Name="btn_Cancel" BorderBrush="IndianRed" BorderThickness="0,0,0,2" IsCancel="{Binding IsEnableDefault}" Content="{local:ResMarker Cancel}" Height="22" Width="75" Margin="0,0,10,0" Command="{Binding CancelCommand}" HorizontalAlignment="Right" VerticalAlignment="Center"   >
-                                        <Button.ContentTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Image/cancel.png" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                                    <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </Button.ContentTemplate>
-                                    </Button>
-                                    <Button  Style="{DynamicResource ButtonStyle1}" BorderBrush="Green" BorderThickness="0,0,0,2" Name="btn_OK"  IsDefault="{Binding IsEnableDefault}" Content="{local:ResMarker OK}" Height="22" Width="75"  Margin="0,0,100,0" Command="{Binding OKCommand}" HorizontalAlignment="Right" >
-                                        <Button.ContentTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Image/ok.png" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                                    <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </Button.ContentTemplate>
-                                    </Button>
+                                            <Button Style="{DynamicResource ButtonStyle1}" x:Name="closeB" BorderThickness="0"  Background="Transparent"    HorizontalAlignment="Left"  Margin="0,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
+                                                <Button.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="/Image/close.png" Height="16" RenderOptions.BitmapScalingMode="HighQuality" Stretch="None"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Button.ContentTemplate>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid  Grid.Row="1">
+                                        <ContentControl  x:Name="content_host" Content="{Binding}" Margin="0" />
+                                    </Grid>
+                                    <Border   Height="32"  Grid.Row="2" BorderBrush="Gray" BorderThickness="0,1,0,0"  Visibility="{Binding IsOkCancel,Converter={StaticResource bvc}}">
+                                        <Grid  Margin="0" >
+                                            <Label  Content="{Binding Message}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,200,0" />
+                                            <Button  Style="{DynamicResource ButtonStyle1}" Name="btn_Cancel" BorderBrush="IndianRed" BorderThickness="0,0,0,2" IsCancel="{Binding IsEnableDefault}" Content="{local:ResMarker Cancel}" Height="22" Width="75" Margin="0,0,10,0" Command="{Binding CancelCommand}" HorizontalAlignment="Right" VerticalAlignment="Center"   >
+                                                <Button.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="/Image/cancel.png" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Button.ContentTemplate>
+                                            </Button>
+                                            <Button  Style="{DynamicResource ButtonStyle1}" BorderBrush="Green" BorderThickness="0,0,0,2" Name="btn_OK"  IsDefault="{Binding IsEnableDefault}" Content="{local:ResMarker OK}" Height="22" Width="75"  Margin="0,0,100,0" Command="{Binding OKCommand}" HorizontalAlignment="Right" >
+                                                <Button.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="/Image/ok.png" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5,0"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </Button.ContentTemplate>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
                                 </Grid>
-                            </Border>
-                        </Grid>
+                                <Border x:Name="rtb" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="5" Margin="0" Cursor="SizeWE" BorderThickness="0" Background="Transparent" />
+                                <Border x:Name="bdb" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="5" Margin="0" Cursor="SizeNS" BorderThickness="0" Background="Transparent" />
+                                <Border x:Name="rbdb" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="10" Height="10" Margin="0" Cursor="SizeNWSE" BorderThickness="0" Background="Transparent" />
+                            </Grid>
+                        </Border>
                     </Border>
+                    
                     <ControlTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsOkCancel}" Value="False" >
                             <Setter TargetName="btn_OK" Property="IsDefault" Value="False" />
                             <Setter TargetName="btn_Cancel" Property="IsCancel" Value="False" />
                         </DataTrigger>
+
+                        <Trigger Property="IsMouseOver" Value="true" SourceName="rtb">
+                            <Setter Property="Background" TargetName="rtb" Value="#7F00FFFF"/>
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="true" SourceName="bdb">
+                            <Setter Property="Background" TargetName="bdb" Value="#7F00FFFF"/>
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="true" SourceName="rbdb">
+                            <Setter Property="Background" TargetName="rbdb" Value="#7F00FFFF"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
 

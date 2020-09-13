@@ -9,10 +9,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
@@ -25,32 +27,34 @@ namespace Cdy.Spider.DevelopCommon
     {
         #region ... Variables  ...
 
-        [DllImport("user32.dll")]
-        static extern int GetWindowLong(IntPtr hwnd, int index);
+        //[DllImport("user32.dll")]
+        //static extern int GetWindowLong(IntPtr hwnd, int index);
 
-        [DllImport("user32.dll")]
-        static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+        //[DllImport("user32.dll")]
+        //static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
-        [DllImport("user32.dll")]
-        static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
-                   int x, int y, int width, int height, uint flags);
+        //[DllImport("user32.dll")]
+        //static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
+        //           int x, int y, int width, int height, uint flags);
 
-        [DllImport("user32.dll")]
-        static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+        //[DllImport("user32.dll")]
+        //static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        private const int GWL_EXSTYLE = -20;
-        private const int WS_EX_DLGMODALFRAME = 0x0001;
-        private const int SWP_NOSIZE = 0x0001;
-        private const int SWP_NOMOVE = 0x0002;
-        private const int SWP_NOZORDER = 0x0004;
-        private const int SWP_FRAMECHANGED = 0x0020;
-        private const uint WM_SETICON = 0x0080;
+        //private const int GWL_EXSTYLE = -20;
+        //private const int WS_EX_DLGMODALFRAME = 0x0001;
+        //private const int SWP_NOSIZE = 0x0001;
+        //private const int SWP_NOMOVE = 0x0002;
+        //private const int SWP_NOZORDER = 0x0004;
+        //private const int SWP_FRAMECHANGED = 0x0020;
+        //private const uint WM_SETICON = 0x0080;
 
-        private const int GWL_STYLE = -16;
-        private const int WS_MAXIMIZEBOX = 0x00010000;
-        private const int WS_MINIMIZEBOX = 0x00020000;
+        //private const int GWL_STYLE = -16;
+        //private const int WS_MAXIMIZEBOX = 0x00010000;
+        //private const int WS_MINIMIZEBOX = 0x00020000;
 
         private ContentControl mContentHost;
+
+        private Grid mHead;
 
         #endregion ...Variables...
 
@@ -74,6 +78,9 @@ namespace Cdy.Spider.DevelopCommon
         public CustomWindowBase()
             : base()
         {
+            this.AllowsTransparency = true;
+            this.WindowStyle = WindowStyle.None;
+            this.ResizeMode = ResizeMode.CanResizeWithGrip;
             this.Loaded += new RoutedEventHandler(CustomWindowBase_Loaded);
         }
 
@@ -179,29 +186,6 @@ namespace Cdy.Spider.DevelopCommon
         #endregion ...Properties...
 
         #region ... Methods    ...
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="window"></param>
-        public static void RemoveIcon(Window window)
-        {
-            IntPtr hwnd = new WindowInteropHelper(window).Handle;
-            int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-            SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_DLGMODALFRAME);
-            SendMessage(hwnd, WM_SETICON, new IntPtr(1), IntPtr.Zero);
-            SendMessage(hwnd, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
-        }
-
-        /// <summary>
-        /// Disables the minimizebox.
-        /// </summary>
-        /// <param name="window">The window.</param>
-        public static void DisableMinimizebox(Window window)
-        {
-            var hwnd = new WindowInteropHelper(window).Handle;
-            var value = GetWindowLong(hwnd, GWL_STYLE);
-            SetWindowLong(hwnd, GWL_STYLE, (int)(value & ~WS_MINIMIZEBOX));
-        }
 
         /// <summary>
         /// 
@@ -211,20 +195,12 @@ namespace Cdy.Spider.DevelopCommon
         private void CustomWindowBase_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= (CustomWindowBase_Loaded);
-            if (string.IsNullOrEmpty(IconString))
-            {
-                RemoveIcon(this);
-            }
-            else
+            if (!string.IsNullOrEmpty(IconString))
             {
                 this.Icon = new BitmapImage(new Uri(IconString));
             }
-
-            if (IsEnableMax)
-            {
-                DisableMinimizebox(this);
-            }
             this.Activate();
+            
         }
 
         /// <summary>
@@ -234,6 +210,174 @@ namespace Cdy.Spider.DevelopCommon
         {
             base.OnApplyTemplate();
             mContentHost = this.GetTemplateChild("content_host") as ContentControl;
+            mHead = this.GetTemplateChild("head") as Grid;
+            mHead.MouseLeftButtonDown += MHead_MouseLeftButtonDown;
+            (this.GetTemplateChild("minB") as Button).Click += minB_Click;
+            if (this.IsEnableMax)
+            {
+                (this.GetTemplateChild("maxB") as Button).Click += maxB_Click;
+            }
+            else
+            {
+                (this.GetTemplateChild("maxB") as Button).Visibility = Visibility.Collapsed;
+            }
+
+            (this.GetTemplateChild("closeB") as Button).Click += closeB_Click;
+            var bdv = (this.GetTemplateChild("bdb") as Border);
+            var bdh = this.GetTemplateChild("rtb") as Border;
+
+            var bdvh = this.GetTemplateChild("rbdb") as Border;
+
+            bdv.MouseLeftButtonDown += bdv_MouseLeftButtonDown;
+            bdv.MouseMove += Bdv_MouseMove;
+            bdv.MouseLeftButtonUp += Bd_MouseLeftButtonUp;
+
+
+            bdh.MouseLeftButtonDown += bdh_MouseLeftButtonDown;
+            bdh.MouseMove += Bdh_MouseMove;
+            bdh.MouseLeftButtonUp += Bd_MouseLeftButtonUp;
+
+            bdvh.MouseLeftButtonDown += Bdvh_MouseLeftButtonDown;
+            bdvh.MouseMove += Bdvh_MouseMove;
+            bdvh.MouseLeftButtonUp += Bd_MouseLeftButtonUp;
+        }
+
+        private void Bdvh_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var vpp = e.GetPosition(this);
+                var ddy = vpp.Y;
+                var ddx = vpp.X;
+                this.Width += (ddx - dx);
+                this.Height += (ddy - dy);
+                dy = ddy;
+                dx = ddx;
+            }
+        }
+
+        private void Bdvh_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            (sender as Border).CaptureMouse();
+            var vpp = e.GetPosition(this);
+            dy = vpp.Y;
+            dx = vpp.X;
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Bd_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            (sender as Border).ReleaseMouseCapture();
+            e.Handled = true;
+        }
+
+        private double dx,dy;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Bdv_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var ddy = e.GetPosition(this).Y;
+                this.Height += (ddy - dy);
+                dy = ddy;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Bdh_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var ddx = e.GetPosition(this).X;
+                this.Width += (ddx - dx);
+                dx = ddx;
+            }
+        }
+
+        private void bdv_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            (sender as Border).CaptureMouse();
+            dy =  e.GetPosition(this).Y;
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bdh_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            (sender as Border).CaptureMouse();
+            dx = e.GetPosition(this).X;
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void closeB_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void maxB_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
+            }
+        }
+
+        private void minB_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+
+
+        private void MHead_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ClickCount > 1 && IsEnableMax)
+            {
+                if (WindowState == WindowState.Maximized)
+                {
+                    WindowState = WindowState.Normal;
+                }
+                else
+                {
+                    WindowState = WindowState.Maximized;
+                }
+            }
+            else
+            {
+                this.DragMove();
+            }
         }
 
         /// <summary>

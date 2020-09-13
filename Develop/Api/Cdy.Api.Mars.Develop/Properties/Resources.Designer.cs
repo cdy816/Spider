@@ -70,6 +70,15 @@ namespace Cdy.Api.Mars.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Connect 的本地化字符串。
+        /// </summary>
+        internal static string Connect {
+            get {
+                return ResourceManager.GetString("Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Database 的本地化字符串。
         /// </summary>
         internal static string Database {
@@ -151,6 +160,24 @@ namespace Cdy.Api.Mars.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Read 的本地化字符串。
+        /// </summary>
+        internal static string Read {
+            get {
+                return ResourceManager.GetString("Read", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ReadWrite 的本地化字符串。
+        /// </summary>
+        internal static string ReadWrite {
+            get {
+                return ResourceManager.GetString("ReadWrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ReadWriteMode 的本地化字符串。
         /// </summary>
         internal static string ReadWriteMode {
@@ -192,6 +219,15 @@ namespace Cdy.Api.Mars.Develop.Properties {
         internal static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Write 的本地化字符串。
+        /// </summary>
+        internal static string Write {
+            get {
+                return ResourceManager.GetString("Write", resourceCulture);
             }
         }
     }

@@ -1018,7 +1018,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     {
                         Application.Current?.Dispatcher.Invoke(new Action(() =>
                         {
-                            mTags.Add(new TagViewModel() { Model = vv, Document = mModel.Data });
+                            mTags.Add(new TagViewModel() { Model = vv, Document = mModel.Data,Machine=this.MachineModel });
                         }));
                     }
                 }
@@ -1136,7 +1136,7 @@ namespace InSpiderDevelopWindow.ViewModel
 
                         Application.Current?.Dispatcher.Invoke(new Action(() =>
                         {
-                            mTags.Add(new TagViewModel() { Model = vv,Document=mModel.Data });
+                            mTags.Add(new TagViewModel() { Model = vv,Document=mModel.Data, Machine = this.MachineModel });
                         }));
                     }
                 }
@@ -1466,7 +1466,7 @@ namespace InSpiderDevelopWindow.ViewModel
             else
             {
                 var tag = new DoubleTag() { Name = GetNewName() };
-                TagViewModel vtag = new TagViewModel() { Model = tag, Document = mModel.Data };
+                TagViewModel vtag = new TagViewModel() { Model = tag, Document = mModel.Data, Machine = this.MachineModel };
                 mDriver?.CheckTagDeviceInfo(vtag.Model);
                 if (mModel.Data.AppendTag(vtag.Model))
                 {
@@ -1613,6 +1613,9 @@ namespace InSpiderDevelopWindow.ViewModel
         public static string[] mRegistorList;
 
         private ICommand mDatabaseBrowserCommand;
+
+        private ICommand mDatabaseRemoveCommand;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -1633,6 +1636,11 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public MachineDocument Machine { get; set; }
 
         /// <summary>
         /// 
@@ -1834,11 +1842,33 @@ namespace InSpiderDevelopWindow.ViewModel
             {
                 if(mDatabaseBrowserCommand==null)
                 {
-                    mDatabaseBrowserCommand = new RelayCommand(() => { 
-                        
+                    mDatabaseBrowserCommand = new RelayCommand(() => {
+
+                        string stag = Machine.Api.Api.ConfigTags();
+                        if(!string.IsNullOrEmpty(stag))
+                        {
+                            DatabaseName = stag;
+                        }
                     });
                 }
                 return mDatabaseBrowserCommand;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand DatabaseRemoveCommand
+        {
+            get
+            {
+                if(mDatabaseRemoveCommand==null)
+                {
+                    mDatabaseRemoveCommand = new RelayCommand(() => {
+                        DatabaseName = string.Empty;
+                    },()=> { return !string.IsNullOrEmpty(DatabaseName); });
+                }
+                return mDatabaseRemoveCommand;
             }
         }
 
@@ -2024,6 +2054,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public override void Dispose()
         {
+            Machine = null;
             Document = null;
             mModel = null;
             base.Dispose();

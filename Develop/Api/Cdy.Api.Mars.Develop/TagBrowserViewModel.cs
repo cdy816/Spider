@@ -15,6 +15,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Xml.Linq;
 using Cdy.Spider.DevelopCommon;
 
 namespace Cdy.Api.Mars
@@ -43,9 +46,43 @@ namespace Cdy.Api.Mars
         /// </summary>
         private ObservableCollection<TagViewModel> mTags = new ObservableCollection<TagViewModel>();
 
-        private string mCurrentGroup;
+        private Dictionary<string, string> mFilters = new Dictionary<string, string>();
+
+        private TagGroupViewModel mCurrentGroup;
 
         private TagViewModel mCurrentSelectTag;
+
+        private ICommand mConnectCommand;
+
+        private string mServerAddress="127.0.0.1:9000";
+
+        private string mServerPassword="Admin";
+
+        private string mServerUserName="Admin";
+
+        private bool mIsConnected;
+
+        private bool mEnableFilter = false;
+
+        private bool mRequery = true;
+
+        private int mCurrentPageIndex = 0;
+
+        private bool mIsBusy = false;
+
+
+        private string mFilterKeyName = string.Empty;
+
+        private bool mTagTypeFilterEnable;
+
+        private int mFilterType = -1;
+
+        private bool mReadWriteModeFilterEnable;
+
+        private int mFilterReadWriteMode = -1;
+
+        public static string[] mTagTypeList;
+        public static string[] mReadWriteModeList;
 
         #endregion ...Variables...
 
@@ -58,16 +95,172 @@ namespace Cdy.Api.Mars
         /// <summary>
         /// 
         /// </summary>
+        static TagBrowserViewModel()
+        {
+            mTagTypeList = Enum.GetNames(typeof(Cdy.Tag.TagType));
+            mReadWriteModeList = Enum.GetNames(typeof(Cdy.Tag.ReadWriteMode)).Select(e => Res.Get(e)).ToArray();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public TagBrowserViewModel()
         {
             Title = Res.Get("TagBrowser");
             DefaultWidth = 1024;
-            DefaultHeight = 768;
+            DefaultHeight = 600;
+            LoadConfig();
         }
 
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string[] TagTypeList
+        {
+            get
+            {
+                return mTagTypeList;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string[] ReadWriteModeList
+        {
+            get
+            {
+                return mReadWriteModeList;
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<TagGroupViewModel> TagGroups
+        {
+            get
+            {
+                return mTagGroups;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<TagViewModel> Tags
+        {
+            get
+            {
+                return mTags;
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsConnected
+        {
+            get
+            {
+                return mIsConnected;
+            }
+            set
+            {
+                if (mIsConnected != value)
+                {
+                    mIsConnected = value;
+                    OnPropertyChanged("IsConnected");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ServerPassword
+        {
+            get
+            {
+                return mServerPassword;
+            }
+            set
+            {
+                if (mServerPassword != value)
+                {
+                    mServerPassword = value;
+                    OnPropertyChanged("ServerPassword");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ServerAddress
+        {
+            get
+            {
+                return mServerAddress;
+            }
+            set
+            {
+                if (mServerAddress != value)
+                {
+                    mServerAddress = value;
+                    OnPropertyChanged("ServerAddress");
+                }
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string ServerUserName
+        {
+            get
+            {
+                return mServerUserName;
+            }
+            set
+            {
+                if (mServerUserName != value)
+                {
+                    mServerUserName = value;
+                    OnPropertyChanged("ServerUserName");
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ConnectCommand
+        {
+            get
+            {
+                if(mConnectCommand==null)
+                {
+                    mConnectCommand = new RelayCommand(() => {
+                        Load();
+                    },()=> { return !IsConnected; });
+                }
+                return mConnectCommand;
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -108,14 +301,17 @@ namespace Cdy.Api.Mars
                 if (mCurrentDatabase != value)
                 {
                     mCurrentDatabase = value;
-                    mCurrentGroup = "";
+                    mCurrentGroup = null;
                     UpdateTagGroup();
-                    UpdateTags();
+                    NewQueryTags();
                     OnPropertyChanged("CurrentDatabase");
                 }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public List<string> Databases 
         { 
             get { return mDatabase; }
@@ -129,7 +325,7 @@ namespace Cdy.Api.Mars
         /// <summary>
         /// 
         /// </summary>
-        public string CurrentGroup
+        public TagGroupViewModel CurrentGroup
         {
             get
             {
@@ -140,6 +336,7 @@ namespace Cdy.Api.Mars
                 if (mCurrentGroup != value)
                 {
                     mCurrentGroup = value;
+                    NewQueryTags();
                     OnPropertyChanged("CurrentGroup");
                 }
             }
@@ -157,7 +354,142 @@ namespace Cdy.Api.Mars
         {
             get
             {
-                return Grid.SelectedItem != null ? (Grid.SelectedItem as TagViewModel).FullName : string.Empty;
+                return CurrentSelectTag != null ? CurrentSelectTag.FullName : string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsLoading { get; set; }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public bool EnableFilter
+        {
+            get
+            {
+                return mEnableFilter;
+            }
+            set
+            {
+                if (mEnableFilter != value)
+                {
+                    mEnableFilter = value;
+                    OnPropertyChanged("EnableFilter");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int FilterReadWriteMode
+        {
+            get
+            {
+                return mFilterReadWriteMode;
+            }
+            set
+            {
+                if (mFilterReadWriteMode != value)
+                {
+                    mFilterReadWriteMode = value;
+                    NewQueryTags();
+                }
+                OnPropertyChanged("FilterReadWriteMode");
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool ReadWriteModeFilterEnable
+        {
+            get
+            {
+                return mReadWriteModeFilterEnable;
+            }
+            set
+            {
+                if (mReadWriteModeFilterEnable != value)
+                {
+                    mReadWriteModeFilterEnable = value;
+                    if (!value)
+                    {
+                        mFilterReadWriteMode = -1;
+                        NewQueryTags();
+                    }
+                    OnPropertyChanged("ReadWriteModeFilterEnable");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int FilterType
+        {
+            get
+            {
+                return mFilterType;
+            }
+            set
+            {
+                if (mFilterType != value)
+                {
+                    mFilterType = value;
+                    NewQueryTags();
+                }
+                OnPropertyChanged("FilterType");
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FilterKeyName
+        {
+            get
+            {
+                return mFilterKeyName;
+            }
+            set
+            {
+                if (mFilterKeyName != value)
+                {
+                    mFilterKeyName = value;
+                    NewQueryTags();
+                }
+                OnPropertyChanged("FilterKeyName");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool TagTypeFilterEnable
+        {
+            get
+            {
+                return mTagTypeFilterEnable;
+            }
+            set
+            {
+                if (mTagTypeFilterEnable != value)
+                {
+                    mTagTypeFilterEnable = value;
+                    if (!value)
+                    {
+                        mFilterType = -1;
+                        NewQueryTags();
+                    }
+                }
+                OnPropertyChanged("TagTypeFilterEnable");
             }
         }
 
@@ -169,22 +501,96 @@ namespace Cdy.Api.Mars
         /// <summary>
         /// 
         /// </summary>
+        private void NewQueryTags()
+        {
+            EnableFilter = false;
+            //Task.Run(() => {
+                BuildFilters();
+                mRequery = true;
+                ContinueQueryTags();
+                Application.Current?.Dispatcher.Invoke(new Action(() => {
+                    EnableFilter = true;
+                }));
+            //});
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void BuildFilters()
+        {
+            mFilters.Clear();
+            if (!string.IsNullOrEmpty(this.FilterKeyName))
+            {
+                mFilters.Add("keyword", FilterKeyName);
+            }
+            if (this.TagTypeFilterEnable)
+            {
+                mFilters.Add("type", this.FilterType.ToString());
+            }
+            if (this.ReadWriteModeFilterEnable)
+            {
+                mFilters.Add("readwritetype", FilterReadWriteMode.ToString());
+            }
+
+
+            //string stmp = "";
+            //if (this.DriverFilterEnable)
+            //{
+            //    stmp = this.FilterDriver;
+            //}
+            //if (this.RegistorFilterEnable)
+            //{
+            //    stmp += "." + this.FilterRegistorName;
+            //}
+            //if (!string.IsNullOrEmpty(stmp))
+            //{
+            //    mFilters.Add("linkaddress", stmp);
+            //}
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void LoadConfig()
+        {
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location) , "MarsApiConfig.cach");
+            if(System.IO.File.Exists(sfile))
+            {
+                XElement xx = XElement.Load(sfile);
+                this.ServerAddress = xx.Attribute("ServerAddress")?.Value;
+                this.ServerUserName = xx.Attribute("ServerUserName")?.Value;
+                //this.ServerPassword = xx.Attribute("ServerPassword")?.Value;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Load()
         {
             try
             {
                 mHelper = new DBDevelopClientWebApi.DevelopServiceHelper();
-                mHelper.Server = ApiDevelop.Data.ServerIp + ":" + ApiDevelop.Data.Port;
+                mHelper.Server = ServerAddress;
                 if (!mHelper.Server.StartsWith("http://"))
                 {
                     mHelper.Server = "http://" + mHelper.Server;
                 }
-                if (mHelper.Login(ApiDevelop.Data.UserName, ApiDevelop.Data.Password))
+                if (mHelper.Login(ServerUserName, ServerPassword))
                 {
+                    IsConnected = true;
                     Databases = mHelper.QueryDatabase().Select(e => e.Name).ToList();
+                    //if(Databases.Count>0)
+                    //{
+                    //    CurrentDatabase = Databases[0];
+                    //}
                 }
                 else
                 {
+                    IsConnected = false;
+                    CommandManager.InvalidateRequerySuggested();
                     MessageBox.Show("Logging server failed!");
                 }
             }
@@ -225,20 +631,128 @@ namespace Cdy.Api.Mars
             }
         }
 
+
+
         /// <summary>
         /// 
         /// </summary>
-        private void UpdateTags()
+        public void ContinueLoadData()
         {
-            mTags.Clear();
-            var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup, 0);
-            if(tags!=null)
+            if (!IsLoading)
             {
-                foreach(var vv in tags)
+                IsLoading = true;
+                System.Threading.Tasks.Task.Run(() => { ContinueQueryTags(); IsLoading = false; });
+            }
+        }
+
+
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //private void UpdateTags()
+        //{
+        //    mTags.Clear();
+        //    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", 0);
+        //    if (tags != null)
+        //    {
+        //        foreach (var vv in tags)
+        //        {
+        //            var vtag = new TagViewModel() { Name = vv.Item1.Name, Desc = vv.Item1.Desc, Type = vv.Item1.Type.ToString(), ReadWriteMode = vv.Item1.ReadWriteType.ToString(), Group = CurrentGroup != null ? CurrentGroup.FullName : "" };
+        //            if (vv.Item1 is Cdy.Tag.NumberTagBase)
+        //            {
+        //                vtag.MaxValue = (vv.Item1 as Cdy.Tag.NumberTagBase).MaxValue;
+        //                vtag.MinValue = (vv.Item1 as Cdy.Tag.NumberTagBase).MinValue;
+        //            }
+        //            if (vv.Item1 is Cdy.Tag.FloatingTagBase)
+        //            {
+        //                vtag.Precision = (vv.Item1 as Cdy.Tag.FloatingTagBase).Precision;
+        //            }
+        //            mTags.Add(vtag);
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ContinueQueryTags()
+        {
+            if (mIsBusy) return;
+
+            mIsBusy = true;
+            try
+            {
+                if (mRequery)
                 {
-                    mTags.Add(new TagViewModel() { Name = vv.Item1.Name, Desc = vv.Item1.Desc,Type = vv.Item1.Type.ToString() });
+                    mRequery = false;
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        mTags.Clear();
+                    }));
+
+                    mCurrentPageIndex = 0;
+                    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", mCurrentPageIndex, mFilters);
+                    if (tags != null)
+                    {
+                        foreach (var vv in tags)
+                        {
+                            var vtag = new TagViewModel() { Name = vv.Item1.Name, Desc = vv.Item1.Desc, Type = vv.Item1.Type.ToString(), ReadWriteMode = vv.Item1.ReadWriteType.ToString(), Group = CurrentGroup != null ? CurrentGroup.FullName : "" };
+                            if (vv.Item1 is Cdy.Tag.NumberTagBase)
+                            {
+                                vtag.MaxValue = (vv.Item1 as Cdy.Tag.NumberTagBase).MaxValue;
+                                vtag.MinValue = (vv.Item1 as Cdy.Tag.NumberTagBase).MinValue;
+                            }
+                            if (vv.Item1 is Cdy.Tag.FloatingTagBase)
+                            {
+                                vtag.Precision = (vv.Item1 as Cdy.Tag.FloatingTagBase).Precision;
+                            }
+
+                            Application.Current?.Dispatcher.Invoke(new Action(() =>
+                            {
+                                mTags.Add(vtag);
+                            }));
+
+                        }
+                    }
+                }
+                else
+                {
+                    mCurrentPageIndex++;
+                    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", mCurrentPageIndex, mFilters);
+                    if (tags != null && tags.Count > 0)
+                    {
+                        foreach (var vv in tags)
+                        {
+                            var vtag = new TagViewModel() { Name = vv.Item1.Name, Desc = vv.Item1.Desc, Type = vv.Item1.Type.ToString(), ReadWriteMode = vv.Item1.ReadWriteType.ToString(), Group = CurrentGroup != null ? CurrentGroup.FullName : "" };
+                            if (vv.Item1 is Cdy.Tag.NumberTagBase)
+                            {
+                                vtag.MaxValue = (vv.Item1 as Cdy.Tag.NumberTagBase).MaxValue;
+                                vtag.MinValue = (vv.Item1 as Cdy.Tag.NumberTagBase).MinValue;
+                            }
+                            if (vv.Item1 is Cdy.Tag.FloatingTagBase)
+                            {
+                                vtag.Precision = (vv.Item1 as Cdy.Tag.FloatingTagBase).Precision;
+                            }
+
+                            Application.Current?.Dispatcher.Invoke(new Action(() =>
+                            {
+                                mTags.Add(vtag);
+                            }));
+
+                        }
+                    }
+                    else
+                    {
+                        mCurrentPageIndex--;
+                    }
                 }
             }
+            catch
+            {
+
+            }
+            mIsBusy = false;
         }
 
 
@@ -248,7 +762,48 @@ namespace Cdy.Api.Mars
         /// <returns></returns>
         protected override bool CanOKCommandProcess()
         {
-            return Grid != null && Grid.SelectedItem != null;
+            return CurrentSelectTag!=null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void SaveConfig()
+        {
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "MarsApiConfig.cach");
+            XElement xx = new XElement("MarsApiConfig");
+            xx.SetAttributeValue("ServerAddress", ServerAddress);
+            xx.SetAttributeValue("ServerUserName", ServerUserName);
+            xx.Save(sfile);
+            //xx.SetAttributeValue("ServerPassword", ServerPassword);
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected override bool OKCommandProcess()
+        {
+            SaveConfig();
+            return base.OKCommandProcess();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void ClosedProcess()
+        {
+            try
+            {
+                if (mHelper != null)
+                    mHelper.Logout();
+            }
+            catch
+            {
+
+            }
+            base.ClosedProcess();
         }
 
         #endregion ...Methods...
@@ -430,6 +985,11 @@ namespace Cdy.Api.Mars
         /// <summary>
         /// 
         /// </summary>
+        public string ReadWriteMode { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string FullName
         {
             get
@@ -437,6 +997,12 @@ namespace Cdy.Api.Mars
                 return string.IsNullOrEmpty(Group) ? Name : Group + "." + Name;
             }
         }
+
+        public double MaxValue { get; set; }
+
+        public double MinValue { get; set; }
+
+        public int Precision { get; set; }
 
 
         #endregion ...Properties...

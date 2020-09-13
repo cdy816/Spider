@@ -8,6 +8,7 @@
 //==============================================================
 
 using Cdy.Spider;
+using Cdy.Spider.DevelopCommon;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -82,14 +83,17 @@ namespace Cdy.Api.Mars
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="fileter"></param>
-        /// <param name="start"></param>
-        /// <param name="count"></param>
         /// <returns></returns>
-        public IEnumerable<string> ListTags(string fileter, int start, int count)
+        public override string ConfigTags()
         {
-            throw new NotImplementedException();
+            TagBrowserViewModel tmm = new TagBrowserViewModel();
+            if(tmm.ShowDialog().Value)
+            {
+                return tmm.SelectTagName;
+            }
+            return string.Empty;
         }
+
 
         #endregion ...Methods...
 

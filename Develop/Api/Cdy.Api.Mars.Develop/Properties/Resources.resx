@@ -120,6 +120,9 @@
   <data name="Circle" xml:space="preserve">
     <value>Circle</value>
   </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
   <data name="Database" xml:space="preserve">
     <value>Database</value>
   </data>
@@ -147,6 +150,12 @@
   <data name="Port" xml:space="preserve">
     <value>Port</value>
   </data>
+  <data name="Read" xml:space="preserve">
+    <value>Read</value>
+  </data>
+  <data name="ReadWrite" xml:space="preserve">
+    <value>ReadWrite</value>
+  </data>
   <data name="ReadWriteMode" xml:space="preserve">
     <value>ReadWriteMode</value>
   </data>
@@ -161,5 +170,8 @@
   </data>
   <data name="UserName" xml:space="preserve">
     <value>UserName</value>
+  </data>
+  <data name="Write" xml:space="preserve">
+    <value>Write</value>
   </data>
 </root>
