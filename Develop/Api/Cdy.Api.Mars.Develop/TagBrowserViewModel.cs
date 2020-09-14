@@ -84,6 +84,8 @@ namespace Cdy.Api.Mars
         public static string[] mTagTypeList;
         public static string[] mReadWriteModeList;
 
+        private int mLastPageCount = 0;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -594,9 +596,10 @@ namespace Cdy.Api.Mars
                     MessageBox.Show("Logging server failed!");
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                IsConnected = false;
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -690,9 +693,8 @@ namespace Cdy.Api.Mars
                     {
                         mTags.Clear();
                     }));
-
                     mCurrentPageIndex = 0;
-                    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", mCurrentPageIndex, mFilters);
+                    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", mCurrentPageIndex,out mLastPageCount, mFilters);
                     if (tags != null)
                     {
                         foreach (var vv in tags)
@@ -718,8 +720,10 @@ namespace Cdy.Api.Mars
                 }
                 else
                 {
+                    if (mCurrentPageIndex >= mLastPageCount) return;
+
                     mCurrentPageIndex++;
-                    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", mCurrentPageIndex, mFilters);
+                    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", mCurrentPageIndex, out mLastPageCount, mFilters);
                     if (tags != null && tags.Count > 0)
                     {
                         foreach (var vv in tags)
@@ -830,7 +834,7 @@ namespace Cdy.Api.Mars
         /// </summary>
         private ObservableCollection<TagGroupViewModel> mChildren = new ObservableCollection<TagGroupViewModel>();
 
-        private bool mIsInited = false;
+        //private bool mIsInited = false;
 
         #endregion ...Variables...
 
