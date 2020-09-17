@@ -75,6 +75,12 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
+        IRegistorConfigModel RegistorConfig();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         XElement Save();
 
         /// <summary>

@@ -219,7 +219,8 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <ComboBox Loaded="ComboBox_Loaded" Background="#1FFFFFFF"  Margin="0" VerticalContentAlignment="Center" BorderThickness="0" ItemsSource="{Binding RegistorList}"  IsEditable="True" Text="{Binding DeviceInfo,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                        <ContentControl Content="{Binding RegistorConfigModel}" />
+                                        <!--<ComboBox Loaded="ComboBox_Loaded" Background="#1FFFFFFF"  Margin="0" VerticalContentAlignment="Center" BorderThickness="0" ItemsSource="{Binding RegistorList}"  IsEditable="True" Text="{Binding DeviceInfo,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />-->
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>

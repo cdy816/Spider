@@ -73,6 +73,12 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
+        public abstract IRegistorConfigModel RegistorConfig();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected abstract DriverData CreatNewData();
 
         /// <summary>

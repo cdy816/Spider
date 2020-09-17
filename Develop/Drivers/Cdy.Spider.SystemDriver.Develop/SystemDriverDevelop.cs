@@ -73,6 +73,15 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// 
         /// </summary>
         /// <returns></returns>
+        public override IRegistorConfigModel RegistorConfig()
+        {
+            return new SystemRegistorConfigModel();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override IDriverDevelop NewDriver()
         {
             return new SystemDriverDevelop() { Data = new SystemDriverData() };

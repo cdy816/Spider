@@ -1616,6 +1616,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private ICommand mDatabaseRemoveCommand;
 
+        private IRegistorConfigModel mRegistorConfigModel;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -1636,6 +1638,27 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IRegistorConfigModel RegistorConfigModel
+        {
+            get
+            {
+                if(mRegistorConfigModel==null)
+                {
+                    var driver = Machine.Driver.GetDriver(this.Document.Name);
+                    this.mRegistorConfigModel = driver?.RegistorConfig();
+                }
+                mRegistorConfigModel?.FreshRegistor(DeviceInfo);
+                mRegistorConfigModel.UpdateRegistorCallBack = (val) => {
+                    DeviceInfo = val;
+                };
+                return mRegistorConfigModel;
+            }
+        }
+
 
         /// <summary>
         /// 

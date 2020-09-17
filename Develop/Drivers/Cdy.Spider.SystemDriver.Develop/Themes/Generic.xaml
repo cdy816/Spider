@@ -6,4 +6,8 @@
         <local:SystemDriverDevelopView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type local:SystemRegistorConfigModel}">
+        <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{Binding Registor}" />
+    </DataTemplate>
+
 </ResourceDictionary>
