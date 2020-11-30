@@ -108,6 +108,20 @@ namespace Cdy.Api.Mars
                     lock (mChangedTags)
                         mChangedTags.Enqueue(tag);
                 });
+
+                vv.RegistorHisValueCallBack((tag, values) => { 
+                    
+                    //如果已经登录，则直接转储
+                    if(mProxy.IsLogin)
+                    {
+
+                    }
+                    else
+                    {
+                        //缓存下来
+                    }
+
+                });
             }
           
 

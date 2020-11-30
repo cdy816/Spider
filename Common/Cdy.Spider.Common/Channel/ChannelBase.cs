@@ -215,9 +215,9 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public byte[] SendAndWait(string key, byte[] data, params string[] paras)
+        public byte[] SendAndWait(byte[] data,int start,int len, params string[] paras)
         {
-            return SendAndWait(key,data, Data.DataSendTimeout,paras);
+            return SendAndWait(data,start,len, Data.DataSendTimeout,paras);
         }
 
         /// <summary>
@@ -227,18 +227,18 @@ namespace Cdy.Spider
         /// <param name="data"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public  byte[] SendAndWait(string key, byte[] data, int timeout, params string[] paras)
+        public  byte[] SendAndWait(byte[] data, int start, int len, int timeout, params string[] paras)
         {
             byte[] redata = null;
             bool re = false;
-            redata = SendInner(key,data, timeout, out re);
+            redata = SendInner(data,start,len, timeout, out re,paras);
             if (!re)
             {
                 int count = 0;
                 while (!re && count < Data.ReTryCount)
                 {
                     Thread.Sleep(Data.ReTryDuration);
-                    redata = SendInner(key, data,timeout, out re,paras);
+                    redata = SendInner(data, start, len, timeout, out re,paras);
                     count++;
                 }
                 if (!re && IsConnected)
@@ -253,16 +253,16 @@ namespace Cdy.Spider
             return redata;
         }
 
-
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="data"></param>
+        /// <param name="datas"></param>
+        /// <param name="timeout"></param>
         /// <param name="result"></param>
+        /// <param name="paras"></param>
         /// <returns></returns>
-        protected virtual byte[] SendInner(string key,byte[] data, int timeout, out bool result, params string[] paras)
+        protected virtual byte[] SendInner(Span<byte> datas, int timeout, out bool result, params string[] paras)
         {
             result = false;
             return null;
@@ -274,7 +274,35 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <param name="result"></param>
-        protected virtual void SendInnerAsync(string key, byte[] data,out bool result, params string[] paras)
+        /// <returns></returns>
+        protected virtual byte[] SendInner(byte[] data, int start, int len, int timeout, out bool result, params string[] paras)
+        {
+            result = false;
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <param name="result"></param>
+        protected virtual void SendInnerAsync(Span<byte> datas, out bool result, params string[] paras)
+        {
+            result = true;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <param name="start"></param>
+        /// <param name="len"></param>
+        /// <param name="result"></param>
+        /// <param name="paras"></param>
+        protected virtual void SendInnerAsync(byte[] data, int start, int len, out bool result, params string[] paras)
         {
             result = true;
         }
@@ -284,10 +312,10 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="key"></param>
         /// <param name="data"></param>
-        public void SendAsync(string key, byte[] data, params string[] paras)
+        public void SendAsync(byte[] data, int start, int len, params string[] paras)
         {
             bool re=false;
-            SendInnerAsync(key,data,out re);
+            SendInnerAsync(data,start,len,out re,paras);
 
             if(!re)
             {
@@ -295,7 +323,7 @@ namespace Cdy.Spider
                 while (!re && count<Data.ReTryCount)
                 {
                     Thread.Sleep(Data.ReTryDuration);
-                    SendInnerAsync(key,data, out re,paras);
+                    SendInnerAsync(data,start,len, out re,paras);
                     count++;
                 }
                 if(!re && IsConnected)
@@ -308,6 +336,70 @@ namespace Cdy.Spider
                 ConnectedChanged(true);
             }
             
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <param name="paras"></param>
+        /// <returns></returns>
+        public byte[] SendAndWait(Span<byte> data, params string[] paras)
+        {
+            byte[] redata = null;
+            bool re = false;
+            redata = SendInner(data,Data.DataSendTimeout, out re,paras);
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    redata = SendInner(data, Data.DataSendTimeout,  out re, paras);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
+            return redata;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <param name="paras"></param>
+        public void SendAsync(Span<byte> data, params string[] paras)
+        {
+            bool re = false;
+            SendInnerAsync(data, out re, paras);
+
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    SendInnerAsync(data, out re, paras);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
         }
 
         /// <summary>
@@ -370,6 +462,8 @@ namespace Cdy.Spider
         {
             mCallBack.Add(callBack);
         }
+
+
 
         #endregion ...Methods...
 

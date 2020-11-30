@@ -43,6 +43,11 @@ namespace Cdy.Spider
         /// </summary>
         private Action<string,Tagbae> mValueCallBack;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private Action<string, IEnumerable<object>> mHisValuesCallback;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -633,6 +638,36 @@ namespace Cdy.Spider
         }
 
         /// <summary>
+        /// 更新某个变量的历史
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="values"></param>
+        public void UpdateTagHisValue(int id,IEnumerable<object> values)
+        {
+            if (mIdMapTags.ContainsKey(id))
+            {
+                mHisValuesCallback?.Invoke(mIdMapTags[id].DatabaseName,values);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceTag"></param>
+        /// <param name="values"></param>
+        public void UpdateTagHisValueByDeviceTag(string deviceTag, IEnumerable<object> values)
+        {
+            if (mDeviceMapTags.ContainsKey(deviceTag))
+            {
+                DateTime dtmp = DateTime.Now;
+                foreach (var vv in mDeviceMapTags[deviceTag])
+                {
+                    mHisValuesCallback?.Invoke(vv.DatabaseName, values);
+                }
+            }
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -657,6 +692,15 @@ namespace Cdy.Spider
         public ICommChannel GetCommChannel()
         {
             return Channel;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hisValues"></param>
+        public void RegistorHisValueCallBack(Action<string, IEnumerable<object>> hisValues)
+        {
+            mHisValuesCallback = hisValues;
         }
 
 

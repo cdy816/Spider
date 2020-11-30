@@ -99,6 +99,13 @@ namespace Cdy.Spider
         void RegistorCallBack(Action<string,Tagbae> callBack);
 
         /// <summary>
+        /// 历史记录更新
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="hisValues"></param>
+        void RegistorHisValueCallBack(Action<string , IEnumerable<object>> hisValues);
+
+        /// <summary>
         /// 接收数据库下发值，写入到设备中
         /// </summary>
         /// <param name="databaTag"></param>

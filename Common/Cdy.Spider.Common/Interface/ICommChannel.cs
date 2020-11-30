@@ -106,27 +106,46 @@ namespace Cdy.Spider
         /// <summary>
         /// 发送数据
         /// </summary>
-        /// <param name="key"/>
         /// <param name="data"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        byte[] SendAndWait(string key,byte[] data,int timeout, params string[] paras);
+        byte[] SendAndWait(byte[] data, int start, int len, int timeout, params string[] paras);
 
+
+        /// <summary>
+        /// 同步发送数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="start"></param>
+        /// <param name="len"></param>
+        /// <param name="paras"></param>
+        /// <returns></returns>
+        byte[] SendAndWait(byte[] data,int start,int len,params string[] paras);
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="key"/>
         /// <param name="data"></param>
+        /// <param name="paras"></param>
         /// <returns></returns>
-        byte[] SendAndWait(string key,byte[] data,params string[] paras);
+        byte[] SendAndWait(Span<byte> data, params string[] paras);
 
         /// <summary>
         /// 异步发送数据
         /// </summary>
-        /// <param name="key"/>
         /// <param name="data"></param>
-        void SendAsync(string key,byte[] data, params string[] paras);
+        /// <param name="start"></param>
+        /// <param name="len"></param>
+        /// <param name="paras"></param>
+        void SendAsync(byte[] data, int start, int len, params string[] paras);
+
+        /// <summary>
+        /// 异步发送数据
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="paras"></param>
+
+        void SendAsync(Span<byte> data, params string[] paras);
 
         /// <summary>
         /// 获取控制权限

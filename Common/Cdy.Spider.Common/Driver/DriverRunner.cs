@@ -186,7 +186,7 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected byte[] SendData(string key,byte[] data)
+        protected byte[] SendData(string key,byte[] data,int start,int len)
         {
             byte[] re = null;
             if (!mComm.IsConnected) return null;
@@ -196,7 +196,7 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    re = mComm.SendAndWait(key,data);
+                    re = mComm.SendAndWait(data, start, len, key);
                 }
                 finally
                 {
@@ -212,7 +212,7 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected bool SendDataAsync(string key,byte[] data)
+        protected bool SendDataAsync(string key,byte[] data,int start,int len)
         {
             if (!mComm.IsConnected) return false;
 
@@ -221,7 +221,7 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    mComm.SendAsync(key,data);
+                    mComm.SendAsync(data, start, len, key);
                 }
                 finally
                 {
