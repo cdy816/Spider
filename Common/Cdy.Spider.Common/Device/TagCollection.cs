@@ -17,12 +17,12 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class TagCollection:SortedDictionary<int,Tagbae>
+    public class TagCollection:SortedDictionary<int,Tagbase>
     {
 
         #region ... Variables  ...
 
-        private Dictionary<string, Tagbae> mNamedTags = new Dictionary<string, Tagbae>();
+        private Dictionary<string, Tagbase> mNamedTags = new Dictionary<string, Tagbase>();
 
         #endregion ...Variables...
 
@@ -54,7 +54,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="tag"></param>
         /// <returns></returns>
-        public bool UpdateOrAdd(Tagbae tag)
+        public bool UpdateOrAdd(Tagbase tag)
         {
             if(ContainsKey(tag.Id))
             {
@@ -96,7 +96,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public bool AddTag(Tagbae tag)
+        public bool AddTag(Tagbase tag)
         {
             if(!this.ContainsKey(tag.Id) && !mNamedTags.ContainsKey(tag.Name))
             {
@@ -112,7 +112,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public bool AppendTag(Tagbae tag)
+        public bool AppendTag(Tagbase tag)
         {
             if(!mNamedTags.ContainsKey(tag.Name))
             {
@@ -128,7 +128,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public bool RemoveTag(Tagbae tag)
+        public bool RemoveTag(Tagbase tag)
         {
             if(this.ContainsKey(tag.Id))
             {

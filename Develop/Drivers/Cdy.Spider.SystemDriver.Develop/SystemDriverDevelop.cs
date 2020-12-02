@@ -100,7 +100,7 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public override void CheckTagDeviceInfo(Tagbae tag)
+        public override void CheckTagDeviceInfo(Tagbase tag)
         {
             tag.DeviceInfo = tag.Name;
         }

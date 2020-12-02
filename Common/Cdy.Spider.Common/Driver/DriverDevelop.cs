@@ -125,7 +125,7 @@ namespace Cdy.Spider
         /// 校验变量的设备信息
         /// </summary>
         /// <param name="tag"></param>
-        public virtual void CheckTagDeviceInfo(Tagbae tag)
+        public virtual void CheckTagDeviceInfo(Tagbase tag)
         {
 
         }

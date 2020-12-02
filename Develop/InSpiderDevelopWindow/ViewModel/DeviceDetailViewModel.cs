@@ -932,7 +932,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        private void CachTagModelId(Tagbae tag)
+        private void CachTagModelId(Tagbase tag)
         {
             if(!mIdCach.Contains(tag.Id))
             {
@@ -1033,7 +1033,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <returns></returns>
         private bool Filter(object obj)
         {
-            KeyValuePair<int, Tagbae> kvals = (KeyValuePair<int, Tagbae>)obj;
+            KeyValuePair<int, Tagbase> kvals = (KeyValuePair<int, Tagbase>)obj;
             bool re = true;
             
             if(!string.IsNullOrEmpty(mFilterKeyName))
@@ -1065,7 +1065,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public IEnumerable<Tagbae> GetTag(int page)
+        public IEnumerable<Tagbase> GetTag(int page)
         {
             int count = mModel.Data.Tags.Where(e => Filter(e)).Count();
             //Application.Current?.Dispatcher.Invoke(new Action(() =>
@@ -1604,7 +1604,7 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Variables  ...
         
-        private Tagbae mModel;
+        private Tagbase mModel;
 
         public static string[] mTagTypeList;
 
@@ -1716,7 +1716,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
         /// 
         /// </summary>
-        public Tagbae Model
+        public Tagbase Model
         {
             get
             {
@@ -1915,7 +1915,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <param name="tagType"></param>
         private void ChangeTagType(TagType tagType)
         {
-            Tagbae ntag = null;
+            Tagbase ntag = null;
             switch (tagType)
             {
                 case TagType.Bool:
@@ -1996,7 +1996,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <returns></returns>
         public TagViewModel Clone()
         {
-            Tagbae ntag = null;
+            Tagbase ntag = null;
             switch (this.mModel.Type)
             {
                 case TagType.Bool:

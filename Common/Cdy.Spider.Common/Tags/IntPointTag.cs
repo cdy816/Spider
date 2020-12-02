@@ -26,7 +26,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class IntPointTag:Tagbae
+    public class IntPointTag:Tagbase
     {
 
         #region ... Variables  ...

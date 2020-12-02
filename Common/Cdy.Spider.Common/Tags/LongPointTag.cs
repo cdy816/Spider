@@ -26,7 +26,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class LongPointTag:Tagbae
+    public class LongPointTag:Tagbase
     {
 
         #region ... Variables  ...

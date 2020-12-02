@@ -58,7 +58,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public bool AddTag(Tagbae tag)
+        public bool AddTag(Tagbase tag)
         {
             return Tags.AddTag(tag);
         }
@@ -68,7 +68,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="tag"></param>
         /// <returns></returns>
-        public bool UpdateOrAdd(Tagbae tag)
+        public bool UpdateOrAdd(Tagbase tag)
         {
             return Tags.UpdateOrAdd(tag);
         }
@@ -77,7 +77,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public bool AppendTag(Tagbae tag)
+        public bool AppendTag(Tagbase tag)
         {
             return Tags.AppendTag(tag);
         }
@@ -95,7 +95,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="tag"></param>
-        public bool RemoveTag(Tagbae tag)
+        public bool RemoveTag(Tagbase tag)
         {
             return Tags.RemoveTag(tag);
         }

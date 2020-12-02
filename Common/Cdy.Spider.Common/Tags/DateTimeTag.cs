@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Cdy.Spider
 {
-    public class DateTimeTag:Tagbae
+    public class DateTimeTag:Tagbase
     {
 
         #region ... Variables  ...

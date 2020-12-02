@@ -63,7 +63,7 @@ namespace Cdy.Spider
         /// 校验变量的设备信息
         /// </summary>
         /// <param name="tag"></param>
-        void CheckTagDeviceInfo(Tagbae tag);
+        void CheckTagDeviceInfo(Tagbase tag);
 
         /// <summary>
         /// 

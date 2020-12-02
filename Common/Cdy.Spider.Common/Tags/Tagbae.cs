@@ -118,7 +118,7 @@ namespace Cdy.Spider
     }
 
 
-    public abstract class Tagbae
+    public abstract class Tagbase
     {
 
         #region ... Variables  ...
@@ -211,7 +211,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="tag"></param>
         /// <returns></returns>
-        public static XElement SaveToXML(this Tagbae tag)
+        public static XElement SaveToXML(this Tagbase tag)
         {
             XElement xx = new XElement("Tag");
             xx.SetAttributeValue("Type", (int)tag.Type);
@@ -228,7 +228,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="xe"></param>
         /// <returns></returns>
-        public static Tagbae CreatFromXML(this XElement xe)
+        public static Tagbase CreatFromXML(this XElement xe)
         {
             var type = (TagType)int.Parse(xe.Attribute("Type").Value);
             var tag = type.CreatTag();
@@ -253,7 +253,7 @@ namespace Cdy.Spider
             return tag;
         }
 
-        public static Tagbae CreatTag(this TagType type)
+        public static Tagbase CreatTag(this TagType type)
         {
             switch (type)
             {

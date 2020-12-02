@@ -26,27 +26,27 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        Dictionary<string, Tagbae> mDatabaseMapTags = new Dictionary<string, Tagbae>();
+        Dictionary<string, Tagbase> mDatabaseMapTags = new Dictionary<string, Tagbase>();
 
         /// <summary>
         /// 
         /// </summary>
-        Dictionary<string, List<Tagbae>> mDeviceMapTags = new Dictionary<string, List<Tagbae>>();
+        Dictionary<string, List<Tagbase>> mDeviceMapTags = new Dictionary<string, List<Tagbase>>();
 
         /// <summary>
         /// 
         /// </summary>
-        SortedDictionary<int, Tagbae> mIdMapTags = new SortedDictionary<int, Tagbae>();
+        SortedDictionary<int, Tagbase> mIdMapTags = new SortedDictionary<int, Tagbase>();
 
         /// <summary>
         /// 
         /// </summary>
-        private Action<string,Tagbae> mValueCallBack;
+        private Action<string,Tagbase> mValueCallBack;
 
         /// <summary>
         /// 
         /// </summary>
-        private Action<string, IEnumerable<object>> mHisValuesCallback;
+        private Action<Tagbase, IEnumerable<HisValue>> mHisValuesCallback;
 
         #endregion ...Variables...
 
@@ -114,7 +114,7 @@ namespace Cdy.Spider
                 }
                 else
                 {
-                    List<Tagbae> ll = new List<Tagbae>() { vv.Value };
+                    List<Tagbase> ll = new List<Tagbase>() { vv.Value };
                     mDeviceMapTags.Add(dvname, ll);
                 }
             }
@@ -197,7 +197,7 @@ namespace Cdy.Spider
         /// <param name="tag"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private byte[] ConvertToBytes(Tagbae tag,object value)
+        private byte[] ConvertToBytes(Tagbase tag,object value)
         {
             switch (tag.Type)
             {
@@ -287,7 +287,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Tagbae> ListTags()
+        public List<Tagbase> ListTags()
         {
             return mIdMapTags.Values.ToList();
         }
@@ -300,7 +300,7 @@ namespace Cdy.Spider
             DateTime dtmp = DateTime.Now;
             foreach (var vv in mIdMapTags.Values)
             {
-                vv.Quality = Tagbae.BadCommQuality;
+                vv.Quality = Tagbase.BadCommQuality;
                 vv.Time = dtmp;
                 mValueCallBack?.Invoke(this.Name,vv);
             }
@@ -320,7 +320,7 @@ namespace Cdy.Spider
                 {
                     vv.Value = ConvertValue(vv, value);
                     vv.Time = dtmp;
-                    vv.Quality = Tagbae.GoodQuality;
+                    vv.Quality = Tagbase.GoodQuality;
 
                     mValueCallBack?.Invoke(this.Name,vv);
                 }
@@ -333,7 +333,7 @@ namespace Cdy.Spider
         /// <param name="tag"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private object ConvertValue(Tagbae tag,object value)
+        private object ConvertValue(Tagbase tag,object value)
         {
             if (value == null) return null;
             switch (tag.Type)
@@ -629,7 +629,7 @@ namespace Cdy.Spider
                 {
                     var vvv = mIdMapTags[vv];
                     vvv.Value = value;
-                    vvv.Quality = Tagbae.GoodQuality;
+                    vvv.Quality = Tagbase.GoodQuality;
                     vvv.Time = dtmp;
 
                     mValueCallBack?.Invoke(this.Name,vvv);
@@ -642,11 +642,11 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="id"></param>
         /// <param name="values"></param>
-        public void UpdateTagHisValue(int id,IEnumerable<object> values)
+        public void UpdateTagHisValue(int id,IEnumerable<HisValue> values)
         {
             if (mIdMapTags.ContainsKey(id))
             {
-                mHisValuesCallback?.Invoke(mIdMapTags[id].DatabaseName,values);
+                mHisValuesCallback?.Invoke(mIdMapTags[id],values);
             }
         }
 
@@ -655,14 +655,14 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="deviceTag"></param>
         /// <param name="values"></param>
-        public void UpdateTagHisValueByDeviceTag(string deviceTag, IEnumerable<object> values)
+        public void UpdateTagHisValueByDeviceTag(string deviceTag, IEnumerable<HisValue> values)
         {
             if (mDeviceMapTags.ContainsKey(deviceTag))
             {
                 DateTime dtmp = DateTime.Now;
                 foreach (var vv in mDeviceMapTags[deviceTag])
                 {
-                    mHisValuesCallback?.Invoke(vv.DatabaseName, values);
+                    mHisValuesCallback?.Invoke(vv, values);
                 }
             }
         }
@@ -680,7 +680,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="callBack"></param>
-        public void RegistorCallBack(Action<string,Tagbae> callBack)
+        public void RegistorCallBack(Action<string,Tagbase> callBack)
         {
             mValueCallBack = callBack;
         }
@@ -698,9 +698,19 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="hisValues"></param>
-        public void RegistorHisValueCallBack(Action<string, IEnumerable<object>> hisValues)
+        public void RegistorHisValueCallBack(Action<Tagbase, IEnumerable<HisValue>> hisValues)
         {
             mHisValuesCallback = hisValues;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Tagbase GetTag(string name)
+        {
+            return mDatabaseMapTags.ContainsKey(name)? mDatabaseMapTags[name]:null;
         }
 
 

@@ -29,7 +29,7 @@ namespace Cdy.Api.Mars
 
         private Dictionary<string, int> mNameIdMape = new Dictionary<string, int>();
 
-        private Queue<Tagbae> mChangedTags = new Queue<Tagbae>();
+        private Queue<Tagbase> mChangedTags = new Queue<Tagbase>();
 
         private Dictionary<string,int> mCallBackTags = new Dictionary<string, int>();
 
@@ -109,12 +109,12 @@ namespace Cdy.Api.Mars
                         mChangedTags.Enqueue(tag);
                 });
 
-                vv.RegistorHisValueCallBack((tag, values) => { 
-                    
+                vv.RegistorHisValueCallBack((tag, values) => {
+                   
                     //如果已经登录，则直接转储
                     if(mProxy.IsLogin)
                     {
-
+                        SendHisValue(tag.DatabaseName, (byte)tag.Type, values);
                     }
                     else
                     {
@@ -143,6 +143,21 @@ namespace Cdy.Api.Mars
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="type"></param>
+        /// <param name="values"></param>
+        private void SendHisValue(string tag,byte type,IEnumerable<HisValue> values)
+        {
+            if (mNameIdMape.ContainsKey(tag))
+            {
+                int id = mNameIdMape[tag];
+                var tpu = (Cdy.Tag.TagType)(type);
+                mProxy.SetTagHisValue(id, tpu, values.Select(e => new Tag.TagValue() { Value = e.Value, Quality = 0, Time = e.Time }).ToList());
+            }
+        }
         
 
         /// <summary>
@@ -266,7 +281,7 @@ namespace Cdy.Api.Mars
             Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
             while (mChangedTags.Count>0)
             {
-                Tagbae stag;
+                Tagbase stag;
                 lock(mChangedTags)
                 stag = mChangedTags.Dequeue();
 

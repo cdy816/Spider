@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Cdy.Spider
 {
-    public class DoubleTag:Tagbae
+    public class DoubleTag:Tagbase
     {
 
         #region ... Variables  ...

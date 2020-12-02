@@ -78,6 +78,16 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
+    public struct HisValue { 
+        public DateTime Time { get; set; }
+     
+        public object Value { get; set; }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IDeviceForApi
     {
         /// <summary>
@@ -90,20 +100,27 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
-        List<Tagbae> ListTags();
+        List<Tagbase> ListTags();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Tagbase GetTag(string name);
 
         /// <summary>
         /// 注册值改变
         /// </summary>
         /// <param name="callBack"></param>
-        void RegistorCallBack(Action<string,Tagbae> callBack);
+        void RegistorCallBack(Action<string,Tagbase> callBack);
 
         /// <summary>
         /// 历史记录更新
         /// </summary>
         /// <param name="tag"></param>
         /// <param name="hisValues"></param>
-        void RegistorHisValueCallBack(Action<string , IEnumerable<object>> hisValues);
+        void RegistorHisValueCallBack(Action<Tagbase , IEnumerable<HisValue>> hisValues);
 
         /// <summary>
         /// 接收数据库下发值，写入到设备中
@@ -119,6 +136,8 @@ namespace Cdy.Spider
         /// <param name="databaseTag"></param>
         /// <returns></returns>
         object ReadValueByDatabaseName(string databaseTag);
+
+
 
     }
 
@@ -175,7 +194,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
-        List<Tagbae> ListTags();
+        List<Tagbase> ListTags();
 
 
         /// <summary>
