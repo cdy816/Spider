@@ -45,10 +45,10 @@ namespace Cdy.Spider
         /// </summary>
         string TypeName { get; }
 
-        /// <summary>
-        /// 支持的通道类型
-        /// </summary>
-        ChannelType[] SupportChannelTypes { get; }
+        ///// <summary>
+        ///// 支持的通道类型
+        ///// </summary>
+        //ChannelType[] SupportChannelTypes { get; }
 
         /// <summary>
         /// 支持的寄存器列表
@@ -70,6 +70,12 @@ namespace Cdy.Spider
         /// </summary>
         /// <returns></returns>
         object Config();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<string> ListSupportChannels();
 
         /// <summary>
         /// 

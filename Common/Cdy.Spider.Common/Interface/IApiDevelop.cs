@@ -75,6 +75,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         string ConfigTags();
 
+        IEnumerable<string> ConfigMutiTags();
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

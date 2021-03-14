@@ -292,6 +292,8 @@ namespace Cdy.Spider
             return mIdMapTags.Values.ToList();
         }
 
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -711,6 +713,15 @@ namespace Cdy.Spider
         public Tagbase GetTag(string name)
         {
             return mDatabaseMapTags.ContainsKey(name)? mDatabaseMapTags[name]:null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<Tagbase> ListCacheHistoryTags()
+        {
+            return mIdMapTags.Where(e => e.Value.IsBufferEnabled).Select(e=>e.Value).ToList();
         }
 
 

@@ -41,7 +41,42 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public override object Value { get => mValue; set => mValue = Convert.ToBoolean(value); }
+        public override object Value { get => mValue; set { mValue = Convert.ToBoolean(value); AppendHisValue(mValue); } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<HisValue> ReadHisValues()
+        {
+            DateTime time;
+            byte value;
+            while(this.HisValueBuffer.ReadValue(out time,out value))
+            {
+                yield return new HisValue() { Time = time, Value = Convert.ToBoolean(value) };
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        private void AppendHisValue(bool value)
+        {
+            if(mIsBufferEnabled)
+            {
+                this.HisValueBuffer.AppendValue(DateTime.UtcNow, Convert.ToByte(value));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="valueCount"></param>
+        protected override void AllocDataBuffer(int valueCount)
+        {
+            this.HisValueBuffer = new HisDataMemory(9, valueCount);
+        }
 
         #endregion ...Properties...
 

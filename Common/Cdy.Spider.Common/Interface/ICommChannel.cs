@@ -24,6 +24,15 @@ namespace Cdy.Spider
         public delegate byte[] DataReceiveCallBackDelegate(string key, byte[] date,out bool handled);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <param name="handled"></param>
+        /// <returns></returns>
+        public delegate object DataReceiveCallBackDelegate2(string key, object data, out bool handled);
+
+        /// <summary>
         /// 通信状态改变事件
         /// </summary>
         public event EventHandler CommChangedEvent;
@@ -98,6 +107,12 @@ namespace Cdy.Spider
         void  RegistorReceiveCallBack(DataReceiveCallBackDelegate callBack);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callBack"></param>
+        void RegistorReceiveCallBack(DataReceiveCallBackDelegate2 callBack);
+
+        /// <summary>
         /// 通信预处理
         /// </summary>
         /// <param name="deviceInfos"></param>
@@ -129,6 +144,15 @@ namespace Cdy.Spider
         /// <param name="paras"></param>
         /// <returns></returns>
         byte[] SendAndWait(Span<byte> data, params string[] paras);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <param name="paras"></param>
+        /// <returns></returns>
+        object SendAndWait(string key, object data, params object[] paras);
 
         /// <summary>
         /// 异步发送数据

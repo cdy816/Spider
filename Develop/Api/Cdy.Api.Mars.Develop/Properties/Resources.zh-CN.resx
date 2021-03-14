@@ -132,6 +132,9 @@
   <data name="Desc" xml:space="preserve">
     <value>描述</value>
   </data>
+  <data name="DisConnect" xml:space="preserve">
+    <value>断开连接</value>
+  </data>
   <data name="Keyword" xml:space="preserve">
     <value>关键字</value>
   </data>

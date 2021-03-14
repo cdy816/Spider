@@ -20,9 +20,11 @@
             <MenuItem Header="{local:ResMarker PropertyCopy}" Command="{Binding CellCopyCommand}" />
             <MenuItem Header="{local:ResMarker PropertyPaste}" Command="{Binding CellPasteCommand}" />
 
-
+            <Separator/>
             <MenuItem Header="{local:ResMarker Import}" Command="{Binding ImportCommand}" />
             <MenuItem Header="{local:ResMarker Export}" Command="{Binding ExportCommand}" />
+            <Separator/>
+            <MenuItem Header="{local:ResMarker DatabaseTagSelect}" Command="{Binding ConfigDatabaseCommand}" />
         </ContextMenu>
     </UserControl.Resources>
     <Grid>

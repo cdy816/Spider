@@ -132,6 +132,9 @@
   <data name="Desc" xml:space="preserve">
     <value>Desc</value>
   </data>
+  <data name="DisConnect" xml:space="preserve">
+    <value>DisConnect</value>
+  </data>
   <data name="Keyword" xml:space="preserve">
     <value>Keyword</value>
   </data>

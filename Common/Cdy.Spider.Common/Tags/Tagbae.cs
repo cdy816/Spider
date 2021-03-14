@@ -135,7 +135,9 @@ namespace Cdy.Spider
         /// 通信故障
         /// </summary>
         public const byte BadCommQuality = 10;
-        
+
+        protected bool mIsBufferEnabled = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -147,6 +149,8 @@ namespace Cdy.Spider
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+
 
         /// <summary>
         /// 
@@ -193,9 +197,63 @@ namespace Cdy.Spider
         /// </summary>
         public DataTransType DataTranseDirection { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public HisDataMemory HisValueBuffer { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsBufferEnabled
+        {
+            get
+            {
+                return mIsBufferEnabled;
+            }
+        }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 使能历史缓冲
+        /// </summary>
+        /// <param name="value"></param>
+        public void EnableHisBuffer(bool value)
+        {
+            if (mIsBufferEnabled != value)
+            {
+                mIsBufferEnabled = value;
+                if (mIsBufferEnabled)
+                {
+                    AllocDataBuffer(60 * 5);
+                }
+                else
+                {
+                    if(HisValueBuffer!=null)
+                    {
+                        HisValueBuffer.Dispose();
+                        HisValueBuffer = null;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 分配内存
+        /// </summary>
+        protected abstract void AllocDataBuffer(int valueCount);
+
+      
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract IEnumerable<HisValue> ReadHisValues();
 
         #endregion ...Methods...
 

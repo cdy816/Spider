@@ -39,6 +39,9 @@ namespace Cdy.Spider
 
         private List<ICommChannel.DataReceiveCallBackDelegate> mCallBack = new List<ICommChannel.DataReceiveCallBackDelegate>();
 
+
+        private List<ICommChannel.DataReceiveCallBackDelegate2> mCallBack2 = new List<ICommChannel.DataReceiveCallBackDelegate2>();
+
         public event EventHandler CommChangedEvent;
 
         #endregion ...Variables...
@@ -215,10 +218,51 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns></returns>
+        protected object OnReceiveCallBack2(string key, object data)
+        {
+            bool res;
+            foreach (var vv in mCallBack2)
+            {
+                var rdata = vv.Invoke(key, data, out res);
+                if (res) return rdata;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public object SendAndWait(string key, object data, params object[] paras)
+        {
+            return SendInner(key, data, Data.DataSendTimeout, paras);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="timeOut"></param>
+        /// <returns></returns>
+        protected virtual object SendInner(string key,object data,int timeOut,object[] paras)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public byte[] SendAndWait(byte[] data,int start,int len, params string[] paras)
         {
             return SendAndWait(data,start,len, Data.DataSendTimeout,paras);
         }
+
+
 
         /// <summary>
         /// 
@@ -461,6 +505,15 @@ namespace Cdy.Spider
         public void RegistorReceiveCallBack(ICommChannel.DataReceiveCallBackDelegate callBack)
         {
             mCallBack.Add(callBack);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callBack"></param>
+        public void RegistorReceiveCallBack(ICommChannel.DataReceiveCallBackDelegate2 callBack)
+        {
+            mCallBack2.Add(callBack);
         }
 
 

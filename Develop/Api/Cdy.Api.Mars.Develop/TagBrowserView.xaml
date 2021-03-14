@@ -10,6 +10,107 @@
     <UserControl.Resources>
         <local:IndexConverter x:Key="ic" />
         <local:DoubleValueConvert x:Key="dvc" />
+
+        <!--Tree View-->
+
+        <Style x:Key="TreeViewItemFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <PathGeometry x:Key="TreeArrow" Figures="M0,0 L0,6 L6,0 z"/>
+        <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Foreground" Value="{DynamicResource Window.Forground}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Background="Transparent" Height="16" Padding="5,5,5,5" Width="16">
+                            <Path x:Name="ExpandPath" Data="{StaticResource TreeArrow}" Fill="{TemplateBinding Foreground}" Stroke="{TemplateBinding Foreground}">
+                                <Path.RenderTransform>
+                                    <RotateTransform Angle="135" CenterY="3" CenterX="3"/>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="RenderTransform" TargetName="ExpandPath">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="180" CenterY="3" CenterX="3"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TreeViewItemStyle1" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Padding" Value="1,0,0,0"/>
+            <Setter Property="Foreground" Value="{DynamicResource Window.Forground}"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}"/>
+            <Setter Property="IsExpanded" Value="{Binding IsExpended, Mode=TwoWay}" />
+            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition MinWidth="19" Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <ToggleButton x:Name="Expander" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ExpandCollapseToggleStyle}"/>
+                            <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                <ContentPresenter x:Name="PART_Header" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="false">
+                                <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" TargetName="Bd" Value="#3FFFFFFF"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -33,7 +134,7 @@
             <TextBox VerticalContentAlignment="Center" Height="24" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" CaretBrush="White" Grid.Column="3" Text="{Binding ServerUserName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="120"  VerticalAlignment="Center"/>
             <TextBlock Margin="10,0" Grid.Column="4" Text="{local:ResMarker Password,:}"  VerticalAlignment="Center"/>
             <dc:PasswordControl Grid.Column="5" Password="{Binding ServerPassword,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Button Margin="20,0" Style="{DynamicResource ButtonStyle1}"  BorderBrush="Green"  BorderThickness="0,0,0,2" Command="{Binding ConnectCommand}" Content="{local:ResMarker Connect}"  Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Center" Height="24" MinWidth="60" />
+            <Button Margin="20,0" Style="{DynamicResource ButtonStyle1}"  BorderBrush="Green"  BorderThickness="0,0,0,2" Command="{Binding ConnectCommand}" Content="{Binding ConnectString,Mode=OneWay}"  Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Center" Height="24" MinWidth="60" />
         </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -44,9 +145,8 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TreeView x:Name="tv" Foreground="{DynamicResource Window.Forground}" ItemContainerStyle="{DynamicResource TreeViewItemStyle1}" ItemsSource="{Binding TagGroups}"  SelectedItemChanged="tv_SelectedItemChanged"  BorderThickness="0,1,1,0" Background="#0F000000" Grid.Row="1">
+            <TreeView x:Name="tv" Foreground="{DynamicResource Window.Forground}" ItemContainerStyle="{StaticResource TreeViewItemStyle1}" ItemsSource="{Binding TagGroups}"   SelectedItemChanged="tv_SelectedItemChanged" MouseLeftButtonUp="tv_MouseLeftButtonUp"  BorderThickness="0,1,1,0" Background="#0F000000" Grid.Row="1">
                 <TreeView.Resources>
-
                     <HierarchicalDataTemplate  DataType="{x:Type local:TagGroupViewModel}"  ItemsSource="{Binding Children}">
                         <StackPanel Orientation="Horizontal" Height="24">
                             <Image Focusable="False" Source="/Image/文件夹.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>

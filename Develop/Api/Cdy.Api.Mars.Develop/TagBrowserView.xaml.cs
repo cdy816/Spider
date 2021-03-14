@@ -27,6 +27,7 @@ namespace Cdy.Api.Mars
         private void TagBrowserView_Loaded(object sender, RoutedEventArgs e)
         {
             (this.DataContext as TagBrowserViewModel).Grid = dg;
+            (this.DataContext as TagBrowserViewModel).ConnectCommand.Execute(null);
         }
 
         private void tv_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -75,6 +76,14 @@ namespace Cdy.Api.Mars
                 {
                     cmd.Execute(null);
                 }
+            }
+        }
+
+        private void tv_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if(e.OriginalSource is Grid)
+            {
+                //(sender as TreeView).SelectedValue
             }
         }
     }

@@ -150,6 +150,9 @@
   <data name="DatabaseTagName" xml:space="preserve">
     <value>DatabaseTagName</value>
   </data>
+  <data name="DatabaseTagSelect" xml:space="preserve">
+    <value>DatabaseTagSelect</value>
+  </data>
   <data name="DatabaseToDevice" xml:space="preserve">
     <value>DatabaseToDevice</value>
   </data>

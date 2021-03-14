@@ -150,6 +150,9 @@
   <data name="DatabaseTagName" xml:space="preserve">
     <value>数据库变量</value>
   </data>
+  <data name="DatabaseTagSelect" xml:space="preserve">
+    <value>数据库变量选择</value>
+  </data>
   <data name="DatabaseToDevice" xml:space="preserve">
     <value>数据库到设备</value>
   </data>

@@ -45,10 +45,10 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// </summary>
         public override string TypeName => "SystemDriver";
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override ChannelType[] SupportChannelTypes => null;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public override ChannelType[] SupportChannelTypes => null;
 
         /// <summary>
         /// 
@@ -103,6 +103,15 @@ namespace Cdy.Spider.SystemDriver.Develop
         public override void CheckTagDeviceInfo(Tagbase tag)
         {
             tag.DeviceInfo = tag.Name;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override List<string> ListSupportChannels()
+        {
+            return new List<string>() { "MQTTClient", "MQTTServer" };
         }
 
         #endregion ...Methods...

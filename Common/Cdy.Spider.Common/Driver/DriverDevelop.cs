@@ -49,10 +49,10 @@ namespace Cdy.Spider
         /// </summary>
         public abstract string TypeName { get; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public abstract ChannelType[] SupportChannelTypes { get; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public abstract ChannelType[] SupportChannelTypes { get; }
 
         /// <summary>
         /// 
@@ -80,6 +80,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <returns></returns>
         protected abstract DriverData CreatNewData();
+
 
         /// <summary>
         /// 
@@ -129,6 +130,13 @@ namespace Cdy.Spider
         {
 
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract List<string> ListSupportChannels();
+        
 
         #endregion ...Methods...
 

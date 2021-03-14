@@ -106,6 +106,15 @@ namespace Cdy.Spider
             return string.Empty;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<string> ConfigMutiTags()
+        {
+            return null;
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Buffers;
 
+
 namespace Cdy.Api.Mars
 {
     /// <summary>
@@ -36,6 +37,12 @@ namespace Cdy.Api.Mars
         private Dictionary<string,List<string>> mAllDatabaseTagNames = new Dictionary<string,List<string>>();
 
         private Thread mScanThread;
+
+        SpiderDriver.ClientApi.RealDataBuffer rdb = new SpiderDriver.ClientApi.RealDataBuffer();
+
+        SpiderDriver.ClientApi.RealDataBuffer rdbh = new SpiderDriver.ClientApi.RealDataBuffer();
+
+        SpiderDriver.ClientApi.HisDataBuffer hdb = new SpiderDriver.ClientApi.HisDataBuffer();
 
         #endregion ...Variables...
 
@@ -116,11 +123,6 @@ namespace Cdy.Api.Mars
                     {
                         SendHisValue(tag.DatabaseName, (byte)tag.Type, values);
                     }
-                    else
-                    {
-                        //缓存下来
-                    }
-
                 });
             }
           
@@ -187,9 +189,12 @@ namespace Cdy.Api.Mars
                     if (mProxy.IsConnected)
                     {
                         mProxy.Login(mData.UserName, mData.Password);
-                        UpdateTagId();
-                        mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
-                        UpdateAllValue();
+                        if (mProxy.IsLogin)
+                        {
+                            UpdateTagId();
+                            mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
+                            UpdateAllValue();
+                        }
                     }
                     else
                     {
@@ -224,7 +229,7 @@ namespace Cdy.Api.Mars
             var res = mProxy.QueryTagId(vtags);
             if (res != null && res.Count > 0 && res.Count == mAllDatabaseTagNames.Count)
             {
-                for(int i=0;i<res.Count;i++)
+                for (int i = 0; i < res.Count; i++)
                 {
                     int id = res[i];
                     string stag = vtags[i];
@@ -234,14 +239,32 @@ namespace Cdy.Api.Mars
                         mIdNameMape.Add(id, stag);
                     }
 
-                    if(!mNameIdMape.ContainsKey(stag))
+                    if (!mNameIdMape.ContainsKey(stag))
                     {
                         mNameIdMape.Add(stag, id);
                     }
 
-                    if(mCallBackTags.ContainsKey(stag))
+                    if (mCallBackTags.ContainsKey(stag))
                     {
                         mCallBackTags[stag] = id;
+                    }
+                }
+            }
+
+            var driverRecordtags = mProxy.GetDriverRecordTypeTagIds().Select(e => mIdNameMape.ContainsKey(e) ? mIdNameMape[e] : string.Empty);
+
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+            foreach (var vv in manager.ListDevice())
+            {
+                foreach(var vvv in vv.ListTags())
+                {
+                    if(driverRecordtags.Contains(vvv.DatabaseName))
+                    {
+                        vvv.EnableHisBuffer(true);
+                    }
+                    else
+                    {
+                        vvv.EnableHisBuffer(false);
                     }
                 }
             }
@@ -253,23 +276,236 @@ namespace Cdy.Api.Mars
         private void UpdateAllValue()
         {
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+
             foreach (var vv in manager.ListDevice())
             {
-                Dictionary<int, Tuple<Cdy.Tag.TagType, object,byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
+                //Dictionary<int, Tuple<Cdy.Tag.TagType, object,byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
+                rdb.CheckAndResize(vv.ListTags().Count * 32);
+                rdb.Clear();
+
+                long size = 0;
+                vv.ListCacheHistoryTags().ForEach(e => size += e.HisValueBuffer.Length);
+                hdb.CheckAndResize(size);
+                hdb.Clear();
+                
+                
+                foreach(var vvv in vv.ListCacheHistoryTags())
+                {
+                    int id = mNameIdMape[vvv.DatabaseName];
+                    var tpu = (Tag.TagType)((int)vvv.Type);
+
+                    switch (vvv.Type)
+                    {
+
+                        case TagType.Double:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id,val.Time, Convert.ToDouble(val.Value), 0);
+                            }
+
+                            break;
+                        case TagType.Bool:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToByte(val.Value), 0);
+                            }
+
+                            break;
+                        case TagType.Byte:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToByte(val.Value), 0);
+                            }
+
+                            break;
+                        case TagType.DateTime:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToDateTime(val.Value), 0);
+                            }
+
+                            break;
+                        case TagType.Float:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToSingle(val.Value), 0);
+                            }
+
+                            break;
+                        case TagType.Int:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToInt32(val.Value), 0);
+                            }
+                            break;
+                        case TagType.Long:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToInt64(val.Value), 0);
+                            }
+                            break;
+                        case TagType.UInt:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToUInt32(val.Value), 0);
+                            }
+                            break;
+                        case TagType.ULong:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToUInt64(val.Value), 0);
+                            }
+                            break;
+                        case TagType.UShort:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToUInt16(val.Value), 0);
+                            }
+                            break;
+                        case TagType.Short:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, Convert.ToInt16(val.Value), 0);
+                            }
+                            break;
+                        case TagType.IntPoint:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time,(Tag.IntPointData)(val.Value), 0);
+                            }
+                            break;
+                        case TagType.UIntPoint:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, (Tag.UIntPointData)(val.Value), 0);
+                            }
+                            break;
+                        case TagType.IntPoint3:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, (Tag.IntPoint3Data)(val.Value), 0);
+                            }
+                            break;
+                        case TagType.UIntPoint3:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, (Tag.UIntPoint3Data)(val.Value), 0);
+                            }
+                            break;
+                        case TagType.LongPoint:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, (Tag.LongPointData)(val.Value), 0);
+                            }
+                            break;
+                        case TagType.ULongPoint:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, (Tag.ULongPointData)(val.Value), 0);
+                            }
+                            break;
+                        case TagType.LongPoint3:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, (Tag.LongPoint3Data)(val.Value), 0);
+                            }
+                            break;
+                        case TagType.ULongPoint3:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, (Tag.ULongPoint3Data)(val.Value), 0);
+                            }
+                            break;
+                    }
+
+                    mProxy.SetMutiTagHisValue(hdb,10000);
+                    
+                }
+
                 foreach (var vvv in vv.ListTags())
                 {
                     if (mNameIdMape.ContainsKey(vvv.DatabaseName))
                     {
                         int id = mNameIdMape[vvv.DatabaseName];
-                        var tpu = (Cdy.Tag.TagType)((int)vvv.Type);
+                        var tpu = (TagType)((int)vvv.Type);
 
-                        if (!values.ContainsKey(id))
+                        switch (vvv.Type)
                         {
-                            values.Add(id, new Tuple<Tag.TagType, object, byte>(tpu, vvv.Value, vvv.Quality));
+
+                            case TagType.Double:
+                                rdb.AppendValue(id, Convert.ToDouble(vvv.Value),vvv.Quality);
+                                break;
+                            case TagType.Bool:
+                                rdb.AppendValue(id, Convert.ToBoolean(vvv.Value), vvv.Quality);
+
+                                break;
+                            case TagType.Byte:
+                                rdb.AppendValue(id, Convert.ToByte(vvv.Value), vvv.Quality);
+                                break;
+                            case TagType.DateTime:
+                                rdb.AppendValue(id, Convert.ToDateTime(vvv.Value), vvv.Quality);
+
+                                break;
+                            case TagType.Float:
+                                rdb.AppendValue(id, Convert.ToSingle(vvv.Value), vvv.Quality);
+
+                                break;
+                            case TagType.Int:
+                                rdb.AppendValue(id, Convert.ToInt32(vvv.Value), vvv.Quality);
+                                break;
+                            case TagType.Long:
+                                rdb.AppendValue(id,Convert.ToInt64(vvv.Value), vvv.Quality);
+                                break;
+                            case TagType.UInt:
+                                rdb.AppendValue(id,Convert.ToUInt32(vvv.Value), vvv.Quality);
+                                break;
+                            case TagType.ULong:
+                                rdb.AppendValue(id, Convert.ToUInt64(vvv.Value), vvv.Quality);
+                                break;
+                            case TagType.UShort:
+                                rdb.AppendValue(id,Convert.ToUInt16(vvv.Value), vvv.Quality);
+                                break;
+                            case TagType.Short:
+                                rdb.AppendValue(id, Convert.ToInt16(vvv.Value), vvv.Quality);
+                                break;
+                            case TagType.IntPoint:
+                                var vpp = (Spider.IntPoint)vvv.Value;
+                                rdb.AppendValue(id,new Tag.IntPointData(vpp.X,vpp.Y), vvv.Quality);
+                                break;
+                            case TagType.UIntPoint:
+                                var uvpp = (Spider.UIntPoint)vvv.Value;
+                                rdb.AppendValue(id, new Tag.UIntPointData(uvpp.X, uvpp.Y), vvv.Quality);
+                                break;
+                            case TagType.IntPoint3:
+                                var vpp3 = (Spider.IntPoint3)vvv.Value;
+                                rdb.AppendValue(id, new Tag.IntPoint3Data(vpp3.X,vpp3.Y,vpp3.Z), vvv.Quality);
+                                break;
+                            case TagType.UIntPoint3:
+                                var uvpp3 = (Spider.IntPoint3)vvv.Value;
+                                rdb.AppendValue(id, new Tag.IntPoint3Data(uvpp3.X, uvpp3.Y, uvpp3.Z), vvv.Quality);
+                                break;
+                            case TagType.LongPoint:
+                                var lpp3 = (Spider.LongPoint)vvv.Value;
+                                rdb.AppendValue(id, new Tag.LongPointData(lpp3.X,lpp3.Y),vvv.Quality);
+                                break;
+                            case TagType.ULongPoint:
+                                var ulpp3 = (Spider.ULongPoint)vvv.Value;
+                                rdb.AppendValue(id, new Tag.ULongPointData(ulpp3.X,ulpp3.Y));
+                                break;
+                            case TagType.LongPoint3:
+                                var lp3 = (Spider.LongPoint3)vvv.Value;
+                                rdb.AppendValue(id, new Tag.LongPoint3Data(lp3.X,lp3.Y,lp3.Z));
+                                break;
+                            case TagType.ULongPoint3:
+                                var ulp3 = (Spider.ULongPoint3)vvv.Value;
+                                rdb.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z));
+                                break;
                         }
                     }
                 }
-                mProxy.SetTagValue(values);
+
+                if(rdb.ValueCount>0)
+                mProxy.SetTagValueAndQuality(rdb);
             }
         }
 
@@ -279,22 +515,175 @@ namespace Cdy.Api.Mars
         private void UpdateChangedTag()
         {
             Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
+
+            rdb.Clear();
+            rdbh.Clear();
+            
+            rdb.CheckAndResize(mChangedTags.Count);
+            rdbh.CheckAndResize(mChangedTags.Count);
+
             while (mChangedTags.Count>0)
             {
                 Tagbase stag;
                 lock(mChangedTags)
                 stag = mChangedTags.Dequeue();
-
+                
                 int id = mNameIdMape[stag.DatabaseName];
-                var tpu = (Cdy.Tag.TagType)((int)stag.Type);
+                var tpu = (TagType)((int)stag.Type);
 
-                if(!values.ContainsKey(id))
+                if (stag.IsBufferEnabled)
                 {
-                    values.Add(id, new Tuple<Tag.TagType, object, byte>(tpu, stag.Value,stag.Quality));
+                    switch (tpu)
+                    {
+                        case TagType.Double:
+                            rdbh.AppendValue(id, Convert.ToDouble(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Bool:
+                            rdbh.AppendValue(id, Convert.ToBoolean(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Byte:
+                            rdbh.AppendValue(id, Convert.ToByte(stag.Value), stag.Quality);
+                            break;
+                        case TagType.DateTime:
+                            rdbh.AppendValue(id, Convert.ToDateTime(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Float:
+                            rdbh.AppendValue(id, Convert.ToSingle(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Int:
+                            rdbh.AppendValue(id, Convert.ToInt32(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Long:
+                            rdbh.AppendValue(id, Convert.ToInt64(stag.Value), stag.Quality);
+                            break;
+                        case TagType.UInt:
+                            rdbh.AppendValue(id, Convert.ToUInt32(stag.Value), stag.Quality);
+                            break;
+                        case TagType.ULong:
+                            rdbh.AppendValue(id, Convert.ToUInt64(stag.Value), stag.Quality);
+                            break;
+                        case TagType.UShort:
+                            rdbh.AppendValue(id, Convert.ToUInt16(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Short:
+                            rdbh.AppendValue(id, Convert.ToInt16(stag.Value), stag.Quality);
+                            break;
+                        case TagType.IntPoint:
+                            var vpp = (Spider.IntPoint)stag.Value;
+                            rdbh.AppendValue(id, new Tag.IntPointData(vpp.X, vpp.Y), stag.Quality);
+                            break;
+                        case TagType.UIntPoint:
+                            var uvpp = (Spider.UIntPoint)stag.Value;
+                            rdbh.AppendValue(id, new Tag.UIntPointData(uvpp.X, uvpp.Y), stag.Quality);
+                            break;
+                        case TagType.IntPoint3:
+                            var vpp3 = (Spider.IntPoint3)stag.Value;
+                            rdbh.AppendValue(id, new Tag.IntPoint3Data(vpp3.X, vpp3.Y, vpp3.Z), stag.Quality);
+                            break;
+                        case TagType.UIntPoint3:
+                            var uvpp3 = (Spider.IntPoint3)stag.Value;
+                            rdbh.AppendValue(id, new Tag.IntPoint3Data(uvpp3.X, uvpp3.Y, uvpp3.Z), stag.Quality);
+                            break;
+                        case TagType.LongPoint:
+                            var lpp3 = (Spider.LongPoint)stag.Value;
+                            rdbh.AppendValue(id, new Tag.LongPointData(lpp3.X, lpp3.Y), stag.Quality);
+                            break;
+                        case TagType.ULongPoint:
+                            var ulpp3 = (Spider.ULongPoint)stag.Value;
+                            rdbh.AppendValue(id, new Tag.ULongPointData(ulpp3.X, ulpp3.Y));
+                            break;
+                        case TagType.LongPoint3:
+                            var lp3 = (Spider.LongPoint3)stag.Value;
+                            rdbh.AppendValue(id, new Tag.LongPoint3Data(lp3.X, lp3.Y, lp3.Z));
+                            break;
+                        case TagType.ULongPoint3:
+                            var ulp3 = (Spider.ULongPoint3)stag.Value;
+                            rdbh.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z));
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (tpu)
+                    {
+
+                        case TagType.Double:
+                            rdb.AppendValue(id, Convert.ToDouble(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Bool:
+                            rdb.AppendValue(id, Convert.ToBoolean(stag.Value), stag.Quality);
+
+                            break;
+                        case TagType.Byte:
+                            rdb.AppendValue(id, Convert.ToByte(stag.Value), stag.Quality);
+
+                            break;
+                        case TagType.DateTime:
+                            rdb.AppendValue(id, Convert.ToDateTime(stag.Value), stag.Quality);
+
+                            break;
+                        case TagType.Float:
+                            rdb.AppendValue(id, Convert.ToSingle(stag.Value), stag.Quality);
+
+                            break;
+                        case TagType.Int:
+                            rdb.AppendValue(id, Convert.ToInt32(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Long:
+                            rdb.AppendValue(id, Convert.ToInt64(stag.Value), stag.Quality);
+                            break;
+                        case TagType.UInt:
+                            rdb.AppendValue(id, Convert.ToUInt32(stag.Value), stag.Quality);
+                            break;
+                        case TagType.ULong:
+                            rdb.AppendValue(id, Convert.ToUInt64(stag.Value), stag.Quality);
+                            break;
+                        case TagType.UShort:
+                            rdb.AppendValue(id, Convert.ToUInt16(stag.Value), stag.Quality);
+                            break;
+                        case TagType.Short:
+                            rdb.AppendValue(id, Convert.ToInt16(stag.Value), stag.Quality);
+                            break;
+                        case TagType.IntPoint:
+                            var vpp = (Spider.IntPoint)stag.Value;
+                            rdb.AppendValue(id, new Tag.IntPointData(vpp.X, vpp.Y), stag.Quality);
+                            break;
+                        case TagType.UIntPoint:
+                            var uvpp = (Spider.UIntPoint)stag.Value;
+                            rdb.AppendValue(id, new Tag.UIntPointData(uvpp.X, uvpp.Y), stag.Quality);
+                            break;
+                        case TagType.IntPoint3:
+                            var vpp3 = (Spider.IntPoint3)stag.Value;
+                            rdb.AppendValue(id, new Tag.IntPoint3Data(vpp3.X, vpp3.Y, vpp3.Z), stag.Quality);
+                            break;
+                        case TagType.UIntPoint3:
+                            var uvpp3 = (Spider.IntPoint3)stag.Value;
+                            rdb.AppendValue(id, new Tag.IntPoint3Data(uvpp3.X, uvpp3.Y, uvpp3.Z), stag.Quality);
+                            break;
+                        case TagType.LongPoint:
+                            var lpp3 = (Spider.LongPoint)stag.Value;
+                            rdb.AppendValue(id, new Tag.LongPointData(lpp3.X, lpp3.Y), stag.Quality);
+                            break;
+                        case TagType.ULongPoint:
+                            var ulpp3 = (Spider.ULongPoint)stag.Value;
+                            rdb.AppendValue(id, new Tag.ULongPointData(ulpp3.X, ulpp3.Y));
+                            break;
+                        case TagType.LongPoint3:
+                            var lp3 = (Spider.LongPoint3)stag.Value;
+                            rdb.AppendValue(id, new Tag.LongPoint3Data(lp3.X, lp3.Y, lp3.Z));
+                            break;
+                        case TagType.ULongPoint3:
+                            var ulp3 = (Spider.ULongPoint3)stag.Value;
+                            rdb.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z));
+                            break;
+                    }
                 }
             }
-            if(values.Count>0)
-            mProxy.SetTagValue(values);
+            if(rdb.ValueCount>0)
+            mProxy.SetTagValueAndQuality(rdb);
+
+            if (rdbh.ValueCount > 0)
+                mProxy.SetTagRealAndHisValue(rdbh);
         }
 
         /// <summary>

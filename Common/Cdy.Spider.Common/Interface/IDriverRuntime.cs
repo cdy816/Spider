@@ -73,18 +73,32 @@ namespace Cdy.Spider
         /// </summary>
         void Stop();
 
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="deviceInfo"></param>
+        ///// <param name="value"></param>
+        //void WriteValue(string deviceInfo, byte[] value,byte valueType);
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="deviceInfo"></param>
         /// <param name="value"></param>
-        void WriteValue(string deviceInfo, byte[] value,byte valueType);
+        /// <param name="valueType"></param>
+        void WriteValue(string deviceInfo, object value,byte valueType);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="values"></param>
-        void WriteValue(Dictionary<string,KeyValuePair<byte[],byte>> values);
+        void WriteValue(Dictionary<string, KeyValuePair<object, byte>> values);
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="values"></param>
+        //void WriteValue(Dictionary<string,KeyValuePair<byte[],byte>> values);
 
         /// <summary>
         /// 

@@ -46,6 +46,7 @@ namespace InSpiderDevelopWindow.ViewModel
         private ICommand mImportCommand;
         private ICommand mExportCommand;
         private ICommand mShareChannelCommand;
+        private ICommand mConfigDatabaseCommand;
 
         private ICommand mCopyCommand;
         private ICommand mCellCopyCommand;
@@ -125,6 +126,36 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ConfigDatabaseCommand
+        {
+            get
+            {
+                if(mConfigDatabaseCommand==null)
+                {
+                    mConfigDatabaseCommand = new RelayCommand(() => {
+                        var vtags = mMachineModel.Api.Api.ConfigMutiTags();
+                        if (vtags != null)
+                        {
+                            int i = 0;
+                            foreach (var vv in vtags)
+                            {
+                                if (i < this.grid.SelectedItems.Count)
+                                {
+                                    (this.grid.SelectedItems[i] as TagViewModel).DatabaseName = vv;
+                                }
+                                i++;
+                            }
+                        }
+                    },()=> { return mMachineModel != null && mMachineModel.Api != null; });
+                }
+                return mConfigDatabaseCommand;
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -854,24 +885,26 @@ namespace InSpiderDevelopWindow.ViewModel
                 ChannelView.Refresh();
                 return;
             }
-            if (driver.SupportChannelTypes != null)
+            var ss = driver.ListSupportChannels();
+            if (ss!=null)
             {
                 var vlist = ServiceLocator.Locator.Resolve<ICommChannelFactory>().ListDevelopInstance();
                 if(vlist!=null && vlist.Count>0)
                 {
                     foreach(var vv in vlist)
                     {
-                        if(driver.SupportChannelTypes.Contains(vv.Data.Type))
+                        if(ss.Contains(vv.TypeName))
                         {
-                            mSupportChannels.Add(vv.Data.Type.ToString());
+                            mSupportChannels.Add(vv.TypeName);
                         }
                     }
                 }
             }
-            else
-            {
-                mSupportChannels.AddRange(mChannelList);
-            }
+            //else
+            //{
+
+            //    mSupportChannels.AddRange(mChannelList);
+            //}
 
             ChannelView.Refresh();
 
@@ -1452,6 +1485,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 vtag.Name = GetNewName();
                 vtag.IsNew = true;
                 vtag.Document = mModel.Data;
+                vtag.Machine = this.MachineModel;
 
                 mDriver?.CheckTagDeviceInfo(vtag.Model);
 
@@ -1550,6 +1584,9 @@ namespace InSpiderDevelopWindow.ViewModel
 
                     vtag.Name = GetNewName(vv.Name);
                     vtag.IsNew = true;
+                    vtag.Machine = this.MachineModel;
+                    vtag.Document = mModel.Data;
+
                     if (mModel.Data.AppendTag(vtag.Model))
                     {
                         mTags.Add(vtag);
@@ -1652,9 +1689,13 @@ namespace InSpiderDevelopWindow.ViewModel
                     this.mRegistorConfigModel = driver?.RegistorConfig();
                 }
                 mRegistorConfigModel?.FreshRegistor(DeviceInfo);
-                mRegistorConfigModel.UpdateRegistorCallBack = (val) => {
-                    DeviceInfo = val;
-                };
+                if (mRegistorConfigModel != null && mRegistorConfigModel.UpdateRegistorCallBack==null)
+                {
+                    mRegistorConfigModel.UpdateRegistorCallBack = (val) =>
+                    {
+                        DeviceInfo = val;
+                    };
+                }
                 return mRegistorConfigModel;
             }
         }
@@ -1758,7 +1799,7 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             get
             {
-                return mModel.DatabaseName;
+                return mModel != null ? mModel.DatabaseName : string.Empty;
             }
             set
             {
@@ -1872,7 +1913,7 @@ namespace InSpiderDevelopWindow.ViewModel
                         {
                             DatabaseName = stag;
                         }
-                    });
+                    },()=> { return Machine != null && Machine.Api != null; });
                 }
                 return mDatabaseBrowserCommand;
             }
@@ -2064,7 +2105,7 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             if (ntag != null)
             {
-                return new TagViewModel() { Model = ntag };
+                return new TagViewModel() { Model = ntag,Machine=this.Machine };
             }
             else
             {

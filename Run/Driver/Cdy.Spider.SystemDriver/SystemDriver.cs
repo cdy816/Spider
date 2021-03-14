@@ -419,19 +419,41 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="deviceInfo"></param>
         /// <param name="value"></param>
-        public override void WriteValue(string deviceInfo, byte[] value,byte type)
+        /// <param name="valueType"></param>
+        public override void WriteValue(string deviceInfo, object value, byte valueType)
         {
+            var val = ConvertToBytes(value, valueType);
+
             string sname = this.Device.Name;
-            
+
             if (!string.IsNullOrEmpty(deviceInfo))
                 sname += ("/" + deviceInfo);
 
-            var bvals = ArrayPool<byte>.Shared.Rent(value.Length + 1);
-            bvals[0] = type;
-            value.CopyTo(bvals, 1);
+            var bvals = ArrayPool<byte>.Shared.Rent(val.Length + 1);
+            bvals[0] = valueType;
+            val.CopyTo(bvals, 1);
             SendData(sname, bvals, 0, bvals.Length);
             ArrayPool<byte>.Shared.Return(bvals);
         }
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="deviceInfo"></param>
+        ///// <param name="value"></param>
+        //public override void WriteValue(string deviceInfo, byte[] value,byte type)
+        //{
+        //    string sname = this.Device.Name;
+            
+        //    if (!string.IsNullOrEmpty(deviceInfo))
+        //        sname += ("/" + deviceInfo);
+
+        //    var bvals = ArrayPool<byte>.Shared.Rent(value.Length + 1);
+        //    bvals[0] = type;
+        //    value.CopyTo(bvals, 1);
+        //    SendData(sname, bvals, 0, bvals.Length);
+        //    ArrayPool<byte>.Shared.Return(bvals);
+        //}
 
         /// <summary>
         /// 

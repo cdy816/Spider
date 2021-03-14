@@ -94,6 +94,20 @@ namespace Cdy.Api.Mars
             return string.Empty;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<string> ConfigMutiTags()
+        {
+            TagBrowserViewModel tmm = new TagBrowserViewModel();
+            if (tmm.ShowDialog().Value)
+            {
+                return tmm.GetSelectTags();
+            }
+            return base.ConfigMutiTags();
+        }
+
 
         #endregion ...Methods...
 

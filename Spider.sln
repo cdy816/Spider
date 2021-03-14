@@ -47,6 +47,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.SystemDriver.Dev
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.MQTTServer.Develop", "Develop\Drivers\Cdy.Spider.MQTTServer.Develop\Cdy.Spider.MQTTServer.Develop.csproj", "{95AF5E21-8F4A-49A0-83A1-56A9F58B3018}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.OpcDriver", "Run\Driver\Cdy.Spider.OpcDriver\Cdy.Spider.OpcDriver.csproj", "{6993576C-D2A6-4A02-BAB6-A48573427039}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.OpcDriver.Develop", "Develop\Drivers\Cdy.Spider.OpcDriver.Develop\Cdy.Spider.OpcDriver.Develop.csproj", "{E674CF76-5D70-4271-B408-FC3BDD1B91C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.OpcUA.Develop", "Develop\Drivers\Cdy.Spider.OpcUA.Develop\Cdy.Spider.OpcUA.Develop.csproj", "{6BA81678-B872-46E0-BABC-10CF749C1F97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +119,18 @@ Global
 		{95AF5E21-8F4A-49A0-83A1-56A9F58B3018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95AF5E21-8F4A-49A0-83A1-56A9F58B3018}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95AF5E21-8F4A-49A0-83A1-56A9F58B3018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6993576C-D2A6-4A02-BAB6-A48573427039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6993576C-D2A6-4A02-BAB6-A48573427039}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6993576C-D2A6-4A02-BAB6-A48573427039}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6993576C-D2A6-4A02-BAB6-A48573427039}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E674CF76-5D70-4271-B408-FC3BDD1B91C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E674CF76-5D70-4271-B408-FC3BDD1B91C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E674CF76-5D70-4271-B408-FC3BDD1B91C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E674CF76-5D70-4271-B408-FC3BDD1B91C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA81678-B872-46E0-BABC-10CF749C1F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA81678-B872-46E0-BABC-10CF749C1F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA81678-B872-46E0-BABC-10CF749C1F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA81678-B872-46E0-BABC-10CF749C1F97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +155,9 @@ Global
 		{4B2D53A1-5EA6-436E-A1BF-D1664C427287} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
 		{917BF9E3-7188-4179-B321-E9D976864C7C} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
 		{95AF5E21-8F4A-49A0-83A1-56A9F58B3018} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
+		{6993576C-D2A6-4A02-BAB6-A48573427039} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
+		{E674CF76-5D70-4271-B408-FC3BDD1B91C6} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
+		{6BA81678-B872-46E0-BABC-10CF749C1F97} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}

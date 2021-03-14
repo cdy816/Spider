@@ -56,6 +56,16 @@ namespace Cdy.Spider
         /// </summary>
         public override object Value { get => mValue; set => mValue = (LongPoint)(value); }
 
+        public override IEnumerable<HisValue> ReadHisValues()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AllocDataBuffer(int valueCount)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion ...Properties...
 
         #region ... Methods    ...

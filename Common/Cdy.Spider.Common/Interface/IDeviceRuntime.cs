@@ -102,6 +102,13 @@ namespace Cdy.Spider
         /// <returns></returns>
         List<Tagbase> ListTags();
 
+
+        /// <summary>
+        /// 列出所有缓冲历史数据的变量
+        /// </summary>
+        /// <returns></returns>
+        List<Tagbase> ListCacheHistoryTags();
+
         /// <summary>
         /// 
         /// </summary>

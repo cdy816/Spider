@@ -41,7 +41,42 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public override object Value { get => mValue; set => mValue = Convert.ToString(value); }
+        public override object Value { get => mValue; set { mValue = Convert.ToString(value); AppendHisValue(mValue); } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        private void AppendHisValue(string value)
+        {
+            if (mIsBufferEnabled)
+            {
+                this.HisValueBuffer.AppendValue(DateTime.UtcNow, value);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override IEnumerable<HisValue> ReadHisValues()
+        {
+            DateTime time;
+            string value;
+            while (this.HisValueBuffer.ReadValue(out time, out value))
+            {
+                yield return new HisValue() { Time = time, Value = value };
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="valueCount"></param>
+        protected override void AllocDataBuffer(int valueCount)
+        {
+            this.HisValueBuffer = new HisDataMemory(8+255, valueCount);
+        }
 
         #endregion ...Properties...
 

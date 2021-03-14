@@ -1,0 +1,21 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Cdy.Spider.OpcDriver.Develop">
+    
+    <DataTemplate DataType="{x:Type local:OpcDriverDevelopViewModel}">
+        <local:OpcDriverDevelopView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:OpcDriverConfigModel}">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox  Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Text="{Binding Registor,Mode=TwoWay,UpdateSourceTrigger=LostFocus}"  VerticalAlignment="Center" Margin="5,0"/>
+            <Button Style="{DynamicResource ButtonStyle1}" Foreground="{DynamicResource Window.Forground}" BorderBrush="{DynamicResource Window.Forground}" BorderThickness="0"  Background="#1FFFFFFF" Content="..." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Width="26" Command="{Binding RegistorBrowsingCommand}" />
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

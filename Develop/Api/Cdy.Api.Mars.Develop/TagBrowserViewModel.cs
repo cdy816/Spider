@@ -54,11 +54,11 @@ namespace Cdy.Api.Mars
 
         private ICommand mConnectCommand;
 
-        private string mServerAddress="127.0.0.1:9000";
+        private static string mServerAddress="127.0.0.1:9000";
 
-        private string mServerPassword="Admin";
+        private static string mServerPassword="Admin";
 
-        private string mServerUserName="Admin";
+        private static string mServerUserName="Admin";
 
         private bool mIsConnected;
 
@@ -256,12 +256,35 @@ namespace Cdy.Api.Mars
                 if(mConnectCommand==null)
                 {
                     mConnectCommand = new RelayCommand(() => {
-                        Load();
-                    },()=> { return !IsConnected; });
+                        if (!IsConnected)
+                        {
+                            Load();
+                        }
+                        else
+                        {
+                            UnLoad();
+                        }
+                    });
                 }
                 return mConnectCommand;
             }
         }
+
+        public string ConnectString
+        {
+            get
+            {
+                if(IsConnected)
+                {
+                    return Res.Get("DisConnect");
+                }
+                else
+                {
+                    return Res.Get("Connect");
+                }
+            }
+        }
+
 
 
         /// <summary>
@@ -282,6 +305,8 @@ namespace Cdy.Api.Mars
                 }
             }
         }
+
+       
 
 
         /// <summary>
@@ -337,7 +362,9 @@ namespace Cdy.Api.Mars
             {
                 if (mCurrentGroup != value)
                 {
+                    mIsBusy = false;
                     mCurrentGroup = value;
+                    value.IsSelected = true;
                     NewQueryTags();
                     OnPropertyChanged("CurrentGroup");
                 }
@@ -356,7 +383,7 @@ namespace Cdy.Api.Mars
         {
             get
             {
-                return CurrentSelectTag != null ? CurrentSelectTag.FullName : string.Empty;
+                return CurrentSelectTag != null ? CurrentSelectTag.FullName.Replace(CurrentDatabase+".","") : string.Empty;
             }
         }
 
@@ -584,10 +611,10 @@ namespace Cdy.Api.Mars
                 {
                     IsConnected = true;
                     Databases = mHelper.QueryDatabase().Select(e => e.Name).ToList();
-                    //if(Databases.Count>0)
-                    //{
-                    //    CurrentDatabase = Databases[0];
-                    //}
+                    if (Databases.Count > 0)
+                    {
+                        CurrentDatabase = Databases[0];
+                    }
                 }
                 else
                 {
@@ -595,12 +622,26 @@ namespace Cdy.Api.Mars
                     CommandManager.InvalidateRequerySuggested();
                     MessageBox.Show("Logging server failed!");
                 }
+                OnPropertyChanged("ConnectString");
             }
             catch(Exception ex)
             {
                 IsConnected = false;
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void UnLoad()
+        {
+            mHelper.Logout();
+            CurrentDatabase = string.Empty;
+            Databases = new List<string>();
+            IsConnected = false;
+            OnPropertyChanged("ConnectString");
+            CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>
@@ -619,17 +660,31 @@ namespace Cdy.Api.Mars
             Application.Current?.Dispatcher.Invoke(() => {
                 this.mTagGroups.Clear();
             });
-
-            var vv = mHelper.GetTagGroup(CurrentDatabase);
-            if (vv != null)
+            
+            if (!string.IsNullOrEmpty(CurrentDatabase))
             {
-                foreach (var vvv in vv.Where(e => string.IsNullOrEmpty(e.Parent)))
+                TagGroupViewModel root=null;
+                Application.Current?.Dispatcher.Invoke(() =>
                 {
-                    Application.Current?.Dispatcher.Invoke(() => {
-                        TagGroupViewModel groupViewModel = new TagGroupViewModel() { Name = vvv.Name, Database = CurrentDatabase };
-                        mTagGroups.Add(groupViewModel);
-                        groupViewModel.InitData(vv);
-                    });
+                    root = new TagGroupViewModel() { Database = CurrentDatabase, Name = CurrentDatabase,IsExpended=true,IsSelected=true };
+                    mTagGroups.Add(root);
+
+                    CurrentGroup = root;
+                });
+                
+
+                var vv = mHelper.GetTagGroup(CurrentDatabase);
+                if (vv != null)
+                {
+                    foreach (var vvv in vv.Where(e => string.IsNullOrEmpty(e.Parent)))
+                    {
+                        Application.Current?.Dispatcher.Invoke(() =>
+                        {
+                            TagGroupViewModel groupViewModel = new TagGroupViewModel() { Name = vvv.Name, Database = CurrentDatabase,Parent=root };
+                            root.Children.Add(groupViewModel);
+                            groupViewModel.InitData(vv);
+                        });
+                    }
                 }
             }
         }
@@ -694,7 +749,14 @@ namespace Cdy.Api.Mars
                         mTags.Clear();
                     }));
                     mCurrentPageIndex = 0;
-                    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", mCurrentPageIndex,out mLastPageCount, mFilters);
+
+                    string group = CurrentGroup != null ? CurrentGroup.FullName.Replace(CurrentDatabase + ".", "") : "";
+                    if(group == CurrentDatabase)
+                    {
+                        group = "";
+                    }
+
+                    var tags = mHelper.GetTagByGroup(CurrentDatabase, group, mCurrentPageIndex,out mLastPageCount, mFilters);
                     if (tags != null)
                     {
                         foreach (var vv in tags)
@@ -759,6 +821,19 @@ namespace Cdy.Api.Mars
             mIsBusy = false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> GetSelectTags()
+        {
+            List<string> re = new List<string>();
+            foreach(TagViewModel vv in Grid.SelectedItems)
+            {
+                re.Add(vv.FullName.Replace(this.CurrentDatabase+".",""));
+            }
+            return re;
+        }
 
         /// <summary>
         /// 
