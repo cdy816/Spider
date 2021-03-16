@@ -117,14 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessLevel" xml:space="preserve">
+    <value>AccessLevel</value>
+  </data>
   <data name="Active" xml:space="preserve">
     <value>Active</value>
+  </data>
+  <data name="BrowseName" xml:space="preserve">
+    <value>BrowseName</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>DataType</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DisConnect" xml:space="preserve">
+    <value>DisConnect</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>DisplayName</value>
+  </data>
+  <data name="NodeId" xml:space="preserve">
+    <value>NodeId</value>
   </data>
   <data name="Passivity" xml:space="preserve">
     <value>Passivity</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>ScanCircle</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>UserName</value>
   </data>
   <data name="WorkModel" xml:space="preserve">
     <value>WorkModel</value>

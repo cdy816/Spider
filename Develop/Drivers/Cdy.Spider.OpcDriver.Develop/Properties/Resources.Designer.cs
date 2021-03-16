@@ -61,11 +61,83 @@ namespace Cdy.Spider.OpcDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 AccessLevel 的本地化字符串。
+        /// </summary>
+        internal static string AccessLevel {
+            get {
+                return ResourceManager.GetString("AccessLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Active 的本地化字符串。
         /// </summary>
         internal static string Active {
             get {
                 return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 BrowseName 的本地化字符串。
+        /// </summary>
+        internal static string BrowseName {
+            get {
+                return ResourceManager.GetString("BrowseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Connect 的本地化字符串。
+        /// </summary>
+        internal static string Connect {
+            get {
+                return ResourceManager.GetString("Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DataType 的本地化字符串。
+        /// </summary>
+        internal static string DataType {
+            get {
+                return ResourceManager.GetString("DataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Description 的本地化字符串。
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DisConnect 的本地化字符串。
+        /// </summary>
+        internal static string DisConnect {
+            get {
+                return ResourceManager.GetString("DisConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 DisplayName 的本地化字符串。
+        /// </summary>
+        internal static string DisplayName {
+            get {
+                return ResourceManager.GetString("DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 NodeId 的本地化字符串。
+        /// </summary>
+        internal static string NodeId {
+            get {
+                return ResourceManager.GetString("NodeId", resourceCulture);
             }
         }
         
@@ -79,11 +151,47 @@ namespace Cdy.Spider.OpcDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Password 的本地化字符串。
+        /// </summary>
+        internal static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ScanCircle 的本地化字符串。
         /// </summary>
         internal static string ScanCircle {
             get {
                 return ResourceManager.GetString("ScanCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Search 的本地化字符串。
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Server 的本地化字符串。
+        /// </summary>
+        internal static string Server {
+            get {
+                return ResourceManager.GetString("Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UserName 的本地化字符串。
+        /// </summary>
+        internal static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
         

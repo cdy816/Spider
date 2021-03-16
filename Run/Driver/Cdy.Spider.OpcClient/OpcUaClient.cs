@@ -307,7 +307,7 @@ namespace Cdy.Spider.OpcClient
         /// <summary>
         /// a name of application name show on server
         /// </summary>
-        public string OpcUaName { get; set; } = "Opc Ua Helper";
+        public string OpcUaName { get; set; } = "SpiderOpcUaClient";
 
         /// <summary>
         /// Whether to use security when connecting.

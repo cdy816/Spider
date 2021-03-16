@@ -40,8 +40,12 @@ namespace Cdy.Spider.OpcDriver.Develop
             {
                 if(mRegistorBrowsingCommand == null)
                 {
-                    mRegistorBrowsingCommand = new RelayCommand(() => { 
-                    
+                    mRegistorBrowsingCommand = new RelayCommand(() => {
+                        OpcBrowserViewModel opv = new OpcBrowserViewModel();
+                        if(opv.ShowDialog().Value)
+                        {
+                            Registor = opv.SelectVariable.NodeId;
+                        }
                     });
                 }
                 return mRegistorBrowsingCommand;

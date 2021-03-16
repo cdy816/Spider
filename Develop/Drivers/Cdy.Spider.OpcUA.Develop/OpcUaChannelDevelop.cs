@@ -57,7 +57,7 @@ namespace Cdy.Spider.OpcUA.Develop
 
         public override object Config()
         {
-            throw new NotImplementedException();
+            return new OpcUaChannelConfigViewModel(){ Model = mData};
         }
 
 

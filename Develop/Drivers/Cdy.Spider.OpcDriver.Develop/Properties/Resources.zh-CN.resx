@@ -117,14 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccessLevel" xml:space="preserve">
+    <value>访问类型</value>
+  </data>
   <data name="Active" xml:space="preserve">
     <value>主动</value>
+  </data>
+  <data name="BrowseName" xml:space="preserve">
+    <value>浏览名称</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>连接</value>
+  </data>
+  <data name="DataType" xml:space="preserve">
+    <value>数据类型</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="DisConnect" xml:space="preserve">
+    <value>断开</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>显示名称</value>
+  </data>
+  <data name="NodeId" xml:space="preserve">
+    <value>Id</value>
   </data>
   <data name="Passivity" xml:space="preserve">
     <value>被动</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>扫描周期</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>服务器</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>用户名</value>
   </data>
   <data name="WorkModel" xml:space="preserve">
     <value>工作模式</value>

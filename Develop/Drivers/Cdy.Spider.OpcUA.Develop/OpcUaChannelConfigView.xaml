@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
-            <RowDefinition Height="36"/>
+            <RowDefinition Height="0"/>
             <RowDefinition Height="36"/>
             <RowDefinition Height="36"/>
             <RowDefinition Height="36"/>
@@ -22,8 +22,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker Server,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
-
-        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="1" Content="{local:ResMarker Port,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
 
         <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="2" Content="{local:ResMarker UserName,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
 
@@ -33,7 +31,6 @@
 
 
         <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ServerIp,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266"/>
-        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding Port,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="1"/>
         <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding UserName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="2"/>
         <cc:PasswordControl  Password="{Binding Password,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Width="306" Grid.Row="3" HorizontalAlignment="Left" Margin="10,0,0,0"/>
 
