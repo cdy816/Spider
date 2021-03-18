@@ -37,10 +37,21 @@ namespace Cdy.Spider
         /// </summary>
         public Action<string> UpdateRegistorCallBack { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public IDeviceDevelopService Service { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<string> Config();
+
         /// <summary>
         /// 
         /// </summary>

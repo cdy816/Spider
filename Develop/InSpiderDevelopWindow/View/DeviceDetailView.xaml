@@ -25,10 +25,11 @@
             <MenuItem Header="{local:ResMarker Export}" Command="{Binding ExportCommand}" />
             <Separator/>
             <MenuItem Header="{local:ResMarker DatabaseTagSelect}" Command="{Binding ConfigDatabaseCommand}" />
+            <MenuItem Header="{local:ResMarker RegistorConfig}" Command="{Binding ConfigDriverRegisorCommand}" />
         </ContextMenu>
     </UserControl.Resources>
     <Grid>
-        <TabControl  ItemContainerStyle="{DynamicResource TabControlItemContainerStyle1}"  Style="{DynamicResource TabControlStyle1}" Background="Transparent" BorderThickness="0,1,0,0">
+        <TabControl SelectedIndex="{Binding SelectIndex,Mode=TwoWay}"  ItemContainerStyle="{DynamicResource TabControlItemContainerStyle1}"  Style="{DynamicResource TabControlStyle1}" Background="Transparent" BorderThickness="0,1,0,0">
             <TabItem Header="{local:ResMarker Communication}">
                 <Grid  Background="#0FE5E5E5">
                     <Grid.RowDefinitions>

@@ -30,7 +30,7 @@ namespace InSpiderDevelopWindow.ViewModel
     /// <summary>
     /// 
     /// </summary>
-    public class DeviceDetailViewModel:ViewModelBase, IModeSwitch
+    public class DeviceDetailViewModel:ViewModelBase, IModeSwitch, IDeviceDevelopService
     {
 
         #region ... Variables  ...
@@ -47,6 +47,7 @@ namespace InSpiderDevelopWindow.ViewModel
         private ICommand mExportCommand;
         private ICommand mShareChannelCommand;
         private ICommand mConfigDatabaseCommand;
+        private ICommand mConfigDriverRegisorCommand;
 
         private ICommand mCopyCommand;
         private ICommand mCellCopyCommand;
@@ -104,6 +105,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private IDriverDevelop mDriver;
 
+        private int mSelectIndex=1;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -126,6 +129,67 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ConfigDriverRegisorCommand
+        {
+            get
+            {
+                if(mConfigDriverRegisorCommand!=null)
+                {
+                    mConfigDriverRegisorCommand = new RelayCommand(() => {
+                        try
+                        {
+                            var rc = (Model as DeviceDevelop).Driver.RegistorConfig();
+                            rc.Service = this;
+
+                            var vtags = rc.Config();
+                            if (vtags != null)
+                            {
+                                int i = 0;
+                                foreach (var vv in vtags)
+                                {
+                                    if (i < this.grid.SelectedItems.Count)
+                                    {
+                                        (this.grid.SelectedItems[i] as TagViewModel).DeviceInfo = vv;
+                                    }
+                                    i++;
+                                }
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+
+                    });
+                }
+                return mConfigDriverRegisorCommand;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int SelectIndex
+        {
+            get
+            {
+                return mSelectIndex;
+            }
+            set
+            {
+                if (mSelectIndex != value)
+                {
+                    mSelectIndex = value;
+                    OnPropertyChanged("SelectIndex");
+                }
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -1051,7 +1115,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     {
                         Application.Current?.Dispatcher.Invoke(new Action(() =>
                         {
-                            mTags.Add(new TagViewModel() { Model = vv, Document = mModel.Data,Machine=this.MachineModel });
+                            mTags.Add(new TagViewModel() { Model = vv, Document = mModel.Data,Machine=this.MachineModel,Parent=this });
                         }));
                     }
                 }
@@ -1169,7 +1233,7 @@ namespace InSpiderDevelopWindow.ViewModel
 
                         Application.Current?.Dispatcher.Invoke(new Action(() =>
                         {
-                            mTags.Add(new TagViewModel() { Model = vv,Document=mModel.Data, Machine = this.MachineModel });
+                            mTags.Add(new TagViewModel() { Model = vv,Document=mModel.Data, Machine = this.MachineModel, Parent = this });
                         }));
                     }
                 }
@@ -1188,7 +1252,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 Task.Run(() => {
                     ServiceLocator.Locator.Resolve<IProcessNotify>().BeginShowNotify();
                     int count = 0;
-                    foreach (var vv in mModel.Data.Tags.Select(e => new TagViewModel() { Model = e.Value }))
+                    foreach (var vv in mModel.Data.Tags.Select(e => new TagViewModel() { Model = e.Value}))
                     {
                         stream.WriteLine(vv.SaveToCSVString());
 
@@ -1222,6 +1286,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     {
                         TagViewModel tm = TagViewModel.LoadFromCSVString(sval);
                         tm.Document = this.mModel.Data;
+                        tm.Parent = this;
                         ltmp.Add(tm);
                     }
                 }
@@ -1486,6 +1551,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 vtag.IsNew = true;
                 vtag.Document = mModel.Data;
                 vtag.Machine = this.MachineModel;
+                vtag.Parent = this;
 
                 mDriver?.CheckTagDeviceInfo(vtag.Model);
 
@@ -1500,7 +1566,7 @@ namespace InSpiderDevelopWindow.ViewModel
             else
             {
                 var tag = new DoubleTag() { Name = GetNewName() };
-                TagViewModel vtag = new TagViewModel() { Model = tag, Document = mModel.Data, Machine = this.MachineModel };
+                TagViewModel vtag = new TagViewModel() { Model = tag, Document = mModel.Data, Machine = this.MachineModel, Parent = this };
                 mDriver?.CheckTagDeviceInfo(vtag.Model);
                 if (mModel.Data.AppendTag(vtag.Model))
                 {
@@ -1586,6 +1652,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     vtag.IsNew = true;
                     vtag.Machine = this.MachineModel;
                     vtag.Document = mModel.Data;
+                    vtag.Parent = this;
 
                     if (mModel.Data.AppendTag(vtag.Model))
                     {
@@ -1623,8 +1690,47 @@ namespace InSpiderDevelopWindow.ViewModel
             this.grid = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetConfigServerUrl()
+        {
+            var data = (Model as DeviceDevelop).Channel.Data;
+            if(data is NetworkClientChannelData)
+            {
+                return (data as NetworkClientChannelData).ServerIp;
+            }
+            return string.Empty;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetConfigUserName()
+        {
+            var data = (Model as DeviceDevelop).Channel.Data;
+            if (data is NetworkClientChannelData)
+            {
+                return (data as NetworkClientChannelData).UserName;
+            }
+            return string.Empty;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetConfigPassword()
+        {
+            var data = (Model as DeviceDevelop).Channel.Data;
+            if (data is NetworkClientChannelData)
+            {
+                return (data as NetworkClientChannelData).Password;
+            }
+            return string.Empty;
+        }
 
         #endregion ...Methods...
 
@@ -1687,6 +1793,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     var driver = Machine.Driver.GetDriver(this.Document.Name);
                     this.mRegistorConfigModel = driver?.RegistorConfig();
+                    mRegistorConfigModel.Service = Parent;
                 }
                 mRegistorConfigModel?.FreshRegistor(DeviceInfo);
                 if (mRegistorConfigModel != null && mRegistorConfigModel.UpdateRegistorCallBack==null)
@@ -1937,6 +2044,16 @@ namespace InSpiderDevelopWindow.ViewModel
         }
 
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public DeviceDetailViewModel Parent
+        {
+            get;
+            set;
+        }
+
+
 
         #endregion ...Properties...
 
@@ -2121,6 +2238,7 @@ namespace InSpiderDevelopWindow.ViewModel
             Machine = null;
             Document = null;
             mModel = null;
+            Parent = null;
             base.Dispose();
         }
 

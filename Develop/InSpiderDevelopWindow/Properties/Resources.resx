@@ -216,6 +216,9 @@
   <data name="Registor" xml:space="preserve">
     <value>Registor</value>
   </data>
+  <data name="RegistorConfig" xml:space="preserve">
+    <value>RegistorConfig</value>
+  </data>
   <data name="Reload" xml:space="preserve">
     <value>Reload</value>
   </data>

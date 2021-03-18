@@ -42,6 +42,25 @@ namespace Cdy.Spider.OpcDriver.Develop
                 {
                     mRegistorBrowsingCommand = new RelayCommand(() => {
                         OpcBrowserViewModel opv = new OpcBrowserViewModel();
+                        if(Service!=null)
+                        {
+                            string ss = Service.GetConfigServerUrl();
+                            if(!string.IsNullOrEmpty(ss))
+                            {
+                                opv.ServerAddress = ss;
+                            }
+                            string user = Service.GetConfigUserName();
+                            if(!string.IsNullOrEmpty(ss))
+                            {
+                                opv.UserName = user;
+                            }
+
+                            string pass = Service.GetConfigPassword();
+                            if(!string.IsNullOrEmpty(pass))
+                            {
+                                opv.Password = pass;
+                            }
+                        }
                         if(opv.ShowDialog().Value)
                         {
                             Registor = opv.SelectVariable.NodeId;
@@ -78,9 +97,30 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// </summary>
         public Action<string> UpdateRegistorCallBack { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public IDeviceDevelopService Service { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> Config()
+        {
+            OpcBrowserViewModel opv = new OpcBrowserViewModel();
+            if (opv.ShowDialog().Value)
+            {
+                return opv.GetSelectTags();
+            }
+            return null;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>

@@ -216,6 +216,9 @@
   <data name="Registor" xml:space="preserve">
     <value>寄存器</value>
   </data>
+  <data name="RegistorConfig" xml:space="preserve">
+    <value>寄存器配置</value>
+  </data>
   <data name="Reload" xml:space="preserve">
     <value>重新加载</value>
   </data>

@@ -363,7 +363,7 @@ namespace InSpiderDevelopWindow
             vd.Name = sname;
             if (mDocument.AddDevice(vd))
             {
-                var vmm = new DeviceTreeViewModel() { Document=this.Document, Model = vd, Parent = this };
+                var vmm = new DeviceTreeViewModel() { Document=this.Document, Model = vd, Parent = this,IsCommFirst=true };
                 this.Children.Add(vmm);
                 vmm.IsSelected = true;
                 vmm.IsEdit = true;
@@ -509,6 +509,12 @@ namespace InSpiderDevelopWindow
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsCommFirst { get; set; }
+
+
 
         #endregion ...Properties...
 
@@ -548,11 +554,19 @@ namespace InSpiderDevelopWindow
             {
                 (mode as DeviceDetailViewModel).Model = this.Model;
                 (mode as DeviceDetailViewModel).MachineModel = vmm.Model;
+
+                if (IsCommFirst)
+                {
+                    (mode as DeviceDetailViewModel).SelectIndex = 0;
+                    IsCommFirst = false;
+                }
                 return mode;
             }
             else
             {
-                return new DeviceDetailViewModel() { Model = this.Model,MachineModel = vmm.Model };
+                var re = new DeviceDetailViewModel() { Model = this.Model,MachineModel = vmm.Model,SelectIndex=IsCommFirst?0:1 };
+                IsCommFirst = false;
+                return re;
             }
         }
 

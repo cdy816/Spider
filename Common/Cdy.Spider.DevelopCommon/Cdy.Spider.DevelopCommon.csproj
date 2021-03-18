@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="View\**" />
+    <EmbeddedResource Remove="View\**" />
+    <None Remove="View\**" />
+    <Page Remove="View\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Image\cancel.png" />
     <None Remove="Image\close.png" />
     <None Remove="Image\hidden.png" />
@@ -14,10 +21,6 @@
     <None Remove="Image\ok.png" />
     <None Remove="Image\show.png" />
     <None Remove="Image\spider.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="View\" />
   </ItemGroup>
 
   <ItemGroup>

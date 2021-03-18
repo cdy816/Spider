@@ -358,6 +358,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 RegistorConfig 的本地化字符串。
+        /// </summary>
+        internal static string RegistorConfig {
+            get {
+                return ResourceManager.GetString("RegistorConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Reload 的本地化字符串。
         /// </summary>
         internal static string Reload {

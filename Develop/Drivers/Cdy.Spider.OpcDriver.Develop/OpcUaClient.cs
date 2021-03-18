@@ -839,7 +839,7 @@ namespace Cdy.Spider.OpcDriver.Develop
             // build list of attributes to read.
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
 
-            foreach (uint attributeId in new uint[Attributes.NodeId,Attributes.BrowseName,Attributes.DisplayName,Attributes.Description,Attributes.DataType,Attributes.AccessLevel])
+            foreach (uint attributeId in Attributes.GetIdentifiers())
             {
                 ReadValueId nodeToRead = new ReadValueId();
                 nodeToRead.NodeId = nodeId;

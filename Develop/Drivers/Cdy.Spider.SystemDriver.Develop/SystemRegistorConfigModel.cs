@@ -69,6 +69,11 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// <summary>
         /// 
         /// </summary>
+        public IDeviceDevelopService Service { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="registor"></param>
         public void FreshRegistor(string registor)
         {
@@ -83,6 +88,15 @@ namespace Cdy.Spider.SystemDriver.Develop
         {
             UpdateRegistorCallBack = null;
             base.Dispose();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> Config()
+        {
+            return null;
         }
     }
 }

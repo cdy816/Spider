@@ -30,10 +30,10 @@
         <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="4" Content="{local:ResMarker Timeout,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
 
 
-        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ServerIp,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266"/>
-        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding UserName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="2"/>
-        <cc:PasswordControl  Password="{Binding Password,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Width="306" Grid.Row="3" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ServerIp,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="400"/>
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding UserName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="400" Grid.Row="2"/>
+        <cc:PasswordControl  Password="{Binding Password,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Width="440" Grid.Row="3" HorizontalAlignment="Left" Margin="10,0,0,0"/>
 
-        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding Timeout,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="4"/>
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding Timeout,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="400" Grid.Row="4"/>
     </Grid>
 </UserControl>

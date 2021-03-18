@@ -29,8 +29,6 @@ namespace Cdy.Spider.OpcDriver.Develop
 
         private OpcUaClient mClient;
 
-        private string mStateMessage;
-
         private System.Collections.ObjectModel.ObservableCollection<NodeItem> mChildren = new System.Collections.ObjectModel.ObservableCollection<NodeItem>();
 
         private System.Collections.ObjectModel.ObservableCollection<VariableItem> mVariablesChildren = new System.Collections.ObjectModel.ObservableCollection<VariableItem>();
@@ -38,6 +36,10 @@ namespace Cdy.Spider.OpcDriver.Develop
         private NodeItem mSelectItem;
 
         private VariableItem mSelectVariable;
+
+        private static string mUserName;
+
+        private static string mPassword;
 
         #endregion ...Variables...
 
@@ -128,26 +130,6 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// <summary>
         /// 
         /// </summary>
-        public string StateMessage
-        {
-            get
-            {
-                return mStateMessage;
-            }
-            set
-            {
-                if (mStateMessage != value)
-                {
-                    mStateMessage = value;
-                    OnPropertyChanged("StateMessage");
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
         public List<string> ServerList
         {
             get
@@ -183,6 +165,46 @@ namespace Cdy.Spider.OpcDriver.Develop
                 }
             }
         }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return mUserName;
+            }
+            set
+            {
+                if (mUserName != value)
+                {
+                    mUserName = value;
+                    OnPropertyChanged("UserName");
+                }
+            }
+        }
+
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string Password
+        {
+            get
+            {
+                return mPassword;
+            }
+            set
+            {
+                if (mPassword != value)
+                {
+                    mPassword = value;
+                    OnPropertyChanged("Password");
+                }
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -310,7 +332,7 @@ namespace Cdy.Spider.OpcDriver.Develop
         private void MClient_OpcStatusChange(object sender, OpcUaStatusEventArgs e)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-                StateMessage = e.Error + "" + e.Text + " " + e.Time;
+                Message = e.Error + "" + e.Text + " " + e.Time;
             }));
         }
 
@@ -490,9 +512,12 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// <param name="mode"></param>
         public NodeItem(Opc.Ua.ReferenceDescription mode)
         {
-            this.mMode = mode;
-            //if (this.mMode.NodeClass == NodeClass.Object)
-            //    mChildren.Add(new NodeItem(null));
+            if (mode != null)
+            {
+                this.mMode = mode;
+                if (this.mMode.NodeClass == NodeClass.Object)
+                    mChildren.Add(new NodeItem(null));
+            }
         }
 
 
@@ -511,7 +536,7 @@ namespace Cdy.Spider.OpcDriver.Develop
         {
             get
             {
-                return (NodeId)mMode.NodeId;
+                return mMode!=null? (NodeId)mMode.NodeId:new NodeId();
             }
         }
 
@@ -522,7 +547,7 @@ namespace Cdy.Spider.OpcDriver.Develop
         {
             get
             {
-                return mMode.DisplayName.Text;
+                return mMode != null ? mMode.DisplayName.Text : string.Empty;
             }
         }
 
@@ -603,7 +628,7 @@ namespace Cdy.Spider.OpcDriver.Develop
                 if (this.mMode.NodeClass == NodeClass.Object)
                 {
                     var re = Parent.Client.Browse((NodeId)this.mMode.NodeId, ReferenceTypeIds.Organizes, ReferenceTypeIds.Aggregates);
-                    foreach (var vv in re)
+                    foreach (var vv in re.Where(e=>e.NodeClass == NodeClass.Object))
                     {
                         Children.Add(new NodeItem(vv) { Parent = this.Parent });
                     }
