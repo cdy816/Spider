@@ -57,8 +57,9 @@ namespace Cdy.Spider.OpcDriver.Develop
             mClient = new OpcUaClient();
             mClient.ConnectComplete += MClient_ConnectComplete;
             mClient.OpcStatusChange += MClient_OpcStatusChange;
-            DefaultHeight = 800;
+            DefaultHeight = 600;
             DefaultWidth = 1024;
+            Title = Res.Get("OpcBrowserTitle");
         }
 
 
@@ -304,6 +305,17 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// <summary>
         /// 
         /// </summary>
+        public void CheckAutoConnect()
+        {
+            if(!string.IsNullOrEmpty(ServerAddress))
+            {
+                ConnectCommand.Execute(null);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void LoadVariables()
         {
             Application.Current.Dispatcher.Invoke(new Action(() => {
@@ -317,7 +329,7 @@ namespace Cdy.Spider.OpcDriver.Develop
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => {
                     foreach (var vv in res.Where(e => e.NodeClass == NodeClass.Variable))
                     {
-                        mVariablesChildren.Add(new VariableItem(vv, this));
+                        mVariablesChildren.Add(new VariableItem(vv, this,SelectItem));
                     }
                 }));
                 
@@ -332,7 +344,7 @@ namespace Cdy.Spider.OpcDriver.Develop
         private void MClient_OpcStatusChange(object sender, OpcUaStatusEventArgs e)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-                Message = e.Error + "" + e.Text + " " + e.Time;
+                Message = e.Text + " " + e.Time;
             }));
         }
 
@@ -404,6 +416,7 @@ namespace Cdy.Spider.OpcDriver.Develop
         
         private ReferenceDescription mModel;
         private OpcBrowserViewModel mParent;
+        private NodeItem mOwner;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -416,7 +429,7 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// 
         /// </summary>
         /// <param name="model"></param>
-        public VariableItem(ReferenceDescription model, OpcBrowserViewModel parent)
+        public VariableItem(ReferenceDescription model, OpcBrowserViewModel parent, NodeItem owner)
         {
             mModel = model;
             mParent = parent;
@@ -426,6 +439,31 @@ namespace Cdy.Spider.OpcDriver.Develop
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public NodeItem Owner
+        {
+            get
+            {
+                return mOwner;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FullName
+        {
+            get
+            {
+                return Owner.FullName + "." + DisplayName;
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -552,6 +590,18 @@ namespace Cdy.Spider.OpcDriver.Develop
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FullName
+        {
+            get
+            {
+                return Owner != null ? Owner.FullName + "." + this.Name : this.Name;
+            }
+        }
+
+
 
         /// <summary>
         /// 
@@ -619,6 +669,11 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// <summary>
         /// 
         /// </summary>
+        public NodeItem Owner { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void CheckAndLoad()
         {
             if(!mIsInited)
@@ -630,7 +685,7 @@ namespace Cdy.Spider.OpcDriver.Develop
                     var re = Parent.Client.Browse((NodeId)this.mMode.NodeId, ReferenceTypeIds.Organizes, ReferenceTypeIds.Aggregates);
                     foreach (var vv in re.Where(e=>e.NodeClass == NodeClass.Object))
                     {
-                        Children.Add(new NodeItem(vv) { Parent = this.Parent });
+                        Children.Add(new NodeItem(vv) { Parent = this.Parent,Owner=this });
                     }
                 }
             }

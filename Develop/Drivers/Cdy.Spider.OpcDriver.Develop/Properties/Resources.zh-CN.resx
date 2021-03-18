@@ -144,6 +144,9 @@
   <data name="NodeId" xml:space="preserve">
     <value>Id</value>
   </data>
+  <data name="OpcBrowserTitle" xml:space="preserve">
+    <value>寄存器浏览选择</value>
+  </data>
   <data name="Passivity" xml:space="preserve">
     <value>被动</value>
   </data>

@@ -137,7 +137,7 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             get
             {
-                if(mConfigDriverRegisorCommand!=null)
+                if(mConfigDriverRegisorCommand==null)
                 {
                     mConfigDriverRegisorCommand = new RelayCommand(() => {
                         try

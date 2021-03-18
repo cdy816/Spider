@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox  Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Text="{Binding Registor,Mode=TwoWay,UpdateSourceTrigger=LostFocus}"  VerticalAlignment="Center" Margin="5,0"/>
+            <TextBox x:Name="tb"  Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Text="{Binding Registor,Mode=TwoWay,UpdateSourceTrigger=LostFocus}"  BorderThickness="0,0,1,0" VerticalAlignment="Stretch" Margin="0,-1" Padding="3,2,0,0"/>
             <Button Style="{DynamicResource ButtonStyle1}" Foreground="{DynamicResource Window.Forground}" BorderBrush="{DynamicResource Window.Forground}" BorderThickness="0"  Background="#1FFFFFFF" Content="..." HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Width="26" Command="{Binding RegistorBrowsingCommand}" />
         </Grid>
     </DataTemplate>

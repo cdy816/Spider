@@ -72,7 +72,7 @@
                                     </Grid>
                                     <Border   Height="32"  Grid.Row="2" BorderBrush="Gray" BorderThickness="0,1,0,0"  Visibility="{Binding IsOkCancel,Converter={StaticResource bvc}}">
                                         <Grid  Margin="0" >
-                                            <Label  Content="{Binding Message}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,200,0" />
+                                            <Label  Content="{Binding Message}" Foreground="{DynamicResource Window.Forground}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,200,0" />
                                             <Button  Style="{DynamicResource ButtonStyle1}" Name="btn_Cancel" BorderBrush="IndianRed" BorderThickness="0,0,0,2" IsCancel="{Binding IsEnableDefault}" Content="{local:ResMarker Cancel}" Height="22" Width="75" Margin="0,0,10,0" Command="{Binding CancelCommand}" HorizontalAlignment="Right" VerticalAlignment="Center"   >
                                                 <Button.ContentTemplate>
                                                     <DataTemplate>

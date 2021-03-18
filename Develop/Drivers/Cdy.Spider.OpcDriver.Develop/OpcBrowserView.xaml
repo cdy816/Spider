@@ -180,6 +180,14 @@
 
                 <DataGrid.Columns>
 
+                    <DataGridTemplateColumn Header="{local:ResMarker DisplayName}"  Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5,0" Foreground="{DynamicResource Window.Forground}" Text="{Binding DisplayName}" VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
                     <DataGridTemplateColumn Header="{local:ResMarker NodeId}"  Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -188,13 +196,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="{local:ResMarker DisplayName}"  Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="5,0" Foreground="{DynamicResource Window.Forground}" Text="{Binding DisplayName}" VerticalAlignment="Center" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    
 
                     <DataGridTemplateColumn Header="{local:ResMarker BrowseName}"  Width="*">
                         <DataGridTemplateColumn.CellTemplate>

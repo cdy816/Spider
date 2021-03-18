@@ -142,6 +142,15 @@ namespace Cdy.Spider.OpcDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Registor browse and select 的本地化字符串。
+        /// </summary>
+        internal static string OpcBrowserTitle {
+            get {
+                return ResourceManager.GetString("OpcBrowserTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Passivity 的本地化字符串。
         /// </summary>
         internal static string Passivity {

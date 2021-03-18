@@ -34,6 +34,7 @@ namespace Cdy.Spider.OpcDriver.Develop
         private void OpcBrowserView_Loaded(object sender, RoutedEventArgs e)
         {
             (this.DataContext as OpcBrowserViewModel).GridInstance = dg;
+            (this.DataContext as OpcBrowserViewModel).CheckAutoConnect();
         }
 
         private void dg_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

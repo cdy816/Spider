@@ -144,6 +144,9 @@
   <data name="NodeId" xml:space="preserve">
     <value>NodeId</value>
   </data>
+  <data name="OpcBrowserTitle" xml:space="preserve">
+    <value>Registor browse and select</value>
+  </data>
   <data name="Passivity" xml:space="preserve">
     <value>Passivity</value>
   </data>
