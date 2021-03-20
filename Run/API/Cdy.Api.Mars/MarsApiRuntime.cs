@@ -30,7 +30,10 @@ namespace Cdy.Api.Mars
 
         private Dictionary<string, int> mNameIdMape = new Dictionary<string, int>();
 
-        private Queue<Tagbase> mChangedTags = new Queue<Tagbase>();
+        //private Queue<Tagbase> mChangedTags = new Queue<Tagbase>();
+
+        private Dictionary<Tagbase, bool> mChangedTags = new Dictionary<Tagbase, bool>();
+
 
         private Dictionary<string,int> mCallBackTags = new Dictionary<string, int>();
 
@@ -113,7 +116,16 @@ namespace Cdy.Api.Mars
 
                 vv.RegistorCallBack((device, tag) => {
                     lock (mChangedTags)
-                        mChangedTags.Enqueue(tag);
+                    {
+                        if (mChangedTags.ContainsKey(tag))
+                        {
+                            mChangedTags[tag] = true;
+                        }
+                        else
+                        {
+                            mChangedTags.Add(tag, true);
+                        }
+                    }
                 });
 
                 vv.RegistorHisValueCallBack((tag, values) => {
@@ -519,15 +531,20 @@ namespace Cdy.Api.Mars
             rdb.Clear();
             rdbh.Clear();
             
-            rdb.CheckAndResize(mChangedTags.Count);
-            rdbh.CheckAndResize(mChangedTags.Count);
+            rdb.CheckAndResize(mChangedTags.Count*32);
+            rdbh.CheckAndResize(mChangedTags.Count*32);
 
-            while (mChangedTags.Count>0)
+            //while (mChangedTags.Count>0)
+            foreach(var vv in mChangedTags.Where(e=>e.Value).ToList())
             {
-                Tagbase stag;
+                Tagbase stag = vv.Key;
                 lock(mChangedTags)
-                stag = mChangedTags.Dequeue();
-                
+                {
+                    mChangedTags[stag] = false;
+                }
+                //lock(mChangedTags)
+                //stag = mChangedTags.Dequeue();
+
                 int id = mNameIdMape[stag.DatabaseName];
                 var tpu = (TagType)((int)stag.Type);
 

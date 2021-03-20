@@ -48,6 +48,7 @@ namespace InSpiderRun
 
                 string smd = Console.ReadLine();
                 string[] cmd = smd.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                if (cmd.Length == 0) continue;
                 string scmd = cmd[0].ToLower();
                 switch (scmd)
                 {
@@ -68,12 +69,19 @@ namespace InSpiderRun
                     case "start":
                         if (cmd.Length > 0)
                         {
-                            if (mRunner == null)
-                                mRunner = new SpiderRuntime.Runer() { Name = cmd[1] };
-                            if (!mRunner.IsStarted)
+                            if (SpiderRuntime.Runer.CheckNameExit(cmd[1]))
                             {
-                                mRunner.Init();
-                                mRunner.Start();
+                                if (mRunner == null)
+                                    mRunner = new SpiderRuntime.Runer() { Name = cmd[1] };
+                                if (!mRunner.IsStarted)
+                                {
+                                    mRunner.Init();
+                                    mRunner.Start();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine(cmd[1] +" is not exist!");
                             }
                         }
                         break;

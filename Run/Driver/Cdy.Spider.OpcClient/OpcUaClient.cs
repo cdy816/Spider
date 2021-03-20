@@ -512,19 +512,23 @@ namespace Cdy.Spider.OpcClient
                 });
             }
 
-            // 读取当前的值
-            m_session.Read(
-                null,
-                0,
-                TimestampsToReturn.Neither,
-                nodesToRead,
-                out DataValueCollection results,
-                out DiagnosticInfoCollection diagnosticInfos);
+            if (m_session != null)
+            {
+                // 读取当前的值
+                m_session.Read(
+                    null,
+                    0,
+                    TimestampsToReturn.Neither,
+                    nodesToRead,
+                    out DataValueCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
 
-            ClientBase.ValidateResponse(results, nodesToRead);
-            ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
-
-            return results.ToList();
+                ClientBase.ValidateResponse(results, nodesToRead);
+                ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
+                return results.ToList();
+            }
+            return null;
+            
         }
 
         /// <summary>
@@ -593,23 +597,27 @@ namespace Cdy.Spider.OpcClient
                 });
             }
 
-            // 读取当前的值
-            m_session.Read(
-                null,
-                0,
-                TimestampsToReturn.Neither,
-                nodesToRead,
-                out DataValueCollection results,
-                out DiagnosticInfoCollection diagnosticInfos);
-
-            ClientBase.ValidateResponse(results, nodesToRead);
-            ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
-
-            foreach (var item in results)
+            if (m_session != null)
             {
-                result.Add((T)item.Value);
+                // 读取当前的值
+                m_session.Read(
+                    null,
+                    0,
+                    TimestampsToReturn.Neither,
+                    nodesToRead,
+                    out DataValueCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
+
+                ClientBase.ValidateResponse(results, nodesToRead);
+                ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
+
+                foreach (var item in results)
+                {
+                    result.Add((T)item.Value);
+                }
+                return result;
             }
-            return result;
+            return null;
         }
 
         /// <summary>
@@ -690,22 +698,25 @@ namespace Cdy.Spider.OpcClient
             };
 
             // 写入当前的值
-
-            m_session.Write(
-                null,
-                valuesToWrite,
-                out StatusCodeCollection results,
-                out DiagnosticInfoCollection diagnosticInfos);
-
-            ClientBase.ValidateResponse(results, valuesToWrite);
-            ClientBase.ValidateDiagnosticInfos(diagnosticInfos, valuesToWrite);
-
-            if (StatusCode.IsBad(results[0]))
+            if (m_session != null)
             {
-                throw new ServiceResultException(results[0]);
-            }
+                m_session.Write(
+                    null,
+                    valuesToWrite,
+                    out StatusCodeCollection results,
+                    out DiagnosticInfoCollection diagnosticInfos);
 
-            return !StatusCode.IsBad(results[0]);
+                ClientBase.ValidateResponse(results, valuesToWrite);
+                ClientBase.ValidateDiagnosticInfos(diagnosticInfos, valuesToWrite);
+
+                if (StatusCode.IsBad(results[0]))
+                {
+                    throw new ServiceResultException(results[0]);
+                }
+
+                return !StatusCode.IsBad(results[0]);
+            }
+            return false;
         }
 
         /// <summary>
@@ -716,6 +727,7 @@ namespace Cdy.Spider.OpcClient
         /// <returns></returns>
         public bool WriteNode(string tag, object value)
         {
+            if (m_session == null) return false;
             WriteValue valueToWrite = new WriteValue()
             {
                 NodeId = new NodeId(tag),
@@ -807,6 +819,7 @@ namespace Cdy.Spider.OpcClient
         /// <returns>所有的是否都写入成功</returns>
         public bool WriteNodes(string[] tags, object[] values)
         {
+            if (m_session == null) return false;
             WriteValueCollection valuesToWrite = new WriteValueCollection();
 
             for (int i = 0; i < tags.Length; i++)

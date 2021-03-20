@@ -27,7 +27,12 @@ namespace Cdy.Spider
 
         private long mHandleValue;
 
-        private int mValueMaxCount = 299;
+        private int mValueMaxCount = 300;
+
+        private ulong mReadCircle = 0;
+        private ulong mWriteCircle = 0;
+
+        private object mLockObj = new object();
 
         #endregion ...Variables...
 
@@ -51,7 +56,7 @@ namespace Cdy.Spider
         /// <param name="size"></param>
         public HisDataMemory(int size,int count)
         {
-            mValueMaxCount = count-1;
+            mValueMaxCount = count;
             Init(size*count);
         }
 
@@ -105,12 +110,12 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public int ValueEnd { get; set; } = -1;
+        public int WriteIndex { get; set; } = -1;
 
         /// <summary>
         /// 
         /// </summary>
-        public int ValueStart { get; set; } = -1;
+        public int ReadIndex { get; set; } = -1;
 
         #endregion ...Properties...
 
@@ -390,7 +395,7 @@ namespace Cdy.Spider
         public void Clear()
         {
             Clear(mHandle, 0, (int)this.mAllocSize);
-            ValueEnd = 0;
+            WriteIndex = 0;
         }
 
         /// <summary>
@@ -1077,8 +1082,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, double value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 16;
+            CheckValueForWrite();
+            Position = WriteIndex * 16;
             this.WriteLong(Position, time.ToBinary());
             this.WriteDouble(Position, value);
             return this;
@@ -1092,8 +1097,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, float value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 12;
+            CheckValueForWrite();
+            Position = WriteIndex * 12;
             this.WriteLong(Position, time.ToBinary());
             this.WriteFloat(Position, value);
            
@@ -1108,8 +1113,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, int value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 12;
+            CheckValueForWrite();
+            Position = WriteIndex * 12;
             this.WriteLong(Position, time.ToBinary());
             this.WriteInt(Position, value);
             return this;
@@ -1123,8 +1128,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, uint value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 12;
+            CheckValueForWrite();
+            Position = WriteIndex * 12;
             this.WriteLong(Position, time.ToBinary());
             this.WriteUInt(Position, value);
             return this;
@@ -1140,8 +1145,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, short value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 10;
+            CheckValueForWrite();
+            Position = WriteIndex * 10;
             this.WriteLong(Position, time.ToBinary());
             this.WriteShort(Position, value);
             return this;
@@ -1157,8 +1162,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, ushort value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 10;
+            CheckValueForWrite();
+            Position = WriteIndex * 10;
             this.WriteLong(Position, time.ToBinary());
             this.WriteUShort(Position, value);
             return this;
@@ -1172,9 +1177,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, byte value)
         {
-            CheckValueEnd();
+            CheckValueForWrite();
 
-            Position = ValueEnd * 9;
+            Position = WriteIndex * 9;
             this.WriteLong(Position, time.ToBinary());
             this.WriteByte(Position, value);
             return this;
@@ -1183,14 +1188,32 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        private void CheckValueEnd()
+        private void CheckValueForWrite()
         {
-            ValueEnd++;
-            ValueEnd = ValueEnd > mValueMaxCount?-1:ValueEnd;
-            if(ValueEnd==ValueStart && ValueEnd>0)
+            lock (mLockObj)
             {
-                ValueStart++;
-                if (ValueStart > mValueMaxCount) ValueStart = -1;
+                WriteIndex++;
+
+                if (WriteIndex >= mValueMaxCount)
+                {
+                    mWriteCircle++;
+                    WriteIndex = WriteIndex - mValueMaxCount;
+                }
+
+                //如果写入的数据，出现覆盖了。则调整读指针
+                if (mWriteCircle > mReadCircle)
+                {
+                    if ((mWriteCircle - mReadCircle) > 1)
+                    {
+                        ReadIndex = WriteIndex;
+                        mReadCircle = mWriteCircle - 1;
+                    }
+                    else if(WriteIndex >= ReadIndex)
+                    {
+                        ReadIndex = WriteIndex;
+                    }
+                }
+                
             }
         }
 
@@ -1198,15 +1221,31 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
-        private bool CheckValueStart()
+        private bool CheckValueForRead()
         {
-            ValueStart++;
-            if (ValueStart == ValueEnd && ValueStart > 0)
+            lock (mLockObj)
             {
-                ValueStart--;
-                return false;
+                var ts = ReadIndex + 1;
+                var tsc = mReadCircle;
+                if (ts >= mValueMaxCount)
+                {
+                    ts = ts - mValueMaxCount;
+                    tsc++;
+                }
+
+                int dd = (int)(mWriteCircle - tsc);
+
+                if (ts < (dd * mValueMaxCount + WriteIndex))
+                {
+                    mReadCircle = tsc;
+                    ReadIndex = ts;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            return true;
         }
 
 
@@ -1217,8 +1256,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, long value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 16;
+            CheckValueForWrite();
+            Position = WriteIndex * 16;
             this.WriteLong(Position, time.ToBinary());
             this.WriteLong(Position, value);
             return this;
@@ -1232,8 +1271,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, ulong value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 16;
+            CheckValueForWrite();
+            Position = WriteIndex * 16;
             this.WriteLong(Position, time.ToBinary());
             this.WriteULong(Position, value);
             return this;
@@ -1248,8 +1287,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, DateTime value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 16;
+            CheckValueForWrite();
+            Position = WriteIndex * 16;
             this.WriteLong(Position, time.ToBinary());
             this.WriteLong(Position, value.ToBinary());
             return this;
@@ -1263,8 +1302,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, string value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * (8+255);
+            CheckValueForWrite();
+            Position = WriteIndex * (8+255);
             this.WriteLong(Position, time.ToBinary());
             this.WriteString(Position, value, Encoding.Unicode);
             return this;
@@ -1280,8 +1319,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, IntPoint value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 16;
+            CheckValueForWrite();
+            Position = WriteIndex * 16;
             this.WriteLong(Position, time.ToBinary());
             this.WriteInt(Position, value.X);
             this.WriteInt(Position, value.Y);
@@ -1296,8 +1335,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, UIntPoint value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 16;
+            CheckValueForWrite();
+            Position = WriteIndex * 16;
             this.WriteLong(Position, time.ToBinary());
             this.WriteUInt(Position, value.X);
             this.WriteUInt(Position, value.Y);
@@ -1314,8 +1353,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, IntPoint3 value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 20;
+            CheckValueForWrite();
+            Position = WriteIndex * 20;
             this.WriteLong(Position, time.ToBinary());
             this.WriteInt(Position, value.X);
             this.WriteInt(Position, value.Y);
@@ -1334,8 +1373,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, UIntPoint3 value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 20;
+            CheckValueForWrite();
+            Position = WriteIndex * 20;
             this.WriteLong(Position, time.ToBinary());
             this.WriteUInt(Position, value.X);
             this.WriteUInt(Position, value.Y);
@@ -1353,8 +1392,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, LongPoint value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 24;
+            CheckValueForWrite();
+            Position = WriteIndex * 24;
             this.WriteLong(Position, time.ToBinary());
             this.WriteLong(Position, value.X);
             this.WriteLong(Position, value.Y);
@@ -1369,8 +1408,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, ULongPoint value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 24;
+            CheckValueForWrite();
+            Position = WriteIndex * 24;
             this.WriteLong(Position, time.ToBinary());
             this.WriteULong(Position, value.X);
             this.WriteULong(Position, value.Y);
@@ -1386,8 +1425,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, LongPoint3 value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 32;
+            CheckValueForWrite();
+            Position = WriteIndex * 32;
             this.WriteLong(Position, time.ToBinary());
             this.WriteLong(Position, value.X);
             this.WriteLong(Position, value.Y);
@@ -1403,8 +1442,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public HisDataMemory AppendValue(DateTime time, ULongPoint3 value)
         {
-            CheckValueEnd();
-            Position = ValueEnd * 32;
+            CheckValueForWrite();
+            Position = WriteIndex * 32;
             this.WriteLong(Position, time.ToBinary());
             this.WriteULong(Position, value.X);
             this.WriteULong(Position, value.Y);
@@ -1420,9 +1459,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out byte value)
         {
-            if(CheckValueStart())
+            if(CheckValueForRead())
             {
-                Position = ValueStart * 9;
+                Position = ReadIndex * 9;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadByte();
                 return true;
@@ -1443,9 +1482,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out short value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 10;
+                Position = ReadIndex * 10;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadShort();
                 return true;
@@ -1466,9 +1505,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out ushort value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 10;
+                Position = ReadIndex * 10;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadUShort();
                 return true;
@@ -1489,9 +1528,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out int value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 12;
+                Position = ReadIndex * 12;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadInt();
                 return true;
@@ -1512,9 +1551,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out uint value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 12;
+                Position = ReadIndex * 12;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadUInt();
                 return true;
@@ -1535,9 +1574,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out float value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 12;
+                Position = ReadIndex * 12;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadFloat();
                 return true;
@@ -1553,9 +1592,9 @@ namespace Cdy.Spider
 
         public bool ReadValue(out DateTime time, out double value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 16;
+                Position = ReadIndex * 16;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadDouble();
                 return true;
@@ -1571,9 +1610,9 @@ namespace Cdy.Spider
 
         public bool ReadValue(out DateTime time, out long value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 16;
+                Position = ReadIndex * 16;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadLong();
                 return true;
@@ -1589,9 +1628,9 @@ namespace Cdy.Spider
 
         public bool ReadValue(out DateTime time, out ulong value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 16;
+                Position = ReadIndex * 16;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadULong();
                 return true;
@@ -1612,9 +1651,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out DateTime value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 16;
+                Position = ReadIndex * 16;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = DateTime.FromBinary(this.ReadLong());
                 return true;
@@ -1627,12 +1666,17 @@ namespace Cdy.Spider
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool ReadValue(out DateTime time, out string value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * (8+255);
+                Position = ReadIndex * (8+255);
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadString();
                 return true;
@@ -1645,12 +1689,17 @@ namespace Cdy.Spider
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool ReadValue(out DateTime time, out IntPoint value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 16;
+                Position = ReadIndex * 16;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = new IntPoint() { X = this.ReadInt(), Y = this.ReadInt() };
                 return true;
@@ -1663,12 +1712,17 @@ namespace Cdy.Spider
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool ReadValue(out DateTime time, out UIntPoint value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 16;
+                Position = ReadIndex * 16;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = new UIntPoint() { X = this.ReadUInt(), Y = this.ReadUInt() };
                 return true;
@@ -1681,12 +1735,17 @@ namespace Cdy.Spider
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool ReadValue(out DateTime time, out IntPoint3 value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 20;
+                Position = ReadIndex * 20;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = new IntPoint3() { X = this.ReadInt(), Y = this.ReadInt(),Z=this.ReadInt() };
                 return true;
@@ -1699,12 +1758,17 @@ namespace Cdy.Spider
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool ReadValue(out DateTime time, out UIntPoint3 value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 20;
+                Position = ReadIndex * 20;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = new UIntPoint3() { X = this.ReadUInt(), Y = this.ReadUInt(),Z=this.ReadUInt() };
                 return true;
@@ -1717,12 +1781,17 @@ namespace Cdy.Spider
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool ReadValue(out DateTime time, out LongPoint value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 24;
+                Position = ReadIndex * 24;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = new LongPoint() { X = this.ReadLong(), Y = this.ReadLong() };
                 return true;
@@ -1743,9 +1812,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out ULongPoint value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 24;
+                Position = ReadIndex * 24;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = new ULongPoint() { X = this.ReadULong(), Y = this.ReadULong() };
                 return true;
@@ -1766,9 +1835,9 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool ReadValue(out DateTime time, out LongPoint3 value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 32;
+                Position = ReadIndex * 32;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = new LongPoint3() { X = this.ReadLong(), Y = this.ReadLong(),Z=this.ReadLong() };
                 return true;
@@ -1781,12 +1850,17 @@ namespace Cdy.Spider
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool ReadValue(out DateTime time, out ULongPoint3 value)
         {
-            if (CheckValueStart())
+            if (CheckValueForRead())
             {
-                Position = ValueStart * 32;
+                Position = ReadIndex * 32;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = new ULongPoint3() { X = this.ReadULong(), Y = this.ReadULong(), Z = this.ReadULong() };
                 return true;

@@ -63,6 +63,16 @@ namespace SpiderRuntime
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static bool CheckNameExit(string name)
+        {
+            return DeviceManager.CheckExist(name);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Init()
         {
             try

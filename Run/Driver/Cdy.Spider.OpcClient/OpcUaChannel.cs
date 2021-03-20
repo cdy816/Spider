@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Linq;
 using Opc.Ua;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Cdy.Spider.OpcClient
 {
@@ -86,9 +87,37 @@ namespace Cdy.Spider.OpcClient
         /// <returns></returns>
         protected override bool InnerOpen()
         {
-            mClient.ConnectServer(this.mData.ServerIp).Wait();
-            mClient.ConnectComplete += MClient_ConnectComplete;
-            return base.InnerOpen();
+            try
+            {
+                mClient.ConnectComplete += MClient_ConnectComplete;
+                mClient.ConnectServer(this.mData.ServerIp).Wait();
+               
+                return base.InnerOpen();
+            }catch
+            {
+                Task.Run(TryConnect);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void TryConnect()
+        {
+            while(!mClient.Connected)
+            {
+                Thread.Sleep(3000);
+                try
+                {
+                    mClient.ConnectServer(this.mData.ServerIp).Wait();
+                }
+                catch
+                {
+
+                }
+                Thread.Sleep(2000);
+            }
         }
 
         /// <summary>
@@ -123,6 +152,7 @@ namespace Cdy.Spider.OpcClient
             {
                 mClient.RemoveSubscription("spider");
                 mClient.Disconnect();
+                mClient.ConnectComplete -= MClient_ConnectComplete;
                 mClient = null;
             }
             return base.InnerClose();
@@ -140,15 +170,28 @@ namespace Cdy.Spider.OpcClient
         {
             try
             {
-                if (paras.Length > 0)
+                if (mClient != null && mClient.Connected)
                 {
-                    mClient.WriteNode(key, data);
-                    return true;
+                    if (paras.Length > 0)
+                    {
+                        mClient.WriteNode(key, data);
+                        return true;
+                    }
+                    else
+                    {
+                        var tags = data as IEnumerable<string>;
+                        var res = mClient.ReadNodes(tags.Select(e => new NodeId(e)).ToArray());
+                        if (res != null)
+                            return res.Select(e => e.Value).ToList();
+                        else
+                        {
+                            return null;
+                        }
+                    }
                 }
                 else
                 {
-                    var tags = data as IEnumerable<string>;
-                    return mClient.ReadNodes(tags.Select(e => new NodeId(e)).ToArray()).Select(e => e.Value).ToList();
+                    return null;
                 }
             }
             catch
