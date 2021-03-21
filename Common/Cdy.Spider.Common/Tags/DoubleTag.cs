@@ -76,7 +76,7 @@ namespace Cdy.Spider
         /// <param name="valueCount"></param>
         protected override void AllocDataBuffer(int valueCount)
         {
-            this.HisValueBuffer = new HisDataMemory(9, valueCount);
+            this.HisValueBuffer = new HisDataMemory(16, valueCount);
         }
 
         #endregion ...Properties...
