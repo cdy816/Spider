@@ -257,49 +257,19 @@ namespace Cdy.Spider.MQTTClient
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="key"></param>
         /// <param name="data"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        protected override byte[] SendInner(byte[] data,int start,int len, int timeout, out bool result, params string[] paras)
-        {
-            string ss = paras.Length>0 ? this.Data.Name : paras[0];
-            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = paras.Length > 1 ? paras[1] : skey + mData.ResponseTopicAppendString;
-            mResTopic = reskey;
-
-            eventreset.Reset();
-            SendToTopicData(skey, reskey, data, start, len);
-            result = eventreset.WaitOne(timeout);
-
-            if (result)
-            {
-                return mResDatas;
-            }
-            else
-            {
-                result = false;
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="datas"></param>
         /// <param name="timeout"></param>
         /// <param name="result"></param>
-        /// <param name="paras"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> datas, int timeout, out bool result, params string[] paras)
+        protected override byte[] SendInner(Span<byte> data, int timeout, out bool result)
         {
-            string ss = paras.Length > 0 ? this.Data.Name : paras[0];
+            string ss = this.Data.Name;
             string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = paras.Length > 1 ? paras[1] : skey + mData.ResponseTopicAppendString;
+            string reskey = skey + mData.ResponseTopicAppendString;
             mResTopic = reskey;
 
             eventreset.Reset();
-            SendToTopicData(skey, reskey, datas);
+            SendToTopicData(skey, reskey, data);
             result = eventreset.WaitOne(timeout);
 
             if (result)
@@ -313,38 +283,235 @@ namespace Cdy.Spider.MQTTClient
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected override bool SendInnerAsync(Span<byte> data)
+        {
+            string ss = this.Data.Name;
+            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
+            string reskey = ss + mData.ResponseTopicAppendString;
+            mResTopic = reskey;
+            SendToTopicData(skey, reskey, data);
+            return true;
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="data"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
         /// <param name="result"></param>
-        protected override void SendInnerAsync(byte[] data, int start, int len, out bool result, params string[] paras)
+        /// <returns></returns>
+        protected override byte[] SendObjectInner(string key, Span<byte> value, int timeout, out bool result)
         {
-            string ss = paras.Length > 0 ? this.Data.Name : paras[0];
+            string ss = key;
             string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = paras.Length > 1 ? paras[1] : ss + mData.ResponseTopicAppendString;
+            string reskey = skey + mData.ResponseTopicAppendString;
             mResTopic = reskey;
-            SendToTopicData(skey, reskey, data, start, len);
-            result = true;
+
+            eventreset.Reset();
+            SendToTopicData(skey, reskey, value);
+            result = eventreset.WaitOne(timeout);
+
+            if (result)
+            {
+                return mResDatas;
+            }
+            else
+            {
+                result = false;
+                return null;
+            }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="datas"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
         /// <param name="result"></param>
-        /// <param name="paras"></param>
-        protected override void SendInnerAsync(Span<byte> datas, out bool result, params string[] paras)
+        /// <returns></returns>
+        protected override object SendObjectInner(string key, object value, int timeout, out bool result)
         {
-            string ss = paras.Length > 0 ? this.Data.Name : paras[0];
+            string ss = key;
             string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = paras.Length > 1 ? paras[1] : ss + mData.ResponseTopicAppendString;
+            string reskey = skey + mData.ResponseTopicAppendString;
             mResTopic = reskey;
-            SendToTopicData(skey, reskey, datas);
-            result = true;
+
+            eventreset.Reset();
+
+            var bval = Encoding.UTF8.GetBytes(value.ToString()).AsSpan<byte>();
+
+            SendToTopicData(skey, reskey, bval);
+            result = eventreset.WaitOne(timeout);
+
+            if (result)
+            {
+                return Encoding.UTF8.GetString(mResDatas);
+            }
+            else
+            {
+                result = false;
+                return null;
+            }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override object SendObjectInner(object value, int timeout, out bool result)
+        {
+            return SendObjectInner(Data.Name, value, timeout, out result);
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected override bool SendObjectInnerAsync(string key, Span<byte> value)
+        {
+            string ss = key;
+            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
+            string reskey = ss + mData.ResponseTopicAppendString;
+            mResTopic = reskey;
+            SendToTopicData(skey, reskey, value);
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected override bool SendObjectInnerAsync(string key, object value)
+        {
+            string ss = key;
+            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
+            string reskey = ss + mData.ResponseTopicAppendString;
+            mResTopic = reskey;
+            var bval = Encoding.UTF8.GetBytes(value.ToString());
+            SendToTopicData(skey, reskey, bval);
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected override bool SendObjectInnerAsync(object value)
+        {
+            return SendObjectInnerAsync(this.Data.Name, value);
+        }
+
+
+
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="result"></param>
+        ///// <returns></returns>
+        //protected override byte[] SendInner(byte[] data,int start,int len, int timeout, int waitResultCount, out bool result, params string[] paras)
+        //{
+        //    string ss = paras.Length>0 ? this.Data.Name : paras[0];
+        //    string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
+        //    string reskey = paras.Length > 1 ? paras[1] : skey + mData.ResponseTopicAppendString;
+        //    mResTopic = reskey;
+
+        //    eventreset.Reset();
+        //    SendToTopicData(skey, reskey, data, start, len);
+        //    result = eventreset.WaitOne(timeout);
+
+        //    if (result)
+        //    {
+        //        return mResDatas;
+        //    }
+        //    else
+        //    {
+        //        result = false;
+        //        return null;
+        //    }
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="datas"></param>
+        ///// <param name="timeout"></param>
+        ///// <param name="result"></param>
+        ///// <param name="paras"></param>
+        ///// <returns></returns>
+        //protected override byte[] SendInner(Span<byte> datas, int timeout, int waitResultCount, out bool result, params string[] paras)
+        //{
+        //    string ss = paras.Length > 0 ? this.Data.Name : paras[0];
+        //    string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
+        //    string reskey = paras.Length > 1 ? paras[1] : skey + mData.ResponseTopicAppendString;
+        //    mResTopic = reskey;
+
+        //    eventreset.Reset();
+        //    SendToTopicData(skey, reskey, datas);
+        //    result = eventreset.WaitOne(timeout);
+
+        //    if (result)
+        //    {
+        //        return mResDatas;
+        //    }
+        //    else
+        //    {
+        //        result = false;
+        //        return null;
+        //    }
+        //}
+
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="result"></param>
+        //protected override void SendInnerAsync(byte[] data, int start, int len, int waitResultCount, out bool result, params string[] paras)
+        //{
+        //    string ss = paras.Length > 0 ? this.Data.Name : paras[0];
+        //    string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
+        //    string reskey = paras.Length > 1 ? paras[1] : ss + mData.ResponseTopicAppendString;
+        //    mResTopic = reskey;
+        //    SendToTopicData(skey, reskey, data, start, len);
+        //    result = true;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="datas"></param>
+        ///// <param name="result"></param>
+        ///// <param name="paras"></param>
+        //protected override void SendInnerAsync(Span<byte> datas, int waitResultCount, out bool result, params string[] paras)
+        //{
+        //    string ss = paras.Length > 0 ? this.Data.Name : paras[0];
+        //    string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
+        //    string reskey = paras.Length > 1 ? paras[1] : ss + mData.ResponseTopicAppendString;
+        //    mResTopic = reskey;
+        //    SendToTopicData(skey, reskey, datas);
+        //    result = true;
+        //}
 
         /// <summary>
         /// 

@@ -162,43 +162,104 @@ namespace Cdy.Spider.OpcClient
         /// 
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <param name="timeOut"></param>
-        /// <param name="paras"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
         /// <returns></returns>
-        protected override object SendInner(string key, object data, int timeOut, object[] paras)
+        protected override object SendObjectInner(string key, object value, int timeout, out bool result)
         {
             try
             {
                 if (mClient != null && mClient.Connected)
                 {
-                    if (paras.Length > 0)
-                    {
-                        mClient.WriteNode(key, data);
-                        return true;
-                    }
-                    else
-                    {
-                        var tags = data as IEnumerable<string>;
-                        var res = mClient.ReadNodes(tags.Select(e => new NodeId(e)).ToArray());
-                        if (res != null)
-                            return res.Select(e => e.Value).ToList();
-                        else
-                        {
-                            return null;
-                        }
-                    }
+                    result = mClient.WriteNode(key, value);
+                    return true;
                 }
                 else
                 {
-                    return null;
+                    result = false;
+                    return false;
                 }
             }
             catch
             {
+                result = false;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override object SendObjectInner(object value, int timeout, out bool result)
+        {
+            if (mClient != null && mClient.Connected)
+            {
+                var tags = value as IEnumerable<string>;
+                var res = mClient.ReadNodes(tags.Select(e => new NodeId(e)).ToArray());
+                if (res != null)
+                {
+                    result = true;
+                    return res.Select(e => e.Value).ToList();
+                }
+                else
+                {
+                    result = false;
+                    return null;
+                }
+            }
+            else
+            {
+                result = false;
                 return null;
             }
         }
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="timeOut"></param>
+        ///// <param name="paras"></param>
+        ///// <returns></returns>
+        //protected override object SendInner(string key, object data, int timeOut, object[] paras)
+        //{
+        //    try
+        //    {
+        //        if (mClient != null && mClient.Connected)
+        //        {
+        //            if (paras.Length > 0)
+        //            {
+        //                mClient.WriteNode(key, data);
+        //                return true;
+        //            }
+        //            else
+        //            {
+        //                var tags = data as IEnumerable<string>;
+        //                var res = mClient.ReadNodes(tags.Select(e => new NodeId(e)).ToArray());
+        //                if (res != null)
+        //                    return res.Select(e => e.Value).ToList();
+        //                else
+        //                {
+        //                    return null;
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return null;
+        //    }
+        //}
 
         /// <summary>
         /// 

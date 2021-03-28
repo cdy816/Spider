@@ -352,8 +352,8 @@ namespace Cdy.Spider
     public enum PortCheckType
     {
         None,
-        Even,
         Odd,
+        Even,
         Mark,
         Space
     }
@@ -410,7 +410,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public int Stop { get; set; }
+        public StopBits StopBits { get; set; }
 
         /// <summary>
         /// 使能流控制
@@ -446,7 +446,7 @@ namespace Cdy.Spider
             re.SetAttributeValue("PortName", PortName);
             re.SetAttributeValue("BandRate", BandRate);
             re.SetAttributeValue("DataSize", DataSize);
-            re.SetAttributeValue("Stop", Stop);
+            re.SetAttributeValue("StopBits", (int)StopBits);
             re.SetAttributeValue("Check", (int)Check);
             re.SetAttributeValue("EnableStreamControl", EnableStreamControl);
             re.SetAttributeValue("StreamControl", (int)StreamControl);
@@ -473,17 +473,13 @@ namespace Cdy.Spider
             {
                 this.DataSize = int.Parse(xe.Attribute("DataSize").Value);
             }
-            if (xe.Attribute("Stop") != null)
+            if (xe.Attribute("StopBits") != null)
             {
-                this.Stop = int.Parse(xe.Attribute("Stop").Value);
+                this.StopBits = (StopBits) int.Parse(xe.Attribute("StopBits").Value);
             }
             if (xe.Attribute("Check") != null)
             {
                 this.Check = (PortCheckType) int.Parse(xe.Attribute("Check").Value);
-            }
-            if (xe.Attribute("Stop") != null)
-            {
-                this.Stop = int.Parse(xe.Attribute("Stop").Value);
             }
             if (xe.Attribute("EnableStreamControl") != null)
             {
@@ -509,6 +505,27 @@ namespace Cdy.Spider
         #region ... Interfaces ...
 
         #endregion ...Interfaces...
+    }
+
+    public enum StopBits
+    {
+        //
+        // 摘要:
+        //     No stop bits are used. This value is not supported by the System.IO.Ports.SerialPort.StopBits
+        //     property.
+        None,
+        //
+        // 摘要:
+        //     One stop bit is used.
+        One,
+        //
+        // 摘要:
+        //     Two stop bits are used.
+        Two,
+        //
+        // 摘要:
+        //     1.5 stop bits are used.
+        OnePointFive
     }
 
 

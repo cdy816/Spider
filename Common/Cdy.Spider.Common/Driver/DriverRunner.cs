@@ -319,12 +319,114 @@ namespace Cdy.Spider
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected object SendObject(string key,object value)
+        {
+            object re = null;
+            if (!mComm.IsConnected) return null;
+            var tre = mComm.Take();
+            if(tre)
+            {
+                try
+                {
+                    re = mComm.SendObject(key, value);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return re;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected byte[] SendObject(string key, Span<byte> value)
+        {
+            byte[] re = null;
+            if (!mComm.IsConnected) return null;
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    re = mComm.SendObject(key, value);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return re;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected bool SendObjectAsync(string key, object value)
+        {
+            if (!mComm.IsConnected) return false;
+
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    mComm.SendObjectAsync(key,value);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return tre;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected bool SendObjectAsync(string key, Span<byte> value)
+        {
+            if (!mComm.IsConnected) return false;
+
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    mComm.SendObjectAsync(key, value);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return tre;
+        }
+
+        /// <summary>
         /// 发送数据
         /// </summary>
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected byte[] SendData(string key,byte[] data,int start,int len)
+        protected byte[] SendData(Span<byte> data)
         {
             byte[] re = null;
             if (!mComm.IsConnected) return null;
@@ -334,7 +436,7 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    re = mComm.SendAndWait(data, start, len, key);
+                    re = mComm.Send(data);
                 }
                 finally
                 {
@@ -345,12 +447,66 @@ namespace Cdy.Spider
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="waitresultcount"></param>
+        /// <returns></returns>
+        protected byte[] SendData(Span<byte> data,int waitresultcount)
+        {
+            byte[] re = null;
+            if (!mComm.IsConnected) return null;
+            var tre = mComm.Take();
+
+            if (tre)
+            {
+                try
+                {
+                    re = mComm.Send(data,waitresultcount);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="startByte"></param>
+        /// <param name="endByte"></param>
+        /// <returns></returns>
+        protected byte[] SendData(Span<byte> data, byte startByte,byte endByte)
+        {
+            byte[] re = null;
+            if (!mComm.IsConnected) return null;
+            var tre = mComm.Take();
+
+            if (tre)
+            {
+                try
+                {
+                    re = mComm.Send(data, startByte,endByte);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return re;
+        }
+
+
+        /// <summary>
         /// 异步发送数据
         /// </summary>
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected bool SendDataAsync(string key,byte[] data,int start,int len)
+        protected bool SendDataAsync(Span<byte> data)
         {
             if (!mComm.IsConnected) return false;
 
@@ -359,7 +515,7 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    mComm.SendAsync(data, start, len, key);
+                    mComm.SendAsync(data);
                 }
                 finally
                 {
@@ -368,6 +524,57 @@ namespace Cdy.Spider
             }
             return tre;
         }
+
+        ///// <summary>
+        ///// 发送数据
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <returns></returns>
+        //protected byte[] SendData(string key,byte[] data,int start,int len)
+        //{
+        //    byte[] re = null;
+        //    if (!mComm.IsConnected) return null;
+        //    var tre = mComm.Take();
+
+        //    if (tre)
+        //    {
+        //        try
+        //        {
+        //            re = mComm.SendAndWait(data, start, len,1000, key);
+        //        }
+        //        finally
+        //        {
+        //            mComm.Release();
+        //        }
+        //    }
+        //    return re;
+        //}
+
+        ///// <summary>
+        ///// 异步发送数据
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <returns></returns>
+        //protected bool SendDataAsync(string key,byte[] data,int start,int len)
+        //{
+        //    if (!mComm.IsConnected) return false;
+
+        //    var tre = mComm.Take();
+        //    if (tre)
+        //    {
+        //        try
+        //        {
+        //            mComm.SendAsync(data, start, len,1000, key);
+        //        }
+        //        finally
+        //        {
+        //            mComm.Release();
+        //        }
+        //    }
+        //    return tre;
+        //}
 
         /// <summary>
         /// 

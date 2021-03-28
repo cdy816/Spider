@@ -240,8 +240,8 @@ namespace Cdy.Spider
             sb.Length = sb.Length - 1;
             sb.Append("]}");
 
-            var bdata = Encoding.UTF8.GetBytes(sb.ToString());
-            var res = SendData(this.Device.Name, bdata, 0, bdata.Length);
+            var bdata = Encoding.UTF8.GetBytes(sb.ToString()).AsSpan<byte>();
+            var res = SendObject(this.Device.Name, bdata);
 
             if(res!=null && res.Length>0)
             {
@@ -432,7 +432,7 @@ namespace Cdy.Spider
             var bvals = ArrayPool<byte>.Shared.Rent(val.Length + 1);
             bvals[0] = valueType;
             val.CopyTo(bvals, 1);
-            SendData(sname, bvals, 0, bvals.Length);
+            SendObjectAsync(sname, bvals.AsSpan<byte>());
             ArrayPool<byte>.Shared.Return(bvals);
         }
 

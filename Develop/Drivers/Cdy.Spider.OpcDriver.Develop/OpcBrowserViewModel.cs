@@ -220,7 +220,14 @@ namespace Cdy.Spider.OpcDriver.Develop
 
                         if (!mClient.IsConnected)
                         {
-                            mClient.ConnectServer(ServerAddress).Wait();
+                            try
+                            {
+                                mClient.ConnectServer(ServerAddress).Wait();
+                            }
+                            catch
+                            {
+                                Message = "Connect failed!";
+                            }
                         }
                         else
                         {

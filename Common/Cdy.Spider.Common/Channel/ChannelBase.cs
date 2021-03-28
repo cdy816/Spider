@@ -98,6 +98,11 @@ namespace Cdy.Spider
         /// </summary>
         public bool IsConnected => mIsConnected;
 
+
+        protected byte? mStartByte;
+
+        protected byte? mEndByte;
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -232,57 +237,213 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public object SendAndWait(string key, object data, params object[] paras)
+        /// <param name="startByte"></param>
+        /// <param name="endByte"></param>
+        public void RegistorPackageKeyByte(byte startByte, byte endByte)
         {
-            return SendInner(key, data, Data.DataSendTimeout, paras);
+            mStartByte = startByte;
+            mEndByte = endByte;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="timeOut"></param>
-        /// <returns></returns>
-        protected virtual object SendInner(string key,object data,int timeOut,object[] paras)
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public byte[] SendAndWait(byte[] data,int start,int len, params string[] paras)
-        {
-            return SendAndWait(data,start,len, Data.DataSendTimeout,paras);
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
         /// <param name="data"></param>
         /// <param name="timeout"></param>
+        /// <param name="waitResultCount"></param>
         /// <returns></returns>
-        public  byte[] SendAndWait(byte[] data, int start, int len, int timeout, params string[] paras)
+        public byte[] Send(Span<byte> data, int waitResultCount)
         {
             byte[] redata = null;
             bool re = false;
-            redata = SendInner(data,start,len, timeout, out re,paras);
+            redata = SendInner(data, Data.DataSendTimeout, waitResultCount, out re);
             if (!re)
             {
                 int count = 0;
                 while (!re && count < Data.ReTryCount)
                 {
                     Thread.Sleep(Data.ReTryDuration);
-                    redata = SendInner(data, start, len, timeout, out re,paras);
+                    redata = SendInner(data, Data.DataSendTimeout, waitResultCount, out re);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
+            return redata;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="timeount"></param>
+        /// <param name="waitResultCount"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected virtual byte[] SendInner(Span<byte> data,int timeount,int waitResultCount,out bool result)
+        {
+            result = false;
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="waitPackageStartByte"></param>
+        /// <param name="waitPackageEndByte"></param>
+        /// <returns></returns>
+        public byte[] Send(Span<byte> data, byte waitPackageStartByte, byte waitPackageEndByte)
+        {
+            byte[] redata = null;
+            bool re = false;
+            redata = SendInner(data, Data.DataSendTimeout, waitPackageStartByte, waitPackageEndByte, out re);
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    redata = SendInner(data, Data.DataSendTimeout, waitPackageStartByte, waitPackageEndByte, out re);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
+            return redata;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="timeount"></param>
+        /// <param name="waitPackageStartByte"></param>
+        /// <param name="waitPackageEndByte"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected virtual byte[] SendInner(Span<byte> data, int timeount, byte waitPackageStartByte, byte waitPackageEndByte, out bool result)
+        {
+            result = false;
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public byte[] Send(Span<byte> data)
+        {
+            byte[] redata = null;
+            bool re = false;
+            redata = SendInner(data, Data.DataSendTimeout,out re);
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    redata = SendInner(data, Data.DataSendTimeout, out re);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
+            return redata;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected virtual byte[] SendInner(Span<byte> data,int timeout, out bool result)
+        {
+            result = false;
+            return null;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool SendAsync(Span<byte> data)
+        {
+            bool re = false;
+            re = SendInnerAsync(data);
+
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    re = SendInnerAsync(data);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected  virtual bool SendInnerAsync(Span<byte> data)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public object SendObject(string key, object value)
+        {
+            object redata = null;
+            bool re = false;
+            redata = SendObjectInner(key,value, Data.DataSendTimeout, out re);
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    redata = SendObjectInner(key, value, Data.DataSendTimeout, out re);
                     count++;
                 }
                 if (!re && IsConnected)
@@ -301,12 +462,11 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="datas"></param>
+        /// <param name="value"></param>
         /// <param name="timeout"></param>
         /// <param name="result"></param>
-        /// <param name="paras"></param>
         /// <returns></returns>
-        protected virtual byte[] SendInner(Span<byte> datas, int timeout, out bool result, params string[] paras)
+        protected  virtual object SendObjectInner(string key, object value,int timeout,out bool result)
         {
             result = false;
             return null;
@@ -316,91 +476,20 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <param name="result"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        protected virtual byte[] SendInner(byte[] data, int start, int len, int timeout, out bool result, params string[] paras)
-        {
-            result = false;
-            return null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <param name="result"></param>
-        protected virtual void SendInnerAsync(Span<byte> datas, out bool result, params string[] paras)
-        {
-            result = true;
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <param name="start"></param>
-        /// <param name="len"></param>
-        /// <param name="result"></param>
-        /// <param name="paras"></param>
-        protected virtual void SendInnerAsync(byte[] data, int start, int len, out bool result, params string[] paras)
-        {
-            result = true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="data"></param>
-        public void SendAsync(byte[] data, int start, int len, params string[] paras)
-        {
-            bool re=false;
-            SendInnerAsync(data,start,len,out re,paras);
-
-            if(!re)
-            {
-                int count = 0;
-                while (!re && count<Data.ReTryCount)
-                {
-                    Thread.Sleep(Data.ReTryDuration);
-                    SendInnerAsync(data,start,len, out re,paras);
-                    count++;
-                }
-                if(!re && IsConnected)
-                {
-                    ConnectedChanged(false);
-                }
-            }
-            else if(!IsConnected)
-            {
-                ConnectedChanged(true);
-            }
-            
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <param name="paras"></param>
-        /// <returns></returns>
-        public byte[] SendAndWait(Span<byte> data, params string[] paras)
+        public byte[] SendObject(string key, Span<byte> value)
         {
             byte[] redata = null;
             bool re = false;
-            redata = SendInner(data,Data.DataSendTimeout, out re,paras);
+            redata = SendObjectInner(key, value, Data.DataSendTimeout, out re);
             if (!re)
             {
                 int count = 0;
                 while (!re && count < Data.ReTryCount)
                 {
                     Thread.Sleep(Data.ReTryDuration);
-                    redata = SendInner(data, Data.DataSendTimeout,  out re, paras);
+                    redata = SendObjectInner(key, value, Data.DataSendTimeout, out re);
                     count++;
                 }
                 if (!re && IsConnected)
@@ -419,20 +508,33 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <param name="paras"></param>
-        public void SendAsync(Span<byte> data, params string[] paras)
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected virtual byte[] SendObjectInner(string key, Span<byte> value, int timeout, out bool result)
         {
-            bool re = false;
-            SendInnerAsync(data, out re, paras);
+            result = false;
+            return null;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public object SendObject(object value)
+        {
+            object redata = null;
+            bool re = false;
+            redata = SendObjectInner(value, Data.DataSendTimeout, out re);
             if (!re)
             {
                 int count = 0;
                 while (!re && count < Data.ReTryCount)
                 {
                     Thread.Sleep(Data.ReTryDuration);
-                    SendInnerAsync(data, out re, paras);
+                    redata = SendObjectInner(value, Data.DataSendTimeout, out re);
                     count++;
                 }
                 if (!re && IsConnected)
@@ -444,7 +546,505 @@ namespace Cdy.Spider
             {
                 ConnectedChanged(true);
             }
+            return redata;
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected virtual object SendObjectInner(object value, int timeout, out bool result)
+        {
+            result = false;
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool SendObjectAsync(string key, object value)
+        {
+            bool re = false;
+            re = SendObjectInnerAsync(key, value);
+
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    re = SendObjectInnerAsync(key, value);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected virtual bool SendObjectInnerAsync(string key,object value)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool SendObjectAsync(string key, Span<byte> value)
+        {
+            bool re = false;
+            re = SendObjectInnerAsync(key, value);
+
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    re = SendObjectInnerAsync(key, value);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual bool SendObjectInnerAsync(string key, Span<byte> value)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool SendObjectAsync(object value)
+        {
+            bool re = false;
+            re = SendObjectInnerAsync(value);
+
+            if (!re)
+            {
+                int count = 0;
+                while (!re && count < Data.ReTryCount)
+                {
+                    Thread.Sleep(Data.ReTryDuration);
+                    re = SendObjectInnerAsync(value);
+                    count++;
+                }
+                if (!re && IsConnected)
+                {
+                    ConnectedChanged(false);
+                }
+            }
+            else if (!IsConnected)
+            {
+                ConnectedChanged(true);
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected virtual bool SendObjectInnerAsync(object value)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public virtual byte[] Receive(int count,int timeout,out int receivecount)
+        {
+            receivecount = 0;
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public virtual byte[] Receive(int count)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Flush()
+        {
+           
+        }
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="data"></param>
+        ///// <returns></returns>
+        //public object SendAndWait(string key, object data, params object[] paras)
+        //{
+        //    return SendInner(key, data, Data.DataSendTimeout, paras);
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="timeOut"></param>
+        ///// <returns></returns>
+        //protected virtual object SendInner(string key,object data,int timeOut,object[] paras)
+        //{
+        //    return null;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <returns></returns>
+        //public byte[] SendAndWait(byte[] data,int start,int len, int waitResultCount, params string[] paras)
+        //{
+        //    return SendAndWait(data,start,len, Data.DataSendTimeout,waitResultCount,paras);
+        //}
+
+
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="timeout"></param>
+        ///// <returns></returns>
+        //public  byte[] SendAndWait(byte[] data, int start, int len, int timeout, int waitResultCount, params string[] paras)
+        //{
+        //    byte[] redata = null;
+        //    bool re = false;
+        //    redata = SendInner(data,start,len, timeout,waitResultCount, out re,paras);
+        //    if (!re)
+        //    {
+        //        int count = 0;
+        //        while (!re && count < Data.ReTryCount)
+        //        {
+        //            Thread.Sleep(Data.ReTryDuration);
+        //            redata = SendInner(data, start, len, timeout,waitResultCount, out re,paras);
+        //            count++;
+        //        }
+        //        if (!re && IsConnected)
+        //        {
+        //            ConnectedChanged(false);
+        //        }
+        //    }
+        //    else if (!IsConnected)
+        //    {
+        //        ConnectedChanged(true);
+        //    }
+        //    return redata;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="start"></param>
+        ///// <param name="len"></param>
+        ///// <param name="timeout"></param>
+        ///// <param name="waitforbyte"></param>
+        ///// <returns></returns>
+        //public byte[] SendAndWait(byte[] data, int start, int len, int timeout, params byte[] waitforbyte)
+        //{
+        //    byte[] redata = null;
+        //    bool re = false;
+        //    redata = SendInner(data, start, len, timeout,  out re, waitforbyte);
+        //    if (!re)
+        //    {
+        //        int count = 0;
+        //        while (!re && count < Data.ReTryCount)
+        //        {
+        //            Thread.Sleep(Data.ReTryDuration);
+        //            redata = SendInner(data, start, len, timeout,  out re, waitforbyte);
+        //            count++;
+        //        }
+        //        if (!re && IsConnected)
+        //        {
+        //            ConnectedChanged(false);
+        //        }
+        //    }
+        //    else if (!IsConnected)
+        //    {
+        //        ConnectedChanged(true);
+        //    }
+        //    return redata;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="start"></param>
+        ///// <param name="len"></param>
+        ///// <param name="timeout"></param>
+        ///// <param name="result"></param>
+        ///// <param name="waitforbyte"></param>
+        ///// <returns></returns>
+        //protected virtual byte[] SendInner(byte[] data, int start, int len, int timeout,  out bool result, params byte[] waitforbyte)
+        //{
+        //    result = false;
+        //    return null;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="datas"></param>
+        ///// <param name="timeout"></param>
+        ///// <param name="waitResultCount"></param>
+        ///// <param name="result"></param>
+        ///// <param name="paras"></param>
+        ///// <returns></returns>
+        //protected virtual byte[] SendInner(Span<byte> datas, int timeout,int waitResultCount, out bool result, params string[] paras)
+        //{
+        //    result = false;
+        //    return null;
+        //}
+
+
+        //protected virtual byte[] SendInner(Span<byte> datas, int timeout,  out bool result, params byte[] waitforbyte)
+        //{
+        //    result = false;
+        //    return null;
+        //}
+
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="result"></param>
+        ///// <returns></returns>
+        //protected virtual byte[] SendInner(byte[] data, int start, int len, int timeout, int waitResultCount, out bool result, params string[] paras)
+        //{
+        //    result = false;
+        //    return null;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="result"></param>
+        //protected virtual void SendInnerAsync(Span<byte> datas, int waitResultCount, out bool result, params string[] paras)
+        //{
+        //    result = true;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="datas"></param>
+        ///// <param name="result"></param>
+        ///// <param name="waitforbyte"></param>
+        //protected virtual void SendInnerAsync(Span<byte> datas,int timecount, out bool result, params byte[] waitforbyte)
+        //{
+        //    result = true;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="start"></param>
+        ///// <param name="len"></param>
+        ///// <param name="result"></param>
+        ///// <param name="paras"></param>
+        //protected virtual void SendInnerAsync(byte[] data, int start, int len, int waitResultCount, out bool result, params string[] paras)
+        //{
+        //    result = true;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        //public void SendAsync(byte[] data, int start, int len, int waitResultCount, params string[] paras)
+        //{
+        //    bool re=false;
+        //    SendInnerAsync(data,start,len,waitResultCount,out re,paras);
+
+        //    if(!re)
+        //    {
+        //        int count = 0;
+        //        while (!re && count<Data.ReTryCount)
+        //        {
+        //            Thread.Sleep(Data.ReTryDuration);
+        //            SendInnerAsync(data,start,len,waitResultCount, out re,paras);
+        //            count++;
+        //        }
+        //        if(!re && IsConnected)
+        //        {
+        //            ConnectedChanged(false);
+        //        }
+        //    }
+        //    else if(!IsConnected)
+        //    {
+        //        ConnectedChanged(true);
+        //    }
+
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="paras"></param>
+        ///// <returns></returns>
+        //public byte[] SendAndWait(Span<byte> data, int waitResultCount, params string[] paras)
+        //{
+        //    byte[] redata = null;
+        //    bool re = false;
+        //    redata = SendInner(data,Data.DataSendTimeout,waitResultCount, out re,paras);
+        //    if (!re)
+        //    {
+        //        int count = 0;
+        //        while (!re && count < Data.ReTryCount)
+        //        {
+        //            Thread.Sleep(Data.ReTryDuration);
+        //            redata = SendInner(data, Data.DataSendTimeout,waitResultCount,  out re, paras);
+        //            count++;
+        //        }
+        //        if (!re && IsConnected)
+        //        {
+        //            ConnectedChanged(false);
+        //        }
+        //    }
+        //    else if (!IsConnected)
+        //    {
+        //        ConnectedChanged(true);
+        //    }
+        //    return redata;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="paras"></param>
+        //public void SendAsync(Span<byte> data, int waitResultCount, params string[] paras)
+        //{
+        //    bool re = false;
+        //    SendInnerAsync(data,waitResultCount, out re, paras);
+
+        //    if (!re)
+        //    {
+        //        int count = 0;
+        //        while (!re && count < Data.ReTryCount)
+        //        {
+        //            Thread.Sleep(Data.ReTryDuration);
+        //            SendInnerAsync(data,waitResultCount, out re, paras);
+        //            count++;
+        //        }
+        //        if (!re && IsConnected)
+        //        {
+        //            ConnectedChanged(false);
+        //        }
+        //    }
+        //    else if (!IsConnected)
+        //    {
+        //        ConnectedChanged(true);
+        //    }
+        //}
+
+
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="timeout"></param>
+        ///// <param name="waitforbyte"></param>
+        ///// <returns></returns>
+        //public byte[] SendAndWait(Span<byte> data, int timeout, params byte[] waitforbyte)
+        //{
+        //    byte[] redata = null;
+        //    bool re = false;
+        //    redata = SendInner(data, Data.DataSendTimeout,  out re, waitforbyte);
+        //    if (!re)
+        //    {
+        //        int count = 0;
+        //        while (!re && count < Data.ReTryCount)
+        //        {
+        //            Thread.Sleep(Data.ReTryDuration);
+        //            redata = SendInner(data, Data.DataSendTimeout,  out re, waitforbyte);
+        //            count++;
+        //        }
+        //        if (!re && IsConnected)
+        //        {
+        //            ConnectedChanged(false);
+        //        }
+        //    }
+        //    else if (!IsConnected)
+        //    {
+        //        ConnectedChanged(true);
+        //    }
+        //    return redata;
+        //}
+
+
 
         /// <summary>
         /// 
@@ -515,6 +1115,7 @@ namespace Cdy.Spider
         {
             mCallBack2.Add(callBack);
         }
+
 
 
 

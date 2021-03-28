@@ -72,7 +72,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="xe"></param>
-        public void LoadFromXML(XElement xe)
+        public virtual void LoadFromXML(XElement xe)
         {
             this.Name = xe.Attribute("Name")?.Value;
             this.ScanCircle = int.Parse(xe.Attribute("ScanCircle")?.Value);

@@ -47,11 +47,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.SystemDriver.Dev
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.MQTTServer.Develop", "Develop\Drivers\Cdy.Spider.MQTTServer.Develop\Cdy.Spider.MQTTServer.Develop.csproj", "{95AF5E21-8F4A-49A0-83A1-56A9F58B3018}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.OpcDriver", "Run\Driver\Cdy.Spider.OpcDriver\Cdy.Spider.OpcDriver.csproj", "{6993576C-D2A6-4A02-BAB6-A48573427039}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.OpcDriver", "Run\Driver\Cdy.Spider.OpcDriver\Cdy.Spider.OpcDriver.csproj", "{6993576C-D2A6-4A02-BAB6-A48573427039}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.OpcDriver.Develop", "Develop\Drivers\Cdy.Spider.OpcDriver.Develop\Cdy.Spider.OpcDriver.Develop.csproj", "{E674CF76-5D70-4271-B408-FC3BDD1B91C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.OpcDriver.Develop", "Develop\Drivers\Cdy.Spider.OpcDriver.Develop\Cdy.Spider.OpcDriver.Develop.csproj", "{E674CF76-5D70-4271-B408-FC3BDD1B91C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.OpcUA.Develop", "Develop\Drivers\Cdy.Spider.OpcUA.Develop\Cdy.Spider.OpcUA.Develop.csproj", "{6BA81678-B872-46E0-BABC-10CF749C1F97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.OpcUA.Develop", "Develop\Drivers\Cdy.Spider.OpcUA.Develop\Cdy.Spider.OpcUA.Develop.csproj", "{6BA81678-B872-46E0-BABC-10CF749C1F97}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.TcpClient", "Run\Driver\Cdy.Spider.TcpClient\Cdy.Spider.TcpClient.csproj", "{D200131B-AF15-4B8A-A1B2-FC50F1EFB8D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.ModbusDriver", "Run\Driver\Cdy.Spider.ModbusDriver\Cdy.Spider.ModbusDriver.csproj", "{EACEBE9B-08CC-42E2-87C0-C9C58624DB64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.UdpClient", "Run\Driver\Cdy.Spider.UdpClient\Cdy.Spider.UdpClient.csproj", "{CFD7858C-F8B8-42E5-BCE1-38EFF116ACFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.SerisePortClient", "Run\Driver\Cdy.Spider.SerisePortClient\Cdy.Spider.SerisePortClient.csproj", "{B718A02D-7DE3-4AD2-A53B-8017B79C19B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +139,22 @@ Global
 		{6BA81678-B872-46E0-BABC-10CF749C1F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BA81678-B872-46E0-BABC-10CF749C1F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BA81678-B872-46E0-BABC-10CF749C1F97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D200131B-AF15-4B8A-A1B2-FC50F1EFB8D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D200131B-AF15-4B8A-A1B2-FC50F1EFB8D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D200131B-AF15-4B8A-A1B2-FC50F1EFB8D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D200131B-AF15-4B8A-A1B2-FC50F1EFB8D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EACEBE9B-08CC-42E2-87C0-C9C58624DB64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EACEBE9B-08CC-42E2-87C0-C9C58624DB64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EACEBE9B-08CC-42E2-87C0-C9C58624DB64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EACEBE9B-08CC-42E2-87C0-C9C58624DB64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFD7858C-F8B8-42E5-BCE1-38EFF116ACFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFD7858C-F8B8-42E5-BCE1-38EFF116ACFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFD7858C-F8B8-42E5-BCE1-38EFF116ACFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFD7858C-F8B8-42E5-BCE1-38EFF116ACFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B718A02D-7DE3-4AD2-A53B-8017B79C19B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B718A02D-7DE3-4AD2-A53B-8017B79C19B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B718A02D-7DE3-4AD2-A53B-8017B79C19B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B718A02D-7DE3-4AD2-A53B-8017B79C19B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,6 +182,10 @@ Global
 		{6993576C-D2A6-4A02-BAB6-A48573427039} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
 		{E674CF76-5D70-4271-B408-FC3BDD1B91C6} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
 		{6BA81678-B872-46E0-BABC-10CF749C1F97} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
+		{D200131B-AF15-4B8A-A1B2-FC50F1EFB8D7} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
+		{EACEBE9B-08CC-42E2-87C0-C9C58624DB64} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
+		{CFD7858C-F8B8-42E5-BCE1-38EFF116ACFF} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
+		{B718A02D-7DE3-4AD2-A53B-8017B79C19B9} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}

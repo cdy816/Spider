@@ -113,63 +113,196 @@ namespace Cdy.Spider
         void RegistorReceiveCallBack(DataReceiveCallBackDelegate2 callBack);
 
         /// <summary>
+        /// 注册数据包起始、结束字符
+        /// </summary>
+        /// <param name="startByte"></param>
+        /// <param name="endByte"></param>
+        void RegistorPackageKeyByte(byte startByte, byte endByte);
+
+        /// <summary>
         /// 通信预处理
         /// </summary>
         /// <param name="deviceInfos"></param>
         void Prepare(List<string> deviceInfos);
 
         /// <summary>
-        /// 发送数据
+        /// 同步发送数据
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="timeout"></param>
+        /// <param name="data">数据内容</param>
+        /// <param name="timeout">发送超时</param>
+        /// <param name="waitResultCount">期待接受数据数量</param>
         /// <returns></returns>
-        byte[] SendAndWait(byte[] data, int start, int len, int timeout, params string[] paras);
-
+        byte[] Send(Span<byte> data, int waitResultCount);
 
         /// <summary>
         /// 同步发送数据
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="start"></param>
-        /// <param name="len"></param>
-        /// <param name="paras"></param>
+        /// <param name="data">数据内容</param>
+        /// <param name="timeout">发送超时</param>
+        /// <param name="waitPackageStartByte">期待接收的数据包头</param>
+        /// <param name="waitPackageEndByte">期待接收的数据包头</param>
         /// <returns></returns>
-        byte[] SendAndWait(byte[] data,int start,int len,params string[] paras);
+        byte[] Send(Span<byte> data,  byte waitPackageStartByte, byte waitPackageEndByte);
 
         /// <summary>
-        /// 
+        /// 同步发送并等待指定时间
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="paras"></param>
         /// <returns></returns>
-        byte[] SendAndWait(Span<byte> data, params string[] paras);
+        byte[] Send(Span<byte> data);
+
 
         /// <summary>
-        /// 
+        /// 异步发送数据
+        /// </summary>
+        /// <param name="data">数据内容</param>
+        /// <returns></returns>
+        bool SendAsync(Span<byte> data);
+
+        /// <summary>
+        /// 发送关键字、对象
+        /// </summary>
+        /// <param name="key">关键Key</param>
+        /// <param name="value">值</param>
+        /// <param name="timeout">超时时间</param>
+        /// <returns></returns>
+        object SendObject(string key, object value);
+
+        /// <summary>
+        /// 发送关键字、字节数组
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <param name="paras"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
-        object SendAndWait(string key, object data, params object[] paras);
+        byte[] SendObject(string key, Span<byte> value);
 
         /// <summary>
-        /// 异步发送数据
+        /// 同步发送对象
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="start"></param>
-        /// <param name="len"></param>
-        /// <param name="paras"></param>
-        void SendAsync(byte[] data, int start, int len, params string[] paras);
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        object SendObject(object value);
+
+
 
         /// <summary>
-        /// 异步发送数据
+        /// 异步通过关键字发送数据
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="paras"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        bool SendObjectAsync(string key, object value);
 
-        void SendAsync(Span<byte> data, params string[] paras);
+        /// <summary>
+        /// 异步通过关键字发送数据
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        bool SendObjectAsync(string key, Span<byte> value);
+
+        /// <summary>
+        /// 异步发送
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        bool SendObjectAsync(object value);
+
+        /// <summary>
+        /// 接收指定数量的数据
+        /// </summary>
+        /// <param name="count">字节数量</param>
+        /// <param name="timecount">超时</param>
+        /// <param name="receivecount">实际接受的数量</param>
+        /// <returns></returns>
+        byte[] Receive(int count,int timecount,out int receivecount);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        byte[] Receive(int count);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void Flush();
+
+        ///// <summary>
+        ///// 发送数据
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="timeout"></param>
+        ///// <returns></returns>
+        //byte[] SendAndWait(byte[] data, int start, int len, int timeout,int waitResultCount, params string[] paras);
+
+
+        ///// <summary>
+        ///// 同步发送数据
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="start"></param>
+        ///// <param name="len"></param>
+        ///// <param name="paras"></param>
+        ///// <returns></returns>
+        //byte[] SendAndWait(byte[] data,int start,int len, int waitResultCount, params string[] paras);
+
+        ///// <summary>
+        ///// 同步发送数据
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="start"></param>
+        ///// <param name="len"></param>
+        ///// <param name="timeout"></param>
+        ///// <param name="waitforbyte"></param>
+        ///// <returns></returns>
+        //byte[] SendAndWait(byte[] data, int start, int len, int timeout,params byte[] waitforbyte);
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="paras"></param>
+        ///// <returns></returns>
+        //byte[] SendAndWait(Span<byte> data, int waitResultCount, params string[] paras);
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="waitforbyte"></param>
+        ///// <returns></returns>
+        //byte[] SendAndWait(Span<byte> data,int timeout,params byte[] waitforbyte);
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="data"></param>
+        ///// <param name="paras"></param>
+        ///// <returns></returns>
+        //object SendAndWait(string key, object data, params object[] paras);
+
+        ///// <summary>
+        ///// 异步发送数据
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="start"></param>
+        ///// <param name="len"></param>
+        ///// <param name="paras"></param>
+        //void SendAsync(byte[] data, int start, int len, int waitResultCount, params string[] paras);
+
+        ///// <summary>
+        ///// 异步发送数据
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="paras"></param>
+
+        //void SendAsync(Span<byte> data, int waitResultCount, params string[] paras);
 
         /// <summary>
         /// 获取控制权限
