@@ -31,6 +31,8 @@ namespace Cdy.Spider
 
         private ManualResetEvent mTakeEvent;
 
+        protected bool mIsTransparentRead=false;
+
         private int mOpenCount = 0;
 
         private bool mIsOpened = false;
@@ -102,6 +104,18 @@ namespace Cdy.Spider
         protected byte? mStartByte;
 
         protected byte? mEndByte;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual string RemoteDescription
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
+
 
         #endregion ...Properties...
 
@@ -180,6 +194,15 @@ namespace Cdy.Spider
                 LoggerService.Service.Info("Channel", "Open channel " + this.Name+" failed."+ex.Message);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="enable"></param>
+        public void EnableTransparentRead(bool enable)
+        {
+            mIsTransparentRead = enable;
         }
 
         /// <summary>
@@ -695,6 +718,17 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public virtual bool Write(byte[] buffer, int offset, int len)
+        {
+            return true;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="count"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
@@ -714,6 +748,19 @@ namespace Cdy.Spider
             return null;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public virtual int Read(byte[] buffer, int offset, int len)
+        {
+            return 0;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -722,327 +769,7 @@ namespace Cdy.Spider
            
         }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="data"></param>
-        ///// <returns></returns>
-        //public object SendAndWait(string key, object data, params object[] paras)
-        //{
-        //    return SendInner(key, data, Data.DataSendTimeout, paras);
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="timeOut"></param>
-        ///// <returns></returns>
-        //protected virtual object SendInner(string key,object data,int timeOut,object[] paras)
-        //{
-        //    return null;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <returns></returns>
-        //public byte[] SendAndWait(byte[] data,int start,int len, int waitResultCount, params string[] paras)
-        //{
-        //    return SendAndWait(data,start,len, Data.DataSendTimeout,waitResultCount,paras);
-        //}
-
-
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="timeout"></param>
-        ///// <returns></returns>
-        //public  byte[] SendAndWait(byte[] data, int start, int len, int timeout, int waitResultCount, params string[] paras)
-        //{
-        //    byte[] redata = null;
-        //    bool re = false;
-        //    redata = SendInner(data,start,len, timeout,waitResultCount, out re,paras);
-        //    if (!re)
-        //    {
-        //        int count = 0;
-        //        while (!re && count < Data.ReTryCount)
-        //        {
-        //            Thread.Sleep(Data.ReTryDuration);
-        //            redata = SendInner(data, start, len, timeout,waitResultCount, out re,paras);
-        //            count++;
-        //        }
-        //        if (!re && IsConnected)
-        //        {
-        //            ConnectedChanged(false);
-        //        }
-        //    }
-        //    else if (!IsConnected)
-        //    {
-        //        ConnectedChanged(true);
-        //    }
-        //    return redata;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="start"></param>
-        ///// <param name="len"></param>
-        ///// <param name="timeout"></param>
-        ///// <param name="waitforbyte"></param>
-        ///// <returns></returns>
-        //public byte[] SendAndWait(byte[] data, int start, int len, int timeout, params byte[] waitforbyte)
-        //{
-        //    byte[] redata = null;
-        //    bool re = false;
-        //    redata = SendInner(data, start, len, timeout,  out re, waitforbyte);
-        //    if (!re)
-        //    {
-        //        int count = 0;
-        //        while (!re && count < Data.ReTryCount)
-        //        {
-        //            Thread.Sleep(Data.ReTryDuration);
-        //            redata = SendInner(data, start, len, timeout,  out re, waitforbyte);
-        //            count++;
-        //        }
-        //        if (!re && IsConnected)
-        //        {
-        //            ConnectedChanged(false);
-        //        }
-        //    }
-        //    else if (!IsConnected)
-        //    {
-        //        ConnectedChanged(true);
-        //    }
-        //    return redata;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="start"></param>
-        ///// <param name="len"></param>
-        ///// <param name="timeout"></param>
-        ///// <param name="result"></param>
-        ///// <param name="waitforbyte"></param>
-        ///// <returns></returns>
-        //protected virtual byte[] SendInner(byte[] data, int start, int len, int timeout,  out bool result, params byte[] waitforbyte)
-        //{
-        //    result = false;
-        //    return null;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="datas"></param>
-        ///// <param name="timeout"></param>
-        ///// <param name="waitResultCount"></param>
-        ///// <param name="result"></param>
-        ///// <param name="paras"></param>
-        ///// <returns></returns>
-        //protected virtual byte[] SendInner(Span<byte> datas, int timeout,int waitResultCount, out bool result, params string[] paras)
-        //{
-        //    result = false;
-        //    return null;
-        //}
-
-
-        //protected virtual byte[] SendInner(Span<byte> datas, int timeout,  out bool result, params byte[] waitforbyte)
-        //{
-        //    result = false;
-        //    return null;
-        //}
-
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="result"></param>
-        ///// <returns></returns>
-        //protected virtual byte[] SendInner(byte[] data, int start, int len, int timeout, int waitResultCount, out bool result, params string[] paras)
-        //{
-        //    result = false;
-        //    return null;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="result"></param>
-        //protected virtual void SendInnerAsync(Span<byte> datas, int waitResultCount, out bool result, params string[] paras)
-        //{
-        //    result = true;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="datas"></param>
-        ///// <param name="result"></param>
-        ///// <param name="waitforbyte"></param>
-        //protected virtual void SendInnerAsync(Span<byte> datas,int timecount, out bool result, params byte[] waitforbyte)
-        //{
-        //    result = true;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="start"></param>
-        ///// <param name="len"></param>
-        ///// <param name="result"></param>
-        ///// <param name="paras"></param>
-        //protected virtual void SendInnerAsync(byte[] data, int start, int len, int waitResultCount, out bool result, params string[] paras)
-        //{
-        //    result = true;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        //public void SendAsync(byte[] data, int start, int len, int waitResultCount, params string[] paras)
-        //{
-        //    bool re=false;
-        //    SendInnerAsync(data,start,len,waitResultCount,out re,paras);
-
-        //    if(!re)
-        //    {
-        //        int count = 0;
-        //        while (!re && count<Data.ReTryCount)
-        //        {
-        //            Thread.Sleep(Data.ReTryDuration);
-        //            SendInnerAsync(data,start,len,waitResultCount, out re,paras);
-        //            count++;
-        //        }
-        //        if(!re && IsConnected)
-        //        {
-        //            ConnectedChanged(false);
-        //        }
-        //    }
-        //    else if(!IsConnected)
-        //    {
-        //        ConnectedChanged(true);
-        //    }
-
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="paras"></param>
-        ///// <returns></returns>
-        //public byte[] SendAndWait(Span<byte> data, int waitResultCount, params string[] paras)
-        //{
-        //    byte[] redata = null;
-        //    bool re = false;
-        //    redata = SendInner(data,Data.DataSendTimeout,waitResultCount, out re,paras);
-        //    if (!re)
-        //    {
-        //        int count = 0;
-        //        while (!re && count < Data.ReTryCount)
-        //        {
-        //            Thread.Sleep(Data.ReTryDuration);
-        //            redata = SendInner(data, Data.DataSendTimeout,waitResultCount,  out re, paras);
-        //            count++;
-        //        }
-        //        if (!re && IsConnected)
-        //        {
-        //            ConnectedChanged(false);
-        //        }
-        //    }
-        //    else if (!IsConnected)
-        //    {
-        //        ConnectedChanged(true);
-        //    }
-        //    return redata;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="paras"></param>
-        //public void SendAsync(Span<byte> data, int waitResultCount, params string[] paras)
-        //{
-        //    bool re = false;
-        //    SendInnerAsync(data,waitResultCount, out re, paras);
-
-        //    if (!re)
-        //    {
-        //        int count = 0;
-        //        while (!re && count < Data.ReTryCount)
-        //        {
-        //            Thread.Sleep(Data.ReTryDuration);
-        //            SendInnerAsync(data,waitResultCount, out re, paras);
-        //            count++;
-        //        }
-        //        if (!re && IsConnected)
-        //        {
-        //            ConnectedChanged(false);
-        //        }
-        //    }
-        //    else if (!IsConnected)
-        //    {
-        //        ConnectedChanged(true);
-        //    }
-        //}
-
-
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="timeout"></param>
-        ///// <param name="waitforbyte"></param>
-        ///// <returns></returns>
-        //public byte[] SendAndWait(Span<byte> data, int timeout, params byte[] waitforbyte)
-        //{
-        //    byte[] redata = null;
-        //    bool re = false;
-        //    redata = SendInner(data, Data.DataSendTimeout,  out re, waitforbyte);
-        //    if (!re)
-        //    {
-        //        int count = 0;
-        //        while (!re && count < Data.ReTryCount)
-        //        {
-        //            Thread.Sleep(Data.ReTryDuration);
-        //            redata = SendInner(data, Data.DataSendTimeout,  out re, waitforbyte);
-        //            count++;
-        //        }
-        //        if (!re && IsConnected)
-        //        {
-        //            ConnectedChanged(false);
-        //        }
-        //    }
-        //    else if (!IsConnected)
-        //    {
-        //        ConnectedChanged(true);
-        //    }
-        //    return redata;
-        //}
+        
 
 
 
@@ -1114,6 +841,14 @@ namespace Cdy.Spider
         public void RegistorReceiveCallBack(ICommChannel.DataReceiveCallBackDelegate2 callBack)
         {
             mCallBack2.Add(callBack);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Dispose()
+        {
+
         }
 
 

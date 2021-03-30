@@ -1,11 +1,12 @@
 ﻿namespace Modbus.IO
 {
+    using Cdy.Spider;
     using System.Linq;
     using System.Text;
 
     internal static class StreamResourceUtility
     {
-        internal static string ReadLine(IStreamResource stream)
+        internal static string ReadLine(ICommChannel stream)
         {
             var result = new StringBuilder();
             var singleByteBuffer = new byte[1];

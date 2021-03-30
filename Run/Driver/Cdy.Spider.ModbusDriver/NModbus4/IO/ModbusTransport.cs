@@ -4,7 +4,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
-
+    using Cdy.Spider;
     using Message;
 
     using Unme.Common;
@@ -18,7 +18,7 @@
         private readonly object _syncLock = new object();
         private int _retries = Modbus.DefaultRetries;
         private int _waitToRetryMilliseconds = Modbus.DefaultWaitToRetryMilliseconds;
-        private IStreamResource _streamResource;
+        private ICommChannel _streamResource;
 
         /// <summary>
         ///     This constructor is called by the NullTransport.
@@ -27,11 +27,13 @@
         {
         }
 
-        internal ModbusTransport(IStreamResource streamResource)
+        internal ModbusTransport(ICommChannel streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");
 
             _streamResource = streamResource;
+            _retries = streamResource.Data.ReTryCount;
+            _waitToRetryMilliseconds = streamResource.Data.ReTryDuration;
         }
 
         /// <summary>
@@ -78,28 +80,28 @@
             }
         }
 
-        /// <summary>
-        ///     Gets or sets the number of milliseconds before a timeout occurs when a read operation does not finish.
-        /// </summary>
-        public int ReadTimeout
-        {
-            get { return StreamResource.ReadTimeout; }
-            set { StreamResource.ReadTimeout = value; }
-        }
+        ///// <summary>
+        /////     Gets or sets the number of milliseconds before a timeout occurs when a read operation does not finish.
+        ///// </summary>
+        //public int ReadTimeout
+        //{
+        //    get { return StreamResource.ReadTimeout; }
+        //    set { StreamResource.ReadTimeout = value; }
+        //}
 
-        /// <summary>
-        ///     Gets or sets the number of milliseconds before a timeout occurs when a write operation does not finish.
-        /// </summary>
-        public int WriteTimeout
-        {
-            get { return StreamResource.WriteTimeout; }
-            set { StreamResource.WriteTimeout = value; }
-        }
+        ///// <summary>
+        /////     Gets or sets the number of milliseconds before a timeout occurs when a write operation does not finish.
+        ///// </summary>
+        //public int WriteTimeout
+        //{
+        //    get { return StreamResource.WriteTimeout; }
+        //    set { StreamResource.WriteTimeout = value; }
+        //}
 
         /// <summary>
         ///     Gets the stream resource.
         /// </summary>
-        internal IStreamResource StreamResource
+        internal ICommChannel StreamResource
         {
             get { return _streamResource; }
         }
@@ -298,7 +300,12 @@
         {
             if (disposing)
             {
-                DisposableUtility.Dispose(ref _streamResource);
+                if (_streamResource != null)
+                {
+                    _streamResource.Dispose();
+                    _streamResource = null;
+                }
+                //DisposableUtility.Dispose(ref _streamResource);
             }
         }
 

@@ -51,6 +51,11 @@ namespace Cdy.Spider.SerisePortClient
         /// </summary>
         public override ChannelData Data => mData;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string RemoteDescription => mData.PortName;
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -138,7 +143,7 @@ namespace Cdy.Spider.SerisePortClient
         {
             while (!mIsClosed)
             {
-                if (mClient != null && mClient.BytesToRead > 0)
+                if (mClient != null && mClient.BytesToRead > 0 && !mIsTransparentRead)
                 {
 
                     var vdlen = mClient.BytesToRead;
@@ -425,6 +430,18 @@ namespace Cdy.Spider.SerisePortClient
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public override int Read(byte[] buffer, int offset, int len)
+        {
+            return mClient.Read(buffer,offset,len);
         }
 
         /// <summary>

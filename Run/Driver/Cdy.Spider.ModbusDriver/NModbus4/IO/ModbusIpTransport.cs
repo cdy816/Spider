@@ -5,7 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Net;
-
+    using Cdy.Spider;
     using Message;
 
     using Unme.Common;
@@ -19,13 +19,13 @@
         private static readonly object _transactionIdLock = new object();
         private ushort _transactionId;
 
-        internal ModbusIpTransport(IStreamResource streamResource)
+        internal ModbusIpTransport(ICommChannel streamResource)
             : base(streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");
         }
 
-        internal static byte[] ReadRequestResponse(IStreamResource streamResource)
+        internal static byte[] ReadRequestResponse(ICommChannel streamResource)
         {
             // read header
             var mbapHeader = new byte[6];

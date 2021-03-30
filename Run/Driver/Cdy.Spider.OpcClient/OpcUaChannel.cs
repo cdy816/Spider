@@ -53,6 +53,11 @@ namespace Cdy.Spider.OpcClient
         /// </summary>
         public override ChannelData Data => mData;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string RemoteDescription => mData.ServerIp+":"+mData.Port;
+
         #endregion ...Properties...
 
         #region ... Methods    ...

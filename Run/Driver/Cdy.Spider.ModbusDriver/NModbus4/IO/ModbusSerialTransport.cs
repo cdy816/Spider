@@ -2,7 +2,7 @@
 {
     using System.Diagnostics;
     using System.IO;
-
+    using Cdy.Spider;
     using Message;
 
     /// <summary>
@@ -13,7 +13,7 @@
     {
         private bool _checkFrame = true;
 
-        internal ModbusSerialTransport(IStreamResource streamResource)
+        internal ModbusSerialTransport(ICommChannel streamResource)
             : base(streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");
@@ -30,7 +30,7 @@
 
         internal void DiscardInBuffer()
         {
-            StreamResource.DiscardInBuffer();
+            StreamResource.Flush();
         }
 
         internal override void Write(IModbusMessage message)

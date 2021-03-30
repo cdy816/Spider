@@ -12,7 +12,7 @@ namespace Cdy.Spider.TcpClient
     {
         #region ... Variables  ...
         
-        public override string TypeName => "TcpClient";
+
 
         private System.Net.Sockets.Socket mClient;
 
@@ -43,6 +43,16 @@ namespace Cdy.Spider.TcpClient
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string TypeName => "TcpClient";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string RemoteDescription => mData.ServerIp+":"+mData.Port;
 
         #endregion ...Properties...
 
@@ -104,7 +114,7 @@ namespace Cdy.Spider.TcpClient
         {
             while (!mIsClosed)
             {
-                if (mClient != null && IsOnline(mClient) && mClient.Available > 0)
+                if (mClient != null && IsOnline(mClient) && mClient.Available > 0 && !mIsTransparentRead)
                 {
 
                     var vdlen = mClient.Available;
@@ -401,6 +411,18 @@ namespace Cdy.Spider.TcpClient
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public override int Read(byte[] buffer, int offset, int len)
+        {
+            return mClient.Receive(buffer, offset, len, SocketFlags.None);
         }
 
         /// <summary>

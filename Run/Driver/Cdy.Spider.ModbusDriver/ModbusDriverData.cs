@@ -55,6 +55,17 @@ namespace Cdy.Spider
         /// </summary>
         public ShortValueFormate ShortFormate { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public StringEncoding StringEncoding { get; set; }
+
+
+        /// <summary>
+        /// 打包长度
+        /// </summary>
+        public ushort PackageLen { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -68,7 +79,12 @@ namespace Cdy.Spider
                 this.Id = int.Parse(xe.Attribute("Id").Value);
             }
 
-            if(xe.Attribute("LongFormate") !=null)
+            if (xe.Attribute("PackageLen") != null)
+            {
+                this.PackageLen = ushort.Parse(xe.Attribute("PackageLen").Value);
+            }
+
+            if (xe.Attribute("LongFormate") !=null)
             {
                 this.LongFormate = (EightValueFormate)(int.Parse(xe.Attribute("LongFormate").Value));
             }
@@ -92,6 +108,11 @@ namespace Cdy.Spider
             {
                 this.ShortFormate = (ShortValueFormate)(int.Parse(xe.Attribute("ShortFormate").Value));
             }
+
+            if (xe.Attribute("StringEncoding") != null)
+            {
+                this.StringEncoding = (StringEncoding)(int.Parse(xe.Attribute("StringEncoding").Value));
+            }
         }
 
         /// <summary>
@@ -102,11 +123,13 @@ namespace Cdy.Spider
         {
             var re = base.SaveToXML();
             re.SetAttributeValue("Id", Id);
+            re.SetAttributeValue("PackageLen", PackageLen);
             re.SetAttributeValue("LongFormate", (int)this.LongFormate);
             re.SetAttributeValue("DoubleFormate", (int)this.DoubleFormate);
             re.SetAttributeValue("IntFormate", (int)this.IntFormate);
             re.SetAttributeValue("FloatFormate", (int)this.FloatFormate);
             re.SetAttributeValue("ShortFormate", (int)this.ShortFormate);
+            re.SetAttributeValue("StringEncoding", (int)this.StringEncoding);
             return re;
         }
 
@@ -116,6 +139,14 @@ namespace Cdy.Spider
 
         #endregion ...Interfaces...
     }
+
+    public enum StringEncoding
+    {
+        Ascii,
+        Utf8,
+        Unicode
+    }
+
 
     /// <summary>
     /// 8字节排序规则

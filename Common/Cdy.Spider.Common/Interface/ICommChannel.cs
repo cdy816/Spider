@@ -16,7 +16,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 通信通道
     /// </summary>
-    public interface ICommChannel
+    public interface ICommChannel:IDisposable
     {
 
         #region ... Variables  ...
@@ -78,6 +78,11 @@ namespace Cdy.Spider
         /// 是否连接上
         /// </summary>
         bool IsConnected { get; }
+
+        /// <summary>
+        /// 目标信息描述
+        /// </summary>
+        string RemoteDescription { get; }
 
         #endregion ...Properties...
 
@@ -221,88 +226,40 @@ namespace Cdy.Spider
         byte[] Receive(int count,int timecount,out int receivecount);
 
         /// <summary>
-        /// 
+        /// 接收指定数量的数据
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
         byte[] Receive(int count);
 
         /// <summary>
+        /// 直接发送数据
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        bool Write(byte[] buffer, int offset, int len);
+
+        /// <summary>
+        /// 接收数据
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        int Read(byte[] buffer, int offset, int len);
+
+        /// <summary>
         /// 
         /// </summary>
         void Flush();
 
-        ///// <summary>
-        ///// 发送数据
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="timeout"></param>
-        ///// <returns></returns>
-        //byte[] SendAndWait(byte[] data, int start, int len, int timeout,int waitResultCount, params string[] paras);
-
-
-        ///// <summary>
-        ///// 同步发送数据
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="start"></param>
-        ///// <param name="len"></param>
-        ///// <param name="paras"></param>
-        ///// <returns></returns>
-        //byte[] SendAndWait(byte[] data,int start,int len, int waitResultCount, params string[] paras);
-
-        ///// <summary>
-        ///// 同步发送数据
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="start"></param>
-        ///// <param name="len"></param>
-        ///// <param name="timeout"></param>
-        ///// <param name="waitforbyte"></param>
-        ///// <returns></returns>
-        //byte[] SendAndWait(byte[] data, int start, int len, int timeout,params byte[] waitforbyte);
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="paras"></param>
-        ///// <returns></returns>
-        //byte[] SendAndWait(Span<byte> data, int waitResultCount, params string[] paras);
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="waitforbyte"></param>
-        ///// <returns></returns>
-        //byte[] SendAndWait(Span<byte> data,int timeout,params byte[] waitforbyte);
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="paras"></param>
-        ///// <returns></returns>
-        //object SendAndWait(string key, object data, params object[] paras);
-
-        ///// <summary>
-        ///// 异步发送数据
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="start"></param>
-        ///// <param name="len"></param>
-        ///// <param name="paras"></param>
-        //void SendAsync(byte[] data, int start, int len, int waitResultCount, params string[] paras);
-
-        ///// <summary>
-        ///// 异步发送数据
-        ///// </summary>
-        ///// <param name="data"></param>
-        ///// <param name="paras"></param>
-
-        //void SendAsync(Span<byte> data, int waitResultCount, params string[] paras);
+        /// <summary>
+        /// 使能透明读写
+        /// </summary>
+        /// <param name="enable"></param>
+        void EnableTransparentRead(bool enable);
 
         /// <summary>
         /// 获取控制权限

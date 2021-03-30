@@ -81,8 +81,10 @@ namespace Cdy.Spider
         public override void WriteValue(string deviceInfo, object value, byte valueType)
         {
             //mComm.SendAndWait(deviceInfo, value, 1);
+            mComm.Take();
             mComm.SendObject(deviceInfo, value);
             base.WriteValue(deviceInfo, value, valueType);
+            mComm.Release();
         }
 
         /// <summary>
@@ -114,6 +116,7 @@ namespace Cdy.Spider
         /// <param name="tags"></param>
         private void SendGroupTags(List<string> tags)
         {
+            mComm.Take();
             //var result = mComm.SendAndWait("", tags);
             var result = mComm.SendObject(tags);
             if(result!=null)
@@ -129,6 +132,7 @@ namespace Cdy.Spider
                     }
                 }
             }
+            mComm.Release();
         }
 
         /// <summary>

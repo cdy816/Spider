@@ -49,6 +49,8 @@ namespace Cdy.Spider
         public override string TypeName => "UdpClient";
 
 
+        public override string RemoteDescription => mData.ServerIp + ":" + mData.Port;
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -99,7 +101,7 @@ namespace Cdy.Spider
             var rp = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
             while (!mIsClosed)
             {
-                if (mClient != null && mClient.Client.Available > 0)
+                if (mClient != null && mClient.Client.Available > 0 && !mIsTransparentRead)
                 {
                     var vdata = mClient.Receive(ref rp);
                     if (mForSyncCall)
@@ -373,8 +375,19 @@ namespace Cdy.Spider
             byte[] bval=null;
             if(mClient!=null)
             bval = CopyReceiveBufferData(count);
-
             return bval;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public override int Read(byte[] buffer, int offset, int len)
+        {
+            return mClient.Client.Receive(buffer, offset, len, SocketFlags.None);
         }
 
 

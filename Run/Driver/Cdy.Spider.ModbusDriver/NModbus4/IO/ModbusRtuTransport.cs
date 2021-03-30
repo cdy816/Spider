@@ -4,7 +4,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-
+    using Cdy.Spider;
     using Message;
     using Utility;
 
@@ -17,7 +17,7 @@
 
         public const int ResponseFrameStartLength = 4;
 
-        internal ModbusRtuTransport(IStreamResource streamResource)
+        internal ModbusRtuTransport(ICommChannel streamResource)
             : base(streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");

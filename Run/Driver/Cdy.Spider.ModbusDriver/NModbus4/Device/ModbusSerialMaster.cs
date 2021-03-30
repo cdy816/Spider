@@ -6,7 +6,7 @@
     using System.IO.Ports;
 #endif
     using System.Net.Sockets;
-
+    using Cdy.Spider;
     using Data;
     using IO;
     using Message;
@@ -45,41 +45,41 @@
         }
 #endif
 
+        ///// <summary>
+        /////     Modbus ASCII master factory method.
+        ///// </summary>
+        //public static ModbusSerialMaster CreateAscii(TcpClient tcpClient)
+        //{
+        //    if (tcpClient == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(tcpClient));
+        //    }
+
+        //    return CreateAscii(new TcpClientAdapter(tcpClient));
+        //}
+
+        ///// <summary>
+        /////     Modbus ASCII master factory method.
+        ///// </summary>
+        //public static ModbusSerialMaster CreateAscii(UdpClient udpClient)
+        //{
+        //    if (udpClient == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(udpClient));
+        //    }
+
+        //    if (!udpClient.Client.Connected)
+        //    {
+        //        throw new InvalidOperationException(Resources.UdpClientNotConnected);
+        //    }
+
+        //    return CreateAscii(new UdpClientAdapter(udpClient));
+        //}
+
         /// <summary>
         ///     Modbus ASCII master factory method.
         /// </summary>
-        public static ModbusSerialMaster CreateAscii(TcpClient tcpClient)
-        {
-            if (tcpClient == null)
-            {
-                throw new ArgumentNullException(nameof(tcpClient));
-            }
-
-            return CreateAscii(new TcpClientAdapter(tcpClient));
-        }
-
-        /// <summary>
-        ///     Modbus ASCII master factory method.
-        /// </summary>
-        public static ModbusSerialMaster CreateAscii(UdpClient udpClient)
-        {
-            if (udpClient == null)
-            {
-                throw new ArgumentNullException(nameof(udpClient));
-            }
-
-            if (!udpClient.Client.Connected)
-            {
-                throw new InvalidOperationException(Resources.UdpClientNotConnected);
-            }
-
-            return CreateAscii(new UdpClientAdapter(udpClient));
-        }
-
-        /// <summary>
-        ///     Modbus ASCII master factory method.
-        /// </summary>
-        public static ModbusSerialMaster CreateAscii(IStreamResource streamResource)
+        public static ModbusSerialMaster CreateAscii(ICommChannel streamResource)
         {
             if (streamResource == null)
             {
@@ -104,41 +104,41 @@
         }
 #endif
 
+        ///// <summary>
+        /////     Modbus RTU master factory method.
+        ///// </summary>
+        //public static ModbusSerialMaster CreateRtu(TcpClient tcpClient)
+        //{
+        //    if (tcpClient == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(tcpClient));
+        //    }
+
+        //    return CreateRtu(new TcpClientAdapter(tcpClient));
+        //}
+
+        ///// <summary>
+        /////     Modbus RTU master factory method.
+        ///// </summary>
+        //public static ModbusSerialMaster CreateRtu(UdpClient udpClient)
+        //{
+        //    if (udpClient == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(udpClient));
+        //    }
+
+        //    if (!udpClient.Client.Connected)
+        //    {
+        //        throw new InvalidOperationException(Resources.UdpClientNotConnected);
+        //    }
+
+        //    return CreateRtu(new UdpClientAdapter(udpClient));
+        //}
+
         /// <summary>
         ///     Modbus RTU master factory method.
         /// </summary>
-        public static ModbusSerialMaster CreateRtu(TcpClient tcpClient)
-        {
-            if (tcpClient == null)
-            {
-                throw new ArgumentNullException(nameof(tcpClient));
-            }
-
-            return CreateRtu(new TcpClientAdapter(tcpClient));
-        }
-
-        /// <summary>
-        ///     Modbus RTU master factory method.
-        /// </summary>
-        public static ModbusSerialMaster CreateRtu(UdpClient udpClient)
-        {
-            if (udpClient == null)
-            {
-                throw new ArgumentNullException(nameof(udpClient));
-            }
-
-            if (!udpClient.Client.Connected)
-            {
-                throw new InvalidOperationException(Resources.UdpClientNotConnected);
-            }
-
-            return CreateRtu(new UdpClientAdapter(udpClient));
-        }
-
-        /// <summary>
-        ///     Modbus RTU master factory method.
-        /// </summary>
-        public static ModbusSerialMaster CreateRtu(IStreamResource streamResource)
+        public static ModbusSerialMaster CreateRtu(ICommChannel streamResource)
         {
             if (streamResource == null)
             {

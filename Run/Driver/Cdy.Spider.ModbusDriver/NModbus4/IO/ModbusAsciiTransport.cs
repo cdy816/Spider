@@ -3,7 +3,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Text;
-
+    using Cdy.Spider;
     using Message;
     using Utility;
 
@@ -12,7 +12,7 @@
     /// </summary>
     internal class ModbusAsciiTransport : ModbusSerialTransport
     {
-        internal ModbusAsciiTransport(IStreamResource streamResource)
+        internal ModbusAsciiTransport(ICommChannel streamResource)
             : base(streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");
