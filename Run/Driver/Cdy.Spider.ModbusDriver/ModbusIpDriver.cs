@@ -1,6 +1,7 @@
 ﻿using Modbus;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
@@ -21,21 +22,29 @@ namespace Cdy.Spider
 
         private SortedDictionary<ushort, List<int>> mCoilStatusTags = new SortedDictionary<ushort, List<int>>();
 
-        private List<ushort> mCoilStatusPackage = new List<ushort>();
+        private Dictionary<ushort,ushort> mCoilStatusPackage = new Dictionary<ushort, ushort>();
 
         /// <summary>
         /// 
         /// </summary>
         private SortedDictionary<ushort, List<int>> mInputStatusTags = new SortedDictionary<ushort, List<int>>();
 
-        private List<ushort> mInputStatusPackage = new List<ushort>();
+        private Dictionary<ushort, ushort> mInputStatusPackage = new Dictionary<ushort, ushort>();
 
         /// <summary>
         /// 
         /// </summary>
-        private SortedDictionary<ushort, List<int>> mInputRegistorTags = new SortedDictionary<ushort, List<int>>();
+        private SortedDictionary<ushort,Tuple<ushort,List<int>>> mInputRegistorTags = new SortedDictionary<ushort, Tuple<ushort, List<int>>>();
 
-        private List<ushort> mInputRegistorPackage = new List<ushort>();
+        private Dictionary<ushort, ushort> mInputRegistorPackage = new Dictionary<ushort, ushort>();
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private SortedDictionary<ushort, Tuple<ushort, List<int>>> mHoldRegistorTags = new SortedDictionary<ushort, Tuple<ushort, List<int>>>();
+
+        private Dictionary<ushort, ushort> mHoldtRegistorPackage = new Dictionary<ushort, ushort>();
 
         #endregion ...Variables...
 
@@ -70,29 +79,131 @@ namespace Cdy.Spider
         {
             base.Init();
 
+            int clen=-1,cstart=-1, ilen=-1,istart=-1, irlen=-1,irstart=-1, hrlen=-1,hrstart=-1;
+
             foreach(var vv in mCachTags)
             {
-                ushort addr = ushort.Parse(vv.Key.Substring(3));
-                if (vv.Key.StartsWith("cs:"))
+                var dtmp = vv.Key.ToLower().Split(new char[] { ':' });
+                ushort addr = ushort.Parse(dtmp[1]);
+
+                if (dtmp[0] ==("cs:"))
                 {
                     //Coil status
+                    if(cstart == -1)
+                    {
+                        cstart = addr;
+                        clen = 1;
+                    }
+                    else
+                    {
+                        if((addr - cstart + 1)>mData.PackageLen)
+                        {
+                            mCoilStatusPackage.Add((ushort)cstart, (ushort)clen);
+                            cstart = -1;
+                        }
+                        else
+                        {
+                            clen = addr - cstart + 1;
+                        }
+                    }
+                    if (!mCoilStatusTags.ContainsKey(addr))
+                    {
+                        mCoilStatusTags.Add(addr,vv.Value);
+                    }
                 }
-                else if (vv.Key.StartsWith("is:"))
+                else if (dtmp[0] == ("is:"))
                 {
                     //Input status
-                    mInputStatusTags.Add(addr, vv.Value);
+                    if (istart == -1)
+                    {
+                        istart = addr;
+                        ilen = 1;
+                    }
+                    else
+                    {
+                        if ((addr - istart + 1) > mData.PackageLen)
+                        {
+                            mInputStatusPackage.Add((ushort)istart, (ushort)ilen);
+                            istart = -1;
+                        }
+                        else
+                        {
+                            ilen = addr - istart + 1;
+                        }
+                    }
+                    if (!mInputStatusTags.ContainsKey(addr))
+                        mInputStatusTags.Add(addr, vv.Value);
 
                 }
-                else if(vv.Key.StartsWith("ir:"))
+                else if(dtmp[0] == ("ir:"))
                 {
+                    ushort len = ushort.Parse(dtmp[2]);
                     //Input registor
 
+                    if (irstart == -1)
+                    {
+                        irstart = addr;
+                        irlen = len;
+                    }
+                    else
+                    {
+                        if ((addr - irstart + len) > mData.PackageLen)
+                        {
+                            mInputRegistorPackage.Add((ushort)irstart, (ushort)irlen);
+                            irstart = -1;
+                        }
+                        else
+                        {
+                            irlen = addr - irstart + len;
+                        }
+                    }
+                    mInputRegistorTags.Add(addr,new Tuple<ushort, List<int>>(len,vv.Value));
+
                 }
-                else if(vv.Key.StartsWith("hr:"))
+                else if(dtmp[0] == ("hr:"))
                 {
                     //holding registor
-                    mInputRegistorTags.Add(addr, vv.Value);
+                    ushort len = ushort.Parse(dtmp[2]);
+
+                    if (hrstart == -1)
+                    {
+                        hrstart = addr;
+                        hrlen = len;
+                    }
+                    else
+                    {
+                        if ((addr - hrstart + len) > mData.PackageLen)
+                        {
+                            mHoldtRegistorPackage.Add((ushort)hrstart, (ushort)hrlen);
+                            hrstart = -1;
+                        }
+                        else
+                        {
+                            hrlen = addr - hrstart + len;
+                        }
+                    }
+                    mHoldRegistorTags.Add(addr, new Tuple<ushort, List<int>>(len, vv.Value));
                 }
+            }
+
+            if(cstart!=-1)
+            {
+                mCoilStatusPackage.Add((ushort)cstart, (ushort)clen);
+            }
+
+            if (istart != -1)
+            {
+                mInputStatusPackage.Add((ushort)istart, (ushort)ilen);
+            }
+
+            if (irstart != -1)
+            {
+                mInputRegistorPackage.Add((ushort)irstart, (ushort)irlen);
+            }
+
+            if (hrstart != -1)
+            {
+                mHoldtRegistorPackage.Add((ushort)hrstart, (ushort)hrlen);
             }
 
             mComm.EnableTransparentRead(true);
@@ -272,6 +383,11 @@ namespace Cdy.Spider
             return ConvertByteToUnshort(btmp, mData.LongFormate);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="networkBytes"></param>
+        /// <returns></returns>
         public static ushort[] BytesToHostUInt16(byte[] networkBytes)
         {
             if (networkBytes == null)
@@ -321,19 +437,217 @@ namespace Cdy.Spider
         private void ProcessRead()
         {
             mComm.Take();
-
             foreach(var vv in mInputStatusPackage)
             {
-                mMaster.ReadInputs((byte)mData.Id,vv, mData.PackageLen);
+                var result = mMaster.ReadInputs((byte)mData.Id,vv.Key, vv.Value);
+                if(result!=null && result.Length == vv.Value)
+                {
+                    for(ushort i=0;i<vv.Value;i++)
+                    {
+                        ushort addr = (ushort)(vv.Key + i);
+                        if(this.mInputStatusTags.ContainsKey(addr))
+                        {
+                            UpdateValue(mInputStatusTags[addr], result[i]);
+                        }
+                    }
+                }
             }
 
-            foreach(var vv in mInputRegistorPackage)
+            foreach (var vv in mCoilStatusPackage)
             {
-                mMaster.ReadInputRegisters((byte)mData.Id, vv, mData.PackageLen);
+                var result = mMaster.ReadCoils((byte)mData.Id, vv.Key, vv.Value);
+
+                if (result != null && result.Length == vv.Value)
+                {
+                    for (ushort i = 0; i < vv.Value; i++)
+                    {
+                        ushort addr = (ushort)(vv.Key + i);
+                        if (this.mCoilStatusTags.ContainsKey(addr))
+                        {
+                            UpdateValue(mCoilStatusTags[addr], result[i]);
+                        }
+                    }
+                }
             }
 
+            foreach (var vv in mInputRegistorPackage)
+            {
+               var result =  mMaster.ReadInputRegisters((byte)mData.Id, vv.Key, vv.Value);
+                if (result != null && result.Length == vv.Value)
+                {
+                    for (ushort i = 0; i < vv.Value; i++)
+                    {
+                        ushort addr = (ushort)(vv.Key + i);
+                        UpdateRegistor(addr,  result, mInputRegistorTags);
+                    }
+                }
+            }
 
+            foreach (var vv in mHoldtRegistorPackage)
+            {
+                var result = mMaster.ReadHoldingRegisters((byte)mData.Id, vv.Key, vv.Value);
+                if (result != null && result.Length == vv.Value)
+                {
+                    for (ushort i = 0; i < vv.Value; i++)
+                    {
+                        ushort addr = (ushort)(vv.Key + i);
+                        UpdateRegistor(addr, result,mHoldRegistorTags);
+                    }
+                }
+            }
             mComm.Release();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="result"></param>
+        /// <param name="mtagcach"></param>
+        private void UpdateRegistor(ushort addr,ushort[] result,SortedDictionary<ushort,Tuple<ushort,List<int>>> mtagcach)
+        {
+            if (mtagcach.ContainsKey(addr))
+            {
+                var vdd = mtagcach[addr];
+                var res = result.AsSpan<ushort>(addr, vdd.Item1);
+
+                var tp = Device.GetTag(vdd.Item2[0]).Type;
+
+                switch (tp)
+                {
+                    case TagType.Bool:
+                    case TagType.Byte:
+                        UpdateValue(vdd.Item2, res[0]);
+                        break;
+                    case TagType.Short:
+                    case TagType.UShort:
+                        UpdateValue(vdd.Item2, res[0]);
+                        break;
+                    case TagType.Int:
+                    case TagType.UInt:
+                        UpdateValue(vdd.Item2, ToUInt(res));
+                        break;
+                    case TagType.Long:
+                    case TagType.ULong:
+                        UpdateValue(vdd.Item2, ToLong(res));
+                        break;
+                    case TagType.Double:
+                        UpdateValue(vdd.Item2, ToDouble(res));
+                        break;
+                    case TagType.Float:
+                        UpdateValue(vdd.Item2, ToFloat(res));
+                        break;
+                    case TagType.String:
+                        UpdateValue(vdd.Item2, ToStringValue(res));
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        public string ToStringValue(Span<ushort> datas)
+        {
+            IEnumerable<byte> bvals=null;
+            foreach(var vv in datas)
+            {
+                if (bvals == null)
+                {
+                    bvals = BitConverter.GetBytes(vv);
+                }
+                else
+                {
+                    bvals = bvals.Concat(BitConverter.GetBytes(vv));
+                }
+            }
+
+            if(bvals!=null)
+            {
+                switch (mData.StringEncoding)
+                {
+                    case StringEncoding.Ascii:
+                        return Encoding.ASCII.GetString(bvals.ToArray());
+                    case StringEncoding.Utf8:
+                        return Encoding.UTF8.GetString(bvals.ToArray());
+                    case StringEncoding.Unicode:
+                        return Encoding.Unicode.GetString(bvals.ToArray());
+                }
+                return Encoding.Default.GetString(bvals.ToArray());
+            }
+            else
+            {
+                return string.Empty;
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        public uint ToUInt(Span<ushort> datas)
+        {
+            switch (mData.IntFormate)
+            {
+                case FourValueFormate.D12:
+                    return Modbus.Utility.ModbusUtility.GetUInt32(datas[0], datas[1]);
+                case FourValueFormate.D21:
+                    return Modbus.Utility.ModbusUtility.GetUInt32(datas[1], datas[0]);
+            }
+            return Modbus.Utility.ModbusUtility.GetUInt32(datas[0], datas[1]);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        public float ToFloat(Span<ushort> datas)
+        {
+            switch (mData.FloatFormate)
+            {
+                case FourValueFormate.D12:
+                    return Modbus.Utility.ModbusUtility.GetSingle(datas[0], datas[1]);
+                case FourValueFormate.D21:
+                    return Modbus.Utility.ModbusUtility.GetSingle(datas[1], datas[0]);
+            }
+            return Modbus.Utility.ModbusUtility.GetSingle(datas[0], datas[1]);
+        }
+
+        public double ToDouble(Span<ushort> datas)
+        {
+            switch (mData.DoubleFormate)
+            {
+                case EightValueFormate.D1234:
+                    return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], datas[3]);
+                case EightValueFormate.D4321:
+                    return Modbus.Utility.ModbusUtility.GetDouble(datas[3], datas[2], datas[1], datas[0]);
+                case EightValueFormate.D2143:
+                    return Modbus.Utility.ModbusUtility.GetDouble(datas[1], datas[0], datas[3], datas[2]);
+                case EightValueFormate.D3412:
+                    return Modbus.Utility.ModbusUtility.GetDouble(datas[2], datas[3], datas[0], datas[1]);
+            }
+            return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], datas[3]);
+        }
+
+        public long ToLong(Span<ushort> datas)
+        {
+            switch (mData.LongFormate)
+            {
+                case EightValueFormate.D1234:
+                    return Modbus.Utility.ModbusUtility.GetLong(datas[0], datas[1], datas[2], datas[3]);
+                case EightValueFormate.D4321:
+                    return Modbus.Utility.ModbusUtility.GetLong(datas[3], datas[2], datas[1], datas[0]);
+                case EightValueFormate.D2143:
+                    return Modbus.Utility.ModbusUtility.GetLong(datas[1], datas[0], datas[3], datas[2]);
+                case EightValueFormate.D3412:
+                    return Modbus.Utility.ModbusUtility.GetLong(datas[2], datas[3], datas[0], datas[1]);
+            }
+            return Modbus.Utility.ModbusUtility.GetLong(datas[0], datas[1], datas[2], datas[3]);
         }
 
 

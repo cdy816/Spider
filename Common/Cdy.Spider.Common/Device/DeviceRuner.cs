@@ -18,7 +18,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class DeviceRunner : IDeviceRuntime,IDeviceForDriver
+    public class DeviceRunner : IDeviceRuntime, IDeviceForDriver
     {
 
         #region ... Variables  ...
@@ -41,7 +41,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        private Action<string,Tagbase> mValueCallBack;
+        private Action<string, Tagbase> mValueCallBack;
 
         /// <summary>
         /// 
@@ -103,11 +103,11 @@ namespace Cdy.Spider
             {
                 string dbname = vv.Value.DatabaseName;
                 string dvname = vv.Value.DeviceInfo;
-                if(!mDatabaseMapTags.ContainsKey(dbname))
+                if (!mDatabaseMapTags.ContainsKey(dbname))
                 {
                     mDatabaseMapTags.Add(dbname, vv.Value);
                 }
-                
+
                 if (mDeviceMapTags.ContainsKey(dvname))
                 {
                     mDeviceMapTags[dvname].Add(vv.Value);
@@ -187,7 +187,7 @@ namespace Cdy.Spider
             {
                 var vtag = mDatabaseMapTags[databaseTag];
                 if (vtag != null && !string.IsNullOrEmpty(vtag.DeviceInfo))
-                    Driver.WriteValue(vtag.DeviceInfo, ConvertToBytes(vtag,value),(byte)(vtag.Type));
+                    Driver.WriteValue(vtag.DeviceInfo, ConvertToBytes(vtag, value), (byte)(vtag.Type));
             }
         }
 
@@ -197,7 +197,7 @@ namespace Cdy.Spider
         /// <param name="tag"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private byte[] ConvertToBytes(Tagbase tag,object value)
+        private byte[] ConvertToBytes(Tagbase tag, object value)
         {
             switch (tag.Type)
             {
@@ -304,7 +304,7 @@ namespace Cdy.Spider
             {
                 vv.Quality = Tagbase.BadCommQuality;
                 vv.Time = dtmp;
-                mValueCallBack?.Invoke(this.Name,vv);
+                mValueCallBack?.Invoke(this.Name, vv);
             }
         }
 
@@ -315,16 +315,16 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         public void UpdateDeviceValue(string deviceTag, object value)
         {
-           if(mDeviceMapTags.ContainsKey(deviceTag))
+            if (mDeviceMapTags.ContainsKey(deviceTag))
             {
                 DateTime dtmp = DateTime.Now;
-                foreach(var vv in  mDeviceMapTags[deviceTag])
+                foreach (var vv in mDeviceMapTags[deviceTag])
                 {
                     vv.Value = ConvertValue(vv, value);
                     vv.Time = dtmp;
                     vv.Quality = Tagbase.GoodQuality;
 
-                    mValueCallBack?.Invoke(this.Name,vv);
+                    mValueCallBack?.Invoke(this.Name, vv);
                 }
             }
         }
@@ -335,19 +335,19 @@ namespace Cdy.Spider
         /// <param name="tag"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        private object ConvertValue(Tagbase tag,object value)
+        private object ConvertValue(Tagbase tag, object value)
         {
             if (value == null) return null;
             switch (tag.Type)
             {
                 case TagType.Bool:
-                    if(value is string)
+                    if (value is string)
                     {
                         return bool.Parse(value.ToString());
                     }
-                    else if(value is byte[])
+                    else if (value is byte[])
                     {
-                       return  BitConverter.ToBoolean(value as byte[]);
+                        return BitConverter.ToBoolean(value as byte[]);
                     }
                     else
                     {
@@ -627,14 +627,14 @@ namespace Cdy.Spider
             DateTime dtmp = DateTime.Now;
             foreach (var vv in id)
             {
-                if(mIdMapTags.ContainsKey(vv))
+                if (mIdMapTags.ContainsKey(vv))
                 {
                     var vvv = mIdMapTags[vv];
                     vvv.Value = value;
                     vvv.Quality = Tagbase.GoodQuality;
                     vvv.Time = dtmp;
 
-                    mValueCallBack?.Invoke(this.Name,vvv);
+                    mValueCallBack?.Invoke(this.Name, vvv);
                 }
             }
         }
@@ -644,11 +644,11 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="id"></param>
         /// <param name="values"></param>
-        public void UpdateTagHisValue(int id,IEnumerable<HisValue> values)
+        public void UpdateTagHisValue(int id, IEnumerable<HisValue> values)
         {
             if (mIdMapTags.ContainsKey(id))
             {
-                mHisValuesCallback?.Invoke(mIdMapTags[id],values);
+                mHisValuesCallback?.Invoke(mIdMapTags[id], values);
             }
         }
 
@@ -682,7 +682,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="callBack"></param>
-        public void RegistorCallBack(Action<string,Tagbase> callBack)
+        public void RegistorCallBack(Action<string, Tagbase> callBack)
         {
             mValueCallBack = callBack;
         }
@@ -712,7 +712,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public Tagbase GetTag(string name)
         {
-            return mDatabaseMapTags.ContainsKey(name)? mDatabaseMapTags[name]:null;
+            return mDatabaseMapTags.ContainsKey(name) ? mDatabaseMapTags[name] : null;
         }
 
         /// <summary>
@@ -721,7 +721,16 @@ namespace Cdy.Spider
         /// <returns></returns>
         public List<Tagbase> ListCacheHistoryTags()
         {
-            return mIdMapTags.Where(e => e.Value.IsBufferEnabled).Select(e=>e.Value).ToList();
+            return mIdMapTags.Where(e => e.Value.IsBufferEnabled).Select(e => e.Value).ToList();
+        }
+
+        public Tagbase GetTag(int id)
+        {
+            if (mIdMapTags.ContainsKey(id))
+            {
+                return mIdMapTags[id];
+            }
+            return null;
         }
 
 

@@ -65,6 +65,18 @@
             return BitConverter.ToDouble(value, 0);
         }
 
+
+        public static long GetLong(ushort b3, ushort b2, ushort b1, ushort b0)
+        {
+            byte[] value = BitConverter.GetBytes(b0)
+                .Concat(BitConverter.GetBytes(b1))
+                .Concat(BitConverter.GetBytes(b2))
+                .Concat(BitConverter.GetBytes(b3))
+                .ToArray();
+
+            return BitConverter.ToInt64(value, 0);
+        }
+
         /// <summary>
         ///     Converts two UInt16 values into a IEEE 32 floating point format.
         /// </summary>

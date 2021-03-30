@@ -203,6 +203,13 @@ namespace Cdy.Spider
         /// <returns></returns>
         List<Tagbase> ListTags();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Tagbase GetTag(int id);
+
 
         /// <summary>
         /// 
