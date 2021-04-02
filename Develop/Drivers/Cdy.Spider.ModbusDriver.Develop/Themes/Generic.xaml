@@ -1,0 +1,28 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Cdy.Spider.ModbusDriver.Develop">
+
+    <DataTemplate DataType="{x:Type local:ModbusDriverDevelopViewModel}">
+        <local:ModbusDriverDevelopView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:ModbusRegistorConfigModel}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="{local:ResMarker RegistorType,:}"  Margin="5,0"/>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding RegistorTypes}" Width="120" SelectedIndex="{Binding RegistorType,Mode=TwoWay}" VerticalAlignment="Center" Margin="5,0"/>
+            <Label Content="{local:ResMarker Address,:}" Grid.Column="2" Margin="5,0"/>
+            <TextBox Text="{Binding StartAddress,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" BorderThickness="0,0,1,0" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Grid.Column="3" Width="120" VerticalAlignment="Center" Margin="5,0"/>
+            <Label Content="{local:ResMarker DataSize,:}" Grid.Column="4" Margin="5,0"/>
+            <TextBox Text="{Binding DataLen,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" BorderThickness="0,0,1,0" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Grid.Column="5" Width="120" VerticalAlignment="Center" Margin="5,0"/>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

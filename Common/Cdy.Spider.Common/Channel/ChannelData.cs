@@ -410,7 +410,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public StopBits StopBits { get; set; }
+        public StopBits StopBits { get; set; } = StopBits.One;
 
         /// <summary>
         /// 使能流控制

@@ -138,7 +138,7 @@ namespace Cdy.Spider
                     {
                         var asb = Assembly.LoadFrom(afile).CreateInstance(cls) as ICommChannelDevelopForFactory;
 
-                        if (!mDevelopManagers.ContainsKey(asb.TypeName))
+                        if (asb!=null && !mDevelopManagers.ContainsKey(asb.TypeName))
                         {
                             mDevelopManagers.Add(asb.TypeName, asb);
                         }

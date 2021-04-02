@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="Cdy.Spider.SerisePortClient.Develop.SerisePortClientChannelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cdy.Spider.SerisePortClient.Develop"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Foreground="{DynamicResource Window.Forground}"  Content="{local:ResMarker ComPort,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <ComboBox Height="26" ItemsSource="{Binding Ports}"  VerticalContentAlignment="Center"  Grid.Column="1"   HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding PortName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="True" VerticalAlignment="Center" Width="266"/>
+
+        <Label Grid.Row="1" Foreground="{DynamicResource Window.Forground}"  Content="{local:ResMarker BaudRate,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="1" Height="26" ItemsSource="{Binding BaudRates}"  VerticalContentAlignment="Center"  Grid.Column="1"   HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding BaudRate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="True" VerticalAlignment="Center" Width="266"/>
+
+        <Label Grid.Row="2" Foreground="{DynamicResource Window.Forground}"  Content="{local:ResMarker DataSize,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="2" Height="26" ItemsSource="{Binding DataSizes}"  VerticalContentAlignment="Center"  Grid.Column="1"   HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding DataSize,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEditable="True" VerticalAlignment="Center" Width="266"/>
+
+        <Label Grid.Row="3" Foreground="{DynamicResource Window.Forground}"  Content="{local:ResMarker StopBits,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="3" Height="26" ItemsSource="{Binding StopBitses}"  VerticalContentAlignment="Center"  Grid.Column="1"   HorizontalAlignment="Left" Margin="10,0,0,0" SelectedIndex="{Binding StopBits,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Width="266"/>
+
+        <Label Grid.Row="4" Foreground="{DynamicResource Window.Forground}"  Content="{local:ResMarker PortCheckType,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="4" Height="26" ItemsSource="{Binding PortCheckTypes}"  VerticalContentAlignment="Center"  Grid.Column="1"   HorizontalAlignment="Left" Margin="10,0,0,0" SelectedIndex="{Binding PortCheckType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Center" Width="266"/>
+
+        
+        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="5" Content="{local:ResMarker Timeout,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="6" Content="{local:ResMarker DataSendTimeout,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="7" Content="{local:ResMarker ReTryCount,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="8" Content="{local:ResMarker ReTryDuration,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding Timeout,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="5"/>
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding DataSendTimeout,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="6"/>
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ReTryCount,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="7"/>
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ReTryDuration,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="8"/>
+    </Grid>
+</UserControl>
