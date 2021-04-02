@@ -69,7 +69,7 @@ namespace InSpiderDevelopWindow.View
         /// <param name="e"></param>
         private void dg_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            if (((sender as DataGrid).SelectionUnit == DataGridSelectionUnit.CellOrRowHeader)|| ((sender as DataGrid).SelectionUnit == DataGridSelectionUnit.Cell))
+            //if (((sender as DataGrid).SelectionUnit == DataGridSelectionUnit.CellOrRowHeader)|| ((sender as DataGrid).SelectionUnit == DataGridSelectionUnit.Cell))
             {
                 (sender as DataGrid).EndInit();
                 (sender as DataGrid).BeginEdit();

@@ -136,9 +136,12 @@ namespace Cdy.Spider.ModbusDriver.Develop
         public void ParseRegistorInfo(string info)
         {
             string[] ss = info.Split(new char[] { ':' });
-            RegistorType = mInnerRegistorTypes.IndexOf(ss[0]);
-            StartAddress = int.Parse(ss[1]);
-            DataLen = int.Parse(ss[2]);
+            if (ss.Length == 3)
+            {
+                RegistorType = mInnerRegistorTypes.IndexOf(ss[0]);
+                StartAddress = int.Parse(ss[1]);
+                DataLen = int.Parse(ss[2]);
+            }
         }
 
         #endregion ...Methods...
