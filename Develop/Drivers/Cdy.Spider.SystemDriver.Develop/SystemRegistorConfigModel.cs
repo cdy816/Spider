@@ -98,5 +98,10 @@ namespace Cdy.Spider.SystemDriver.Develop
         {
             return null;
         }
+
+        public void OnDisActived()
+        {
+           
+        }
     }
 }

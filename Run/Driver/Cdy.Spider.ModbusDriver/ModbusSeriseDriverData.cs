@@ -8,7 +8,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class ModbusDriverSeriseData: ModbusDriverData
+    public class ModbusSeriseDriverData: ModbusIpDriverData
     {
 
         #region ... Variables  ...

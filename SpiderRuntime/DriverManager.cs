@@ -106,6 +106,12 @@ namespace SpiderRuntime
                     //var afile = GetAssemblyPath(ass);
                     string tname = vv.Attribute("TypeName").Value;
                     var asb = ServiceLocator.Locator.Resolve<IDriverFactory>().GetRuntimeInstance(tname);
+                    if (asb == null)
+                    {
+                        LoggerService.Service.Warn("ChannelManager", "Load driver " + tname + " failed!");
+                        continue;
+                    }
+
                     asb.Load(vv);
 
                     asb.Name = this.Name +"."+ asb.Name;

@@ -40,6 +40,11 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        public void OnDisActived();
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IDeviceDevelopService Service { get; set; }
 
         #endregion ...Properties...

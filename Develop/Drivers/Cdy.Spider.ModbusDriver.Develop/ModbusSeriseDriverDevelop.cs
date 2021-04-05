@@ -16,12 +16,12 @@ namespace Cdy.Spider.ModbusDriver.Develop
     /// <summary>
     /// 
     /// </summary>
-    public class ModbusDriverDevelop : DriverDevelop
+    public class ModbusSeriseDriverDevelop : DriverDevelop
     {
 
         #region ... Variables  ...
         
-        private ModbusIpDriverData mData;
+        private ModbusSeriseDriverData mData;
 
         #endregion ...Variables...
 
@@ -38,17 +38,12 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <summary>
         /// 
         /// </summary>
-        public override DriverData Data { get => mData; set => mData = value as ModbusIpDriverData; }
+        public override DriverData Data { get => mData; set => mData = value as ModbusSeriseDriverData; }
 
         /// <summary>
         /// 
         /// </summary>
-        public override string TypeName => "ModbusTcpMasterDriver";
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public override ChannelType[] SupportChannelTypes => null;
+        public override string TypeName => "ModbusSeriseMasterDriver";
 
         /// <summary>
         /// 
@@ -68,7 +63,7 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <returns></returns>
         public override object Config()
         {
-             return new ModbusDriverDevelopViewModel() { Model = mData };
+             return new ModbusSeriseDriverDevelopViewModel() { Model = mData };
         }
 
         /// <summary>
@@ -86,7 +81,7 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <returns></returns>
         public override IDriverDevelop NewDriver()
         {
-            return new ModbusDriverDevelop() { Data = new ModbusIpDriverData() };
+            return new ModbusSeriseDriverDevelop() { Data = new ModbusSeriseDriverData() };
         }
 
         /// <summary>
@@ -95,7 +90,7 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <returns></returns>
         protected override DriverData CreatNewData()
         {
-            return new ModbusIpDriverData();
+            return new ModbusSeriseDriverData();
         }
 
         /// <summary>
@@ -118,7 +113,7 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <returns></returns>
         public override List<string> ListSupportChannels()
         {
-            return new List<string>() { "TcpClient", "UdpClient" };
+            return new List<string>() { "TcpClient", "UdpClient", "SerisePort" };
         }
 
         #endregion ...Methods...

@@ -16,7 +16,7 @@ namespace Cdy.Spider
 
         #region ... Variables  ...
 
-        private ModbusDriverData mData;
+        private ModbusIpDriverData mData;
 
         Modbus.Device.ModbusIpMaster mMaster;
 
@@ -61,7 +61,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public override string TypeName => "ModbusIpDriver";
+        public override string TypeName => "ModbusTcpMasterDriver";
 
         /// <summary>
         /// 
@@ -86,7 +86,7 @@ namespace Cdy.Spider
                 var dtmp = vv.Key.ToLower().Split(new char[] { ':' });
                 ushort addr = ushort.Parse(dtmp[1]);
 
-                if (dtmp[0] ==("cs:"))
+                if (dtmp[0] ==("cs"))
                 {
                     //Coil status
                     if(cstart == -1)
@@ -111,7 +111,7 @@ namespace Cdy.Spider
                         mCoilStatusTags.Add(addr,vv.Value);
                     }
                 }
-                else if (dtmp[0] == ("is:"))
+                else if (dtmp[0] == ("is"))
                 {
                     //Input status
                     if (istart == -1)
@@ -135,7 +135,7 @@ namespace Cdy.Spider
                         mInputStatusTags.Add(addr, vv.Value);
 
                 }
-                else if(dtmp[0] == ("ir:"))
+                else if(dtmp[0] == ("ir"))
                 {
                     ushort len = ushort.Parse(dtmp[2]);
                     //Input registor
@@ -160,7 +160,7 @@ namespace Cdy.Spider
                     mInputRegistorTags.Add(addr,new Tuple<ushort, List<int>>(len,vv.Value));
 
                 }
-                else if(dtmp[0] == ("hr:"))
+                else if(dtmp[0] == ("hr"))
                 {
                     //holding registor
                     ushort len = ushort.Parse(dtmp[2]);
@@ -223,11 +223,11 @@ namespace Cdy.Spider
                 ushort addr = ushort.Parse(deviceInfo.Substring(3));
                 if (deviceInfo.StartsWith("cs:"))
                 {
-                    mMaster.WriteSingleCoil(addr, Convert.ToBoolean(value));
+                    mMaster.WriteSingleCoil((byte)mData.Id,addr, Convert.ToBoolean(value));
                 }
                 else if (deviceInfo.StartsWith("hr:"))
                 {
-                    mMaster.WriteMultipleRegisters(addr, GetValue(value, valueType));
+                    mMaster.WriteMultipleRegisters((byte)mData.Id, addr, GetValue(value, valueType));
                 }
             }
         }
@@ -437,63 +437,70 @@ namespace Cdy.Spider
         private void ProcessRead()
         {
             mComm.Take();
-            foreach(var vv in mInputStatusPackage)
+            try
             {
-                var result = mMaster.ReadInputs((byte)mData.Id,vv.Key, vv.Value);
-                if(result!=null && result.Length == vv.Value)
+                foreach (var vv in mInputStatusPackage)
                 {
-                    for(ushort i=0;i<vv.Value;i++)
+                    var result = mMaster.ReadInputs((byte)mData.Id, vv.Key, vv.Value);
+                    if (result != null && result.Length == vv.Value)
                     {
-                        ushort addr = (ushort)(vv.Key + i);
-                        if(this.mInputStatusTags.ContainsKey(addr))
+                        for (ushort i = 0; i < vv.Value; i++)
                         {
-                            UpdateValue(mInputStatusTags[addr], result[i]);
+                            ushort addr = (ushort)(vv.Key + i);
+                            if (this.mInputStatusTags.ContainsKey(addr))
+                            {
+                                UpdateValue(mInputStatusTags[addr], result[i]);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var vv in mCoilStatusPackage)
+                {
+                    var result = mMaster.ReadCoils((byte)mData.Id, vv.Key, vv.Value);
+
+                    if (result != null && result.Length == vv.Value)
+                    {
+                        for (ushort i = 0; i < vv.Value; i++)
+                        {
+                            ushort addr = (ushort)(vv.Key + i);
+                            if (this.mCoilStatusTags.ContainsKey(addr))
+                            {
+                                UpdateValue(mCoilStatusTags[addr], result[i]);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var vv in mInputRegistorPackage)
+                {
+                    var result = mMaster.ReadInputRegisters((byte)mData.Id, vv.Key, vv.Value);
+                    if (result != null && result.Length == vv.Value)
+                    {
+                        for (ushort i = 0; i < vv.Value; i++)
+                        {
+                            ushort addr = (ushort)(vv.Key + i);
+                            UpdateRegistor(addr, result, mInputRegistorTags);
+                        }
+                    }
+                }
+
+                foreach (var vv in mHoldtRegistorPackage)
+                {
+                    var result = mMaster.ReadHoldingRegisters((byte)mData.Id, vv.Key, vv.Value);
+                    if (result != null && result.Length == vv.Value)
+                    {
+                        for (ushort i = 0; i < vv.Value; i++)
+                        {
+                            ushort addr = (ushort)(vv.Key + i);
+                            UpdateRegistor(addr, result, mHoldRegistorTags);
                         }
                     }
                 }
             }
-
-            foreach (var vv in mCoilStatusPackage)
+            catch(Exception ex)
             {
-                var result = mMaster.ReadCoils((byte)mData.Id, vv.Key, vv.Value);
-
-                if (result != null && result.Length == vv.Value)
-                {
-                    for (ushort i = 0; i < vv.Value; i++)
-                    {
-                        ushort addr = (ushort)(vv.Key + i);
-                        if (this.mCoilStatusTags.ContainsKey(addr))
-                        {
-                            UpdateValue(mCoilStatusTags[addr], result[i]);
-                        }
-                    }
-                }
-            }
-
-            foreach (var vv in mInputRegistorPackage)
-            {
-               var result =  mMaster.ReadInputRegisters((byte)mData.Id, vv.Key, vv.Value);
-                if (result != null && result.Length == vv.Value)
-                {
-                    for (ushort i = 0; i < vv.Value; i++)
-                    {
-                        ushort addr = (ushort)(vv.Key + i);
-                        UpdateRegistor(addr,  result, mInputRegistorTags);
-                    }
-                }
-            }
-
-            foreach (var vv in mHoldtRegistorPackage)
-            {
-                var result = mMaster.ReadHoldingRegisters((byte)mData.Id, vv.Key, vv.Value);
-                if (result != null && result.Length == vv.Value)
-                {
-                    for (ushort i = 0; i < vv.Value; i++)
-                    {
-                        ushort addr = (ushort)(vv.Key + i);
-                        UpdateRegistor(addr, result,mHoldRegistorTags);
-                    }
-                }
+                LoggerService.Service.Warn("Modbus ip Driver", ex.Message);
             }
             mComm.Release();
         }
@@ -618,6 +625,11 @@ namespace Cdy.Spider
             return Modbus.Utility.ModbusUtility.GetSingle(datas[0], datas[1]);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
         public double ToDouble(Span<ushort> datas)
         {
             switch (mData.DoubleFormate)
@@ -634,6 +646,11 @@ namespace Cdy.Spider
             return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], datas[3]);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
         public long ToLong(Span<ushort> datas)
         {
             switch (mData.LongFormate)
@@ -657,7 +674,7 @@ namespace Cdy.Spider
         /// <param name="xe"></param>
         public override void Load(XElement xe)
         {
-            mData = new ModbusDriverData();
+            mData = new ModbusIpDriverData();
             mData.LoadFromXML(xe);
         }
 

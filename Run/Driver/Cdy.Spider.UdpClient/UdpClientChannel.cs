@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 
-namespace Cdy.Spider
+namespace Cdy.Spider.UdpClient
 {
     public class UdpClientChannel : ChannelBase
     {
@@ -64,6 +64,10 @@ namespace Cdy.Spider
             mIsClosed = false;
             mClient = new System.Net.Sockets.UdpClient(mData.Port);
             mClient.Connect(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
+
+            mClient.Client.SendTimeout = mData.DataSendTimeout;
+            mClient.Client.ReceiveTimeout = mData.Timeout;
+
             mIsConnected = true;
 
             mReceiveThread = new Thread(ThreadPro);
@@ -388,6 +392,18 @@ namespace Cdy.Spider
         public override int Read(byte[] buffer, int offset, int len)
         {
             return mClient.Client.Receive(buffer, offset, len, SocketFlags.None);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public override bool Write(byte[] buffer, int offset, int len)
+        {
+            return mClient.Client.Send(buffer,offset,len,SocketFlags.None)>0;
         }
 
 

@@ -173,8 +173,11 @@ namespace InSpiderDevelop
                 {
                     string tname = vv.Attribute("TypeName").Value;
                     var asb = ServiceLocator.Locator.Resolve<IDriverFactory>().GetDevelopInstance(tname);
-                    asb.Load(vv);
-                    AddDriver(asb);
+                    if (asb != null)
+                    {
+                        asb.Load(vv);
+                        AddDriver(asb);
+                    }
                 }
                 context.Add(typeof(IDriverDevelopManager), this);
             }

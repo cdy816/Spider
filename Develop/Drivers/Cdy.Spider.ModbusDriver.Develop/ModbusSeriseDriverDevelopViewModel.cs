@@ -17,13 +17,14 @@ namespace Cdy.Spider.ModbusDriver.Develop
     /// <summary>
     /// 
     /// </summary>
-    public class ModbusDriverDevelopViewModel: ViewModelBase
+    public class ModbusSeriseDriverDevelopViewModel : ViewModelBase
     {
 
         #region ... Variables  ...
         static string[] mEightFormates;
         static string[] mFourFormates;
         static string[] mStringEncodings;
+        static string[] mModbusTypes;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -32,11 +33,14 @@ namespace Cdy.Spider.ModbusDriver.Develop
 
         #region ... Constructor...
 
-        static ModbusDriverDevelopViewModel()
+        static ModbusSeriseDriverDevelopViewModel()
         {
             mEightFormates = Enum.GetNames( typeof(EightValueFormate));
             mFourFormates = Enum.GetNames(typeof(FourValueFormate));
             mStringEncodings = Enum.GetNames(typeof(StringEncoding));
+
+            mModbusTypes = Enum.GetNames(typeof(ModbusSeriseType));
+
         }
 
         #endregion ...Constructor...
@@ -46,12 +50,7 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <summary>
         /// 
         /// </summary>
-        public ModbusIpDriverData Model { get; set; }
-
-
-        #endregion ...Properties...
-
-        #region ... Methods    ...
+        public ModbusSeriseDriverData Model { get; set; }
 
         /// <summary>
         /// 
@@ -86,6 +85,48 @@ namespace Cdy.Spider.ModbusDriver.Develop
             }
         }
 
+        public string[] ModbusTypes
+        {
+            get
+            {
+                return mModbusTypes;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Id
+        {
+            get
+            {
+                return Model.Id;
+            }
+            set
+            {
+                Model.Id = value;
+                OnPropertyChanged("Id");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ModbusType
+        {
+            get
+            {
+                return (int)Model.Type;
+            }
+            set
+            {
+                if ((int)Model.Type != value)
+                {
+                    Model.Type = (ModbusSeriseType) value;
+                    OnPropertyChanged("ModbusType");
+                }
+            }
+        }
 
 
         /// <summary>
@@ -171,23 +212,6 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <summary>
         /// 
         /// </summary>
-        public int Id
-        {
-            get
-            {
-                return Model.Id;
-            }
-            set
-            {
-                Model.Id = value;
-                OnPropertyChanged("Id");
-            }
-        }
-
-
-        /// <summary>
-            /// 
-            /// </summary>
         public ushort PackageLen
         {
             get
@@ -218,8 +242,8 @@ namespace Cdy.Spider.ModbusDriver.Develop
 
 
         /// <summary>
-            /// 
-            /// </summary>
+        /// 
+        /// </summary>
         public int ScanCircle
         {
             get
@@ -235,6 +259,12 @@ namespace Cdy.Spider.ModbusDriver.Develop
                 }
             }
         }
+
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+
+
 
 
 

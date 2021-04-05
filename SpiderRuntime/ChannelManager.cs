@@ -110,6 +110,12 @@ namespace SpiderRuntime
                 {
                     string tname = vv.Attribute("TypeName").Value;
                     var asb = ServiceLocator.Locator.Resolve<ICommChannelFactory>().GetRuntimeIntance(tname);
+                    if (asb == null)
+                    {
+                        LoggerService.Service.Warn("ChannelManager", "Load channel "+tname+" failed!");
+                        continue;
+                    }
+
                     asb.Load(vv);
                     if (mChannels.ContainsKey(asb.Name))
                     {

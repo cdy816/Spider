@@ -123,10 +123,40 @@
   <data name="DataSize" xml:space="preserve">
     <value>数据长度</value>
   </data>
+  <data name="DoubleFormate" xml:space="preserve">
+    <value>Double 格式</value>
+  </data>
+  <data name="FloatFormate" xml:space="preserve">
+    <value>Float 格式</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="IntFormate" xml:space="preserve">
+    <value>Int 格式</value>
+  </data>
+  <data name="LongFormate" xml:space="preserve">
+    <value>Long 格式</value>
+  </data>
+  <data name="ModbusMutiConfigTitle" xml:space="preserve">
+    <value>寄存器批量配置</value>
+  </data>
+  <data name="PackageLen" xml:space="preserve">
+    <value>打包长度</value>
+  </data>
   <data name="RegistorType" xml:space="preserve">
     <value>寄存器类型</value>
   </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>重复</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>扫描周期</value>
+  </data>
+  <data name="StringEncoding" xml:space="preserve">
+    <value>String 格式</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>类型</value>
   </data>
 </root>

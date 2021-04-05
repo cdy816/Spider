@@ -47,6 +47,16 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <summary>
         /// 
         /// </summary>
+        public TagType TagType
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string[] RegistorTypes
         {
             get
@@ -119,6 +129,16 @@ namespace Cdy.Spider.ModbusDriver.Develop
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public Action<string> UpdateRegistorCallBack { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IDeviceDevelopService Service { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -133,6 +153,10 @@ namespace Cdy.Spider.ModbusDriver.Develop
             UpdateRegistorCallBack?.Invoke(stmp);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="info"></param>
         public void ParseRegistorInfo(string info)
         {
             string[] ss = info.Split(new char[] { ':' });
@@ -142,23 +166,43 @@ namespace Cdy.Spider.ModbusDriver.Develop
                 StartAddress = int.Parse(ss[1]);
                 DataLen = int.Parse(ss[2]);
             }
+            else
+            {
+                RegistorType = 0;
+                DataLen = GetDataSize();    
+            }
         }
 
-        #endregion ...Methods...
-
-        #region ... Interfaces ...
-
-        #endregion ...Interfaces...
-
         /// <summary>
         /// 
         /// </summary>
-        public Action<string> UpdateRegistorCallBack { get; set; }
+        /// <returns></returns>
+        private int GetDataSize()
+        {
+            switch (TagType)
+            {
+                case TagType.Bool:
+                case TagType.Byte:
+                case TagType.Short:
+                case TagType.UShort:
+                    return 1;
+                case TagType.Int:
+                case TagType.UInt:
+                case TagType.Float:
+                    return 2;
+                case TagType.Long:
+                case TagType.ULong:
+                case TagType.Double:
+                case TagType.DateTime:
+                    return 4;
+            }
+            return 1;
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public IDeviceDevelopService Service { get; set; }
+        public void OnDisActived()
+        {
+            UpdateRegistor();
+        }
 
         /// <summary>
         /// 
@@ -185,7 +229,24 @@ namespace Cdy.Spider.ModbusDriver.Develop
         /// <returns></returns>
         public IEnumerable<string> Config()
         {
+            ModbusMutiConfigViewModel mm = new ModbusMutiConfigViewModel();
+            if(mm.ShowDialog().Value)
+            {
+                return mm.GetConfigRegistor();
+            }
             return null;
         }
+
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+
+
+
+        
+
+        
     }
 }

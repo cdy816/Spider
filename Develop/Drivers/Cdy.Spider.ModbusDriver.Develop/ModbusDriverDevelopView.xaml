@@ -14,11 +14,32 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="36"/>
             <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Visibility="{Binding ScanCircleVisibility}"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker ScanCircle,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" />
-        <TextBox Visibility="{Binding ScanCircleVisibility}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Text="{Binding ScanCircle,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        <TextBox Visibility="{Binding ScanCircleVisibility}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Text="{Binding ScanCircle,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="180"/>
         <Label Visibility="{Binding ScanCircleVisibility}"  Foreground="{DynamicResource Window.Forground}" Content="ms" HorizontalAlignment="Left" VerticalAlignment="Center"  Grid.Column="1" Margin="200,0,0,0"/>
 
+        <Label  Grid.Row="1"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker Id,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Id,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF"  HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Width="180" />
+        
+        <Label  Grid.Row="2"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker IntFormate,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="2" Grid.Column="1" SelectedIndex="{Binding IntFormate,Mode=TwoWay}" ItemsSource="{Binding EightFormates}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Width="180" />
+        <Label Grid.Row="3"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker LongFormate,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="3" Grid.Column="1" SelectedIndex="{Binding LongFormate,Mode=TwoWay}" ItemsSource="{Binding EightFormates}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Width="180" />
+        <Label  Grid.Row="4" Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker FloatFormate,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="4" Grid.Column="1" SelectedIndex="{Binding FloatFormate,Mode=TwoWay}" ItemsSource="{Binding EightFormates}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Width="180" />
+        <Label   Grid.Row="5"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker DoubleFormate,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="5" Grid.Column="1" SelectedIndex="{Binding DoubleFormate,Mode=TwoWay}" ItemsSource="{Binding EightFormates}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Width="180" />
+        <Label   Grid.Row="6"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker StringEncoding,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="6" Grid.Column="1" SelectedIndex="{Binding StringEncoding,Mode=TwoWay}" ItemsSource="{Binding StringEncodings}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Width="180" />
+        <Label   Grid.Row="7"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker PackageLen,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" />
+        <TextBox Grid.Row="7"  Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Text="{Binding PackageLen,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="180"/>
     </Grid>
 </UserControl>

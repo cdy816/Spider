@@ -444,6 +444,27 @@ namespace Cdy.Spider.SerisePortClient
             return mClient.Read(buffer,offset,len);
         }
 
+       
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public override bool Write(byte[] buffer, int offset, int len)
+        {
+            try
+            {
+                mClient.Write(buffer, offset, len);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>

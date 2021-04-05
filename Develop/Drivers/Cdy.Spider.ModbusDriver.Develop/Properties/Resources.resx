@@ -123,10 +123,40 @@
   <data name="DataSize" xml:space="preserve">
     <value>DataSize</value>
   </data>
+  <data name="DoubleFormate" xml:space="preserve">
+    <value>DoubleFormate</value>
+  </data>
+  <data name="FloatFormate" xml:space="preserve">
+    <value>FloatFormate</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="IntFormate" xml:space="preserve">
+    <value>IntFormate</value>
+  </data>
+  <data name="LongFormate" xml:space="preserve">
+    <value>LongFormate</value>
+  </data>
+  <data name="ModbusMutiConfigTitle" xml:space="preserve">
+    <value>Register batch configuration</value>
+  </data>
+  <data name="PackageLen" xml:space="preserve">
+    <value>PackageLen</value>
+  </data>
   <data name="RegistorType" xml:space="preserve">
     <value>Registor type</value>
   </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Repeat</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>ScanCircle</value>
+  </data>
+  <data name="StringEncoding" xml:space="preserve">
+    <value>StringEncoding</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
 </root>

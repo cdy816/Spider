@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cdy.Spider
+namespace Cdy.Spider.UdpClient
 {
     public class UdpClientChannelData: NetworkClientChannelData
     {

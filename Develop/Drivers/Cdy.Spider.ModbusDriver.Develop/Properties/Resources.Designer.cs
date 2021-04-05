@@ -79,6 +79,69 @@ namespace Cdy.Spider.ModbusDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 DoubleFormate 的本地化字符串。
+        /// </summary>
+        internal static string DoubleFormate {
+            get {
+                return ResourceManager.GetString("DoubleFormate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 FloatFormate 的本地化字符串。
+        /// </summary>
+        internal static string FloatFormate {
+            get {
+                return ResourceManager.GetString("FloatFormate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Id 的本地化字符串。
+        /// </summary>
+        internal static string Id {
+            get {
+                return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 IntFormate 的本地化字符串。
+        /// </summary>
+        internal static string IntFormate {
+            get {
+                return ResourceManager.GetString("IntFormate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 LongFormate 的本地化字符串。
+        /// </summary>
+        internal static string LongFormate {
+            get {
+                return ResourceManager.GetString("LongFormate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Register batch configuration 的本地化字符串。
+        /// </summary>
+        internal static string ModbusMutiConfigTitle {
+            get {
+                return ResourceManager.GetString("ModbusMutiConfigTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 PackageLen 的本地化字符串。
+        /// </summary>
+        internal static string PackageLen {
+            get {
+                return ResourceManager.GetString("PackageLen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Registor type 的本地化字符串。
         /// </summary>
         internal static string RegistorType {
@@ -88,11 +151,38 @@ namespace Cdy.Spider.ModbusDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Repeat 的本地化字符串。
+        /// </summary>
+        internal static string Repeat {
+            get {
+                return ResourceManager.GetString("Repeat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ScanCircle 的本地化字符串。
         /// </summary>
         internal static string ScanCircle {
             get {
                 return ResourceManager.GetString("ScanCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 StringEncoding 的本地化字符串。
+        /// </summary>
+        internal static string StringEncoding {
+            get {
+                return ResourceManager.GetString("StringEncoding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Type 的本地化字符串。
+        /// </summary>
+        internal static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
     }

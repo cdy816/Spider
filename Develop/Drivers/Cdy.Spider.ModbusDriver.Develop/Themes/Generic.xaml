@@ -7,6 +7,14 @@
         <local:ModbusDriverDevelopView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type local:ModbusSeriseDriverDevelopViewModel}">
+        <local:ModbusSeriseDriverDevelopView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:ModbusMutiConfigViewModel}">
+        <local:ModbusMutiConfigView />
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type local:ModbusRegistorConfigModel}">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -17,7 +25,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock VerticalAlignment="Center"  Foreground="{DynamicResource Window.Forground}" Text="{local:ResMarker RegistorType,:}"  Margin="5,0,5,0"/>
+            <TextBlock VerticalAlignment="Center" x:Name="tb" Foreground="{DynamicResource Window.Forground}" Text="{local:ResMarker RegistorType,:}"  Margin="5,0,5,0"/>
             <ComboBox Grid.Column="1" BorderThickness="0,0,1,0" ItemsSource="{Binding RegistorTypes}" Width="120" SelectedIndex="{Binding RegistorType,Mode=TwoWay}" VerticalAlignment="Center" Margin="0"/>
             <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{local:ResMarker Address,:}" Grid.Column="2" Margin="20,0,5,0" VerticalAlignment="Center"/>
             <TextBox Text="{Binding StartAddress,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" BorderThickness="0,0,1,0" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#00FFFFFF" Grid.Column="3" Width="120" VerticalAlignment="Stretch" Margin="0,0" VerticalContentAlignment="Center"/>

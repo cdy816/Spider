@@ -139,6 +139,14 @@ namespace Cdy.Spider.OpcDriver.Develop
             UpdateRegistorCallBack = null;
             base.Dispose();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void OnDisActived()
+        {
+            
+        }
         #endregion ...Methods...
 
         #region ... Interfaces ...

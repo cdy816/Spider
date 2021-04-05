@@ -32,6 +32,8 @@ namespace Cdy.Spider.TcpClient
 
         private bool mIsClosed = false;
 
+        private bool mIsConnecting = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -48,6 +50,11 @@ namespace Cdy.Spider.TcpClient
         /// 
         /// </summary>
         public override string TypeName => "TcpClient";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override ChannelData Data => mData;
 
         /// <summary>
         /// 
@@ -69,6 +76,10 @@ namespace Cdy.Spider.TcpClient
                 mIsClosed = false;
                 mClient = new System.Net.Sockets.Socket( System.Net.Sockets.AddressFamily.InterNetwork,System.Net.Sockets.SocketType.Stream ,System.Net.Sockets.ProtocolType.Tcp);
                 mClient.Connect(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
+                mClient.SendTimeout = mData.DataSendTimeout;
+                mClient.ReceiveTimeout = mData.Timeout;
+                mClient.NoDelay = true;
+                
                 mIsConnected = true;
                 mReceiveThread = new Thread(ThreadPro);
                 mReceiveThread.IsBackground = true;
@@ -77,12 +88,20 @@ namespace Cdy.Spider.TcpClient
             }
             catch
             {
-                Task.Run(() => {
-                    
+                StartConnect();
+            }
+            return base.InnerOpen();
+        }
+
+        private void StartConnect()
+        {
+            if (!mIsConnecting)
+            {
+                Task.Run(() =>
+                {
                     TryConnect();
                 });
             }
-            return base.InnerOpen();
         }
 
         /// <summary>
@@ -92,19 +111,34 @@ namespace Cdy.Spider.TcpClient
         {
             while(true)
             {
-                Thread.Sleep(mData.ReTryDuration);
                 try
                 {
-                    if (mClient.Connected) break;
-                    mClient = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Tcp);
-                    mClient.Connect(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
-                    if (mClient.Connected) break;
+                    mIsConnecting = true;
+                    Thread.Sleep(mData.ReTryDuration);
+                    try
+                    {
+                        if (mClient.Connected)
+                        {
+                            break;
+                        }
+                        mClient = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Tcp);
+                        mClient.Connect(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
+                        if (mClient.Connected)
+                        {
+                            break;
+                        }
+                    }
+                    catch
+                    {
+
+                    }
                 }
                 catch
                 {
 
                 }
             }
+            mIsConnecting = false;
         }
 
         /// <summary>
@@ -236,6 +270,10 @@ namespace Cdy.Spider.TcpClient
                 }
                 return bval;
             }
+            else
+            {
+                StartConnect();
+            }
             return base.SendInner(data, timeout, waitResultCount, out result);
         }
 
@@ -305,6 +343,10 @@ namespace Cdy.Spider.TcpClient
                 result = isstartfit && isstartfit;
                 return bval.ToArray();
             }
+            else
+            {
+                StartConnect();
+            }
             return base.SendInner(data, timeout, waitPackageStartByte, waitPackageEndByte, out result);
         }
 
@@ -331,6 +373,10 @@ namespace Cdy.Spider.TcpClient
                 result = true;
                 return bval;
             }
+            else
+            {
+                StartConnect();
+            }
             return base.SendInner(data, timeout, out result);
         }
 
@@ -344,6 +390,10 @@ namespace Cdy.Spider.TcpClient
             if (mClient != null && IsOnline(mClient))
             {
                 return mClient.Send(data)>0;
+            }
+            else
+            {
+                StartConnect();
             }
             return false;
         }
@@ -389,10 +439,32 @@ namespace Cdy.Spider.TcpClient
             }
             else
             {
+                StartConnect();
                 receivecount = 0;
             }
 
             return bval;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public override int Read(byte[] buffer, int offset, int len)
+        {
+            if (mClient != null && IsOnline(mClient))
+            {
+                return mClient.Receive(buffer, offset, len, SocketFlags.None);
+            }
+            else
+            {
+                StartConnect();
+            }
+            return 0;
         }
 
         /// <summary>
@@ -409,9 +481,11 @@ namespace Cdy.Spider.TcpClient
             }
             else
             {
+                StartConnect();
                 return null;
             }
         }
+
 
         /// <summary>
         /// 
@@ -420,9 +494,19 @@ namespace Cdy.Spider.TcpClient
         /// <param name="offset"></param>
         /// <param name="len"></param>
         /// <returns></returns>
-        public override int Read(byte[] buffer, int offset, int len)
+        public override bool Write(byte[] buffer, int offset, int len)
         {
-            return mClient.Receive(buffer, offset, len, SocketFlags.None);
+            if (mClient != null && IsOnline(mClient))
+            {
+                var re = mClient.Send(buffer, offset, len, SocketFlags.None) > 0;
+                
+                return re;
+            }
+            else
+            {
+                StartConnect();
+            }
+            return false;
         }
 
         /// <summary>

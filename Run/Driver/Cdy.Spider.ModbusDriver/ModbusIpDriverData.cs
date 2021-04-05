@@ -8,7 +8,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class ModbusDriverData: DriverData
+    public class ModbusIpDriverData: DriverData
     {
 
         #region ... Variables  ...
@@ -64,7 +64,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 打包长度
         /// </summary>
-        public ushort PackageLen { get; set; }
+        public ushort PackageLen { get; set; } = 60;
 
         #endregion ...Properties...
 

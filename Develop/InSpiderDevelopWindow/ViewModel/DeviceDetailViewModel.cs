@@ -1680,6 +1680,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public void DeActive()
         {
+            TagViewModel.mLastConfigModel?.OnDisActived();
             mGrid = this.grid;
             foreach (var vv in mTags)
             {
@@ -1761,6 +1762,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private IRegistorConfigModel mRegistorConfigModel;
 
+        public static IRegistorConfigModel mLastConfigModel;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -1795,6 +1798,14 @@ namespace InSpiderDevelopWindow.ViewModel
                     this.mRegistorConfigModel = driver?.RegistorConfig();
                     mRegistorConfigModel.Service = Parent;
                 }
+
+                
+                if(mLastConfigModel!=mRegistorConfigModel)
+                {
+                    if (mLastConfigModel != null) mLastConfigModel.OnDisActived();
+                    mLastConfigModel = mRegistorConfigModel;
+                }
+
                 mRegistorConfigModel?.FreshRegistor(DeviceInfo);
                 if (mRegistorConfigModel != null && mRegistorConfigModel.UpdateRegistorCallBack==null)
                 {

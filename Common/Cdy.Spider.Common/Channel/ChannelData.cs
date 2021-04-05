@@ -301,7 +301,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public string ServerIp { get; set; }
+        public string ServerIp { get; set; } = "127.0.0.1";
 
         /// <summary>
         /// 
