@@ -29,6 +29,12 @@ namespace Cdy.Spider.UdpClient
 
         private Thread mReceiveThread;
 
+        System.IO.MemoryStream mReceiveBuffer = new System.IO.MemoryStream();
+
+        private System.Net.IPEndPoint rp;
+
+        private byte[] mRelayData;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -62,7 +68,10 @@ namespace Cdy.Spider.UdpClient
         protected override bool InnerOpen()
         {
             mIsClosed = false;
-            mClient = new System.Net.Sockets.UdpClient(mData.Port);
+
+            rp = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
+
+            mClient = new System.Net.Sockets.UdpClient();
             mClient.Connect(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
 
             mClient.Client.SendTimeout = mData.DataSendTimeout;
@@ -102,7 +111,7 @@ namespace Cdy.Spider.UdpClient
         /// </summary>
         private void ThreadPro()
         {
-            var rp = new System.Net.IPEndPoint(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
+            
             while (!mIsClosed)
             {
                 if (mClient != null && mClient.Client.Available > 0 && !mIsTransparentRead)
@@ -140,15 +149,32 @@ namespace Cdy.Spider.UdpClient
             while (cc < count)
             {
                 lock (mLockObj)
-                    vdata = mReceiveBuffers.Dequeue();
+                {
+                    if (mRelayData != null)
+                    {
+                        vdata = mRelayData;
+                    }
+                    else
+                    {
+                        vdata = mReceiveBuffers.Dequeue();
+                    }
+                }
                 cc += vdata.Length;
                 if (cc <= count)
                 {
                     vdata.CopyTo(btmp, offset);
+                    mRelayData = null;
                 }
                 else
                 {
+                    
                     Array.Copy(vdata, 0, btmp, offset, vdata.Length - (cc - count));
+
+                    int relaydatasize = (cc - count);
+                    byte[] rd = new byte[relaydatasize];
+                    Array.Copy(vdata, vdata.Length - relaydatasize, rd, rd.Length, relaydatasize);
+                    mRelayData = rd;
+
                 }
                 offset += vdata.Length;
                 removecount += vdata.Length;
@@ -375,7 +401,7 @@ namespace Cdy.Spider.UdpClient
         /// <param name="count"></param>
         /// <returns></returns>
         public override byte[] Receive(int count)
-        {
+        {            
             byte[] bval=null;
             if(mClient!=null)
             bval = CopyReceiveBufferData(count);
@@ -391,7 +417,22 @@ namespace Cdy.Spider.UdpClient
         /// <returns></returns>
         public override int Read(byte[] buffer, int offset, int len)
         {
-            return mClient.Client.Receive(buffer, offset, len, SocketFlags.None);
+            if ((mReceiveBuffer.Length - mReceiveBuffer.Position) < len)
+            {
+                var count = mClient.Receive(ref rp);
+                mReceiveBuffer.Write(count, 0, count.Length);
+                mReceiveBuffer.Position = 0;
+            }
+
+            if ((mReceiveBuffer.Length - mReceiveBuffer.Position) >= len)
+            {
+                return mReceiveBuffer.Read(buffer, offset, len);
+            }
+            else
+            {
+                return mReceiveBuffer.Read(buffer, offset, (int)mReceiveBuffer.Length);
+            }
+
         }
 
         /// <summary>
@@ -403,7 +444,8 @@ namespace Cdy.Spider.UdpClient
         /// <returns></returns>
         public override bool Write(byte[] buffer, int offset, int len)
         {
-            return mClient.Client.Send(buffer,offset,len,SocketFlags.None)>0;
+            mReceiveBuffer.SetLength(0);
+            return mClient.Client.Send(buffer,offset,len,SocketFlags.None)> 0;
         }
 
 

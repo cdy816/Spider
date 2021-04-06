@@ -30,6 +30,8 @@ namespace Cdy.Spider.SerisePortClient
 
         private bool mForSyncCall = false;
 
+        private byte[] mRelayData;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -181,15 +183,29 @@ namespace Cdy.Spider.SerisePortClient
             while (cc < count)
             {
                 lock (mLockObj)
-                    vdata = mReceiveBuffers.Dequeue();
+                {
+                    if (mRelayData != null)
+                    {
+                        vdata = mRelayData;
+                    }
+                    else
+                    {
+                        vdata = mReceiveBuffers.Dequeue();
+                    }
+                }
                 cc += vdata.Length;
                 if (cc <= count)
                 {
                     vdata.CopyTo(btmp, offset);
+                    mRelayData = null;
                 }
                 else
                 {
                     Array.Copy(vdata, 0, btmp, offset, vdata.Length - (cc - count));
+                    int relaydatasize = (cc - count);
+                    byte[] rd = new byte[relaydatasize];
+                    Array.Copy(vdata, vdata.Length - relaydatasize, rd, rd.Length, relaydatasize);
+                    mRelayData = rd;
                 }
                 offset += vdata.Length;
                 removecount += vdata.Length;
