@@ -64,7 +64,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public override DriverData Data => base.Data;
+        public override DriverData Data => mData;
 
         #endregion ...Properties...
 

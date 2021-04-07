@@ -62,6 +62,11 @@ namespace Cdy.Spider.SerisePortClient
 
         #region ... Methods    ...
 
+        public void TestOpen()
+        {
+            mClient = new System.IO.Ports.SerialPort("Com2", 9600);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -145,7 +150,7 @@ namespace Cdy.Spider.SerisePortClient
         {
             while (!mIsClosed)
             {
-                if (mClient != null && mClient.BytesToRead > 0 && !mIsTransparentRead)
+                if (mClient.IsOpen && mClient != null && mClient.BytesToRead > 0 && !mIsTransparentRead)
                 {
 
                     var vdlen = mClient.BytesToRead;

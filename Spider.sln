@@ -67,7 +67,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.UdpClient.Develo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.SerisePortClient.Develop", "Cdy.Spider.SerisePortClient.Develop\Cdy.Spider.SerisePortClient.Develop.csproj", "{CD41D8D2-741C-4CE2-A5BD-75A37E18A500}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.ModbusDriver.Develop", "Develop\Drivers\Cdy.Spider.ModbusDriver.Develop\Cdy.Spider.ModbusDriver.Develop.csproj", "{C8842128-A394-4478-B823-5CBCB324F567}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.ModbusDriver.Develop", "Develop\Drivers\Cdy.Spider.ModbusDriver.Develop\Cdy.Spider.ModbusDriver.Develop.csproj", "{C8842128-A394-4478-B823-5CBCB324F567}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
