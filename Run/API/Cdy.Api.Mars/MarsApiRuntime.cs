@@ -207,6 +207,10 @@ namespace Cdy.Api.Mars
                             mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
                             UpdateAllValue();
                         }
+                        else
+                        {
+                            LoggerService.Service.Info("MarApi", "Login failed to" + mData.ServerIp);
+                        }
                     }
                     else
                     {
