@@ -209,7 +209,7 @@ namespace Cdy.Api.Mars
                         }
                         else
                         {
-                            LoggerService.Service.Info("MarApi", "Login failed to" + mData.ServerIp);
+                            LoggerService.Service.Info("MarApi", "Login "+ mData.ServerIp + " failed！");
                         }
                     }
                     else
