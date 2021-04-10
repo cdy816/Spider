@@ -7,8 +7,8 @@
 [![Issues][issues-shield]][issues-url]
 [![Apache License][license-shield]][license-url]
 <br />
-[![star](https://gitee.com/chongdaoyang/spider/badge/star.svg?theme=white)](https://gitee.com/chongdaoyang/spider/stargazers)
-[![fork](https://gitee.com/chongdaoyang/spider/badge/fork.svg?theme=white)](https://gitee.com/chongdaoyang/spider/members)
+[![star](https://gitee.com/chongdaoyang/Spider/badge/star.svg?theme=white)](https://gitee.com/chongdaoyang/Spider/stargazers)
+[![fork](https://gitee.com/chongdaoyang/Spider/badge/fork.svg?theme=white)](https://gitee.com/chongdaoyang/Spider/members)
 
 <!-- PROJECT LOGO -->
 <br />
