@@ -203,6 +203,7 @@ namespace Cdy.Api.Mars
                         mProxy.Login(mData.UserName, mData.Password);
                         if (mProxy.IsLogin)
                         {
+                            LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " sucessfull！");
                             UpdateTagId();
                             mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
                             UpdateAllValue();
