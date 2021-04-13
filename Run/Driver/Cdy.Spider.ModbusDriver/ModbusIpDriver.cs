@@ -157,6 +157,7 @@ namespace Cdy.Spider
                             irlen = addr - irstart + len;
                         }
                     }
+                    if(!mInputRegistorTags.ContainsKey(addr))
                     mInputRegistorTags.Add(addr,new Tuple<ushort, List<int>>(len,vv.Value));
 
                 }
@@ -182,6 +183,7 @@ namespace Cdy.Spider
                             hrlen = addr - hrstart + len;
                         }
                     }
+                    if(!mHoldRegistorTags.ContainsKey(addr))
                     mHoldRegistorTags.Add(addr, new Tuple<ushort, List<int>>(len, vv.Value));
                 }
             }
@@ -220,14 +222,18 @@ namespace Cdy.Spider
         {
             if (mComm.IsConnected)
             {
-                ushort addr = ushort.Parse(deviceInfo.Substring(3));
-                if (deviceInfo.StartsWith("cs:"))
+                var dtmp = deviceInfo.Split(new char[] { ':' });
+
+                ushort addr = ushort.Parse(dtmp[1]);
+                ushort size = ushort.Parse(dtmp[2]);
+
+                if (dtmp[0].StartsWith("cs"))
                 {
-                    mMaster.WriteSingleCoil((byte)mData.Id,addr, Convert.ToBoolean(value));
+                    mMaster.WriteSingleCoil((byte)mData.Id, addr, Convert.ToBoolean(value));
                 }
-                else if (deviceInfo.StartsWith("hr:"))
+                else if (dtmp[0].StartsWith("hr"))
                 {
-                    mMaster.WriteMultipleRegisters((byte)mData.Id, addr, GetValue(value, valueType));
+                    mMaster.WriteMultipleRegisters((byte)mData.Id, addr, GetValue(value, valueType, size));
                 }
             }
         }
@@ -238,9 +244,10 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         /// <param name="valueType"></param>
         /// <returns></returns>
-        private ushort[] GetValue(object value,byte valueType)
+        private ushort[] GetValue(object value, byte valueType, ushort size)
         {
-            TagType tp = (TagType) valueType;
+
+            TagType tp = (TagType)valueType;
             switch (tp)
             {
                 case TagType.Bool:
@@ -251,22 +258,74 @@ namespace Cdy.Spider
                     return new ushort[] { Convert.ToUInt16(value) };
                 case TagType.Int:
                 case TagType.UInt:
-                    return IntToByte(Convert.ToInt32(value));
+                    if (size == 1)
+                    {
+                        return new ushort[] { Convert.ToUInt16(value) };
+                    }
+                    else
+                    {
+                        return IntToByte(Convert.ToInt32(value));
+                    }
                 case TagType.Long:
                 case TagType.ULong:
-                    return LongToByte(Convert.ToInt64(value));
+                    if (size == 1)
+                    {
+                        return new ushort[] { Convert.ToUInt16(value) };
+                    }
+                    else if (size == 2)
+                    {
+                        return IntToByte(Convert.ToInt32(value));
+                    }
+                    else if (size == 3)
+                    {
+                        return LongToByte(Convert.ToInt64(value)).Take(3).ToArray();
+                    }
+                    else
+                    {
+                        return LongToByte(Convert.ToInt64(value));
+                    }
                 case TagType.DateTime:
-                    return LongToByte(Convert.ToDateTime(value).ToBinary());
+                    if (size != 4)
+                    {
+                        return LongToByte(Convert.ToDateTime(value).ToBinary()).Take(size).ToArray();
+                    }
+                    else
+                    {
+                        return LongToByte(Convert.ToDateTime(value).ToBinary());
+                    }
                 case TagType.Double:
-                    return DoubleToByte(Convert.ToDouble(value));
+                    if (size == 1)
+                    {
+                        return new ushort[] { Convert.ToUInt16(value) };
+                    }
+                    else if (size == 2)
+                    {
+                        return FloatToByte(Convert.ToSingle(value));
+                    }
+                    else if (size == 3)
+                    {
+                        return DoubleToByte(Convert.ToDouble(value)).Take(3).ToArray();
+                    }
+                    else
+                    {
+                        return DoubleToByte(Convert.ToDouble(value));
+                    }
+
                 case TagType.Float:
-                    return FloatToByte(Convert.ToSingle(value));
+                    if (size == 1)
+                    {
+                        return new ushort[] { Convert.ToUInt16(value) };
+                    }
+                    else
+                    {
+                        return FloatToByte(Convert.ToSingle(value));
+                    }
                 case TagType.String:
                     if (mData.StringEncoding == StringEncoding.Ascii)
                     {
                         return BytesToHostUInt16(Encoding.ASCII.GetBytes(value.ToString()));
                     }
-                    else if(mData.StringEncoding == StringEncoding.Utf8)
+                    else if (mData.StringEncoding == StringEncoding.Utf8)
                     {
                         return BytesToHostUInt16(Encoding.UTF8.GetBytes(value.ToString()));
                     }
@@ -480,7 +539,7 @@ namespace Cdy.Spider
                         for (ushort i = 0; i < vv.Value; i++)
                         {
                             ushort addr = (ushort)(vv.Key + i);
-                            UpdateRegistor(addr, result, mInputRegistorTags);
+                            UpdateRegistor(addr,i, result, mInputRegistorTags);
                         }
                     }
                 }
@@ -493,7 +552,7 @@ namespace Cdy.Spider
                         for (ushort i = 0; i < vv.Value; i++)
                         {
                             ushort addr = (ushort)(vv.Key + i);
-                            UpdateRegistor(addr, result, mHoldRegistorTags);
+                            UpdateRegistor(addr,i, result, mHoldRegistorTags);
                         }
                     }
                 }
@@ -511,12 +570,12 @@ namespace Cdy.Spider
         /// <param name="addr"></param>
         /// <param name="result"></param>
         /// <param name="mtagcach"></param>
-        private void UpdateRegistor(ushort addr,ushort[] result,SortedDictionary<ushort,Tuple<ushort,List<int>>> mtagcach)
+        private void UpdateRegistor(ushort addr,ushort offset,ushort[] result,SortedDictionary<ushort,Tuple<ushort,List<int>>> mtagcach)
         {
             if (mtagcach.ContainsKey(addr))
             {
                 var vdd = mtagcach[addr];
-                var res = result.AsSpan<ushort>(addr, vdd.Item1);
+                var res = result.AsSpan<ushort>(offset, vdd.Item1);
 
                 var tp = Device.GetTag(vdd.Item2[0]).Type;
 
@@ -598,6 +657,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public uint ToUInt(Span<ushort> datas)
         {
+            if (datas.Length == 1) return datas[0];
+
             switch (mData.IntFormate)
             {
                 case FourValueFormate.D12:
@@ -615,6 +676,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public float ToFloat(Span<ushort> datas)
         {
+            if (datas.Length == 1) return datas[0];
             switch (mData.FloatFormate)
             {
                 case FourValueFormate.D12:
@@ -632,18 +694,39 @@ namespace Cdy.Spider
         /// <returns></returns>
         public double ToDouble(Span<ushort> datas)
         {
-            switch (mData.DoubleFormate)
+            if (datas.Length == 1) return datas[0];
+            if (datas.Length == 2) return ToFloat(datas);
+            if (datas.Length >= 4)
             {
-                case EightValueFormate.D1234:
-                    return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], datas[3]);
-                case EightValueFormate.D4321:
-                    return Modbus.Utility.ModbusUtility.GetDouble(datas[3], datas[2], datas[1], datas[0]);
-                case EightValueFormate.D2143:
-                    return Modbus.Utility.ModbusUtility.GetDouble(datas[1], datas[0], datas[3], datas[2]);
-                case EightValueFormate.D3412:
-                    return Modbus.Utility.ModbusUtility.GetDouble(datas[2], datas[3], datas[0], datas[1]);
+                switch (mData.DoubleFormate)
+                {
+                    case EightValueFormate.D1234:
+                        return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], datas[3]);
+                    case EightValueFormate.D4321:
+                        return Modbus.Utility.ModbusUtility.GetDouble(datas[3], datas[2], datas[1], datas[0]);
+                    case EightValueFormate.D2143:
+                        return Modbus.Utility.ModbusUtility.GetDouble(datas[1], datas[0], datas[3], datas[2]);
+                    case EightValueFormate.D3412:
+                        return Modbus.Utility.ModbusUtility.GetDouble(datas[2], datas[3], datas[0], datas[1]);
+                }
+                return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], datas[3]);
             }
-            return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], datas[3]);
+            else
+            {
+                switch (mData.DoubleFormate)
+                {
+                    case EightValueFormate.D1234:
+                        return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], 0);
+                    case EightValueFormate.D4321:
+                        return Modbus.Utility.ModbusUtility.GetDouble(0, datas[2], datas[1], datas[0]);
+                    case EightValueFormate.D2143:
+                        return Modbus.Utility.ModbusUtility.GetDouble(datas[1], datas[0], 0, datas[2]);
+                    case EightValueFormate.D3412:
+                        return Modbus.Utility.ModbusUtility.GetDouble(datas[2], 0, datas[0], datas[1]);
+                }
+                return Modbus.Utility.ModbusUtility.GetDouble(datas[0], datas[1], datas[2], 0);
+            }
+            
         }
 
         /// <summary>
@@ -653,18 +736,38 @@ namespace Cdy.Spider
         /// <returns></returns>
         public long ToLong(Span<ushort> datas)
         {
-            switch (mData.LongFormate)
+            if (datas.Length == 1) return datas[0];
+            if (datas.Length == 2) return ToUInt(datas);
+            if (datas.Length >= 4)
             {
-                case EightValueFormate.D1234:
-                    return Modbus.Utility.ModbusUtility.GetLong(datas[0], datas[1], datas[2], datas[3]);
-                case EightValueFormate.D4321:
-                    return Modbus.Utility.ModbusUtility.GetLong(datas[3], datas[2], datas[1], datas[0]);
-                case EightValueFormate.D2143:
-                    return Modbus.Utility.ModbusUtility.GetLong(datas[1], datas[0], datas[3], datas[2]);
-                case EightValueFormate.D3412:
-                    return Modbus.Utility.ModbusUtility.GetLong(datas[2], datas[3], datas[0], datas[1]);
+                switch (mData.LongFormate)
+                {
+                    case EightValueFormate.D1234:
+                        return Modbus.Utility.ModbusUtility.GetLong(datas[0], datas[1], datas[2], datas[3]);
+                    case EightValueFormate.D4321:
+                        return Modbus.Utility.ModbusUtility.GetLong(datas[3], datas[2], datas[1], datas[0]);
+                    case EightValueFormate.D2143:
+                        return Modbus.Utility.ModbusUtility.GetLong(datas[1], datas[0], datas[3], datas[2]);
+                    case EightValueFormate.D3412:
+                        return Modbus.Utility.ModbusUtility.GetLong(datas[2], datas[3], datas[0], datas[1]);
+                }
+                return Modbus.Utility.ModbusUtility.GetLong(datas[0], datas[1], datas[2], datas[3]);
             }
-            return Modbus.Utility.ModbusUtility.GetLong(datas[0], datas[1], datas[2], datas[3]);
+            else
+            {
+                switch (mData.LongFormate)
+                {
+                    case EightValueFormate.D1234:
+                        return Modbus.Utility.ModbusUtility.GetLong(datas[0], datas[1], datas[2], 0);
+                    case EightValueFormate.D4321:
+                        return Modbus.Utility.ModbusUtility.GetLong(0, datas[2], datas[1], datas[0]);
+                    case EightValueFormate.D2143:
+                        return Modbus.Utility.ModbusUtility.GetLong(datas[1], datas[0], 0, datas[2]);
+                    case EightValueFormate.D3412:
+                        return Modbus.Utility.ModbusUtility.GetLong(datas[2],0, datas[0], datas[1]);
+                }
+                return Modbus.Utility.ModbusUtility.GetLong(datas[0], datas[1], datas[2],0);
+            }
         }
 
 
