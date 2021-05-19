@@ -117,9 +117,9 @@ namespace Cdy.Spider.OpcClient
                 {
                     mClient.ConnectServer(this.mData.ServerIp).Wait();
                 }
-                catch
+                catch(Exception ex)
                 {
-
+                    Console.WriteLine(ex.Message);
                 }
                 Thread.Sleep(2000);
             }

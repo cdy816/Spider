@@ -30,6 +30,8 @@ namespace Cdy.Spider
         /// </summary>
         protected Dictionary<string, List<int>> mCachTags = new Dictionary<string, List<int>>();
 
+      
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -61,6 +63,11 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         public abstract string TypeName { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual ValueWriteType ValueType { get { return ValueWriteType.Bytes; } }
 
         #endregion ...Properties...
 

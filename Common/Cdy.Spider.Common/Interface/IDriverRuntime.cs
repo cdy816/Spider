@@ -13,6 +13,9 @@ using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
+
+    public enum ValueWriteType { Bytes, Object }
+
     /// <summary>
     /// 
     /// </summary>
@@ -53,14 +56,18 @@ namespace Cdy.Spider
         /// </summary>
         DriverData Data { get;}
 
-
-        #endregion ...Properties...
-
-        #region ... Methods    ...
-
         /// <summary>
         /// 
         /// </summary>
+        public ValueWriteType ValueType { get; }
+        
+        #endregion ...Properties...
+
+            #region ... Methods    ...
+
+            /// <summary>
+            /// 
+            /// </summary>
         void Init();
         
         /// <summary>

@@ -33,6 +33,11 @@ namespace Cdy.Spider
         /// </summary>
         public override DriverData Data => mData;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override ValueWriteType ValueType => ValueWriteType.Object;
+
         #endregion ...Properties...
 
         #region ... Methods    ...

@@ -187,7 +187,17 @@ namespace Cdy.Spider
             {
                 var vtag = mDatabaseMapTags[databaseTag];
                 if (vtag != null && !string.IsNullOrEmpty(vtag.DeviceInfo))
-                    Driver.WriteValue(vtag.DeviceInfo, ConvertToBytes(vtag, value), (byte)(vtag.Type));
+                {
+                    if (Driver.ValueType == ValueWriteType.Bytes)
+                    {
+                        Driver.WriteValue(vtag.DeviceInfo, ConvertToBytes(vtag, value), (byte)(vtag.Type));
+                    }
+                    else
+                    {
+                        Driver.WriteValue(vtag.DeviceInfo,value, (byte)(vtag.Type));
+                    }
+                }
+
             }
         }
 
