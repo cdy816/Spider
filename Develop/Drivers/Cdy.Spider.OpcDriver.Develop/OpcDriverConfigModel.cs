@@ -63,7 +63,7 @@ namespace Cdy.Spider.OpcDriver.Develop
                         }
                         if(opv.ShowDialog().Value)
                         {
-                            Registor = opv.SelectVariable.NodeId;
+                            Registor = opv.SelectVariable.NodeId + "||" + opv.SelectVariable.DataType;
                         }
                     });
                 }

@@ -1205,6 +1205,274 @@ namespace Cdy.Spider.OpcClient
 
         #region Read Attributes Support
 
+        public Dictionary<string, string> ReadAttributes(NodeId nodeId)
+        {
+            Dictionary<string, string> re = new Dictionary<string, string>();
+            if (NodeId.IsNull(nodeId))
+            {
+                return re;
+            }
+
+            // build list of attributes to read.
+            ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
+
+            foreach (uint attributeId in Attributes.GetIdentifiers())
+            {
+                ReadValueId nodeToRead = new ReadValueId();
+                nodeToRead.NodeId = nodeId;
+                nodeToRead.AttributeId = attributeId;
+                nodesToRead.Add(nodeToRead);
+            }
+
+            // read the attributes.
+            DataValueCollection results = null;
+            DiagnosticInfoCollection diagnosticInfos = null;
+
+            m_session.Read(
+                null,
+                0,
+                TimestampsToReturn.Neither,
+                nodesToRead,
+                out results,
+                out diagnosticInfos);
+
+            ClientBase.ValidateResponse(results, nodesToRead);
+            ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
+
+            // add the results to the display.
+            for (int ii = 0; ii < results.Count; ii++)
+            {
+                // check for error.
+                if (StatusCode.IsBad(results[ii].StatusCode))
+                {
+                    if (results[ii].StatusCode == StatusCodes.BadAttributeIdInvalid)
+                    {
+                        continue;
+                    }
+                }
+
+                // add the metadata for the attribute.
+                uint attributeId = nodesToRead[ii].AttributeId;
+                string skey = Attributes.GetBrowseName(attributeId);
+
+                string sval = GetAttributeDisplayText(m_session, attributeId, results[ii].WrappedValue);
+
+                re.Add(skey, sval);
+            }
+
+            return re;
+        }
+
+        public static string GetAttributeDisplayText(Session session, uint attributeId, Variant value)
+        {
+            if (value == Variant.Null)
+            {
+                return String.Empty;
+            }
+
+            switch (attributeId)
+            {
+                case Attributes.AccessLevel:
+                case Attributes.UserAccessLevel:
+                    {
+                        byte? field = value.Value as byte?;
+
+                        if (field != null)
+                        {
+                            return GetAccessLevelDisplayText(field.Value);
+                        }
+
+                        break;
+                    }
+
+                case Attributes.EventNotifier:
+                    {
+                        byte? field = value.Value as byte?;
+
+                        if (field != null)
+                        {
+                            return GetEventNotifierDisplayText(field.Value);
+                        }
+
+                        break;
+                    }
+
+                case Attributes.DataType:
+                    {
+                        return session.NodeCache.GetDisplayText(value.Value as NodeId);
+                    }
+
+                case Attributes.ValueRank:
+                    {
+                        int? field = value.Value as int?;
+
+                        if (field != null)
+                        {
+                            return GetValueRankDisplayText(field.Value);
+                        }
+
+                        break;
+                    }
+
+                case Attributes.NodeClass:
+                    {
+                        int? field = value.Value as int?;
+
+                        if (field != null)
+                        {
+                            return ((NodeClass)field.Value).ToString();
+                        }
+
+                        break;
+                    }
+
+                case Attributes.NodeId:
+                    {
+                        NodeId field = value.Value as NodeId;
+
+                        if (!NodeId.IsNull(field))
+                        {
+                            return field.ToString();
+                        }
+
+                        return "Null";
+                    }
+
+                case Attributes.DataTypeDefinition:
+                    {
+                        ExtensionObject field = value.Value as ExtensionObject;
+                        if (field != null)
+                        {
+                            return field.ToString();
+                        }
+                        break;
+                    }
+            }
+
+            // check for byte strings.
+            if (value.Value is byte[])
+            {
+                return Utils.ToHexString(value.Value as byte[]);
+            }
+
+            // use default format.
+            return value.ToString();
+        }
+
+        public static string GetAccessLevelDisplayText(byte accessLevel)
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            if (accessLevel == AccessLevels.None)
+            {
+                buffer.Append("None");
+            }
+
+            if ((accessLevel & AccessLevels.CurrentRead) == AccessLevels.CurrentRead)
+            {
+                buffer.Append("Read");
+            }
+
+            if ((accessLevel & AccessLevels.CurrentWrite) == AccessLevels.CurrentWrite)
+            {
+                if (buffer.Length > 0)
+                {
+                    buffer.Append(" | ");
+                }
+
+                buffer.Append("Write");
+            }
+
+            if ((accessLevel & AccessLevels.HistoryRead) == AccessLevels.HistoryRead)
+            {
+                if (buffer.Length > 0)
+                {
+                    buffer.Append(" | ");
+                }
+
+                buffer.Append("HistoryRead");
+            }
+
+            if ((accessLevel & AccessLevels.HistoryWrite) == AccessLevels.HistoryWrite)
+            {
+                if (buffer.Length > 0)
+                {
+                    buffer.Append(" | ");
+                }
+
+                buffer.Append("HistoryWrite");
+            }
+
+            if ((accessLevel & AccessLevels.SemanticChange) == AccessLevels.SemanticChange)
+            {
+                if (buffer.Length > 0)
+                {
+                    buffer.Append(" | ");
+                }
+
+                buffer.Append("SemanticChange");
+            }
+
+            return buffer.ToString();
+        }
+
+        public static string GetEventNotifierDisplayText(byte eventNotifier)
+        {
+            StringBuilder buffer = new StringBuilder();
+
+            if (eventNotifier == EventNotifiers.None)
+            {
+                buffer.Append("None");
+            }
+
+            if ((eventNotifier & EventNotifiers.SubscribeToEvents) == EventNotifiers.SubscribeToEvents)
+            {
+                buffer.Append("Subscribe");
+            }
+
+            if ((eventNotifier & EventNotifiers.HistoryRead) == EventNotifiers.HistoryRead)
+            {
+                if (buffer.Length > 0)
+                {
+                    buffer.Append(" | ");
+                }
+
+                buffer.Append("HistoryRead");
+            }
+
+            if ((eventNotifier & EventNotifiers.HistoryWrite) == EventNotifiers.HistoryWrite)
+            {
+                if (buffer.Length > 0)
+                {
+                    buffer.Append(" | ");
+                }
+
+                buffer.Append("HistoryWrite");
+            }
+
+            return buffer.ToString();
+        }
+
+        /// <summary>
+        /// Gets the display text for the value rank attribute.
+        /// </summary>
+        /// <param name="valueRank">The value rank.</param>
+        /// <returns>The value rank formatted as a string.</returns>
+        public static string GetValueRankDisplayText(int valueRank)
+        {
+            switch (valueRank)
+            {
+                case ValueRanks.Any: return "Any";
+                case ValueRanks.Scalar: return "Scalar";
+                case ValueRanks.ScalarOrOneDimension: return "ScalarOrOneDimension";
+                case ValueRanks.OneOrMoreDimensions: return "OneOrMoreDimensions";
+                case ValueRanks.OneDimension: return "OneDimension";
+                case ValueRanks.TwoDimensions: return "TwoDimensions";
+            }
+
+            return valueRank.ToString();
+        }
+
         /// <summary>
         /// 读取一个节点的所有属性
         /// </summary>

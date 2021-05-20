@@ -29,7 +29,7 @@ namespace Cdy.Spider.OpcClient
 
         private OpcUaClient mClient;
 
-        private List<string> mSubscription;
+        private Dictionary<string,string> mSubscription;
 
         #endregion ...Variables...
 
@@ -82,7 +82,20 @@ namespace Cdy.Spider.OpcClient
         /// <param name="deviceInfos"></param>
         public override void Prepare(List<string> deviceInfos)
         {
-            mSubscription = deviceInfos;
+            mSubscription = new Dictionary<string, string>();
+            foreach(var vv in deviceInfos)
+            {
+                if(vv.IndexOf("||")>0)
+                {
+                    string skey = vv.Substring(0, vv.LastIndexOf("||"));
+                    string stype = vv.Substring(vv.LastIndexOf("||") + 2);
+                    mSubscription.Add(skey, stype);
+                }
+                else
+                {
+                    mSubscription.Add(vv, "");
+                }
+            }
             base.Prepare(deviceInfos);
         }
 
@@ -137,11 +150,19 @@ namespace Cdy.Spider.OpcClient
             {
                 Task.Run(() =>
                 {
-                    mClient.AddSubscription("spider", this.mSubscription.ToArray(), new Action<string, Opc.Ua.Client.MonitoredItem, Opc.Ua.Client.MonitoredItemNotificationEventArgs>((tag, item, arg) => {
+                    mClient.AddSubscription("spider", this.mSubscription.Keys.ToArray(), new Action<string, Opc.Ua.Client.MonitoredItem, Opc.Ua.Client.MonitoredItemNotificationEventArgs>((tag, item, arg) => {
 
                         MonitoredItemNotification notification = arg.NotificationValue as MonitoredItemNotification;
                         OnReceiveCallBack2(item.DisplayName, notification.Value.Value);
                     }));
+
+                    Dictionary<string, string> dtmp = new Dictionary<string, string>();
+                    foreach (var vv in mSubscription.Where(e => string.IsNullOrEmpty(e.Value)))
+                    {
+                        var typs = mClient.ReadAttributes(new NodeId(vv.Key));
+                        if (typs.ContainsKey("DataType"))
+                            dtmp.Add(vv.Key, typs["DataType"]);
+                    }
 
                 });
             }
@@ -166,6 +187,49 @@ namespace Cdy.Spider.OpcClient
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="valuetype"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private object ConvertValue(string key,object value)
+        {
+            if(mSubscription.ContainsKey(key))
+            {
+                string sdtype = mSubscription[key].ToLower();
+                switch (sdtype)
+                {
+                    case "boolean":
+                        return Convert.ToBoolean(value);
+                    case "byte":
+                        return Convert.ToByte(value);
+                    case "int16":
+                        return Convert.ToInt16(value);
+                    case "uint16":
+                        return Convert.ToUInt16(value);
+                    case "int32":
+                        return Convert.ToInt32(value);
+                    case "uint32":
+                        return Convert.ToUInt32(value);
+                    case "int64":
+                        return Convert.ToInt64(value);
+                    case "uint64":
+                        return Convert.ToUInt64(value);
+                    case "float":
+                        return Convert.ToSingle(value);
+                    case "double":
+                        return Convert.ToDouble(value);
+                    case "string":
+                        return value.ToString();
+                    case "datetime":
+                        return Convert.ToDateTime(value);
+                }
+
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="timeout"></param>
@@ -177,7 +241,12 @@ namespace Cdy.Spider.OpcClient
             {
                 if (mClient != null && mClient.Connected)
                 {
-                    result = mClient.WriteNode(key, value);
+                    string skey = key;
+                    if (skey.IndexOf("||") > 0)
+                    {
+                        skey = skey.Substring(0, skey.LastIndexOf("||"));
+                    }
+                    result = mClient.WriteNode(skey, ConvertValue(skey, value));
                     return true;
                 }
                 else
