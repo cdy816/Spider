@@ -13,9 +13,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/cdy816/mars">
-    <img src="/Doc/Images/spider.png" alt="Logo" width="128" height="80">
-  </a>
 
   <h2 align="center">Spider 数据互联</h2>
  
