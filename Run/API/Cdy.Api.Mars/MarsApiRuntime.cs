@@ -47,6 +47,8 @@ namespace Cdy.Api.Mars
 
         SpiderDriver.ClientApi.HisDataBuffer hdb = new SpiderDriver.ClientApi.HisDataBuffer();
 
+        private bool mIsConnected = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -185,7 +187,7 @@ namespace Cdy.Api.Mars
             mScanThread = new Thread(ThreadPro);
             mScanThread.IsBackground = true;
             mScanThread.Start();
-
+           
             base.Start();
         }
 
@@ -200,6 +202,7 @@ namespace Cdy.Api.Mars
                 {
                     if (mProxy.IsConnected)
                     {
+                        mIsConnected = true;
                         mProxy.Login(mData.UserName, mData.Password);
                         if (mProxy.IsLogin)
                         {
@@ -215,8 +218,12 @@ namespace Cdy.Api.Mars
                     }
                     else
                     {
-                        //if (mProxy.NeedReConnected)
-                        //    mProxy.Connect(mData.ServerIp, mData.Port);
+                        if(mIsConnected)
+                        {
+                            LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " failed！");
+                            mIsConnected = false;
+                        }
+
                         lock (mChangedTags)
                         {
                             if (mCallBackTags.Count > 100) 

@@ -188,108 +188,108 @@ namespace Cdy.Spider
                 var vtag = mDatabaseMapTags[databaseTag];
                 if (vtag != null && !string.IsNullOrEmpty(vtag.DeviceInfo))
                 {
-                    if (Driver.ValueType == ValueWriteType.Bytes)
-                    {
-                        Driver.WriteValue(vtag.DeviceInfo, ConvertToBytes(vtag, value), (byte)(vtag.Type));
-                    }
-                    else
-                    {
+                    //if (Driver.ValueType == ValueWriteType.Bytes)
+                    //{
+                    //    Driver.WriteValue(vtag.DeviceInfo, ConvertToBytes(vtag, value), (byte)(vtag.Type));
+                    //}
+                    //else
+                    //{
                         Driver.WriteValue(vtag.DeviceInfo,value, (byte)(vtag.Type));
-                    }
+                    //}
                 }
 
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private byte[] ConvertToBytes(Tagbase tag, object value)
-        {
-            switch (tag.Type)
-            {
-                case TagType.Bool:
-                    return BitConverter.GetBytes((bool)value);
-                case TagType.Byte:
-                    return BitConverter.GetBytes(Convert.ToByte(value));
-                case TagType.DateTime:
-                    return BitConverter.GetBytes(Convert.ToInt64(value));
-                case TagType.Double:
-                    return BitConverter.GetBytes(Convert.ToDouble(value));
-                case TagType.Float:
-                    return BitConverter.GetBytes(Convert.ToSingle(value));
-                case TagType.Int:
-                    return BitConverter.GetBytes(Convert.ToInt32(value));
-                case TagType.Long:
-                    return BitConverter.GetBytes(Convert.ToInt64(value));
-                case TagType.Short:
-                    return BitConverter.GetBytes(Convert.ToInt16(value));
-                case TagType.String:
-                    return Encoding.UTF8.GetBytes(value.ToString());
-                case TagType.UInt:
-                    return BitConverter.GetBytes(Convert.ToUInt32(value));
-                case TagType.ULong:
-                    return BitConverter.GetBytes(Convert.ToUInt64(value));
-                case TagType.UShort:
-                    return BitConverter.GetBytes(Convert.ToUInt16(value));
-                case TagType.IntPoint:
-                    IntPoint ival = (IntPoint)value;
-                    byte[] val = new byte[8];
-                    BitConverter.GetBytes(ival.X).CopyTo(val, 0);
-                    BitConverter.GetBytes(ival.Y).CopyTo(val, 4);
-                    return val;
-                case TagType.IntPoint3:
-                    IntPoint3 ival3 = (IntPoint3)value;
-                    val = new byte[12];
-                    BitConverter.GetBytes(ival3.X).CopyTo(val, 0);
-                    BitConverter.GetBytes(ival3.Y).CopyTo(val, 4);
-                    BitConverter.GetBytes(ival3.Z).CopyTo(val, 8);
-                    return val;
-                case TagType.UIntPoint3:
-                    UIntPoint3 uival3 = (UIntPoint3)value;
-                    val = new byte[12];
-                    BitConverter.GetBytes(uival3.X).CopyTo(val, 0);
-                    BitConverter.GetBytes(uival3.Y).CopyTo(val, 4);
-                    BitConverter.GetBytes(uival3.Z).CopyTo(val, 8);
-                    return val;
-                case TagType.UIntPoint:
-                    UIntPoint uival = (UIntPoint)value;
-                    val = new byte[8];
-                    BitConverter.GetBytes(uival.X).CopyTo(val, 0);
-                    BitConverter.GetBytes(uival.Y).CopyTo(val, 4);
-                    return val;
-                case TagType.LongPoint:
-                    LongPoint lval = (LongPoint)value;
-                    val = new byte[16];
-                    BitConverter.GetBytes(lval.X).CopyTo(val, 0);
-                    BitConverter.GetBytes(lval.Y).CopyTo(val, 8);
-                    return val;
-                case TagType.LongPoint3:
-                    LongPoint3 lval3 = (LongPoint3)value;
-                    val = new byte[24];
-                    BitConverter.GetBytes(lval3.X).CopyTo(val, 0);
-                    BitConverter.GetBytes(lval3.Y).CopyTo(val, 8);
-                    BitConverter.GetBytes(lval3.Z).CopyTo(val, 16);
-                    return val;
-                case TagType.ULongPoint:
-                    ULongPoint ulval = (ULongPoint)value;
-                    val = new byte[16];
-                    BitConverter.GetBytes(ulval.X).CopyTo(val, 0);
-                    BitConverter.GetBytes(ulval.Y).CopyTo(val, 8);
-                    return val;
-                case TagType.ULongPoint3:
-                    ULongPoint3 ulval3 = (ULongPoint3)value;
-                    val = new byte[24];
-                    BitConverter.GetBytes(ulval3.X).CopyTo(val, 0);
-                    BitConverter.GetBytes(ulval3.Y).CopyTo(val, 8);
-                    BitConverter.GetBytes(ulval3.Z).CopyTo(val, 16);
-                    return val;
-            }
-            return null;
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="tag"></param>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //private byte[] ConvertToBytes(Tagbase tag, object value)
+        //{
+        //    switch (tag.Type)
+        //    {
+        //        case TagType.Bool:
+        //            return BitConverter.GetBytes((bool)value);
+        //        case TagType.Byte:
+        //            return BitConverter.GetBytes(Convert.ToByte(value));
+        //        case TagType.DateTime:
+        //            return BitConverter.GetBytes(Convert.ToInt64(value));
+        //        case TagType.Double:
+        //            return BitConverter.GetBytes(Convert.ToDouble(value));
+        //        case TagType.Float:
+        //            return BitConverter.GetBytes(Convert.ToSingle(value));
+        //        case TagType.Int:
+        //            return BitConverter.GetBytes(Convert.ToInt32(value));
+        //        case TagType.Long:
+        //            return BitConverter.GetBytes(Convert.ToInt64(value));
+        //        case TagType.Short:
+        //            return BitConverter.GetBytes(Convert.ToInt16(value));
+        //        case TagType.String:
+        //            return Encoding.UTF8.GetBytes(value.ToString());
+        //        case TagType.UInt:
+        //            return BitConverter.GetBytes(Convert.ToUInt32(value));
+        //        case TagType.ULong:
+        //            return BitConverter.GetBytes(Convert.ToUInt64(value));
+        //        case TagType.UShort:
+        //            return BitConverter.GetBytes(Convert.ToUInt16(value));
+        //        case TagType.IntPoint:
+        //            IntPoint ival = (IntPoint)value;
+        //            byte[] val = new byte[8];
+        //            BitConverter.GetBytes(ival.X).CopyTo(val, 0);
+        //            BitConverter.GetBytes(ival.Y).CopyTo(val, 4);
+        //            return val;
+        //        case TagType.IntPoint3:
+        //            IntPoint3 ival3 = (IntPoint3)value;
+        //            val = new byte[12];
+        //            BitConverter.GetBytes(ival3.X).CopyTo(val, 0);
+        //            BitConverter.GetBytes(ival3.Y).CopyTo(val, 4);
+        //            BitConverter.GetBytes(ival3.Z).CopyTo(val, 8);
+        //            return val;
+        //        case TagType.UIntPoint3:
+        //            UIntPoint3 uival3 = (UIntPoint3)value;
+        //            val = new byte[12];
+        //            BitConverter.GetBytes(uival3.X).CopyTo(val, 0);
+        //            BitConverter.GetBytes(uival3.Y).CopyTo(val, 4);
+        //            BitConverter.GetBytes(uival3.Z).CopyTo(val, 8);
+        //            return val;
+        //        case TagType.UIntPoint:
+        //            UIntPoint uival = (UIntPoint)value;
+        //            val = new byte[8];
+        //            BitConverter.GetBytes(uival.X).CopyTo(val, 0);
+        //            BitConverter.GetBytes(uival.Y).CopyTo(val, 4);
+        //            return val;
+        //        case TagType.LongPoint:
+        //            LongPoint lval = (LongPoint)value;
+        //            val = new byte[16];
+        //            BitConverter.GetBytes(lval.X).CopyTo(val, 0);
+        //            BitConverter.GetBytes(lval.Y).CopyTo(val, 8);
+        //            return val;
+        //        case TagType.LongPoint3:
+        //            LongPoint3 lval3 = (LongPoint3)value;
+        //            val = new byte[24];
+        //            BitConverter.GetBytes(lval3.X).CopyTo(val, 0);
+        //            BitConverter.GetBytes(lval3.Y).CopyTo(val, 8);
+        //            BitConverter.GetBytes(lval3.Z).CopyTo(val, 16);
+        //            return val;
+        //        case TagType.ULongPoint:
+        //            ULongPoint ulval = (ULongPoint)value;
+        //            val = new byte[16];
+        //            BitConverter.GetBytes(ulval.X).CopyTo(val, 0);
+        //            BitConverter.GetBytes(ulval.Y).CopyTo(val, 8);
+        //            return val;
+        //        case TagType.ULongPoint3:
+        //            ULongPoint3 ulval3 = (ULongPoint3)value;
+        //            val = new byte[24];
+        //            BitConverter.GetBytes(ulval3.X).CopyTo(val, 0);
+        //            BitConverter.GetBytes(ulval3.Y).CopyTo(val, 8);
+        //            BitConverter.GetBytes(ulval3.Z).CopyTo(val, 16);
+        //            return val;
+        //    }
+        //    return null;
+        //}
 
         #region IDeviceForDriver
 

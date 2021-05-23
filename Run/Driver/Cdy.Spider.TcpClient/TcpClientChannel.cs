@@ -169,6 +169,14 @@ namespace Cdy.Spider.TcpClient
                         OnReceiveCallBack("", btmp);
                     }
                 }
+                else
+                {
+                    if (mClient != null && !IsOnline(mClient))
+                    {
+                        StartConnect();
+                        Thread.Sleep(mData.ReTryDuration);
+                    }
+                }
                 Thread.Sleep(1);
             }
         }

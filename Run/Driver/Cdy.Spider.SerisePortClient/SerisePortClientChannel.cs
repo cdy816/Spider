@@ -150,7 +150,7 @@ namespace Cdy.Spider.SerisePortClient
         {
             while (!mIsClosed)
             {
-                if (mClient.IsOpen && mClient != null && mClient.BytesToRead > 0 && !mIsTransparentRead)
+                if (mClient != null && mClient.IsOpen &&  mClient.BytesToRead > 0 && !mIsTransparentRead)
                 {
 
                     var vdlen = mClient.BytesToRead;
@@ -167,6 +167,14 @@ namespace Cdy.Spider.SerisePortClient
                     else
                     {
                         OnReceiveCallBack("", btmp);
+                    }
+                }
+                else
+                {
+                    if(mClient!=null && !mClient.IsOpen)
+                    {
+                        TryConnect();
+                        Thread.Sleep(mData.ReTryDuration);
                     }
                 }
                 Thread.Sleep(1);
