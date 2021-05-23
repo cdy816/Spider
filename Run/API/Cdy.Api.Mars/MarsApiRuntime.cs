@@ -180,7 +180,7 @@ namespace Cdy.Api.Mars
         public override void Start()
         {
             mIsClosed = false;
-            mProxy.Connect(mData.ServerIp, mData.Port);
+            mProxy.Open(mData.ServerIp, mData.Port);
             
             mScanThread = new Thread(ThreadPro);
             mScanThread.IsBackground = true;
@@ -215,8 +215,8 @@ namespace Cdy.Api.Mars
                     }
                     else
                     {
-                        if (mProxy.NeedReConnected)
-                            mProxy.Connect(mData.ServerIp, mData.Port);
+                        //if (mProxy.NeedReConnected)
+                        //    mProxy.Connect(mData.ServerIp, mData.Port);
                         lock (mChangedTags)
                         {
                             if (mCallBackTags.Count > 100) 

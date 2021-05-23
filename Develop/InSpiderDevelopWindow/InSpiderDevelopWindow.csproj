@@ -5,7 +5,8 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <StartupObject>InSpiderDevelopWindow.App</StartupObject>
-    <ApplicationIcon>Image\spider.ico</ApplicationIcon>
+    <ApplicationIcon>Image\spider2.ico</ApplicationIcon>
+    <AssemblyName>InSpiderStudio</AssemblyName>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
