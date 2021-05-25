@@ -113,6 +113,25 @@ namespace Cdy.Spider.OpcDriver.Develop
         public IEnumerable<string> Config()
         {
             OpcBrowserViewModel opv = new OpcBrowserViewModel();
+            if (Service != null)
+            {
+                string ss = Service.GetConfigServerUrl();
+                if (!string.IsNullOrEmpty(ss))
+                {
+                    opv.ServerAddress = ss;
+                }
+                string user = Service.GetConfigUserName();
+                if (!string.IsNullOrEmpty(ss))
+                {
+                    opv.UserName = user;
+                }
+
+                string pass = Service.GetConfigPassword();
+                if (!string.IsNullOrEmpty(pass))
+                {
+                    opv.Password = pass;
+                }
+            }
             if (opv.ShowDialog().Value)
             {
                 return opv.GetSelectTags();

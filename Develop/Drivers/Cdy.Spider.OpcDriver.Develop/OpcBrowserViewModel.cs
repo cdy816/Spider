@@ -404,7 +404,7 @@ namespace Cdy.Spider.OpcDriver.Develop
             List<string> re = new List<string>();
             foreach (VariableItem vv in GridInstance.SelectedItems)
             {
-                re.Add(vv.NodeId);
+                re.Add(vv.NodeId+ "||" + vv.DataType);
             }
             return re;
         }

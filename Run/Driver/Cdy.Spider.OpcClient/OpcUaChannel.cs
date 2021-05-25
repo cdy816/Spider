@@ -274,7 +274,21 @@ namespace Cdy.Spider.OpcClient
             if (mClient != null && mClient.Connected)
             {
                 var tags = value as IEnumerable<string>;
-                var res = mClient.ReadNodes(tags.Select(e => new NodeId(e)).ToArray());
+
+                var vtags = new List<NodeId>(tags.Count());
+                foreach(var vv in tags)
+                {
+                    if(vv.LastIndexOf("||")>0)
+                    {
+                        vtags.Add(new NodeId(vv.Substring(0, vv.LastIndexOf("||"))));
+                    }
+                    else
+                    {
+                        vtags.Add(new NodeId(vv));
+                    }
+                }
+
+                var res = mClient.ReadNodes(vtags.ToArray());
                 if (res != null)
                 {
                     result = true;
