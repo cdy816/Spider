@@ -419,7 +419,7 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public void AddMachine()
         {
-            string sname = DevelopManager.Manager.ListMachinesNames().GetAvaiableName("machine");
+            string sname = DevelopManager.Manager.ListMachinesNames().GetAvaiableName("project");
             var mm = DevelopManager.Manager.NewMachine(sname);
             var vmm = new MachineViewModel() { Model = mm,Parent=this };
             mItems.Add(vmm);

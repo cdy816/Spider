@@ -106,7 +106,7 @@ namespace InSpiderRun
             StringBuilder re = new StringBuilder();
             re.AppendLine();
             re.AppendLine("exit                 // stop spider and exit application");
-            re.AppendLine("start  [machineName] // start spider ");
+            re.AppendLine("start  project       // start spider project");
             re.AppendLine("stop                 // stop spider ");
             re.AppendLine("h                    // print help message ");
             return re.ToString();
