@@ -41,6 +41,9 @@
 * 运行系统：可部署在window、Linux等操作系统中,也可以部署在Docker中。 
 * 开发系统：采用图形化的配置界面、CS结构,暂定采用桌面的方式实现，运行在Window系统中。
 
+## 帮助文档、接口开发文档
+1. [文档](https://github.com/cdy816/Spider/blob/master/Doc)
+
 ## 版本发布
 * [V0.1](https://github.com/cdy816/Spider/releases/tag/V0.1) 。
 
