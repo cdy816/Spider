@@ -1902,7 +1902,7 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             set
             {
-                if (mModel.Name != value)
+                if (mModel != null && mModel.Name != value)
                 {
                     mModel.Name = value;
                     OnPropertyChanged("Name");
@@ -1921,7 +1921,7 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             set
             {
-                if (mModel.DatabaseName != value)
+                if (mModel != null && mModel.DatabaseName != value)
                 {
                     mModel.DatabaseName = value;
                     OnPropertyChanged("DatabaseName");
@@ -1940,7 +1940,7 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             set
             {
-                if ((int)mModel.DataTranseDirection != value)
+                if (mModel != null && (int)mModel.DataTranseDirection != value)
                 {
                     mModel.DataTranseDirection = (DataTransType)value;
                     IsChanged = true;
@@ -1973,7 +1973,7 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             set
             {
-                if (mModel.DeviceInfo != value)
+                if (mModel!=null && mModel.DeviceInfo != value)
                 {
                     mModel.DeviceInfo = value;
                     IsChanged = true;
