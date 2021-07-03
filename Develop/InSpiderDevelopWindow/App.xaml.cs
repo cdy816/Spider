@@ -49,8 +49,10 @@ namespace InSpiderDevelopWindow
         private void App_Startup(object sender, StartupEventArgs e)
         {
             Cdy.Spider.ApiFactory.Factory.LoadForDevelop();
-            Cdy.Spider.ChannelFactory.Factory.LoadForDevelop();
+            Cdy.Spider.ChannelFactory2.Factory.LoadForDevelop();
             Cdy.Spider.DriverFactory.Factory.LoadForDevelop();
+            Cdy.Spider.LinkFactory.Factory.LoadForDevelop();
+
             RegsiteService();
         }
 
@@ -60,8 +62,9 @@ namespace InSpiderDevelopWindow
         private void RegsiteService()
         {
             ServiceLocator.Locator.Registor<IApiFactory>(ApiFactory.Factory);
-            ServiceLocator.Locator.Registor<ICommChannelFactory>(ChannelFactory.Factory);
+            ServiceLocator.Locator.Registor<ICommChannelFactory2>(ChannelFactory2.Factory);
             ServiceLocator.Locator.Registor<IDriverFactory>(DriverFactory.Factory);
+            ServiceLocator.Locator.Registor<ILinkFactory>(LinkFactory.Factory);
         }
 
         #endregion ...Methods...

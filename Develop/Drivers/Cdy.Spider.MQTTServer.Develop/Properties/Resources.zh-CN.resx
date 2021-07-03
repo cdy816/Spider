@@ -123,11 +123,23 @@
   <data name="DataSendTimeout" xml:space="preserve">
     <value>数据发送超时</value>
   </data>
+  <data name="LocalReponseTopic" xml:space="preserve">
+    <value>本机回复主题</value>
+  </data>
+  <data name="LocalTopic" xml:space="preserve">
+    <value>本机主题</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>密码</value>
   </data>
   <data name="Port" xml:space="preserve">
     <value>端口</value>
+  </data>
+  <data name="RemoteResponseTopic" xml:space="preserve">
+    <value>远端设备回复主题</value>
+  </data>
+  <data name="RemoteTopic" xml:space="preserve">
+    <value>远端设备主题</value>
   </data>
   <data name="ResponseTopicAppendString" xml:space="preserve">
     <value>主题回复附加字符</value>

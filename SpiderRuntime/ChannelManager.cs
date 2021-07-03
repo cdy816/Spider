@@ -32,7 +32,7 @@ namespace SpiderRuntime
         /// <summary>
         /// 
         /// </summary>
-        private readonly Dictionary<string, ICommChannel> mChannels = new Dictionary<string, ICommChannel>();
+        private readonly Dictionary<string, ICommChannel2> mChannels = new Dictionary<string, ICommChannel2>();
 
         #endregion ...Variables...
 
@@ -69,7 +69,7 @@ namespace SpiderRuntime
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public ICommChannel GetChannel(string name)
+        public ICommChannel2 GetChannel(string name)
         {
             if(mChannels.ContainsKey(name))
             {
@@ -109,7 +109,7 @@ namespace SpiderRuntime
                 foreach(var vv in xx.Elements())
                 {
                     string tname = vv.Attribute("TypeName").Value;
-                    var asb = ServiceLocator.Locator.Resolve<ICommChannelFactory>().GetRuntimeIntance(tname);
+                    var asb = ServiceLocator.Locator.Resolve<ICommChannelFactory2>().GetRuntimeIntance(tname);
                     if (asb == null)
                     {
                         LoggerService.Service.Warn("ChannelManager", "Load channel "+tname+" failed!");

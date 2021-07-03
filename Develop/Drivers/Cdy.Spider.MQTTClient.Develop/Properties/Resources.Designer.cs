@@ -47,8 +47,8 @@ namespace Cdy.Spider.MQTTClient.Develop.Properties {
         }
         
         /// <summary>
-        ///   重写当前线程的 CurrentUICulture 属性
-        ///   重写当前线程的 CurrentUICulture 属性。
+        ///   重写当前线程的 CurrentUICulture 属性，对
+        ///   使用此强类型资源类的所有资源查找执行重写。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {
@@ -79,6 +79,24 @@ namespace Cdy.Spider.MQTTClient.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 LocalReponseTopic 的本地化字符串。
+        /// </summary>
+        internal static string LocalReponseTopic {
+            get {
+                return ResourceManager.GetString("LocalReponseTopic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 LocalTopic 的本地化字符串。
+        /// </summary>
+        internal static string LocalTopic {
+            get {
+                return ResourceManager.GetString("LocalTopic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Password 的本地化字符串。
         /// </summary>
         internal static string Password {
@@ -93,6 +111,24 @@ namespace Cdy.Spider.MQTTClient.Develop.Properties {
         internal static string Port {
             get {
                 return ResourceManager.GetString("Port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 RemoteResponseTopic 的本地化字符串。
+        /// </summary>
+        internal static string RemoteResponseTopic {
+            get {
+                return ResourceManager.GetString("RemoteResponseTopic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 RemoteTopic 的本地化字符串。
+        /// </summary>
+        internal static string RemoteTopic {
+            get {
+                return ResourceManager.GetString("RemoteTopic", resourceCulture);
             }
         }
         

@@ -19,13 +19,13 @@
         private static readonly object _transactionIdLock = new object();
         private ushort _transactionId;
 
-        internal ModbusIpTransport(ICommChannel streamResource)
+        internal ModbusIpTransport(ICommChannel2 streamResource)
             : base(streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");
         }
 
-        internal static byte[] ReadRequestResponse(ICommChannel streamResource)
+        internal static byte[] ReadRequestResponse(ICommChannel2 streamResource)
         {
             // read header
             var mbapHeader = new byte[6];
@@ -127,7 +127,7 @@
             message.TransactionId = GetNewTransactionId();
             byte[] frame = BuildMessageFrame(message);
             Debug.WriteLine($"TX: {string.Join(", ", frame)}");
-            StreamResource.Write(frame, 0, frame.Length);
+            StreamResource.Send(frame, 0, frame.Length);
         }
 
         internal override byte[] ReadRequest()

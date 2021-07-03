@@ -123,7 +123,7 @@ namespace InSpiderDevelopWindow.ViewModel
             mProtocolList.Add("");
             mProtocolList.AddRange(ServiceLocator.Locator.Resolve<IDriverFactory>().ListDevelopInstance().Select(e=>e.TypeName));
             mChannelList.Insert(0, "");
-            mChannelList.AddRange(ServiceLocator.Locator.Resolve<ICommChannelFactory>().ListDevelopInstance().Select(e => e.TypeName));
+            mChannelList.AddRange(ServiceLocator.Locator.Resolve<ICommChannelFactory2>().ListDevelopInstance().Select(e => e.TypeName));
         }
 
         #endregion ...Constructor...
@@ -911,7 +911,7 @@ namespace InSpiderDevelopWindow.ViewModel
         private void ChangedChannel(string newchannel)
         {
             mMachineModel.Channel.RemoveChannel(Model.Data.ChannelName);
-            var dd = ServiceLocator.Locator.Resolve<ICommChannelFactory>().GetDevelopIntance(newchannel);
+            var dd = ServiceLocator.Locator.Resolve<ICommChannelFactory2>().GetDevelopIntance(newchannel);
             if (dd != null)
             {
                 dd.Name = string.IsNullOrEmpty(Model.Data.ChannelName) ? mMachineModel.Channel.GetAvaiableName(newchannel) : Model.Data.ChannelName;
@@ -941,7 +941,7 @@ namespace InSpiderDevelopWindow.ViewModel
 
             if (driver == null)
             {
-                var vlist = ServiceLocator.Locator.Resolve<ICommChannelFactory>().ListDevelopInstance();
+                var vlist = ServiceLocator.Locator.Resolve<ICommChannelFactory2>().ListDevelopInstance();
                 foreach (var vv in vlist)
                 {
                     mSupportChannels.Add(vv.Data.Type.ToString());
@@ -952,7 +952,7 @@ namespace InSpiderDevelopWindow.ViewModel
             var ss = driver.ListSupportChannels();
             if (ss!=null)
             {
-                var vlist = ServiceLocator.Locator.Resolve<ICommChannelFactory>().ListDevelopInstance();
+                var vlist = ServiceLocator.Locator.Resolve<ICommChannelFactory2>().ListDevelopInstance();
                 if(vlist!=null && vlist.Count>0)
                 {
                     foreach(var vv in vlist)
@@ -1902,7 +1902,7 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             set
             {
-                if (mModel != null && mModel.Name != value)
+                if (mModel != null && mModel.Name != value && value.Length<=64)
                 {
                     mModel.Name = value;
                     OnPropertyChanged("Name");

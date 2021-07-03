@@ -8,6 +8,7 @@
 //==============================================================
 
 using Cdy.Spider;
+using InSpiderDevelop;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace InSpiderDevelopWindow.ViewModel
     /// <summary>
     /// 
     /// </summary>
-    public class APIDetailViewModel:ViewModelBase
+    public class APIDetailViewModel:ViewModelBase, IModeSwitch
     {
 
         #region ... Variables  ...
@@ -49,6 +50,15 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public APITreeViewModel Parent
+        {
+            get;
+            set;
+        }
 
 
         /// <summary>
@@ -111,11 +121,28 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     mSelectApiType = value;
                     this.mModel = (ServiceLocator.Locator.Resolve<IApiFactory>().GetDevelopInstance(value) as IApiDevelopForFactory).NewApi();
+                    Parent.UpdateDataModel(this.mModel);
                     OnPropertyChanged("Model");
                     OnPropertyChanged("ConfigModel");
                 }
                 OnPropertyChanged("SelectApiType");
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Active()
+        {
+            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void DeActive()
+        {
+            
         }
 
         #endregion ...Properties...

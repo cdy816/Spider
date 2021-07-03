@@ -16,6 +16,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 通信通道
     /// </summary>
+    [Obsolete]
     public interface ICommChannel:IDisposable
     {
 
@@ -296,6 +297,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
+    [Obsolete]
     public interface ICommChannelForFactory
     {
 

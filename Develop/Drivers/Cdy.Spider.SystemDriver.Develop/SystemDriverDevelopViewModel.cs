@@ -95,6 +95,46 @@ namespace Cdy.Spider.SystemDriver.Develop
             }
         }
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return Model.UserName;
+            }
+            set
+            {
+                if (Model.UserName != value)
+                {
+                    Model.UserName = value;
+                    OnPropertyChanged("UserName");
+                }
+            }
+        }
+
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string Password
+        {
+            get
+            {
+                return Model.Password;
+            }
+            set
+            {
+                if (Model.Password != value)
+                {
+                    Model.Password = value;
+                    OnPropertyChanged("Password");
+                }
+            }
+        }
+
+
 
 
         #endregion ...Methods...

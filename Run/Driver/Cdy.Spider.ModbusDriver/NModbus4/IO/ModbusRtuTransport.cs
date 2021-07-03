@@ -17,7 +17,7 @@
 
         public const int ResponseFrameStartLength = 4;
 
-        internal ModbusRtuTransport(ICommChannel streamResource)
+        internal ModbusRtuTransport(ICommChannel2 streamResource)
             : base(streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");
@@ -121,22 +121,38 @@
 
         internal override IModbusMessage ReadResponse<T>()
         {
-            byte[] frameStart = Read(ResponseFrameStartLength);
-            byte[] frameEnd = Read(ResponseBytesToRead(frameStart));
-            byte[] frame = Enumerable.Concat(frameStart, frameEnd).ToArray();
-            Debug.WriteLine($"RX: {string.Join(", ", frame)}");
+            try
+            {
+                byte[] frameStart = Read(ResponseFrameStartLength);
+                byte[] frameEnd = Read(ResponseBytesToRead(frameStart));
+                byte[] frame = Enumerable.Concat(frameStart, frameEnd).ToArray();
+                //Debug.WriteLine($"RX: {string.Join(", ", frame)}");
 
-            return CreateResponse<T>(frame);
+                return CreateResponse<T>(frame);
+            }
+            catch(Exception ex)
+            {
+                StreamResource.ClearBuffer();
+                throw ex;
+            }
         }
 
         internal override byte[] ReadRequest()
         {
-            byte[] frameStart = Read(RequestFrameStartLength);
-            byte[] frameEnd = Read(RequestBytesToRead(frameStart));
-            byte[] frame = Enumerable.Concat(frameStart, frameEnd).ToArray();
-            Debug.WriteLine($"RX: {string.Join(", ", frame)}");
+            try
+            {
+                byte[] frameStart = Read(RequestFrameStartLength);
+                byte[] frameEnd = Read(RequestBytesToRead(frameStart));
+                byte[] frame = Enumerable.Concat(frameStart, frameEnd).ToArray();
+                Debug.WriteLine($"RX: {string.Join(", ", frame)}");
 
-            return frame;
+                return frame;
+            }
+            catch(Exception ex)
+            {
+                StreamResource.ClearBuffer();
+                throw ex;
+            }
         }
     }
 }

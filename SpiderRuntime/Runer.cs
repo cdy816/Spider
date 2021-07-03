@@ -16,6 +16,7 @@ namespace SpiderRuntime
         private ChannelManager mChannel;
         private DeviceManager mDevice;
         private APIManager mApi;
+        private LinkManager mLink;
 
         #endregion ...Variables...
 
@@ -33,12 +34,14 @@ namespace SpiderRuntime
             ServiceLocator.Locator.Registor<ILog>(new ConsoleLogger());
 
             ApiFactory.Factory.LoadForRun();
+            LinkFactory.Factory.LoadForRun();
             DriverFactory.Factory.LoadForRun();
-            ChannelFactory.Factory.LoadForRun();
+            ChannelFactory2.Factory.LoadForRun();
 
 
             ServiceLocator.Locator.Registor<IApiFactory>(ApiFactory.Factory);
-            ServiceLocator.Locator.Registor<ICommChannelFactory>(ChannelFactory.Factory);
+            ServiceLocator.Locator.Registor<ILinkFactory>(LinkFactory.Factory);
+            ServiceLocator.Locator.Registor<ICommChannelFactory2>(ChannelFactory2.Factory);
             ServiceLocator.Locator.Registor<IDriverFactory>(DriverFactory.Factory);
         }
 
@@ -82,10 +85,16 @@ namespace SpiderRuntime
                 mDevice = new DeviceManager() { Name = Name };
                 mChannel = new ChannelManager() { Name = Name };
                 mApi = new APIManager() { Name = Name };
-
+                mLink = new LinkManager() { Name = Name };
 
                 Load();
                 InterfaceRegistor();
+
+                foreach (var vv in mLink.Links)
+                {
+                    ServiceLocator.Locator.Registor<ILink>(vv);
+                    vv.Init();
+                }
 
                 //
                 foreach (var vv in mDevice.Devices)
@@ -114,6 +123,7 @@ namespace SpiderRuntime
             mChannel.Load();
             mDevice.Load();
             mApi.Load();
+            mLink.Load();
         }
 
         /// <summary>
@@ -124,6 +134,7 @@ namespace SpiderRuntime
             ServiceLocator.Locator.Registor<IDriverRuntimeManager>(mDriver);
             ServiceLocator.Locator.Registor<ICommChannelRuntimeManager>(mChannel);
             ServiceLocator.Locator.Registor<IDeviceRuntimeManager>(mDevice);
+            
         }
 
         /// <summary>
@@ -135,16 +146,23 @@ namespace SpiderRuntime
             {
                 LoggerService.Service.Info("Runner", "Ready to start " + Name);
 
+                foreach (var vv in mLink.Links)
+                {
+                    vv.Start();
+                }
+
                 foreach (var vv in mDevice.Devices)
                 {
                     vv.Start();
                 }
 
-                
                 foreach (var vv in mApi.Apis)
                 {
                     vv.Start();
                 }
+
+                
+
             }
             catch(Exception ex)
             {
@@ -159,6 +177,11 @@ namespace SpiderRuntime
         /// </summary>
         public void Stop()
         {
+            foreach(var vv in mLink.Links)
+            {
+                vv.Stop();
+            }
+
             foreach (var vv in mApi.Apis)
             {
                 vv.Stop();

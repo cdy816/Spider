@@ -21,7 +21,7 @@ namespace Cdy.Spider.OpcClient
     /// <summary>
     /// 
     /// </summary>
-    public class OpcUaChannel : ChannelBase
+    public class OpcUaChannel : ChannelBase2
     {
 
         #region ... Variables  ...
@@ -80,10 +80,10 @@ namespace Cdy.Spider.OpcClient
         /// 
         /// </summary>
         /// <param name="deviceInfos"></param>
-        public override void Prepare(List<string> deviceInfos)
+        public override void Prepare(ChannelPrepareContext deviceInfos)
         {
             mSubscription = new Dictionary<string, string>();
-            foreach(var vv in deviceInfos)
+            foreach(var vv in deviceInfos["Tags"] as IEnumerable<string>)
             {
                 if(vv.IndexOf("||")>0)
                 {
@@ -153,7 +153,7 @@ namespace Cdy.Spider.OpcClient
                     mClient.AddSubscription("spider", this.mSubscription.Keys.ToArray(), new Action<string, Opc.Ua.Client.MonitoredItem, Opc.Ua.Client.MonitoredItemNotificationEventArgs>((tag, item, arg) => {
 
                         MonitoredItemNotification notification = arg.NotificationValue as MonitoredItemNotification;
-                        OnReceiveCallBack2(item.DisplayName, notification.Value.Value);
+                        OnReceiveCallBack(item.DisplayName, notification.Value.Value);
                     }));
 
                     Dictionary<string, string> dtmp = new Dictionary<string, string>();
@@ -230,24 +230,24 @@ namespace Cdy.Spider.OpcClient
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="address"></param>
         /// <param name="value"></param>
         /// <param name="timeout"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override object SendObjectInner(string key, object value, int timeout, out bool result)
+        protected override object WriteValueInner(string address, object value, int timeout,out bool result)
         {
             try
             {
                 if (mClient != null && mClient.Connected)
                 {
-                    string skey = key;
+                    string skey = address;
                     if (skey.IndexOf("||") > 0)
                     {
                         skey = skey.Substring(0, skey.LastIndexOf("||"));
                     }
                     result = mClient.WriteNode(skey, ConvertValue(skey, value));
-                    return true;
+                    return result;
                 }
                 else
                 {
@@ -265,20 +265,34 @@ namespace Cdy.Spider.OpcClient
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="address"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        protected override bool WriteValueNoWaitInner(string address, object value, int timeout)
+        {
+            bool re = false;
+            WriteValueInner(address, value, timeout,out re);
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="value"></param>
         /// <param name="timeout"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override object SendObjectInner(object value, int timeout, out bool result)
+        protected override object ReadValueInner(object value, int timeout, out bool result)
         {
             if (mClient != null && mClient.Connected)
             {
                 var tags = value as IEnumerable<string>;
 
                 var vtags = new List<NodeId>(tags.Count());
-                foreach(var vv in tags)
+                foreach (var vv in tags)
                 {
-                    if(vv.LastIndexOf("||")>0)
+                    if (vv.LastIndexOf("||") > 0)
                     {
                         vtags.Add(new NodeId(vv.Substring(0, vv.LastIndexOf("||"))));
                     }
@@ -306,6 +320,7 @@ namespace Cdy.Spider.OpcClient
                 return null;
             }
         }
+
 
         ///// <summary>
         ///// 
@@ -353,7 +368,7 @@ namespace Cdy.Spider.OpcClient
         /// 
         /// </summary>
         /// <returns></returns>
-        public override ICommChannel NewApi()
+        public override ICommChannel2 NewApi()
         {
             return new OpcUaChannel();
         }

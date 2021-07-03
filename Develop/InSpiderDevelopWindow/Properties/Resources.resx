@@ -186,6 +186,12 @@
   <data name="Keyword" xml:space="preserve">
     <value>Keyword</value>
   </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="LinkType" xml:space="preserve">
+    <value>LinkType</value>
+  </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>Spider Studio</value>
   </data>

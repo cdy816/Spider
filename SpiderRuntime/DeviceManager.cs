@@ -127,7 +127,7 @@ namespace SpiderRuntime
                 {
                     DeviceData data = new DeviceData();
                     data.LoadFromXML(vv);
-                    data.Name =  string.IsNullOrEmpty(data.Group) ? this.Name + "." + data.Name : this.Name + "." + data.Group + "." + data.Name;
+                    data.Name =  string.IsNullOrEmpty(data.Group) ?  data.Name :  data.Group + "." + data.Name;
                     DeviceRunner runner = new DeviceRunner() { Device = data };
                     AddDevice(runner);
                 }

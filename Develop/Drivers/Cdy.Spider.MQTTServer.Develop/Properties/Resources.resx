@@ -123,11 +123,23 @@
   <data name="DataSendTimeout" xml:space="preserve">
     <value>DataSendTimeout</value>
   </data>
+  <data name="LocalReponseTopic" xml:space="preserve">
+    <value>LocalReponseTopic</value>
+  </data>
+  <data name="LocalTopic" xml:space="preserve">
+    <value>LocalTopic</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
   <data name="Port" xml:space="preserve">
     <value>Port</value>
+  </data>
+  <data name="RemoteResponseTopic" xml:space="preserve">
+    <value>RemoteResponseTopic</value>
+  </data>
+  <data name="RemoteTopic" xml:space="preserve">
+    <value>RemoteTopic</value>
   </data>
   <data name="ResponseTopicAppendString" xml:space="preserve">
     <value>ResponseTopicAppendString</value>

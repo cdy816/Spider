@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using MQTTnet;
 using MQTTnet.Client.Connecting;
@@ -25,7 +26,7 @@ namespace Cdy.Spider.MQTTClient
     /// <summary>
     /// 
     /// </summary>
-    public class MQTTClientChannel: ChannelBase
+    public class MQTTClientChannel: ChannelBase2
     {
 
         #region ... Variables  ...
@@ -38,7 +39,7 @@ namespace Cdy.Spider.MQTTClient
 
         private MqttClientOptions options;
 
-        private string mResTopic;
+        //private string mResTopic;
 
         private byte[] mResDatas;
 
@@ -126,6 +127,10 @@ namespace Cdy.Spider.MQTTClient
         private void OnConnected(MqttClientConnectedEventArgs x)
         {
             ConnectedChanged(true);
+            Task.Run(() => {
+                this.mqttClient.SubscribeAsync(mData.LocalTopic);
+                this.mqttClient.SubscribeAsync(mData.RemoteResponseTopic);
+            });
         }
 
         /// <summary>
@@ -145,33 +150,25 @@ namespace Cdy.Spider.MQTTClient
         {
             if (x.ApplicationMessage.Payload != null && x.ApplicationMessage.Payload.Length > 0 && !string.IsNullOrEmpty(x.ApplicationMessage.Topic))
             {
-                if (x.ApplicationMessage.Topic.Equals(mResTopic, StringComparison.OrdinalIgnoreCase))
+                if (x.ApplicationMessage.Topic.Equals(mData.RemoteResponseTopic, StringComparison.OrdinalIgnoreCase))
                 {
                     mResDatas = x.ApplicationMessage.Payload;
                     eventreset.Set();
                 }
                 else
                 {
-                    var vtop = x.ApplicationMessage.Topic;
-
-                    if(vtop.EndsWith(mData.ResponseTopicAppendString))
-                    {
-                        return;
-                    }
-
-                    var vss = string.IsNullOrEmpty(mData.ServerTopicAppendString) ? vtop : vtop.Replace(mData.ServerTopicAppendString, "");
-
-                    vss = string.IsNullOrEmpty(mData.TopicHeadString) ? vss : vss.Replace(mData.TopicHeadString, "");
-
-
-                    var res = this.OnReceiveCallBack(vss, x.ApplicationMessage.Payload);
+                    //客户端主动推送过来数据
+                    var res = this.OnReceiveCallBack("", x.ApplicationMessage.Payload);
                     if (!string.IsNullOrEmpty(x.ApplicationMessage.ResponseTopic) && res != null)
                     {
-                        SendToTopicDataWithoutResponse(x.ApplicationMessage.ResponseTopic, res);
-                    }
-                    else if (res != null)
-                    {
-                        SendToTopicDataWithoutResponse(vtop + mData.ResponseTopicAppendString, res);
+                        if(res is byte[])
+                        {
+                            SendToTopicDataWithoutResponse(x.ApplicationMessage.ResponseTopic, res as byte[]);
+                        }
+                        else
+                        {
+                            SendToTopicDataWithoutResponse(x.ApplicationMessage.ResponseTopic, Encoding.UTF8.GetBytes(res.ToString()));
+                        }
                     }
                 }
             }
@@ -181,18 +178,23 @@ namespace Cdy.Spider.MQTTClient
         /// 
         /// </summary>
         /// <param name="deviceInfos"></param>
-        public override void Prepare(List<string> deviceInfos)
+        public override void Prepare(ChannelPrepareContext deviceInfos)
         {
             base.Prepare(deviceInfos);
-            foreach (var vv in deviceInfos)
+            if (IsConnected)
             {
-                //将本机认值服务器角色，下位设备认作客户端角色
-                //订购服务器端主题
-                this.mqttClient.SubscribeAsync(mData.TopicHeadString +  vv + mData.ServerTopicAppendString);
-
-                //订购客户端回复主题
-                this.mqttClient.SubscribeAsync(mData.TopicHeadString + vv + mData.ClientTopicAppendString + mData.ResponseTopicAppendString);
+                this.mqttClient.SubscribeAsync(mData.LocalTopic);
+                this.mqttClient.SubscribeAsync(mData.RemoteResponseTopic);
             }
+            //foreach (var vv in deviceInfos)
+            //{
+            //    //将本机认值服务器角色，下位设备认作客户端角色
+            //    //订购服务器端主题
+            //    this.mqttClient.SubscribeAsync(mData.TopicHeadString +  vv + mData.ServerTopicAppendString);
+
+            //    //订购客户端回复主题
+            //    this.mqttClient.SubscribeAsync(mData.TopicHeadString + vv + mData.ClientTopicAppendString + mData.ResponseTopicAppendString);
+            //}
         }
 
         /// <summary>
@@ -253,265 +255,7 @@ namespace Cdy.Spider.MQTTClient
             var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithPayload(data).WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce).WithRetainFlag().Build();
             this.mqttClient.PublishAsync(msg);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="timeout"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, out bool result)
-        {
-            string ss = this.Data.Name;
-            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = skey + mData.ResponseTopicAppendString;
-            mResTopic = reskey;
-
-            eventreset.Reset();
-            SendToTopicData(skey, reskey, data);
-            result = eventreset.WaitOne(timeout);
-
-            if (result)
-            {
-                return mResDatas;
-            }
-            else
-            {
-                result = false;
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        protected override bool SendInnerAsync(Span<byte> data)
-        {
-            string ss = this.Data.Name;
-            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = ss + mData.ResponseTopicAppendString;
-            mResTopic = reskey;
-            SendToTopicData(skey, reskey, data);
-            return true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <param name="timeout"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        protected override byte[] SendObjectInner(string key, Span<byte> value, int timeout, out bool result)
-        {
-            string ss = key;
-            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = skey + mData.ResponseTopicAppendString;
-            mResTopic = reskey;
-
-            eventreset.Reset();
-            SendToTopicData(skey, reskey, value);
-            result = eventreset.WaitOne(timeout);
-
-            if (result)
-            {
-                return mResDatas;
-            }
-            else
-            {
-                result = false;
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <param name="timeout"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        protected override object SendObjectInner(string key, object value, int timeout, out bool result)
-        {
-            string ss = key;
-            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = skey + mData.ResponseTopicAppendString;
-            mResTopic = reskey;
-
-            eventreset.Reset();
-
-            var bval = Encoding.UTF8.GetBytes(value.ToString()).AsSpan<byte>();
-
-            SendToTopicData(skey, reskey, bval);
-            result = eventreset.WaitOne(timeout);
-
-            if (result)
-            {
-                return Encoding.UTF8.GetString(mResDatas);
-            }
-            else
-            {
-                result = false;
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="timeout"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        protected override object SendObjectInner(object value, int timeout, out bool result)
-        {
-            return SendObjectInner(Data.Name, value, timeout, out result);
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected override bool SendObjectInnerAsync(string key, Span<byte> value)
-        {
-            string ss = key;
-            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = ss + mData.ResponseTopicAppendString;
-            mResTopic = reskey;
-            SendToTopicData(skey, reskey, value);
-            return true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected override bool SendObjectInnerAsync(string key, object value)
-        {
-            string ss = key;
-            string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-            string reskey = ss + mData.ResponseTopicAppendString;
-            mResTopic = reskey;
-            var bval = Encoding.UTF8.GetBytes(value.ToString());
-            SendToTopicData(skey, reskey, bval);
-            return true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        protected override bool SendObjectInnerAsync(object value)
-        {
-            return SendObjectInnerAsync(this.Data.Name, value);
-        }
-
-
-
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="result"></param>
-        ///// <returns></returns>
-        //protected override byte[] SendInner(byte[] data,int start,int len, int timeout, int waitResultCount, out bool result, params string[] paras)
-        //{
-        //    string ss = paras.Length>0 ? this.Data.Name : paras[0];
-        //    string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-        //    string reskey = paras.Length > 1 ? paras[1] : skey + mData.ResponseTopicAppendString;
-        //    mResTopic = reskey;
-
-        //    eventreset.Reset();
-        //    SendToTopicData(skey, reskey, data, start, len);
-        //    result = eventreset.WaitOne(timeout);
-
-        //    if (result)
-        //    {
-        //        return mResDatas;
-        //    }
-        //    else
-        //    {
-        //        result = false;
-        //        return null;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="datas"></param>
-        ///// <param name="timeout"></param>
-        ///// <param name="result"></param>
-        ///// <param name="paras"></param>
-        ///// <returns></returns>
-        //protected override byte[] SendInner(Span<byte> datas, int timeout, int waitResultCount, out bool result, params string[] paras)
-        //{
-        //    string ss = paras.Length > 0 ? this.Data.Name : paras[0];
-        //    string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-        //    string reskey = paras.Length > 1 ? paras[1] : skey + mData.ResponseTopicAppendString;
-        //    mResTopic = reskey;
-
-        //    eventreset.Reset();
-        //    SendToTopicData(skey, reskey, datas);
-        //    result = eventreset.WaitOne(timeout);
-
-        //    if (result)
-        //    {
-        //        return mResDatas;
-        //    }
-        //    else
-        //    {
-        //        result = false;
-        //        return null;
-        //    }
-        //}
-
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="data"></param>
-        ///// <param name="result"></param>
-        //protected override void SendInnerAsync(byte[] data, int start, int len, int waitResultCount, out bool result, params string[] paras)
-        //{
-        //    string ss = paras.Length > 0 ? this.Data.Name : paras[0];
-        //    string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-        //    string reskey = paras.Length > 1 ? paras[1] : ss + mData.ResponseTopicAppendString;
-        //    mResTopic = reskey;
-        //    SendToTopicData(skey, reskey, data, start, len);
-        //    result = true;
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="datas"></param>
-        ///// <param name="result"></param>
-        ///// <param name="paras"></param>
-        //protected override void SendInnerAsync(Span<byte> datas, int waitResultCount, out bool result, params string[] paras)
-        //{
-        //    string ss = paras.Length > 0 ? this.Data.Name : paras[0];
-        //    string skey = mData.TopicHeadString + ss + mData.ClientTopicAppendString;
-        //    string reskey = paras.Length > 1 ? paras[1] : ss + mData.ResponseTopicAppendString;
-        //    mResTopic = reskey;
-        //    SendToTopicData(skey, reskey, datas);
-        //    result = true;
-        //}
+                
 
         /// <summary>
         /// 
@@ -527,10 +271,112 @@ namespace Cdy.Spider.MQTTClient
         /// 
         /// </summary>
         /// <returns></returns>
-        public override ICommChannel NewApi()
+        public override ICommChannel2 NewApi()
         {
             return new MQTTClientChannel();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override object ReadValueInner(object value, int timeout, out bool result)
+        {
+            byte[] bval = Encoding.UTF8.GetBytes(value.ToString());
+            return ReadValueInner(new Span<byte>(bval), timeout, out result);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override object ReadValueInner(Span<byte> value, int timeout, out bool result)
+        {
+            eventreset.Reset();
+            SendToTopicData(mData.RemoteTopic, mData.RemoteResponseTopic, value);
+            result = eventreset.WaitOne(timeout);
+
+            if (result)
+            {
+                return mResDatas;
+            }
+            else
+            {
+                result = false;
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override object WriteValueInner(string address, object value, int timeout,out bool result)
+        {
+            byte[] bval = Encoding.UTF8.GetBytes(value.ToString());
+            return SendAndWaitInner(new Span<byte>(bval),timeout,out result);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="value"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override bool WriteValueNoWaitInner(string address, object value, int timeout)
+        {
+            byte[] bval = Encoding.UTF8.GetBytes(value.ToString());
+            return SendInner(bval);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, out bool result)
+        {
+            eventreset.Reset();
+            SendToTopicData(mData.RemoteTopic, mData.RemoteResponseTopic, data);
+            result = eventreset.WaitOne(timeout);
+
+            if (result)
+            {
+                return mResDatas;
+            }
+            else
+            {
+                result = false;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected override bool SendInner(Span<byte> data)
+        {
+            SendToTopicData(mData.RemoteTopic, mData.RemoteResponseTopic, data);
+            return true;
+        }
+
 
         #endregion ...Methods...
 

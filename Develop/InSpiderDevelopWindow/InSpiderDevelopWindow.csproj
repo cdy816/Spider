@@ -23,6 +23,7 @@
     <None Remove="Image\computer.png" />
     <None Remove="Image\devices.png" />
     <None Remove="Image\idevices.png" />
+    <None Remove="Image\link.png" />
     <None Remove="Image\max.png" />
     <None Remove="Image\maximize.png" />
     <None Remove="Image\minus.png" />
@@ -77,6 +78,7 @@
     <Resource Include="Image\computer.png" />
     <Resource Include="Image\devices.png" />
     <Resource Include="Image\idevices.png" />
+    <Resource Include="Image\link.png" />
     <Resource Include="Image\max.png" />
     <Resource Include="Image\minus.png" />
     <Resource Include="Image\ok.png" />
@@ -92,6 +94,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Config\LinkDevelop.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Config\ChannelDevelop.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -101,6 +106,12 @@
     <None Update="Config\ApiDevelop.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="View\LinkDetailView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 
 </Project>

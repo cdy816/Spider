@@ -19,6 +19,7 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
+    [Obsolete]
     public class ChannelFactory: ICommChannelFactory
     {
 

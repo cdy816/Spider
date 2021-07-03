@@ -45,6 +45,22 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
+    public enum CommMode
+    {
+        /// <summary>
+        /// 单工
+        /// </summary>
+        Simplex,
+        /// <summary>
+        /// 双工
+        /// </summary>
+        Duplex
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class ChannelData
     {
 
@@ -244,7 +260,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public int Port { get; set; }
+        public int Port { get; set; } = 12000;
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -345,6 +361,62 @@ namespace Cdy.Spider
 
         #endregion ...Interfaces...
     }
+
+    public class ServerClientChannelData : SecurityChannelData
+    {
+
+        #region ... Variables  ...
+
+        #endregion ...Variables...
+
+        #region ... Events     ...
+
+        #endregion ...Events...
+
+        #region ... Constructor...
+
+        #endregion ...Constructor...
+
+        #region ... Properties ...
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ServerUrl { get; set; }
+
+
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override XElement SaveToXML()
+        {
+            var re = base.SaveToXML();
+            re.SetAttributeValue("ServerUrl", ServerUrl);
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public override void LoadFromXML(XElement xe)
+        {
+            base.LoadFromXML(xe);
+            if (xe.Attribute("ServerUrl") != null)
+            {
+                this.ServerUrl = xe.Attribute("ServerUrl").Value;
+            }
+        }
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
 
     /// <summary>
     /// 

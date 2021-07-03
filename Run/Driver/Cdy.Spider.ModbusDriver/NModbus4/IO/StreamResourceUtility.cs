@@ -6,7 +6,7 @@
 
     internal static class StreamResourceUtility
     {
-        internal static string ReadLine(ICommChannel stream)
+        internal static string ReadLine(ICommChannel2 stream)
         {
             var result = new StringBuilder();
             var singleByteBuffer = new byte[1];

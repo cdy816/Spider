@@ -239,6 +239,13 @@
                             </StackPanel>
                         </DataTemplate>
 
+                        <DataTemplate  DataType="{x:Type local:LinkTreeViewModel}">
+                            <StackPanel   Background="Transparent" Orientation="Horizontal" Height="24">
+                                <Image  IsHitTestVisible="False" Focusable="False" Source="/Image/Link.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+
                     </TreeView.Resources>
                 </TreeView>
                 <Border VerticalAlignment="Bottom" Background="#4F000000" Height="32" BorderBrush="Gray" BorderThickness="0,0,1,0">

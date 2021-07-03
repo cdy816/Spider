@@ -218,18 +218,18 @@ namespace Cdy.Spider.MQTTClient.Develop
         /// <summary>
         /// 
         /// </summary>
-        public string ServerTopicAppendString
+        public string RemoteResponseTopic
         {
             get
             {
-                return mModel.ServerTopicAppendString;
+                return mModel.RemoteResponseTopic;
             }
             set
             {
-                if (mModel.ServerTopicAppendString != value)
+                if (mModel.RemoteResponseTopic != value)
                 {
-                    mModel.ServerTopicAppendString = value;
-                    OnPropertyChanged("ServerTopicAppendString");
+                    mModel.RemoteResponseTopic = value;
+                    OnPropertyChanged("RemoteResponseTopic");
                 }
             }
         }
@@ -237,18 +237,23 @@ namespace Cdy.Spider.MQTTClient.Develop
         /// <summary>
         /// 
         /// </summary>
-        public string ClientTopicAppendString
+        public string RemoteTopic
         {
             get
             {
-                return mModel.ClientTopicAppendString;
+                return mModel.RemoteTopic;
             }
             set
             {
-                if (mModel.ClientTopicAppendString != value)
+                if (mModel.RemoteTopic != value)
                 {
-                    mModel.ClientTopicAppendString = value;
-                    OnPropertyChanged("ClientTopicAppendString");
+                    var oldvalue = mModel.RemoteTopic;
+                    mModel.RemoteTopic = value;
+                    if (string.IsNullOrEmpty(mModel.RemoteResponseTopic) || mModel.RemoteResponseTopic.StartsWith(oldvalue+"."))
+                    {
+                        RemoteResponseTopic = value + ".Replay";
+                    }
+                    OnPropertyChanged("RemoteTopic");
                 }
             }
         }
@@ -256,37 +261,42 @@ namespace Cdy.Spider.MQTTClient.Develop
         /// <summary>
         /// 
         /// </summary>
-        public string ResponseTopicAppendString
+        public string LocalTopic
         {
             get
             {
-                return mModel.ResponseTopicAppendString;
+                return mModel.LocalTopic;
             }
             set
             {
-                if (mModel.ResponseTopicAppendString != value)
+                if (mModel.LocalTopic != value)
                 {
-                    mModel.ResponseTopicAppendString = value;
-                    OnPropertyChanged("ResponseTopicAppendString");
+                    var oldvalue = mModel.LocalTopic;
+                    mModel.LocalTopic = value;
+                    if(string.IsNullOrEmpty(mModel.LocalReponseTopic) || mModel.LocalReponseTopic.StartsWith(oldvalue + "."))
+                    {
+                        LocalReponseTopic = value + ".Replay";
+                    }
+                    OnPropertyChanged("LocalTopic");
                 }
             }
         }
 
         /// <summary>
-            /// 
-            /// </summary>
-        public string TopicHeadString
+        /// 
+        /// </summary>
+        public string LocalReponseTopic
         {
             get
             {
-                return mModel.TopicHeadString;
+                return mModel.LocalReponseTopic;
             }
             set
             {
-                if (mModel.TopicHeadString != value)
+                if (mModel.LocalReponseTopic != value)
                 {
-                    mModel.TopicHeadString = value;
-                    OnPropertyChanged("TopicHeadString");
+                    mModel.LocalReponseTopic = value;
+                    OnPropertyChanged("LocalReponseTopic");
                 }
             }
         }

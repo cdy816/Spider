@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\SpiderRuntime\SpiderRuntime.csproj" />
+    <ProjectReference Include="..\Driver\Cdy.Spider.WebApiServer\Cdy.Spider.WebApiServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Config\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Update="Config\LinkRuntime.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Config\ApiRuntime.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

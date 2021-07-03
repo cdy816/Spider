@@ -13,6 +13,11 @@
         <view:APIDetailView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type model:LinkDetailViewModel}">
+        <view:LinkDetailView />
+    </DataTemplate>
+    
+    
     <DataTemplate DataType="{x:Type model:DeviceDetailViewModel}">
         <view:DeviceDetailView />
     </DataTemplate>

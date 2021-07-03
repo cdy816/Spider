@@ -16,7 +16,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker ApiType,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
-        <ComboBox Grid.Column="1" ItemsSource="{Binding Apis}" SelectedValue="{Binding SelectApiType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,0,0,0" Height="26" VerticalAlignment="Center" Width="328"/>
+        <ComboBox VerticalContentAlignment="Center" Grid.Column="1" ItemsSource="{Binding Apis}" SelectedValue="{Binding SelectApiType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,0,0,0" Height="26" VerticalAlignment="Center" Width="328"/>
         <Border BorderThickness="0,1,0,0" BorderBrush="Gray" HorizontalAlignment="Stretch"  Grid.Row="1" VerticalAlignment="Stretch" Grid.ColumnSpan="2">
             <ContentControl Content="{Binding ConfigModel}" Margin="0"/>
         </Border>

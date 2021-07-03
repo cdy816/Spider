@@ -186,6 +186,12 @@
   <data name="Keyword" xml:space="preserve">
     <value>关键字</value>
   </data>
+  <data name="Link" xml:space="preserve">
+    <value>级联</value>
+  </data>
+  <data name="LinkType" xml:space="preserve">
+    <value>级联协议</value>
+  </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>Spider 开发平台</value>
   </data>

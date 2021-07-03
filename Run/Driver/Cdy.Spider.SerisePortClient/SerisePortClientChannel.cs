@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Cdy.Spider.SerisePortClient
 {
-    public class SerisePortClientChannel : ChannelBase
+    public class SerisePortClientChannel : ChannelBase2
     {
 
 
@@ -62,10 +62,10 @@ namespace Cdy.Spider.SerisePortClient
 
         #region ... Methods    ...
 
-        public void TestOpen()
-        {
-            mClient = new System.IO.Ports.SerialPort("Com2", 9600);
-        }
+        //public void TestOpen()
+        //{
+        //    mClient = new System.IO.Ports.SerialPort("Com2", 9600);
+        //}
 
         /// <summary>
         /// 
@@ -110,6 +110,7 @@ namespace Cdy.Spider.SerisePortClient
                 Thread.Sleep(mData.ReTryDuration);
                 try
                 {
+                    if(!mClient.IsOpen)
                     mClient.Open();
                     mIsConnected = true;
                     break;
@@ -150,7 +151,7 @@ namespace Cdy.Spider.SerisePortClient
         {
             while (!mIsClosed)
             {
-                if (mClient != null && mClient.IsOpen &&  mClient.BytesToRead > 0 && !mIsTransparentRead)
+                if (mClient != null && mClient.IsOpen &&  mClient.BytesToRead > 0 && !mEnableSyncRead)
                 {
 
                     var vdlen = mClient.BytesToRead;
@@ -234,10 +235,11 @@ namespace Cdy.Spider.SerisePortClient
         /// <summary>
         /// 
         /// </summary>
-        private void ClearBuffer()
+        public override void ClearBuffer()
         {
             lock (mLockObj)
             {
+                mClient.DiscardInBuffer();
                 mReceiveBuffers.Clear();
                 mReceiveDataLen = 0;
             }
@@ -251,7 +253,7 @@ namespace Cdy.Spider.SerisePortClient
         /// <param name="waitResultCount"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, int waitResultCount, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, int waitResultCount, out bool result)
         {
             if (mClient != null && mClient.IsOpen)
             {
@@ -284,7 +286,7 @@ namespace Cdy.Spider.SerisePortClient
                 }
                 return bval;
             }
-            return base.SendInner(data, timeout, waitResultCount, out result);
+            return base.SendAndWaitInner(data, timeout, waitResultCount, out result);
         }
 
         /// <summary>
@@ -296,7 +298,7 @@ namespace Cdy.Spider.SerisePortClient
         /// <param name="waitPackageEndByte"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, byte waitPackageStartByte, byte waitPackageEndByte, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, byte waitPackageStartByte, byte waitPackageEndByte, out bool result)
         {
             if (mClient != null && mClient.IsOpen)
             {
@@ -353,7 +355,7 @@ namespace Cdy.Spider.SerisePortClient
                 result = isstartfit && isstartfit;
                 return bval.ToArray();
             }
-            return base.SendInner(data, timeout, waitPackageStartByte, waitPackageEndByte, out result);
+            return base.SendAndWaitInner(data, timeout, waitPackageStartByte, waitPackageEndByte, out result);
         }
 
         /// <summary>
@@ -363,7 +365,7 @@ namespace Cdy.Spider.SerisePortClient
         /// <param name="timeout"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, out bool result)
         {
             if (mClient != null && mClient.IsOpen)
             {
@@ -379,7 +381,7 @@ namespace Cdy.Spider.SerisePortClient
                 result = true;
                 return bval;
             }
-            return base.SendInner(data, timeout, out result);
+            return base.SendAndWaitInner(data, timeout, out result);
         }
 
         /// <summary>
@@ -387,7 +389,7 @@ namespace Cdy.Spider.SerisePortClient
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected override bool SendInnerAsync(Span<byte> data)
+        protected override bool SendInner(Span<byte> data)
         {
             if (mClient != null && mClient.IsOpen)
             {
@@ -403,7 +405,7 @@ namespace Cdy.Spider.SerisePortClient
         /// <param name="count"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public override byte[] Receive(int count, int timeout, out int receivecount)
+        public override byte[] Read(int count, int timeout, out int receivecount)
         {
 
             byte[] bval = null;
@@ -448,7 +450,7 @@ namespace Cdy.Spider.SerisePortClient
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
-        public override byte[] Receive(int count)
+        public override byte[] Read(int count)
         {
             if (mClient != null && mClient.IsOpen)
             {
@@ -474,31 +476,31 @@ namespace Cdy.Spider.SerisePortClient
         }
 
        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="len"></param>
-        /// <returns></returns>
-        public override bool Write(byte[] buffer, int offset, int len)
-        {
-            try
-            {
-                mClient.Write(buffer, offset, len);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="buffer"></param>
+        ///// <param name="offset"></param>
+        ///// <param name="len"></param>
+        ///// <returns></returns>
+        //public override bool Write(byte[] buffer, int offset, int len)
+        //{
+        //    try
+        //    {
+        //        mClient.Write(buffer, offset, len);
+        //        return true;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public override ICommChannel NewApi()
+        public override ICommChannel2 NewApi()
         {
            return new SerisePortClientChannel();
         }

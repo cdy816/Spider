@@ -46,9 +46,9 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <param name="mComm"></param>
-        public override void RegistorReceiveCallBack(ICommChannel mComm)
+        public override void RegistorReceiveCallBack(ICommChannel2 mComm)
         {
-            mComm.RegistorReceiveCallBack(this.OnReceiveData2);
+            mComm.RegistorReceiveCallBack(this.OnReceiveData);
         }
 
         /// <summary>
@@ -58,24 +58,14 @@ namespace Cdy.Spider
         /// <param name="data"></param>
         /// <param name="handled"></param>
         /// <returns></returns>
-        protected override object OnReceiveData2(string key, object data, out bool handled)
+        protected override object OnReceiveData(string key, object data, out bool handled)
         {
             this.UpdateValue(key, data);
             handled = true;
             return null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Prepare()
-        {
-            if(this.Data.Model == WorkMode.Passivity)
-            {
-                this.mComm.Prepare(this.mCachTags.Keys.ToList());
-            }
-            base.Prepare();
-        }
+      
 
         /// <summary>
         /// 
@@ -85,10 +75,8 @@ namespace Cdy.Spider
         /// <param name="valueType"></param>
         public override void WriteValue(string deviceInfo, object value, byte valueType)
         {
-            //mComm.SendAndWait(deviceInfo, value, 1);
             mComm.Take();
-            mComm.SendObject(deviceInfo, value);
-            base.WriteValue(deviceInfo, value, valueType);
+            mComm.WriteValue(deviceInfo, value);
             mComm.Release();
         }
 
@@ -123,7 +111,7 @@ namespace Cdy.Spider
         {
             mComm.Take();
             //var result = mComm.SendAndWait("", tags);
-            var result = mComm.SendObject(tags);
+            var result = mComm.ReadValue(tags);
             if(result!=null)
             {
                 var irest = result as IEnumerable<object>;

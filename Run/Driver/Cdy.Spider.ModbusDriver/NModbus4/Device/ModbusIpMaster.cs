@@ -82,7 +82,7 @@
         /// </summary>
         /// <returns>New instance of Modbus IP master device using provided stream resource.</returns>
         [SuppressMessage("Microsoft.Naming", "CA1706:ShortAcronymsShouldBeUppercase", Justification = "Breaking change.")]
-        public static ModbusIpMaster CreateIp(ICommChannel streamResource)
+        public static ModbusIpMaster CreateIp(ICommChannel2 streamResource)
         {
             if (streamResource == null)
             {

@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Cdy.Link.Tcp.Develop.ApiConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cdy.Link.Tcp.Develop"
+             xmlns:cc="clr-namespace:Cdy.Spider.DevelopCommon;assembly=Cdy.Spider.DevelopCommon"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="ssg"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="0" Content="{local:ResMarker Port,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="1" Content="{local:ResMarker UserName,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="2" Content="{local:ResMarker Password,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+       
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding Port,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="0"/>
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding UserName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="1"/>
+        <cc:PasswordControl  Password="{Binding Password,Mode=TwoWay}" Grid.Column="1" VerticalAlignment="Center" Width="306" Grid.Row="2" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+
+    </Grid>
+</UserControl>

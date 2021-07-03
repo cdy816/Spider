@@ -48,7 +48,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        ICommChannel GetChannel(string name);
+        ICommChannel2 GetChannel(string name);
 
         #endregion ...Methods...
 

@@ -13,7 +13,7 @@
     {
         private bool _checkFrame = true;
 
-        internal ModbusSerialTransport(ICommChannel streamResource)
+        internal ModbusSerialTransport(ICommChannel2 streamResource)
             : base(streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");
@@ -39,7 +39,7 @@
 
             byte[] frame = BuildMessageFrame(message);
             Debug.WriteLine($"TX: {string.Join(", ", frame)}");
-            StreamResource.Write(frame, 0, frame.Length);
+            StreamResource.Send(frame, 0, frame.Length);
         }
 
         internal override IModbusMessage CreateResponse<T>(byte[] frame)
@@ -51,6 +51,7 @@
             {
                 string msg = $"Checksums failed to match {string.Join(", ", response.MessageFrame)} != {string.Join(", ", frame)}";
                 Debug.WriteLine(msg);
+                StreamResource.ClearBuffer();
                 throw new IOException(msg);
             }
 

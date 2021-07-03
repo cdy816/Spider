@@ -18,7 +18,7 @@
         private readonly object _syncLock = new object();
         private int _retries = Modbus.DefaultRetries;
         private int _waitToRetryMilliseconds = Modbus.DefaultWaitToRetryMilliseconds;
-        private ICommChannel _streamResource;
+        private ICommChannel2 _streamResource;
 
         /// <summary>
         ///     This constructor is called by the NullTransport.
@@ -27,7 +27,7 @@
         {
         }
 
-        internal ModbusTransport(ICommChannel streamResource)
+        internal ModbusTransport(ICommChannel2 streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");
 
@@ -101,7 +101,7 @@
         /// <summary>
         ///     Gets the stream resource.
         /// </summary>
-        internal ICommChannel StreamResource
+        internal ICommChannel2 StreamResource
         {
             get { return _streamResource; }
         }

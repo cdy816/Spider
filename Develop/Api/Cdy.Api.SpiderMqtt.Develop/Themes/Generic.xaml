@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Cdy.Api.SpiderMqtt.Develop"
+                     >
+    
+    <DataTemplate DataType="{x:Type local:ApiConfigViewModel}">
+        <local:ApiConfigView />
+    </DataTemplate>
+
+    <!--<DataTemplate DataType="{x:Type local:TagBrowserViewModel}">
+        <local:TagBrowserView />
+    </DataTemplate>-->
+
+
+    
+
+</ResourceDictionary>

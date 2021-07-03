@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
@@ -33,9 +34,49 @@ namespace Cdy.Spider
 
         #region ... Properties ...
 
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public string Password { get; set; }
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override XElement SaveToXML()
+        {
+            var re = base.SaveToXML();
+            re.SetAttributeValue("UserName", UserName);
+            re.SetAttributeValue("Password", Password);
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public override void LoadFromXML(XElement xe)
+        {
+            if(xe.Attribute("UserName") !=null)
+            {
+                UserName = xe.Attribute("UserName").Value;
+            }
+
+            if (xe.Attribute("Password") != null)
+            {
+                Password = xe.Attribute("Password").Value;
+            }
+           
+            base.LoadFromXML(xe);
+        }
 
         #endregion ...Methods...
 

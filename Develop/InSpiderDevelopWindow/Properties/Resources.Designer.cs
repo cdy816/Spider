@@ -268,6 +268,24 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Link 的本地化字符串。
+        /// </summary>
+        internal static string Link {
+            get {
+                return ResourceManager.GetString("Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 LinkType 的本地化字符串。
+        /// </summary>
+        internal static string LinkType {
+            get {
+                return ResourceManager.GetString("LinkType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Spider Studio 的本地化字符串。
         /// </summary>
         internal static string MainWindowTitle {

@@ -173,7 +173,7 @@ namespace InSpiderDevelop
                 foreach (var vv in xx.Elements())
                 {
                     string tname = vv.Attribute("TypeName").Value;
-                    var asb = ServiceLocator.Locator.Resolve<ICommChannelFactory>().GetDevelopIntance(tname);
+                    var asb = ServiceLocator.Locator.Resolve<ICommChannelFactory2>().GetDevelopIntance(tname);
                     asb.Load(vv);
                     AddChannel(asb);
                 }

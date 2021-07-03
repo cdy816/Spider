@@ -123,8 +123,14 @@
   <data name="Passivity" xml:space="preserve">
     <value>Passivity</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>ScanCircle</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>UserName</value>
   </data>
   <data name="WorkModel" xml:space="preserve">
     <value>WorkModel</value>

@@ -23,12 +23,12 @@ namespace Cdy.Spider
 
         #region ... Variables  ...
 
-        protected ICommChannel mComm;
+        protected ICommChannel2 mComm;
 
         /// <summary>
         /// 
         /// </summary>
-        protected Dictionary<string, List<int>> mCachTags = new Dictionary<string, List<int>>();
+        protected SortedDictionary<string, List<int>> mCachTags = new SortedDictionary<string, List<int>>();
 
       
 
@@ -84,26 +84,28 @@ namespace Cdy.Spider
         /// </summary>
         public virtual void Init()
         {
+            foreach (var vv in Device.ListTags())
+            {
+                if (!string.IsNullOrEmpty(vv.DeviceInfo))
+                {
+                    if (mCachTags.ContainsKey(vv.DeviceInfo))
+                    {
+                        mCachTags[vv.DeviceInfo].Add(vv.Id);
+                    }
+                    else
+                    {
+                        mCachTags.Add(vv.DeviceInfo, new List<int>() { vv.Id });
+                    }
+                }
+            }
+
             mComm = Device.GetCommChannel();
             if (mComm != null)
             {
                 mComm.CommChangedEvent += MComm_CommChangedEvent;
                 RegistorReceiveCallBack(mComm);
 
-                foreach (var vv in Device.ListTags())
-                {
-                    if (!string.IsNullOrEmpty(vv.DeviceInfo))
-                    {
-                        if (mCachTags.ContainsKey(vv.DeviceInfo))
-                        {
-                            mCachTags[vv.DeviceInfo].Add(vv.Id);
-                        }
-                        else
-                        {
-                            mCachTags.Add(vv.DeviceInfo, new List<int>() { vv.Id });
-                        }
-                    }
-                }
+                
                 mComm.Init();
             }
         }
@@ -111,7 +113,16 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public virtual void RegistorReceiveCallBack(ICommChannel mComm)
+        /// <returns></returns>
+        public bool IsChannelRaw()
+        {
+            return mComm.IsRawComm();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void RegistorReceiveCallBack(ICommChannel2 mComm)
         {
             mComm.RegistorReceiveCallBack(OnReceiveData);
         }
@@ -149,19 +160,6 @@ namespace Cdy.Spider
         {
             Device?.UpdateDeviceValue(id, value);
         }
-
-        ///// <summary>
-        ///// 处理写硬件设备
-        ///// </summary>
-        ///// <param name="deviceInfo"></param>
-        ///// <param name="value"></param>
-        //public virtual void WriteValue(string deviceInfo,byte[] value,byte valueType)
-        //{
-
-        //}
-
-
-
 
         /// <summary>
         /// 处理写硬件设备
@@ -301,16 +299,16 @@ namespace Cdy.Spider
         }
 
 
-        /// <summary>
-        /// 接收到设备数据
-        /// <paramref name="key"/>
-        /// <paramref name="data"/>
-        /// </summary>
-        protected virtual byte[] OnReceiveData(string key,byte[] data,out bool handled)
-        {
-            handled = false;
-            return null;
-        }
+        ///// <summary>
+        ///// 接收到设备数据
+        ///// <paramref name="key"/>
+        ///// <paramref name="data"/>
+        ///// </summary>
+        //protected virtual byte[] OnReceiveData(string key,byte[] data,out bool handled)
+        //{
+        //    handled = false;
+        //    return null;
+        //}
 
         /// <summary>
         /// 接收到设备推送过来的数据
@@ -319,7 +317,7 @@ namespace Cdy.Spider
         /// <param name="data"></param>
         /// <param name="handled"></param>
         /// <returns></returns>
-        protected virtual object OnReceiveData2(string key,object data,out bool handled)
+        protected virtual object OnReceiveData(string key,object data,out bool handled)
         {
             handled = false;
             return null;
@@ -328,19 +326,18 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected object SendObject(string key,object value)
+        protected object ReadValue(object value)
         {
             object re = null;
             if (!mComm.IsConnected) return null;
             var tre = mComm.Take();
-            if(tre)
+            if (tre)
             {
                 try
                 {
-                    re = mComm.SendObject(key, value);
+                    re = mComm.ReadValue(value);
                 }
                 finally
                 {
@@ -350,23 +347,21 @@ namespace Cdy.Spider
             return re;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected byte[] SendObject(string key, Span<byte> value)
+        protected object ReadValue(Span<byte> value)
         {
-            byte[] re = null;
+            object re = null;
             if (!mComm.IsConnected) return null;
             var tre = mComm.Take();
             if (tre)
             {
                 try
                 {
-                    re = mComm.SendObject(key, value);
+                    re = mComm.ReadValue(value);
                 }
                 finally
                 {
@@ -376,14 +371,13 @@ namespace Cdy.Spider
             return re;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected bool SendObjectAsync(string key, object value)
+        protected object WriteValue(string key,object value)
         {
             if (!mComm.IsConnected) return false;
 
@@ -392,7 +386,33 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    mComm.SendObjectAsync(key,value);
+                  return  mComm.WriteValue(key, value);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected bool WriteValueNoWait(string key, object value)
+        {
+            if (!mComm.IsConnected) return false;
+
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    mComm.WriteValueNoWait(key, value);
                 }
                 finally
                 {
@@ -405,35 +425,9 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected bool SendObjectAsync(string key, Span<byte> value)
-        {
-            if (!mComm.IsConnected) return false;
-
-            var tre = mComm.Take();
-            if (tre)
-            {
-                try
-                {
-                    mComm.SendObjectAsync(key, value);
-                }
-                finally
-                {
-                    mComm.Release();
-                }
-            }
-            return tre;
-        }
-
-        /// <summary>
-        /// 发送数据
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        protected byte[] SendData(Span<byte> data)
+        public byte[] SendAndWait(Span<byte> value)
         {
             byte[] re = null;
             if (!mComm.IsConnected) return null;
@@ -443,7 +437,7 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    re = mComm.Send(data);
+                    re = mComm.SendAndWait(value);
                 }
                 finally
                 {
@@ -459,7 +453,7 @@ namespace Cdy.Spider
         /// <param name="data"></param>
         /// <param name="waitresultcount"></param>
         /// <returns></returns>
-        protected byte[] SendData(Span<byte> data,int waitresultcount)
+        protected byte[] SendAndWait(Span<byte> data, int waitresultcount)
         {
             byte[] re = null;
             if (!mComm.IsConnected) return null;
@@ -469,7 +463,7 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    re = mComm.Send(data,waitresultcount);
+                    re = mComm.SendAndWait(data, waitresultcount);
                 }
                 finally
                 {
@@ -486,7 +480,7 @@ namespace Cdy.Spider
         /// <param name="startByte"></param>
         /// <param name="endByte"></param>
         /// <returns></returns>
-        protected byte[] SendData(Span<byte> data, byte startByte,byte endByte)
+        protected byte[] SendAndWait(Span<byte> data, byte startByte, byte endByte)
         {
             byte[] re = null;
             if (!mComm.IsConnected) return null;
@@ -496,7 +490,7 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    re = mComm.Send(data, startByte,endByte);
+                    re = mComm.SendAndWait(data, startByte, endByte);
                 }
                 finally
                 {
@@ -513,7 +507,7 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected bool SendDataAsync(Span<byte> data)
+        protected bool Send(Span<byte> data)
         {
             if (!mComm.IsConnected) return false;
 
@@ -522,7 +516,7 @@ namespace Cdy.Spider
             {
                 try
                 {
-                    mComm.SendAsync(data);
+                    mComm.Send(data);
                 }
                 finally
                 {
@@ -533,12 +527,114 @@ namespace Cdy.Spider
         }
 
         ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //protected object SendObject(string key,object value)
+        //{
+        //    object re = null;
+        //    if (!mComm.IsConnected) return null;
+        //    var tre = mComm.Take();
+        //    if(tre)
+        //    {
+        //        try
+        //        {
+        //            re = mComm.SendObject(key, value);
+        //        }
+        //        finally
+        //        {
+        //            mComm.Release();
+        //        }
+        //    }
+        //    return re;
+        //}
+
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //protected byte[] SendObject(string key, Span<byte> value)
+        //{
+        //    byte[] re = null;
+        //    if (!mComm.IsConnected) return null;
+        //    var tre = mComm.Take();
+        //    if (tre)
+        //    {
+        //        try
+        //        {
+        //            re = mComm.SendObject(key, value);
+        //        }
+        //        finally
+        //        {
+        //            mComm.Release();
+        //        }
+        //    }
+        //    return re;
+        //}
+
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //protected bool SendObjectAsync(string key, object value)
+        //{
+        //    if (!mComm.IsConnected) return false;
+
+        //    var tre = mComm.Take();
+        //    if (tre)
+        //    {
+        //        try
+        //        {
+        //            mComm.SendObjectAsync(key,value);
+        //        }
+        //        finally
+        //        {
+        //            mComm.Release();
+        //        }
+        //    }
+        //    return tre;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="value"></param>
+        ///// <returns></returns>
+        //protected bool SendObjectAsync(string key, Span<byte> value)
+        //{
+        //    if (!mComm.IsConnected) return false;
+
+        //    var tre = mComm.Take();
+        //    if (tre)
+        //    {
+        //        try
+        //        {
+        //            mComm.SendObjectAsync(key, value);
+        //        }
+        //        finally
+        //        {
+        //            mComm.Release();
+        //        }
+        //    }
+        //    return tre;
+        //}
+
+        ///// <summary>
         ///// 发送数据
         ///// </summary>
         ///// <param name="key"></param>
         ///// <param name="data"></param>
         ///// <returns></returns>
-        //protected byte[] SendData(string key,byte[] data,int start,int len)
+        //protected byte[] SendData(Span<byte> data)
         //{
         //    byte[] re = null;
         //    if (!mComm.IsConnected) return null;
@@ -548,7 +644,7 @@ namespace Cdy.Spider
         //    {
         //        try
         //        {
-        //            re = mComm.SendAndWait(data, start, len,1000, key);
+        //            re = mComm.Send(data);
         //        }
         //        finally
         //        {
@@ -559,12 +655,66 @@ namespace Cdy.Spider
         //}
 
         ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="waitresultcount"></param>
+        ///// <returns></returns>
+        //protected byte[] SendData(Span<byte> data,int waitresultcount)
+        //{
+        //    byte[] re = null;
+        //    if (!mComm.IsConnected) return null;
+        //    var tre = mComm.Take();
+
+        //    if (tre)
+        //    {
+        //        try
+        //        {
+        //            re = mComm.Send(data,waitresultcount);
+        //        }
+        //        finally
+        //        {
+        //            mComm.Release();
+        //        }
+        //    }
+        //    return re;
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="data"></param>
+        ///// <param name="startByte"></param>
+        ///// <param name="endByte"></param>
+        ///// <returns></returns>
+        //protected byte[] SendData(Span<byte> data, byte startByte,byte endByte)
+        //{
+        //    byte[] re = null;
+        //    if (!mComm.IsConnected) return null;
+        //    var tre = mComm.Take();
+
+        //    if (tre)
+        //    {
+        //        try
+        //        {
+        //            re = mComm.Send(data, startByte,endByte);
+        //        }
+        //        finally
+        //        {
+        //            mComm.Release();
+        //        }
+        //    }
+        //    return re;
+        //}
+
+
+        ///// <summary>
         ///// 异步发送数据
         ///// </summary>
         ///// <param name="key"></param>
         ///// <param name="data"></param>
         ///// <returns></returns>
-        //protected bool SendDataAsync(string key,byte[] data,int start,int len)
+        //protected bool SendDataAsync(Span<byte> data)
         //{
         //    if (!mComm.IsConnected) return false;
 
@@ -573,7 +723,7 @@ namespace Cdy.Spider
         //    {
         //        try
         //        {
-        //            mComm.SendAsync(data, start, len,1000, key);
+        //            mComm.SendAsync(data);
         //        }
         //        finally
         //        {
@@ -588,7 +738,12 @@ namespace Cdy.Spider
         /// </summary>
         public virtual void Prepare()
         {
-            mComm.Prepare(mCachTags.Keys.ToList());
+            using (ChannelPrepareContext ctx = new ChannelPrepareContext())
+            {
+                ctx.Add("Tags", mCachTags.Keys.ToList());
+                ctx.Add("DeviceName", this.Device.Name);
+                mComm.Prepare(ctx);
+            }
         }
 
         /// <summary>
@@ -596,8 +751,9 @@ namespace Cdy.Spider
         /// </summary>
         public virtual void Start()
         {
-            mComm.Open();
             Prepare();
+            if(mComm!=null)
+            mComm.Open();
         }
 
         /// <summary>
@@ -605,7 +761,8 @@ namespace Cdy.Spider
         /// </summary>
         public virtual void Stop()
         {
-            mComm.Close();
+            if (mComm != null)
+                mComm.Close();
         }
 
         /// <summary>

@@ -38,6 +38,8 @@ namespace Cdy.Spider
         /// </summary>
         SortedDictionary<int, Tagbase> mIdMapTags = new SortedDictionary<int, Tagbase>();
 
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -78,7 +80,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public ICommChannel Channel { get; set; }
+        public ICommChannel2 Channel { get; set; }
 
         #endregion ...Properties...
 
@@ -302,8 +304,6 @@ namespace Cdy.Spider
             return mIdMapTags.Values.ToList();
         }
 
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -353,7 +353,15 @@ namespace Cdy.Spider
                 case TagType.Bool:
                     if (value is string)
                     {
-                        return bool.Parse(value.ToString());
+                        var vtmp = value.ToString().ToLower();
+                        if (vtmp == "true" || vtmp == "false")
+                        {
+                            return bool.Parse(value.ToString());
+                        }
+                        else
+                        {
+                            return Convert.ToBoolean(Convert.ToDecimal(value));
+                        }
                     }
                     else if (value is byte[])
                     {
@@ -400,7 +408,7 @@ namespace Cdy.Spider
                     }
                     else
                     {
-                        return Convert.ToBoolean(value);
+                        return Convert.ToDouble(value);
                     }
                 case TagType.Float:
                     if (value is string)
@@ -640,12 +648,47 @@ namespace Cdy.Spider
                 if (mIdMapTags.ContainsKey(vv))
                 {
                     var vvv = mIdMapTags[vv];
-                    vvv.Value = value;
+                    vvv.Value = ConvertValue(vvv, value);
                     vvv.Quality = Tagbase.GoodQuality;
                     vvv.Time = dtmp;
 
                     mValueCallBack?.Invoke(this.Name, vvv);
                 }
+            }
+        }
+
+
+        public void UpdateDeviceValue(int id, object value)
+        {
+            DateTime dtmp = DateTime.Now;
+            if (mIdMapTags.ContainsKey(id))
+            {
+                var vvv = mIdMapTags[id];
+                vvv.Value = ConvertValue(vvv, value);
+                vvv.Quality = Tagbase.GoodQuality;
+                vvv.Time = dtmp;
+
+                mValueCallBack?.Invoke(this.Name, vvv);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <param name="quality"></param>
+        public void UpdateDeviceValue(int id, object value,byte quality)
+        {
+            DateTime dtmp = DateTime.Now;
+            if (mIdMapTags.ContainsKey(id))
+            {
+                var vvv = mIdMapTags[id];
+                vvv.Value = ConvertValue(vvv, value);
+                vvv.Quality = quality;
+                vvv.Time = dtmp;
+
+                mValueCallBack?.Invoke(this.Name, vvv);
             }
         }
 
@@ -701,7 +744,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
-        public ICommChannel GetCommChannel()
+        public ICommChannel2 GetCommChannel()
         {
             return Channel;
         }
@@ -741,6 +784,21 @@ namespace Cdy.Spider
                 return mIdMapTags[id];
             }
             return null;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceInfo"></param>
+        /// <returns></returns>
+        public int GetTagId(string deviceInfo)
+        {
+            if(mDeviceMapTags.ContainsKey(deviceInfo))
+            {
+                return mDeviceMapTags[deviceInfo].First().Id;
+            }
+            return -1;
         }
 
 

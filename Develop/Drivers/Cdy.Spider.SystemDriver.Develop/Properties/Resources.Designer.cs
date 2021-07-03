@@ -47,8 +47,8 @@ namespace Cdy.Spider.SystemDriver.Develop.Properties {
         }
         
         /// <summary>
-        ///   重写当前线程的 CurrentUICulture 属性
-        ///   重写当前线程的 CurrentUICulture 属性。
+        ///   重写当前线程的 CurrentUICulture 属性，对
+        ///   使用此强类型资源类的所有资源查找执行重写。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {
@@ -79,11 +79,29 @@ namespace Cdy.Spider.SystemDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Password 的本地化字符串。
+        /// </summary>
+        internal static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ScanCircle 的本地化字符串。
         /// </summary>
         internal static string ScanCircle {
             get {
                 return ResourceManager.GetString("ScanCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UserName 的本地化字符串。
+        /// </summary>
+        internal static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
         

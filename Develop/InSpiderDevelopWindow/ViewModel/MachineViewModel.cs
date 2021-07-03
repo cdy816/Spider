@@ -32,7 +32,10 @@ namespace InSpiderDevelopWindow
         #endregion ...Events...
 
         #region ... Constructor...
-
+        public MachineViewModel()
+        {
+            Children.Add(new TreeItemViewModel());
+        }
         #endregion ...Constructor...
 
         #region ... Properties ...
@@ -66,9 +69,10 @@ namespace InSpiderDevelopWindow
         protected override void LoadData()
         {
             this.Model.Load();
-
+            Children.Clear();
             Children.Add(new DeviceRootViewModel() { Document = Model.Device, Parent = this });
-            Children.Add(new APITreeViewModel() { Model = Model.Api.Api, Parent = this });
+            Children.Add(new APITreeViewModel() { Model = Model.Api.Api, Parent = this,MachineModel=Model });
+            Children.Add(new LinkTreeViewModel() { Model = Model.Link.Link, Parent = this, MachineModel = Model });
             base.LoadData();
         }
 

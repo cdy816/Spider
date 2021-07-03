@@ -123,8 +123,14 @@
   <data name="Passivity" xml:space="preserve">
     <value>被动</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>扫描周期</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>用户名</value>
   </data>
   <data name="WorkModel" xml:space="preserve">
     <value>工作模式</value>

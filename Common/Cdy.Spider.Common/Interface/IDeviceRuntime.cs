@@ -190,6 +190,21 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         void UpdateDeviceValue(List<int> id, object value);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        void UpdateDeviceValue(int id, object value);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <param name="quality"></param>
+        void UpdateDeviceValue(int id, object value, byte quality);
+
 
         /// <summary>
         /// 更新所有变量的质量戳为通信故障
@@ -210,12 +225,19 @@ namespace Cdy.Spider
         /// <returns></returns>
         Tagbase GetTag(int id);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tagName"></param>
+        /// <returns></returns>
+        int GetTagId(string deviceInfo);
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        ICommChannel GetCommChannel();
+        ICommChannel2 GetCommChannel();
 
         #endregion ...Methods...
 

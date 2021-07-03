@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Cdy.Spider.UdpClient
 {
-    public class UdpClientChannel : ChannelBase
+    public class UdpClientChannel : ChannelBase2
     {
 
         #region ... Variables  ...
@@ -114,7 +114,7 @@ namespace Cdy.Spider.UdpClient
             
             while (!mIsClosed)
             {
-                if (mClient != null && mClient.Client.Available > 0 && !mIsTransparentRead)
+                if (mClient != null && mClient.Client.Available > 0 && !mEnableSyncRead)
                 {
                     var vdata = mClient.Receive(ref rp);
                     if (mForSyncCall)
@@ -190,7 +190,7 @@ namespace Cdy.Spider.UdpClient
         /// <summary>
         /// 
         /// </summary>
-        private void ClearBuffer()
+        public override void ClearBuffer()
         {
             lock(mLockObj)
             {
@@ -207,7 +207,7 @@ namespace Cdy.Spider.UdpClient
         /// <param name="waitResultCount"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, int waitResultCount, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, int waitResultCount, out bool result)
         {
             if (mClient != null)
             {
@@ -240,7 +240,7 @@ namespace Cdy.Spider.UdpClient
                 }
                 return bval;
             }
-            return base.SendInner(data, timeout, waitResultCount, out result);
+            return base.SendAndWaitInner(data, timeout, waitResultCount, out result);
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace Cdy.Spider.UdpClient
         /// <param name="waitPackageEndByte"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, byte waitPackageStartByte, byte waitPackageEndByte, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, byte waitPackageStartByte, byte waitPackageEndByte, out bool result)
         {
             if (mClient != null)
             {
@@ -309,7 +309,7 @@ namespace Cdy.Spider.UdpClient
                 result = isstartfit && isstartfit;
                 return bval.ToArray();
             }
-            return base.SendInner(data, timeout, waitPackageStartByte, waitPackageEndByte, out result);
+            return base.SendAndWaitInner(data, timeout, waitPackageStartByte, waitPackageEndByte, out result);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace Cdy.Spider.UdpClient
         /// <param name="timeout"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, out bool result)
         {
             if (mClient != null)
             {
@@ -335,7 +335,7 @@ namespace Cdy.Spider.UdpClient
                 result = true;
                 return bval;
             }
-            return base.SendInner(data, timeout, out result);
+            return base.SendAndWaitInner(data, timeout, out result);
         }
 
         /// <summary>
@@ -343,14 +343,16 @@ namespace Cdy.Spider.UdpClient
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected override bool SendInnerAsync(Span<byte> data)
+        protected override bool SendInner(Span<byte> data)
         {
             if (mClient != null)
             {
                 return mClient.Client.Send(data) > 0;
             }
-            return base.SendInnerAsync(data);
+            return base.SendInner(data);
         }
+
+        
 
         /// <summary>
         /// 
@@ -359,9 +361,9 @@ namespace Cdy.Spider.UdpClient
         /// <param name="timeout"></param>
         /// <param name="receivecount"></param>
         /// <returns></returns>
-        public override byte[] Receive(int count, int timeout, out int receivecount)
+        public override byte[] Read(int count, int timeout, out int receivecount)
         {
-            byte[] bval=null;
+            byte[] bval = null;
             if (mClient != null)
             {
                 Stopwatch sw = new Stopwatch();
@@ -400,11 +402,11 @@ namespace Cdy.Spider.UdpClient
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
-        public override byte[] Receive(int count)
-        {            
-            byte[] bval=null;
-            if(mClient!=null)
-            bval = CopyReceiveBufferData(count);
+        public override byte[] Read(int count)
+        {
+            byte[] bval = null;
+            if (mClient != null)
+                bval = CopyReceiveBufferData(count);
             return bval;
         }
 
@@ -435,25 +437,25 @@ namespace Cdy.Spider.UdpClient
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="len"></param>
-        /// <returns></returns>
-        public override bool Write(byte[] buffer, int offset, int len)
-        {
-            mReceiveBuffer.SetLength(0);
-            return mClient.Client.Send(buffer,offset,len,SocketFlags.None)> 0;
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="buffer"></param>
+        ///// <param name="offset"></param>
+        ///// <param name="len"></param>
+        ///// <returns></returns>
+        //public override bool Write(byte[] buffer, int offset, int len)
+        //{
+        //    mReceiveBuffer.SetLength(0);
+        //    return mClient.Client.Send(buffer,offset,len,SocketFlags.None)> 0;
+        //}
 
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public override ICommChannel NewApi()
+        public override ICommChannel2 NewApi()
         {
             return new UdpClientChannel();
         }

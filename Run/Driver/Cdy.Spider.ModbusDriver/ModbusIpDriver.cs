@@ -81,7 +81,13 @@ namespace Cdy.Spider
 
             int clen=-1,cstart=-1, ilen=-1,istart=-1, irlen=-1,irstart=-1, hrlen=-1,hrstart=-1;
 
-            foreach(var vv in mCachTags)
+            foreach (var vv in mCachTags.OrderBy((val) => {
+                var ss = val.Key.Split(new char[] { ':' });
+                int addr = 0;
+                if (ss.Length > 0 && int.TryParse(ss[1], out addr))
+                    return addr;
+                else return 0;
+                 }))
             {
                 var dtmp = vv.Key.ToLower().Split(new char[] { ':' });
                 ushort addr = ushort.Parse(dtmp[1]);
@@ -96,10 +102,11 @@ namespace Cdy.Spider
                     }
                     else
                     {
-                        if((addr - cstart + 1)>mData.PackageLen)
+                        if((addr - cstart + 1)>mData.PackageLen || addr < hrstart)
                         {
                             mCoilStatusPackage.Add((ushort)cstart, (ushort)clen);
-                            cstart = -1;
+                            cstart = addr;
+                            clen = 1;
                         }
                         else
                         {
@@ -121,10 +128,11 @@ namespace Cdy.Spider
                     }
                     else
                     {
-                        if ((addr - istart + 1) > mData.PackageLen)
+                        if ((addr - istart + 1) > mData.PackageLen || addr < hrstart)
                         {
                             mInputStatusPackage.Add((ushort)istart, (ushort)ilen);
-                            istart = -1;
+                            istart = addr;
+                            ilen = 1;
                         }
                         else
                         {
@@ -147,10 +155,11 @@ namespace Cdy.Spider
                     }
                     else
                     {
-                        if ((addr - irstart + len) > mData.PackageLen)
+                        if ((addr - irstart + len) > mData.PackageLen || addr < hrstart)
                         {
                             mInputRegistorPackage.Add((ushort)irstart, (ushort)irlen);
-                            irstart = -1;
+                            irstart = addr;
+                            irlen = len;
                         }
                         else
                         {
@@ -173,10 +182,11 @@ namespace Cdy.Spider
                     }
                     else
                     {
-                        if ((addr - hrstart + len) > mData.PackageLen)
+                        if ((addr - hrstart + len) > mData.PackageLen || addr<hrstart)
                         {
                             mHoldtRegistorPackage.Add((ushort)hrstart, (ushort)hrlen);
-                            hrstart = -1;
+                            hrstart = addr;
+                            hrlen = len;
                         }
                         else
                         {
@@ -208,7 +218,7 @@ namespace Cdy.Spider
                 mHoldtRegistorPackage.Add((ushort)hrstart, (ushort)hrlen);
             }
 
-            mComm.EnableTransparentRead(true);
+            mComm.EnableSyncRead(true);
             mMaster = Modbus.Device.ModbusIpMaster.CreateIp(mComm);
         }
 

@@ -111,7 +111,7 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// <returns></returns>
         public override List<string> ListSupportChannels()
         {
-            return new List<string>() { "MQTTClient", "MQTTServer" };
+            return new List<string>() { "MQTTClient", "MQTTServer","CoapClient", "CoapServer", "WebAPIClient", "WebAPIServer" };
         }
 
         #endregion ...Methods...

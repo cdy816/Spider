@@ -746,6 +746,139 @@ namespace InSpiderDevelopWindow
         #endregion ...Interfaces...
     }
 
+    public class LinkTreeViewModel : TreeItemViewModel
+    {
+
+        #region ... Variables  ...
+        private ILinkDevelop mModel;
+        #endregion ...Variables...
+
+        #region ... Events     ...
+
+        #endregion ...Events...
+
+        #region ... Constructor...
+
+        #endregion ...Constructor...
+
+        #region ... Properties ...
+        /// <summary>
+        /// 
+        /// </summary>
+        public ILinkDevelop Model
+        {
+            get
+            {
+                return mModel;
+            }
+            set
+            {
+                if (mModel != value)
+                {
+                    mModel = value;
+                    OnPropertyChanged("Model");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public MachineDocument MachineModel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string Name { get => Res.Get("Link"); set => base.Name = value; }
+
+        #endregion ...Properties...
+
+        #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="doc"></param>
+        public void UpdateDataModel(ILinkDevelop doc)
+        {
+            this.Model = doc;
+            MachineModel.Link.Link = this.Model;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanAddChild()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanCopy()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanPaste()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanReName()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool CanRemove()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        public override ViewModelBase GetModel(ViewModelBase mode)
+        {
+            if (mode is LinkDetailViewModel)
+            {
+                (mode as LinkDetailViewModel).Model = this.Model;
+                (mode as LinkDetailViewModel).Parent = this;
+                return mode;
+            }
+            else
+            {
+                return new LinkDetailViewModel() { Model = this.Model,Parent=this};
+            }
+        }
+        #endregion ...Methods...
+
+        #region ... Interfaces ...
+
+        #endregion ...Interfaces...
+    }
+
+
     /// <summary>
     /// 
     /// </summary>
@@ -790,9 +923,30 @@ namespace InSpiderDevelopWindow
         public override string Name { get => Res.Get("API"); set => base.Name = value; }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public MachineDocument MachineModel
+        {
+            get;
+            set;
+        }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="doc"></param>
+        public void UpdateDataModel(IApiDevelop doc)
+        {
+            this.Model = doc;
+            MachineModel.Api.Api = this.Model;
+        }
+
 
         /// <summary>
         /// 
@@ -849,11 +1003,12 @@ namespace InSpiderDevelopWindow
             if (mode is APIDetailViewModel)
             {
                 (mode as APIDetailViewModel).Model = this.Model;
+                (mode as APIDetailViewModel).Parent = this;
                 return mode;
             }
             else
             {
-                return new APIDetailViewModel() { Model = this.Model };
+                return new APIDetailViewModel() { Model = this.Model,Parent=this };
             }
         }
 

@@ -12,6 +12,7 @@ using System.Text;
 
 namespace Cdy.Spider
 {
+    [Obsolete]
     public interface ICommChannelFactory
     {
 

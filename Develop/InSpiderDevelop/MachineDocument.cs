@@ -60,6 +60,11 @@ namespace InSpiderDevelop
         /// </summary>
         public DriverDocument Driver { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public LinkDocument Link { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -76,6 +81,7 @@ namespace InSpiderDevelop
             Channel.Name = name;
             Device.Name = name;
             Driver.Name = name;
+            Link.Name = name;
 
             var sfile1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", sname);
             var sfile2 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", name);
@@ -98,6 +104,8 @@ namespace InSpiderDevelop
             Channel = new ChannelDocument() { Name = Name };
             Device = new DeviceDocument() { Name = Name };
             Driver = new DriverDocument() { Name = Name };
+            Link = new LinkDocument();
+            Link.New();
         }
 
         /// <summary>
@@ -113,11 +121,12 @@ namespace InSpiderDevelop
                 Channel = new ChannelDocument() { Name = Name };
                 Device = new DeviceDocument() { Name = Name };
                 Driver = new DriverDocument() { Name = Name };
-
+                Link = new LinkDocument() { Name = Name };
                 Api.Load();
                 Channel.Load(context);
                 Driver.Load(context);
                 Device.Load(context);
+                Link.Load();
             }
         }
 
@@ -132,6 +141,7 @@ namespace InSpiderDevelop
                 Channel.Reload(context);
                 Driver.Reload(context);
                 Device.Reload(context);
+                Link.Reload();
             }
         }
 
@@ -153,14 +163,20 @@ namespace InSpiderDevelop
         public void Save()
         {
             string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name);
-            if(!System.IO.Directory.Exists(sfile))
+            if (!System.IO.Directory.Exists(sfile))
             {
                 System.IO.Directory.CreateDirectory(sfile);
             }
-            Api.Save();
-            Channel.Save();
-            Driver.Save();
-            Device.Save();
+            if (Api != null)
+                Api.Save();
+            if (Channel != null)
+                Channel.Save();
+            if (Driver != null)
+                Driver.Save();
+            if (Device != null)
+                Device.Save();
+            if (Link != null)
+                Link.Save();
         }
 
         #endregion ...Methods...

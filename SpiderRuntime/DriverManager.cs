@@ -114,7 +114,7 @@ namespace SpiderRuntime
 
                     asb.Load(vv);
 
-                    asb.Name = this.Name +"."+ asb.Name;
+                    //asb.Name = this.Name +"."+ asb.Name;
 
                     if (mDrivers.ContainsKey(asb.Name))
                     {

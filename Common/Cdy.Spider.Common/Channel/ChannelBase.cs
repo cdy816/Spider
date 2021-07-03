@@ -19,7 +19,8 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ChannelBase : ICommChannel, ICommChannelForFactory
+    [Obsolete]
+    public abstract class ChannelBase : ICommChannel ,ICommChannelForFactory
     {
 
         #region ... Variables  ...

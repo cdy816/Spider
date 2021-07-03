@@ -79,7 +79,7 @@
         /// <summary>
         ///     Modbus ASCII master factory method.
         /// </summary>
-        public static ModbusSerialMaster CreateAscii(ICommChannel streamResource)
+        public static ModbusSerialMaster CreateAscii(ICommChannel2 streamResource)
         {
             if (streamResource == null)
             {
@@ -138,7 +138,7 @@
         /// <summary>
         ///     Modbus RTU master factory method.
         /// </summary>
-        public static ModbusSerialMaster CreateRtu(ICommChannel streamResource)
+        public static ModbusSerialMaster CreateRtu(ICommChannel2 streamResource)
         {
             if (streamResource == null)
             {

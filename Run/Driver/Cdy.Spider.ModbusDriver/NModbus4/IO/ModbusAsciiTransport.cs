@@ -12,7 +12,7 @@
     /// </summary>
     internal class ModbusAsciiTransport : ModbusSerialTransport
     {
-        internal ModbusAsciiTransport(ICommChannel streamResource)
+        internal ModbusAsciiTransport(ICommChannel2 streamResource)
             : base(streamResource)
         {
             Debug.Assert(streamResource != null, "Argument streamResource cannot be null.");

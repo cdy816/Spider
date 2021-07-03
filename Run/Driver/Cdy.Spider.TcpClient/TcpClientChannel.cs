@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Cdy.Spider.TcpClient
 {
-    public class TcpClientChannel : ChannelBase
+    public class TcpClientChannel : ChannelBase2
     {
         #region ... Variables  ...
         
@@ -150,7 +150,7 @@ namespace Cdy.Spider.TcpClient
         {
             while (!mIsClosed)
             {
-                if (mClient != null && IsOnline(mClient) && mClient.Available > 0 && !mIsTransparentRead)
+                if (mClient != null && IsOnline(mClient) && mClient.Available > 0 && !mEnableSyncRead)
                 {
 
                     var vdlen = mClient.Available;
@@ -234,7 +234,7 @@ namespace Cdy.Spider.TcpClient
         /// <summary>
         /// 
         /// </summary>
-        private void ClearBuffer()
+        public override void ClearBuffer()
         {
             lock (mLockObj)
             {
@@ -261,7 +261,7 @@ namespace Cdy.Spider.TcpClient
         /// <param name="waitResultCount"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, int waitResultCount, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, int waitResultCount, out bool result)
         {
             if(mClient!=null && IsOnline(mClient))
             {
@@ -298,7 +298,7 @@ namespace Cdy.Spider.TcpClient
             {
                 StartConnect();
             }
-            return base.SendInner(data, timeout, waitResultCount, out result);
+            return base.SendAndWaitInner(data, timeout, waitResultCount, out result);
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace Cdy.Spider.TcpClient
         /// <param name="waitPackageEndByte"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, byte waitPackageStartByte, byte waitPackageEndByte, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, byte waitPackageStartByte, byte waitPackageEndByte, out bool result)
         {
             if (mClient != null && IsOnline(mClient))
             {
@@ -371,7 +371,7 @@ namespace Cdy.Spider.TcpClient
             {
                 StartConnect();
             }
-            return base.SendInner(data, timeout, waitPackageStartByte, waitPackageEndByte, out result);
+            return base.SendAndWaitInner(data, timeout, waitPackageStartByte, waitPackageEndByte, out result);
         }
 
         /// <summary>
@@ -381,7 +381,7 @@ namespace Cdy.Spider.TcpClient
         /// <param name="timeout"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected override byte[] SendInner(Span<byte> data, int timeout, out bool result)
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, out bool result)
         {
             if (mClient != null && IsOnline(mClient))
             {
@@ -401,7 +401,7 @@ namespace Cdy.Spider.TcpClient
             {
                 StartConnect();
             }
-            return base.SendInner(data, timeout, out result);
+            return base.SendAndWaitInner(data, timeout, out result);
         }
 
         /// <summary>
@@ -409,7 +409,7 @@ namespace Cdy.Spider.TcpClient
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected override bool SendInnerAsync(Span<byte> data)
+        protected override bool SendInner(Span<byte> data)
         {
             if (mClient != null && IsOnline(mClient))
             {
@@ -429,7 +429,7 @@ namespace Cdy.Spider.TcpClient
         /// <param name="count"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public override byte[] Receive(int count, int timeout,out int receivecount)
+        public override byte[] Read(int count, int timeout,out int receivecount)
         {
             
             byte[] bval = null;
@@ -496,7 +496,7 @@ namespace Cdy.Spider.TcpClient
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
-        public override byte[] Receive(int count)
+        public override byte[] Read(int count)
         {
             if (mClient != null && IsOnline(mClient))
             {
@@ -511,27 +511,27 @@ namespace Cdy.Spider.TcpClient
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="len"></param>
-        /// <returns></returns>
-        public override bool Write(byte[] buffer, int offset, int len)
-        {
-            if (mClient != null && IsOnline(mClient))
-            {
-                var re = mClient.Send(buffer, offset, len, SocketFlags.None) > 0;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="buffer"></param>
+        ///// <param name="offset"></param>
+        ///// <param name="len"></param>
+        ///// <returns></returns>
+        //public override bool Write(byte[] buffer, int offset, int len)
+        //{
+        //    if (mClient != null && IsOnline(mClient))
+        //    {
+        //        var re = mClient.Send(buffer, offset, len, SocketFlags.None) > 0;
                 
-                return re;
-            }
-            else
-            {
-                StartConnect();
-            }
-            return false;
-        }
+        //        return re;
+        //    }
+        //    else
+        //    {
+        //        StartConnect();
+        //    }
+        //    return false;
+        //}
 
         /// <summary>
         /// 
@@ -568,7 +568,7 @@ namespace Cdy.Spider.TcpClient
         /// 
         /// </summary>
         /// <returns></returns>
-        public override ICommChannel NewApi()
+        public override ICommChannel2 NewApi()
         {
             return new TcpClientChannel();
         }

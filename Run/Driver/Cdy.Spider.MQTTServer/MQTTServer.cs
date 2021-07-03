@@ -29,6 +29,8 @@ namespace Cdy.Spider.MQTTServer
         /// </summary>
         private IMqttServer mqttServer;
 
+        private bool mIsStarted = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -56,6 +58,17 @@ namespace Cdy.Spider.MQTTServer
         /// </summary>
         public int Port { get; set; } = 1833;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsStarted
+        {
+            get
+            {
+                return mIsStarted;
+            }
+        }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -63,16 +76,24 @@ namespace Cdy.Spider.MQTTServer
         /// <summary>
         /// 
         /// </summary>
+        public void Init()
+        {
+            this.mqttServer = new MqttFactory().CreateMqttServer();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public async void Start()
         {
-            if (this.mqttServer != null)
+            if (mIsStarted)
             {
                 return;
             }
-
+            mIsStarted = true;
             var storage = new JsonServerStorage();
             storage.Clear();
-            this.mqttServer = new MqttFactory().CreateMqttServer();
+
             var options = new MqttServerOptions();
             options.DefaultEndpointOptions.Port = Port;
             options.Storage = storage;
@@ -110,6 +131,7 @@ namespace Cdy.Spider.MQTTServer
                 LoggerService.Service.Erro("MQTTServer", ex.Message);
                 await this.mqttServer.StopAsync();
                 this.mqttServer = null;
+                mIsStarted = false;
             }
         }
 
@@ -120,6 +142,7 @@ namespace Cdy.Spider.MQTTServer
         {
             await mqttServer.StopAsync();
             mqttServer = null;
+            mIsStarted = false;
         }
 
         #endregion ...Methods...
