@@ -31,10 +31,14 @@
 # Spider
 跨平台(Window、Linux、嵌入式设备)的物联网设备采集平台。
 
+1. Spider 开发环境可以多个工程，每个工程是独立运行的一组物理设备采集单元。
+2. 多个工程之间支持以树形结构进行级联，以支持数据的汇总。
+
 ## 支持协议列表
 1. MQTT
 2. OPC UA
 3. Modbus
+4. coap
 
 ## 运行环境
 系统采用.net 5 平台开发,实现了跨平台性，可以运行在桌面系统以及嵌入设备中（例如:树莓派等）。
@@ -45,7 +49,7 @@
 1. [文档](https://github.com/cdy816/Spider/blob/master/Doc)
 
 ## 版本发布
-* [V0.1](https://github.com/cdy816/Spider/releases/tag/V0.1) 。
+* [V0.2](https://github.com/cdy816/Spider/releases/tag/V0.2) 。
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
