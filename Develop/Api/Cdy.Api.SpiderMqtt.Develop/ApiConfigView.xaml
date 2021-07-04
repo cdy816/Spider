@@ -49,15 +49,15 @@
 
 
         <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="6" Content="{local:ResMarker RemoteTopic,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
-        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="7" Content="{local:ResMarker RemoteResponseTopic,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
-        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="8" Content="{local:ResMarker LocalTopic,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
-        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="9" Content="{local:ResMarker LocalReponseTopic,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <!--<Label Foreground="{DynamicResource Window.Forground}" Grid.Row="7" Content="{local:ResMarker RemoteResponseTopic,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>-->
+        <Label Foreground="{DynamicResource Window.Forground}" Grid.Row="7" Content="{local:ResMarker LocalTopic,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <!--<Label Foreground="{DynamicResource Window.Forground}" Grid.Row="9" Content="{local:ResMarker LocalReponseTopic,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>-->
 
         <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding RemoteTopic,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="6"/>
 
-        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding RemoteResponseTopic,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="7"/>
-        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding LocalTopic,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="8"/>
-        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding LocalReponseTopic,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="9"/>
+        <!--<TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding RemoteResponseTopic,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="7"/>-->
+        <TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding LocalTopic,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="7"/>
+        <!--<TextBox Height="26" VerticalContentAlignment="Center" CaretBrush="{DynamicResource Window.Forground}" Grid.Column="1" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding LocalResponseTopic,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="266" Grid.Row="9"/>-->
 
     </Grid>
 </UserControl>

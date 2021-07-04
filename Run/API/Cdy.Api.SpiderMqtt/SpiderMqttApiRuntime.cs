@@ -67,6 +67,7 @@ namespace Cdy.Api.SpiderMqtt
         private bool mIsClosed = false;
         private bool mIsNeedInited = false;
         private Thread mScanThread;
+        private bool mIsRegisted = false;
 
         #endregion ...Properties...
 
@@ -166,7 +167,7 @@ namespace Cdy.Api.SpiderMqtt
         {
             Task.Run(() => {
                 this.mqttClient.SubscribeAsync(mData.LocalTopic);
-                this.mqttClient.SubscribeAsync(mData.RemoteResponseTopic);
+                //this.mqttClient.SubscribeAsync(mData.RemoteResponseTopic);
                 //Login();
             });
         }
@@ -179,6 +180,7 @@ namespace Cdy.Api.SpiderMqtt
         {
             //mIsLogin = false;
             mIsNeedInited = true;
+            mIsRegisted = false;
         }
 
         ///// <summary>
@@ -199,13 +201,14 @@ namespace Cdy.Api.SpiderMqtt
         {
             try
             {
-                var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithResponseTopic(responeTopic).WithPayload(data).WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce).WithRetainFlag().Build();
+                var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithResponseTopic(responeTopic).WithPayload(data).WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce).Build();
                 this.mqttClient.PublishAsync(msg);
             }
             catch
             {
                 //mIsLogin = false;
                 mIsNeedInited = true;
+                mIsRegisted = false;
             }
         }
 
@@ -268,25 +271,16 @@ namespace Cdy.Api.SpiderMqtt
                                 }
                             }
                         }
+                        else if(sfun=="registorresponse")
+                        {
+                            var wd = vdatas.ToObject<RegistorResponseFun>();
+                            if(wd.Result)
+                            {
+                                mIsRegisted = true;
+                            }
+                        }
                     }
-                    //else if(vdatas.ContainsKey("Result"))
-                    //{
-                    //    bool btmp = bool.Parse(vdatas["Result"].ToString());
-                    //    if(!btmp)
-                    //    {
-                    //        //mIsLogin = false;
-                    //        mIsNeedInited = true;
-                    //    }
-                    //    else
-                    //    {
-                    //        if(vdatas.ContainsKey("Token"))
-                    //        {
-                    //            //login sucessful
-                    //            mToken = vdatas["Token"].ToString();
-                    //            //mIsLogin = true;
-                    //        }
-                    //    }
-                    //}
+                    
                 }
             }
         }
@@ -295,36 +289,38 @@ namespace Cdy.Api.SpiderMqtt
         {
             while (!mIsClosed)
             {
-                //if (!mIsLogin)
-                //{
-                //    if (mqttClient.IsConnected)
-                //    {
-                //        Login();
-                //    }
-                //    else
-                //    {
-                //        lock (mChangedTags)
-                //        {
-                //            if (mCallBackTags.Count > 100)
-                //                mCallBackTags.Clear();
-                //        }
-                //    }
-                //    Thread.Sleep(2000);
-                //}
-                //else
+                if (mqttClient.IsConnected)
                 {
-                    if (mIsNeedInited)
+                    if (mIsRegisted)
                     {
-                        UpdateAllValue();
+                        if (mIsNeedInited)
+                        {
+                            UpdateAllValue();
+                            mIsNeedInited = false;
+                        }
+                        else if (mIsRegisted)
+                        {
+                            //如果是定时模式
+                            UpdateChanged();
+                        }
                     }
                     else
                     {
-                        //如果是定时模式
-                        UpdateChanged();
+                        Registor();
                     }
-                    Thread.Sleep(mData.Circle);
                 }
+                Thread.Sleep(mData.Circle);
             }
+        }
+
+        private void Registor()
+        {
+            RegistorFun rf = new RegistorFun() { Topic = mData.LocalTopic };
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+            List<string> ltmp = new List<string>();
+            rf.Devices = manager.ListDevice().Select(e => e.Name).ToArray();
+
+            SendToTopicData(mData.RemoteTopic, mData.LocalTopic, Newtonsoft.Json.JsonConvert.SerializeObject(rf));
         }
 
         /// <summary>
@@ -336,7 +332,7 @@ namespace Cdy.Api.SpiderMqtt
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
             foreach(var vv in manager.ListDevice())
             {
-                DeviceItem ditem = new DeviceItem() { Device = vv.Name };
+                DeviceItem ditem = new DeviceItem() { Device = vv.Name,Values = new Dictionary<string, object>() };
                 foreach(var vvv in vv.ListTags())
                 {
                     ditem.Values.Add(vvv.Name, vvv.Value == null ? "" : vvv.Value.ToString());
@@ -344,7 +340,7 @@ namespace Cdy.Api.SpiderMqtt
                 fun.Devices.Add(ditem);
             }
 
-            SendToTopicData(mData.RemoteTopic, mData.RemoteResponseTopic, Newtonsoft.Json.JsonConvert.SerializeObject(fun));
+            SendToTopicData(mData.RemoteTopic, mData.LocalTopic, Newtonsoft.Json.JsonConvert.SerializeObject(fun));
 
         }
 
@@ -355,14 +351,17 @@ namespace Cdy.Api.SpiderMqtt
         {
             UpdateDataFun fun = new UpdateDataFun();
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
-           
+            bool ishase = false;
             foreach (var vv in mChangedTags.ToArray())
             {
-                DeviceItem ditem = new DeviceItem() { Device = vv.Key };
+                DeviceItem ditem = new DeviceItem() { Device = vv.Key,Values=new Dictionary<string, object>() };
                 foreach (var vvv in vv.Value.ToArray())
                 {
-                    if(vvv.Value)
-                    ditem.Values.Add(vvv.Key.Name, vvv.Key.Value == null ? "" : vvv.Key.Value.ToString());
+                    if (vvv.Value)
+                    {
+                        ishase = true;
+                        ditem.Values.Add(vvv.Key.Name, vvv.Key.Value == null ? "" : vvv.Key.Value.ToString());
+                    }
 
                     lock(mChangedTags)
                     {
@@ -372,7 +371,8 @@ namespace Cdy.Api.SpiderMqtt
                 fun.Devices.Add(ditem);
             }
 
-            SendToTopicData(mData.RemoteTopic, mData.RemoteResponseTopic, Newtonsoft.Json.JsonConvert.SerializeObject(fun));
+            if(ishase)
+            SendToTopicData(mData.RemoteTopic, mData.LocalTopic, Newtonsoft.Json.JsonConvert.SerializeObject(fun));
         }
 
         /// <summary>
@@ -453,8 +453,35 @@ namespace Cdy.Api.SpiderMqtt
         public UpdateDataFun()
         {
             Fun = "update";
+            Devices = new List<DeviceItem>();
         }
         public List<DeviceItem> Devices { get; set; }
+    }
+
+    public class RegistorFun : FunBase
+    {
+        public RegistorFun()
+        {
+            Fun = "registor";
+        }
+        /// <summary>
+        /// 主题
+        /// </summary>
+        public string Topic { get; set; }
+        /// <summary>
+        /// 设备列表
+        /// </summary>
+        public string[] Devices { get; set; }
+    }
+
+    public class RegistorResponseFun : FunBase
+    {
+        public RegistorResponseFun()
+        {
+            Fun = "registorresponse";
+        }
+        public DateTime Time { get; set; }
+        public bool Result { get; set; }
     }
 
 

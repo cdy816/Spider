@@ -173,6 +173,7 @@ namespace Cdy.Link.Mqtt.Develop
                 if (mModel.RemoteResponseTopic != value)
                 {
                     mModel.RemoteResponseTopic = value;
+                    RemoteResponseTopic = value + "_response";
                     OnPropertyChanged("RemoteResponseTopic");
                 }
             }
@@ -192,6 +193,7 @@ namespace Cdy.Link.Mqtt.Develop
                 if (mModel.LocalTopic != value)
                 {
                     mModel.LocalTopic = value;
+                    LocalResponseTopic = value + "_response";
                     OnPropertyChanged("LocalTopic");
                 }
             }

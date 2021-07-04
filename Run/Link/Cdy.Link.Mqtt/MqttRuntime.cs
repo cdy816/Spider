@@ -30,6 +30,11 @@ namespace Cdy.Link.Mqtt
 
         private Dictionary<string, Action<Dictionary<string, object>>> mCallback = new Dictionary<string, Action<Dictionary<string, object>>>();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private Dictionary<string, string> mDeviceMaps = new Dictionary<string, string>();
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -117,7 +122,7 @@ namespace Cdy.Link.Mqtt
         {
             Task.Run(() => {
                 this.mqttClient.SubscribeAsync(mData.LocalTopic);
-                this.mqttClient.SubscribeAsync(mData.RemoteResponseTopic);
+                //this.mqttClient.SubscribeAsync(mData.RemoteResponseTopic);
             });
         }
 
@@ -142,7 +147,7 @@ namespace Cdy.Link.Mqtt
         {
             try
             {
-                var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithResponseTopic(responeTopic).WithPayload(data).WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce).WithRetainFlag().Build();
+                var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithResponseTopic(responeTopic).WithPayload(data).WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce).Build();
                 this.mqttClient.PublishAsync(msg);
             }
             catch
@@ -172,14 +177,42 @@ namespace Cdy.Link.Mqtt
                             var manager = ServiceLocator.Locator.Resolve<IDeviceForDriver>();
                             //执行数据下发
                             var wd = vdatas.ToObject<UpdateDataFun>();
-
-                            foreach(var vv in wd.Devices)
+                            if (wd != null)
                             {
-                                if (mCallback.ContainsKey(vv.Device))
+                                foreach (var vv in wd.Devices)
                                 {
-                                    mCallback[vv.Device](vv.Values);
+                                    if (mCallback.ContainsKey(vv.Device))
+                                    {
+                                        mCallback[vv.Device](vv.Values);
+                                    }
                                 }
                             }
+                        }
+                        else if(sfun== "registor")
+                        {
+                            var rg = vdatas.ToObject<RegistorFun>();
+                            if(rg.Devices!=null)
+                            {
+                                foreach(var vv in rg.Devices)
+                                {
+                                    if(mDeviceMaps.ContainsKey(vv))
+                                    {
+                                        mDeviceMaps[vv] = rg.Topic;
+                                    }
+                                    else
+                                    {
+                                        mDeviceMaps.Add(vv, rg.Topic);
+                                    }
+                                }
+
+                                //Task.Run(() => {
+                                //    this.mqttClient.SubscribeAsync(rg.Topic);
+                                //});
+
+                                SendToTopicData(rg.Topic, mData.LocalTopic, Newtonsoft.Json.JsonConvert.SerializeObject(new RegistorResponseFun() { Result = true, Time = DateTime.Now }));
+
+                            }
+                           
                         }
                     }
 
@@ -191,7 +224,12 @@ namespace Cdy.Link.Mqtt
         {
             Dictionary<string, string> dtmp = new Dictionary<string, string>();
             dtmp.Add(device+"|"+tagid, value.ToString());
-            SendToTopicData(mData.RemoteTopic, mData.RemoteResponseTopic, Newtonsoft.Json.JsonConvert.SerializeObject(new WriteDataFun() { Fun = "write", Data = dtmp }));
+
+            if(mDeviceMaps.ContainsKey(device))
+            {
+                var rk = mDeviceMaps[device];
+                SendToTopicData(rk, mData.LocalTopic, Newtonsoft.Json.JsonConvert.SerializeObject(new WriteDataFun() { Fun = "write", Data = dtmp }));
+            }
         }
 
         /// <summary>
@@ -203,6 +241,27 @@ namespace Cdy.Link.Mqtt
             mData = new MqttLinkData();
             mData.LoadFromXML(xe);
             base.Load(xe);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Start()
+        {
+            this.mqttClient.StartAsync(new ManagedMqttClientOptions
+            {
+                ClientOptions = options
+            });
+            base.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Stop()
+        {
+            mqttClient.StopAsync();
+            base.Stop();
         }
 
         /// <summary>
@@ -238,6 +297,16 @@ namespace Cdy.Link.Mqtt
         #endregion ...Interfaces...
     }
 
+    public class RegistorResponseFun : FunBase
+    {
+        public RegistorResponseFun()
+        {
+            Fun = "registorresponse";
+        }
+        public DateTime Time { get; set; }
+        public bool Result { get; set; }
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -264,6 +333,23 @@ namespace Cdy.Link.Mqtt
         }
         public List<DeviceItem> Devices { get; set; }
     }
+
+    public class RegistorFun : FunBase
+    {
+        public RegistorFun()
+        {
+            Fun = "registor";
+        }
+        /// <summary>
+        /// 主题
+        /// </summary>
+        public string Topic { get; set; }
+        /// <summary>
+        /// 设备列表
+        /// </summary>
+        public string[] Devices { get; set; }
+    }
+
 
 
     /// <summary>

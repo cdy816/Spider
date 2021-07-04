@@ -223,6 +223,7 @@ namespace Cdy.Api.SpiderMqtt.Develop
                 if (mModel.RemoteTopic != value)
                 {
                     mModel.RemoteTopic = value;
+                    RemoteResponseTopic = value+ "_response";
                     OnPropertyChanged("RemoteTopic");
                 }
             }
@@ -261,6 +262,7 @@ namespace Cdy.Api.SpiderMqtt.Develop
                 if (mModel.LocalTopic != value)
                 {
                     mModel.LocalTopic = value;
+                    LocalResponseTopic = value + "_response";
                     OnPropertyChanged("LocalTopic");
                 }
             }
@@ -280,7 +282,7 @@ namespace Cdy.Api.SpiderMqtt.Develop
                 if (mModel.LocalResponseTopic != value)
                 {
                     mModel.LocalResponseTopic = value;
-                    OnPropertyChanged("LocalTopic");
+                    OnPropertyChanged("LocalResponseTopic");
                 }
             }
         }
