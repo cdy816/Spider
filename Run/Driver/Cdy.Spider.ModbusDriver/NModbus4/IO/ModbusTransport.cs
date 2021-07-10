@@ -128,11 +128,13 @@
                 {
                     lock (_syncLock)
                     {
-                        Write(message);
-
+                        
                         bool readAgain;
                         do
                         {
+                            StreamResource.ClearBuffer();
+                            Write(message);
+
                             readAgain = false;
                             response = ReadResponse<T>();
                             var exceptionResponse = response as SlaveExceptionResponse;

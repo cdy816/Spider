@@ -38,7 +38,10 @@
             DiscardInBuffer();
 
             byte[] frame = BuildMessageFrame(message);
-            Debug.WriteLine($"TX: {string.Join(", ", frame)}");
+#if DEBUG
+            LoggerService.Service.Debug("ModbusSerial",$"TX: {string.Join(", ", frame)}");
+#endif
+
             StreamResource.Send(frame, 0, frame.Length);
         }
 

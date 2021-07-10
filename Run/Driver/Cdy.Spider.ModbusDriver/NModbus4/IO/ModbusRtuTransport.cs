@@ -147,8 +147,9 @@
                     return null;
                 }
                 byte[] frame = Enumerable.Concat(frameStart, frameEnd).ToArray();
-                //Debug.WriteLine($"RX: {string.Join(", ", frame)}");
-
+#if DEBUG
+                LoggerService.Service.Debug("ModbusRTU",$"RX: {string.Join(", ", frame)}");
+#endif
                 return CreateResponse<T>(frame);
             }
             catch(Exception ex)
@@ -174,7 +175,9 @@
                     return null;
                 }
                 byte[] frame = Enumerable.Concat(frameStart, frameEnd).ToArray();
-                Debug.WriteLine($"RX: {string.Join(", ", frame)}");
+#if DEBUG
+                LoggerService.Service.Debug("ModbusRTU", $"RX: {string.Join(", ", frame)}");
+#endif
 
                 return frame;
             }

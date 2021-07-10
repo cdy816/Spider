@@ -46,6 +46,8 @@ namespace Cdy.Spider
 
         private Dictionary<ushort, ushort> mHoldtRegistorPackage = new Dictionary<ushort, ushort>();
 
+        private object mSyncLock = new object();
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -236,14 +238,16 @@ namespace Cdy.Spider
 
                 ushort addr = ushort.Parse(dtmp[1]);
                 ushort size = ushort.Parse(dtmp[2]);
-
-                if (dtmp[0].StartsWith("cs"))
+                lock (mSyncLock)
                 {
-                    mMaster.WriteSingleCoil((byte)mData.Id, addr, Convert.ToBoolean(value));
-                }
-                else if (dtmp[0].StartsWith("hr"))
-                {
-                    mMaster.WriteMultipleRegisters((byte)mData.Id, addr, GetValue(value, valueType, size));
+                    if (dtmp[0].StartsWith("cs"))
+                    {
+                        mMaster.WriteSingleCoil((byte)mData.Id, addr, Convert.ToBoolean(value));
+                    }
+                    else if (dtmp[0].StartsWith("hr"))
+                    {
+                        mMaster.WriteMultipleRegisters((byte)mData.Id, addr, GetValue(value, valueType, size));
+                    }
                 }
             }
         }
@@ -510,15 +514,18 @@ namespace Cdy.Spider
             {
                 foreach (var vv in mInputStatusPackage)
                 {
-                    var result = mMaster.ReadInputs((byte)mData.Id, vv.Key, vv.Value);
-                    if (result != null && result.Length == vv.Value)
+                    lock (mSyncLock)
                     {
-                        for (ushort i = 0; i < vv.Value; i++)
+                        var result = mMaster.ReadInputs((byte)mData.Id, vv.Key, vv.Value);
+                        if (result != null && result.Length == vv.Value)
                         {
-                            ushort addr = (ushort)(vv.Key + i);
-                            if (this.mInputStatusTags.ContainsKey(addr))
+                            for (ushort i = 0; i < vv.Value; i++)
                             {
-                                UpdateValue(mInputStatusTags[addr], result[i]);
+                                ushort addr = (ushort)(vv.Key + i);
+                                if (this.mInputStatusTags.ContainsKey(addr))
+                                {
+                                    UpdateValue(mInputStatusTags[addr], result[i]);
+                                }
                             }
                         }
                     }
@@ -526,16 +533,19 @@ namespace Cdy.Spider
 
                 foreach (var vv in mCoilStatusPackage)
                 {
-                    var result = mMaster.ReadCoils((byte)mData.Id, vv.Key, vv.Value);
-
-                    if (result != null && result.Length == vv.Value)
+                    lock (mSyncLock)
                     {
-                        for (ushort i = 0; i < vv.Value; i++)
+                        var result = mMaster.ReadCoils((byte)mData.Id, vv.Key, vv.Value);
+
+                        if (result != null && result.Length == vv.Value)
                         {
-                            ushort addr = (ushort)(vv.Key + i);
-                            if (this.mCoilStatusTags.ContainsKey(addr))
+                            for (ushort i = 0; i < vv.Value; i++)
                             {
-                                UpdateValue(mCoilStatusTags[addr], result[i]);
+                                ushort addr = (ushort)(vv.Key + i);
+                                if (this.mCoilStatusTags.ContainsKey(addr))
+                                {
+                                    UpdateValue(mCoilStatusTags[addr], result[i]);
+                                }
                             }
                         }
                     }
@@ -543,26 +553,32 @@ namespace Cdy.Spider
 
                 foreach (var vv in mInputRegistorPackage)
                 {
-                    var result = mMaster.ReadInputRegisters((byte)mData.Id, vv.Key, vv.Value);
-                    if (result != null && result.Length == vv.Value)
+                    lock (mSyncLock)
                     {
-                        for (ushort i = 0; i < vv.Value; i++)
+                        var result = mMaster.ReadInputRegisters((byte)mData.Id, vv.Key, vv.Value);
+                        if (result != null && result.Length == vv.Value)
                         {
-                            ushort addr = (ushort)(vv.Key + i);
-                            UpdateRegistor(addr,i, result, mInputRegistorTags);
+                            for (ushort i = 0; i < vv.Value; i++)
+                            {
+                                ushort addr = (ushort)(vv.Key + i);
+                                UpdateRegistor(addr, i, result, mInputRegistorTags);
+                            }
                         }
                     }
                 }
 
                 foreach (var vv in mHoldtRegistorPackage)
                 {
-                    var result = mMaster.ReadHoldingRegisters((byte)mData.Id, vv.Key, vv.Value);
-                    if (result != null && result.Length == vv.Value)
+                    lock (mSyncLock)
                     {
-                        for (ushort i = 0; i < vv.Value; i++)
+                        var result = mMaster.ReadHoldingRegisters((byte)mData.Id, vv.Key, vv.Value);
+                        if (result != null && result.Length == vv.Value)
                         {
-                            ushort addr = (ushort)(vv.Key + i);
-                            UpdateRegistor(addr,i, result, mHoldRegistorTags);
+                            for (ushort i = 0; i < vv.Value; i++)
+                            {
+                                ushort addr = (ushort)(vv.Key + i);
+                                UpdateRegistor(addr, i, result, mHoldRegistorTags);
+                            }
                         }
                     }
                 }
