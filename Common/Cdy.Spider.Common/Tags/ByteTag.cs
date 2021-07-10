@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Cdy.Spider
 {
-    public class ByteTag:Tagbase
+    public class ByteTag:Tagbase, INumberTag
     {
 
         #region ... Variables  ...
@@ -41,13 +41,15 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public override object Value { get => mValue; set { mValue = Convert.ToByte(value); AppendHisValue(mValue); }  }
+        public override object Value { get => mValue; set { mValue = Convert.ToByte(ConvertValue(value)); AppendHisValue(mValue); }  }
 
 
 
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        
 
         /// <summary>
         /// 

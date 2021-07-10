@@ -142,6 +142,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Convert 的本地化字符串。
+        /// </summary>
+        internal static string Convert {
+            get {
+                return ResourceManager.GetString("Convert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Copy 的本地化字符串。
         /// </summary>
         internal static string Copy {
@@ -228,6 +237,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Export {
             get {
                 return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Conversion formula 的本地化字符串。
+        /// </summary>
+        internal static string funTitle {
+            get {
+                return ResourceManager.GetString("funTitle", resourceCulture);
             }
         }
         

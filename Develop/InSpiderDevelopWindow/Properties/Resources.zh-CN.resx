@@ -144,6 +144,9 @@
   <data name="Communication" xml:space="preserve">
     <value>通信</value>
   </data>
+  <data name="Convert" xml:space="preserve">
+    <value>转换</value>
+  </data>
   <data name="Copy" xml:space="preserve">
     <value>拷贝</value>
   </data>
@@ -173,6 +176,9 @@
   </data>
   <data name="Export" xml:space="preserve">
     <value>导出</value>
+  </data>
+  <data name="funTitle" xml:space="preserve">
+    <value>转换公式</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>导入</value>

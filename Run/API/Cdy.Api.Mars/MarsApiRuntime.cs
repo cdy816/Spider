@@ -449,7 +449,7 @@ namespace Cdy.Api.Mars
 
                 foreach (var vvv in vv.ListTags())
                 {
-                    if (mNameIdMape.ContainsKey(vvv.DatabaseName))
+                    if (mNameIdMape.ContainsKey(vvv.DatabaseName) && vvv.Quality!= Tagbase.InitQuality)
                     {
                         int id = mNameIdMape[vvv.DatabaseName];
                         var tpu = (TagType)((int)vvv.Type);

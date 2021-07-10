@@ -409,7 +409,10 @@
         private bool[] PerformReadDiscretes(ReadCoilsInputsRequest request)
         {
             ReadCoilsInputsResponse response = Transport.UnicastMessage<ReadCoilsInputsResponse>(request);
-            return response.Data.Take(request.NumberOfPoints).ToArray();
+            if (response != null)
+                return response.Data.Take(request.NumberOfPoints).ToArray();
+            else
+                return null;
         }
 
         private Task<bool[]> PerformReadDiscretesAsync(ReadCoilsInputsRequest request)
@@ -421,8 +424,9 @@
         {
             ReadHoldingInputRegistersResponse response =
                 Transport.UnicastMessage<ReadHoldingInputRegistersResponse>(request);
-
-            return response.Data.Take(request.NumberOfPoints).ToArray();
+            if (response != null)
+                return response.Data.Take(request.NumberOfPoints).ToArray();
+            else return null;
         }
 
         private Task<ushort[]> PerformReadRegistersAsync(ReadHoldingInputRegistersRequest request)
@@ -434,8 +438,9 @@
         {
             ReadHoldingInputRegistersResponse response =
                 Transport.UnicastMessage<ReadHoldingInputRegistersResponse>(request);
-
-            return response.Data.Take(request.ReadRequest.NumberOfPoints).ToArray();
+            if (response != null)
+                return response.Data.Take(request.ReadRequest.NumberOfPoints).ToArray();
+            else return null;
         }
 
         private Task<ushort[]> PerformReadRegistersAsync(ReadWriteMultipleRegistersRequest request)

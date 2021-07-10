@@ -217,7 +217,7 @@ namespace Cdy.Spider
             }
 
             mComm.EnableSyncRead(true);
-
+            
             if (mData.Type == ModbusSeriseType.Ascii)
             {
                 mMaster = Modbus.Device.ModbusSerialMaster.CreateAscii(mComm);
@@ -226,6 +226,8 @@ namespace Cdy.Spider
             {
                 mMaster = Modbus.Device.ModbusSerialMaster.CreateRtu(mComm);
             }
+            //mMaster.Transport.DataSendTimeout = mData.ScanCircle;
+            
         }
 
 

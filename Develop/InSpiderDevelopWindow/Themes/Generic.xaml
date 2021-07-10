@@ -30,6 +30,14 @@
         <view:ShareDeviceSelectView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type model:ConvertEditViewModel}">
+        <view:ConvertEditView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:LinearConvertViewModel}">
+        <view:LinearConvertView />
+    </DataTemplate>
+
     <BooleanToVisibilityConverter x:Key="bvc" />
     <!--<SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>

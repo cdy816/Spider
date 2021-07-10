@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Cdy.Spider
 {
-    public class DoubleTag:Tagbase
+    public class DoubleTag:Tagbase, INumberTag
     {
 
         #region ... Variables  ...
@@ -41,7 +41,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public override object Value { get => mValue; set { mValue = Convert.ToDouble(value); AppendHisValue(mValue); } }
+        public override object Value { get => mValue; set { mValue = Convert.ToDouble(ConvertValue(value)); AppendHisValue(mValue); } }
 
 
         /// <summary>

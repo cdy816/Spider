@@ -144,7 +144,8 @@
 
                                 if (readAgain)
                                 {
-                                    Debug.WriteLine($"Received ACKNOWLEDGE slave exception response, waiting {_waitToRetryMilliseconds} milliseconds and retrying to read response.");
+                                    LoggerService.Service.Warn("ModbusTransport", $"Received ACKNOWLEDGE slave exception response, waiting {_waitToRetryMilliseconds} milliseconds and retrying to read response.");
+                                    // Debug.WriteLine($"Received ACKNOWLEDGE slave exception response, waiting {_waitToRetryMilliseconds} milliseconds and retrying to read response.");
                                     Sleep(WaitToRetryMilliseconds);
                                 }
                                 else
@@ -157,7 +158,7 @@
                                 readAgain = true;
                             }
                         }
-                        while (readAgain);
+                        while (readAgain && attempt++ < _retries);
                     }
 
                     ValidateResponse(message, response);
@@ -167,15 +168,15 @@
                 {
                     if (se.SlaveExceptionCode != Modbus.SlaveDeviceBusy)
                     {
-                        throw;
+                        break;
                     }
 
                     if (SlaveBusyUsesRetryCount && attempt++ > _retries)
                     {
-                        throw;
+                        break;
                     }
-
-                    Debug.WriteLine($"Received SLAVE_DEVICE_BUSY exception response, waiting {_waitToRetryMilliseconds} milliseconds and resubmitting request.");
+                    LoggerService.Service.Warn("ModbusTransport", $"Received SLAVE_DEVICE_BUSY exception response, waiting {_waitToRetryMilliseconds} milliseconds and resubmitting request.");
+                    //Debug.WriteLine($"Received SLAVE_DEVICE_BUSY exception response, waiting {_waitToRetryMilliseconds} milliseconds and resubmitting request.");
                     Sleep(WaitToRetryMilliseconds);
                 }
                 catch (Exception e)
@@ -185,16 +186,16 @@
                         e is TimeoutException ||
                         e is IOException)
                     {
-                        Debug.WriteLine($"{e.GetType().Name}, {(_retries - attempt + 1)} retries remaining - {e}");
-
+                        //Debug.WriteLine($"{e.GetType().Name}, {(_retries - attempt + 1)} retries remaining - {e}");
+                        LoggerService.Service.Warn("ModbusTransport", $"{e.GetType().Name}, {(_retries - attempt + 1)} retries remaining - {e}");
                         if (attempt++ > _retries)
                         {
-                            throw;
+                            break;
                         }
                     }
                     else
                     {
-                        throw;
+                        break;
                     }
                 }
             }
@@ -224,6 +225,8 @@
 
         internal void ValidateResponse(IModbusMessage request, IModbusMessage response)
         {
+            if (response == null) return;
+
             // always check the function code and slave address, regardless of transport protocol
             if (request.FunctionCode != response.FunctionCode)
             {
@@ -253,6 +256,9 @@
         /// </summary>
         internal bool ShouldRetryResponse(IModbusMessage request, IModbusMessage response)
         {
+
+            if (response == null) return true;
+
             // These checks are enforced in ValidateRequest, we don't want to retry for these
             if (request.FunctionCode != response.FunctionCode)
             {

@@ -214,9 +214,29 @@ namespace Cdy.Spider
         }
 
 
+        /// <summary>
+        /// 值转换函数
+        /// </summary>
+        public IValueConvert Conveter { get; set; }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected object ConvertValue(object value)
+        {
+            if (this.Conveter != null)
+            {
+                return this.Conveter.ConvertTo(value);
+            }
+            return value;
+        }
 
         /// <summary>
         /// 使能历史缓冲
@@ -278,6 +298,10 @@ namespace Cdy.Spider
             xx.SetAttributeValue("DatabaseName", tag.DatabaseName);
             xx.SetAttributeValue("DeviceInfo", tag.DeviceInfo);
             xx.SetAttributeValue("DataTranseDirection", (int)tag.DataTranseDirection);
+            if (tag.Conveter != null)
+            {
+                xx.SetAttributeValue("Conveter", tag.Conveter.Name + ":" + tag.Conveter.SaveToString());
+            }
             return xx;
         }
 
@@ -306,6 +330,17 @@ namespace Cdy.Spider
                 if (xe.Attribute("DataTranseDirection") != null)
                 {
                     tag.DataTranseDirection = (DataTransType)int.Parse(xe.Attribute("DataTranseDirection").Value);
+                }
+
+                if (xe.Attribute("Conveter") != null)
+                {
+                    var vres = xe.Attribute("Conveter").Value;
+                    string[] sval = vres.Split(new char[] { ':' });
+                    var vtmp = ValueConvertManager.manager.GetConvert(sval[0]);
+                    if (vtmp != null)
+                    {
+                        tag.Conveter = vtmp.LoadFromString(vres.Replace(sval[0] + ":", ""));
+                    }
                 }
             }
             return tag;

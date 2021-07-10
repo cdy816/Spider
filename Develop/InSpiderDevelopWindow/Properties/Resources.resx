@@ -144,6 +144,9 @@
   <data name="Communication" xml:space="preserve">
     <value>Communication</value>
   </data>
+  <data name="Convert" xml:space="preserve">
+    <value>Convert</value>
+  </data>
   <data name="Copy" xml:space="preserve">
     <value>Copy</value>
   </data>
@@ -173,6 +176,9 @@
   </data>
   <data name="Export" xml:space="preserve">
     <value>Export</value>
+  </data>
+  <data name="funTitle" xml:space="preserve">
+    <value>Conversion formula</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>

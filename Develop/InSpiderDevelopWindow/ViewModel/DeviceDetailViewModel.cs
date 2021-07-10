@@ -1764,6 +1764,10 @@ namespace InSpiderDevelopWindow.ViewModel
 
         public static IRegistorConfigModel mLastConfigModel;
 
+        private ICommand mConvertEditCommand;
+
+        private ICommand mConvertRemoveCommand;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -1892,8 +1896,68 @@ namespace InSpiderDevelopWindow.ViewModel
         }
 
         /// <summary>
-            /// 
-            /// </summary>
+        /// 
+        /// </summary>
+        public string ConvertString
+        {
+            get
+            {
+                return mModel.Conveter != null ? mModel.Conveter.SeriseToString() : string.Empty;
+            }
+            set
+            {
+                ;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IValueConvert Convert
+        {
+            get
+            {
+                return mModel.Conveter;
+            }
+            set
+            {
+                if (mModel.Conveter != value)
+                {
+                    mModel.Conveter = value;
+                    IsChanged = true;
+                }
+                OnPropertyChanged("Convert");
+                OnPropertyChanged("ConvertString");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ConvertEditCommand
+        {
+            get
+            {
+                if (mConvertEditCommand == null)
+                {
+                    mConvertEditCommand = new RelayCommand(() => {
+
+                        ConvertEditViewModel cmm = new ConvertEditViewModel();
+                        if (mModel.Conveter != null)
+                            cmm.SetSelectConvert(mModel.Conveter.SeriseToString());
+                        if (cmm.ShowDialog().Value)
+                        {
+                            Convert = cmm.CurrentSelectModel.Model;
+                        }
+                    });
+                }
+                return mConvertEditCommand;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string Name
         {
             get

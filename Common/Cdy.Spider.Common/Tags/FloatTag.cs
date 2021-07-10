@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Cdy.Spider
 {
-    public class FloatTag:Tagbase
+    public class FloatTag:Tagbase, INumberTag
     {
 
         #region ... Variables  ...
@@ -41,7 +41,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public override object Value { get => mValue; set { mValue = Convert.ToSingle(value); AppendHisValue(mValue); } }
+        public override object Value { get => mValue; set { mValue = Convert.ToSingle(ConvertValue(value)); AppendHisValue(mValue); } }
 
         /// <summary>
         /// 

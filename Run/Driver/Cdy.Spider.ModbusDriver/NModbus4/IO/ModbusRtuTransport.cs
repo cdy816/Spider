@@ -95,7 +95,20 @@
 
             while (numBytesRead != count)
             {
-                numBytesRead += StreamResource.Read(frameBytes, numBytesRead, count - numBytesRead);
+                int rcount = 0;
+                var data = StreamResource.Read(count - numBytesRead, StreamResource.Data.Timeout, out rcount);
+
+                if (rcount != 0)
+                {
+                    Array.Copy(data, 0, frameBytes, numBytesRead, rcount);
+                    numBytesRead += rcount;
+                }
+                else
+                {
+                    LoggerService.Service.Warn("Modbusrtutransport", "Data send and receive is timeout: "+StreamResource.Data.DataSendTimeout);
+                    return null;
+                }
+                //numBytesRead += StreamResource.Read(frameBytes, numBytesRead, count - numBytesRead);
             }
 
             return frameBytes;
@@ -124,7 +137,15 @@
             try
             {
                 byte[] frameStart = Read(ResponseFrameStartLength);
+                if (frameStart == null)
+                {
+                    return null;
+                }
                 byte[] frameEnd = Read(ResponseBytesToRead(frameStart));
+                if (frameEnd == null)
+                {
+                    return null;
+                }
                 byte[] frame = Enumerable.Concat(frameStart, frameEnd).ToArray();
                 //Debug.WriteLine($"RX: {string.Join(", ", frame)}");
 
@@ -132,8 +153,9 @@
             }
             catch(Exception ex)
             {
+                LoggerService.Service.Warn("Modbusrtutransport",ex.Message);
                 StreamResource.ClearBuffer();
-                throw ex;
+                return null;
             }
         }
 
@@ -142,7 +164,15 @@
             try
             {
                 byte[] frameStart = Read(RequestFrameStartLength);
+                if (frameStart == null)
+                {
+                    return null;
+                }
                 byte[] frameEnd = Read(RequestBytesToRead(frameStart));
+                if (frameEnd == null)
+                {
+                    return null;
+                }
                 byte[] frame = Enumerable.Concat(frameStart, frameEnd).ToArray();
                 Debug.WriteLine($"RX: {string.Join(", ", frame)}");
 
@@ -150,8 +180,10 @@
             }
             catch(Exception ex)
             {
+                LoggerService.Service.Warn("Modbusrtutransport", ex.Message);
                 StreamResource.ClearBuffer();
-                throw ex;
+                return null;
+                //throw ex;
             }
         }
     }

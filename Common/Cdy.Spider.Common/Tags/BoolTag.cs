@@ -41,7 +41,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
-        public override object Value { get => mValue; set { mValue = Convert.ToBoolean(value); AppendHisValue(mValue); } }
+        public override object Value { get => mValue; set { mValue = Convert.ToBoolean(ConvertValue(value)); AppendHisValue(mValue); } }
 
         /// <summary>
         /// 
