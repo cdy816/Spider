@@ -46,8 +46,6 @@ namespace Cdy.Spider.SerisePortClient.Develop
             {
 
             }
-            
-
         }
         #endregion ...Constructor...
 

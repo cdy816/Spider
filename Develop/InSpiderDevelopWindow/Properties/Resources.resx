@@ -129,6 +129,12 @@
   <data name="ApiType" xml:space="preserve">
     <value>Api type</value>
   </data>
+  <data name="BitInvert" xml:space="preserve">
+    <value>bit invert</value>
+  </data>
+  <data name="BitInvertefunTitle" xml:space="preserve">
+    <value>Boolean value inversion</value>
+  </data>
   <data name="Both" xml:space="preserve">
     <value>Both</value>
   </data>
@@ -171,6 +177,9 @@
   <data name="Driver" xml:space="preserve">
     <value>Driver</value>
   </data>
+  <data name="Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
   <data name="erro" xml:space="preserve">
     <value>erro</value>
   </data>
@@ -192,6 +201,9 @@
   <data name="Keyword" xml:space="preserve">
     <value>Keyword</value>
   </data>
+  <data name="Linear" xml:space="preserve">
+    <value>linear</value>
+  </data>
   <data name="Link" xml:space="preserve">
     <value>Link</value>
   </data>
@@ -203,6 +215,12 @@
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="NumberToBit" xml:space="preserve">
+    <value>Number2Bit</value>
+  </data>
+  <data name="NumberToBitfunTitle" xml:space="preserve">
+    <value>Take one digit as the numerical value</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
@@ -263,6 +281,12 @@
   </data>
   <data name="SpiderTitle" xml:space="preserve">
     <value>Welcome to spider</value>
+  </data>
+  <data name="StringFormate" xml:space="preserve">
+    <value>string formate</value>
+  </data>
+  <data name="StringFormatfunTitle" xml:space="preserve">
+    <value>String value format</value>
   </data>
   <data name="TagCount" xml:space="preserve">
     <value>Tag count</value>

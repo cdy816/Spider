@@ -94,7 +94,7 @@ namespace Cdy.Spider
         public void Init()
         {
             //注册线性转换器
-            ValueConvertManager.manager.Registor(new LinerConvert()).Registor(new BitConvert()).Registor(new LinerConvert()).Registor(new StringFormateConvert());
+            ValueConvertManager.manager.Registor(new LinerConvert()).Registor(new NumberToBitConvert()).Registor(new LinerConvert()).Registor(new StringFormateConvert());
         }
 
        

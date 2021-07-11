@@ -1906,7 +1906,17 @@ namespace InSpiderDevelopWindow.ViewModel
             }
             set
             {
-                ;
+                if (ConvertString != value)
+                {
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        mModel.Conveter = value.DeSeriseToValueConvert(); ;
+                    }
+                    else
+                    {
+                        Convert = null;
+                    }
+                }
             }
         }
 
@@ -1942,7 +1952,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     mConvertEditCommand = new RelayCommand(() => {
 
-                        ConvertEditViewModel cmm = new ConvertEditViewModel();
+                        ConvertEditViewModel cmm = new ConvertEditViewModel(this.Model);
                         if (mModel.Conveter != null)
                             cmm.SetSelectConvert(mModel.Conveter.SeriseToString());
                         if (cmm.ShowDialog().Value)
@@ -1952,6 +1962,22 @@ namespace InSpiderDevelopWindow.ViewModel
                     });
                 }
                 return mConvertEditCommand;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ConvertRemoveCommand
+        {
+            get
+            {
+                if (mConvertRemoveCommand == null)
+                {
+                    mConvertRemoveCommand = new RelayCommand(() => {
+                        Convert = null;
+                    }, () => { return Convert != null; });
+                }
+                return mConvertRemoveCommand;
             }
         }
 

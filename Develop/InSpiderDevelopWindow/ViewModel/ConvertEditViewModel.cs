@@ -32,12 +32,19 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
         /// 
         /// </summary>
-        public ConvertEditViewModel()
+        public ConvertEditViewModel(Tagbase tag)
         {
+            Tag = tag;
             Init();
             DefaultWidth = 400;
             DefaultHeight = 200;
+            Title = Res.Get("Convert");
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Tagbase Tag { get; set; }
 
         /// <summary>
         /// 
@@ -71,7 +78,16 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         private void Init()
         {
-            mItems.Add(new LinearConvertViewModel() { Model = new LinerConvert() });
+            if (new LinerConvert().SupportTag(Tag))
+            {
+                mItems.Add(new LinearConvertViewModel() { Model = new LinerConvert() });
+            }
+            if (new NumberToBitConvert().SupportTag(Tag))
+                mItems.Add(new NumberToBitConvertViewModel() { Model = new NumberToBitConvert() });
+            if (new BitInvertConvert().SupportTag(Tag))
+                mItems.Add(new BitInvertConvertViewModel() { Model = new BitInvertConvert() });
+            if (new StringFormateConvert().SupportTag(Tag))
+                mItems.Add(new StringFormatConvertViewModel() { Model = new StringFormateConvert() });
             CurrentSelectModel = mItems.First();
         }
 
@@ -101,6 +117,11 @@ namespace InSpiderDevelopWindow.ViewModel
         /// 
         /// </summary>
         public string Name { get { return Model.Name; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string DisplayName { get { return Res.Get(Model.Name); } }
 
         /// <summary>
         /// 
@@ -155,6 +176,81 @@ namespace InSpiderDevelopWindow.ViewModel
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public class NumberToBitConvertViewModel: ConvertViewModel
+    {
+        /// <summary>
+            /// 
+            /// </summary>
+        public byte Index
+        {
+            get
+            {
+                return (Model as NumberToBitConvert).Index;
+            }
+            set
+            {
+                if ((Model as NumberToBitConvert).Index != value)
+                {
+                    (Model as NumberToBitConvert).Index = value;
+                    OnPropertyChanged("Index");
+                }
+            }
+        }
 
+    }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public class BitInvertConvertViewModel : ConvertViewModel
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool Enable
+        {
+            get
+            {
+                return (Model as BitInvertConvert).Enable;
+            }
+            set
+            {
+                if ((Model as BitInvertConvert).Enable != value)
+                {
+                    (Model as BitInvertConvert).Enable = value;
+                    OnPropertyChanged("Enable");
+                }
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class StringFormatConvertViewModel : ConvertViewModel
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Formate
+        {
+            get
+            {
+                return (Model as StringFormateConvert).Formate;
+            }
+            set
+            {
+                if ((Model as StringFormateConvert).Formate != value)
+                {
+                    (Model as StringFormateConvert).Formate = value;
+                    OnPropertyChanged("Formate");
+                }
+            }
+        }
+
+    }
 }

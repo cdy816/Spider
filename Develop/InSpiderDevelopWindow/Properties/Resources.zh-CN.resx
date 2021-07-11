@@ -129,6 +129,12 @@
   <data name="ApiType" xml:space="preserve">
     <value>Api类型</value>
   </data>
+  <data name="BitInvert" xml:space="preserve">
+    <value>数字取反</value>
+  </data>
+  <data name="BitInvertefunTitle" xml:space="preserve">
+    <value>Bool值取反</value>
+  </data>
   <data name="Both" xml:space="preserve">
     <value>双向</value>
   </data>
@@ -171,6 +177,9 @@
   <data name="Driver" xml:space="preserve">
     <value>驱动</value>
   </data>
+  <data name="Enable" xml:space="preserve">
+    <value>使能</value>
+  </data>
   <data name="erro" xml:space="preserve">
     <value>错误</value>
   </data>
@@ -192,6 +201,9 @@
   <data name="Keyword" xml:space="preserve">
     <value>关键字</value>
   </data>
+  <data name="Linear" xml:space="preserve">
+    <value>线性变换</value>
+  </data>
   <data name="Link" xml:space="preserve">
     <value>级联</value>
   </data>
@@ -203,6 +215,12 @@
   </data>
   <data name="Name" xml:space="preserve">
     <value>名称</value>
+  </data>
+  <data name="NumberToBit" xml:space="preserve">
+    <value>数字取位</value>
+  </data>
+  <data name="NumberToBitfunTitle" xml:space="preserve">
+    <value>取数字某一个位</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>确定</value>
@@ -263,6 +281,12 @@
   </data>
   <data name="SpiderTitle" xml:space="preserve">
     <value>欢迎来到 Spider 开发平台</value>
+  </data>
+  <data name="StringFormate" xml:space="preserve">
+    <value>字符串格式化</value>
+  </data>
+  <data name="StringFormatfunTitle" xml:space="preserve">
+    <value>字符串格式</value>
   </data>
   <data name="TagCount" xml:space="preserve">
     <value>变量个数</value>

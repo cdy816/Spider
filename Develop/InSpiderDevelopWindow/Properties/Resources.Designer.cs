@@ -97,6 +97,24 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 bit invert 的本地化字符串。
+        /// </summary>
+        internal static string BitInvert {
+            get {
+                return ResourceManager.GetString("BitInvert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Boolean value inversion 的本地化字符串。
+        /// </summary>
+        internal static string BitInvertefunTitle {
+            get {
+                return ResourceManager.GetString("BitInvertefunTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Both 的本地化字符串。
         /// </summary>
         internal static string Both {
@@ -223,6 +241,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Enable 的本地化字符串。
+        /// </summary>
+        internal static string Enable {
+            get {
+                return ResourceManager.GetString("Enable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 erro 的本地化字符串。
         /// </summary>
         internal static string erro {
@@ -286,6 +313,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 linear 的本地化字符串。
+        /// </summary>
+        internal static string Linear {
+            get {
+                return ResourceManager.GetString("Linear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Link 的本地化字符串。
         /// </summary>
         internal static string Link {
@@ -318,6 +354,24 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Number2Bit 的本地化字符串。
+        /// </summary>
+        internal static string NumberToBit {
+            get {
+                return ResourceManager.GetString("NumberToBit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Take one digit as the numerical value 的本地化字符串。
+        /// </summary>
+        internal static string NumberToBitfunTitle {
+            get {
+                return ResourceManager.GetString("NumberToBitfunTitle", resourceCulture);
             }
         }
         
@@ -498,6 +552,24 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string SpiderTitle {
             get {
                 return ResourceManager.GetString("SpiderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 string formate 的本地化字符串。
+        /// </summary>
+        internal static string StringFormate {
+            get {
+                return ResourceManager.GetString("StringFormate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 String value format 的本地化字符串。
+        /// </summary>
+        internal static string StringFormatfunTitle {
+            get {
+                return ResourceManager.GetString("StringFormatfunTitle", resourceCulture);
             }
         }
         

@@ -16,9 +16,9 @@ namespace Cdy.Spider
     /// <summary>
     /// 
     /// </summary>
-    public class BitConvert : IValueConvert
+    public class NumberToBitConvert : IValueConvert
     {
-        public string Name { get => "Bit";  }
+        public string Name { get => "NumberToBit";  }
 
         /// <summary>
         /// 
@@ -61,8 +61,8 @@ namespace Cdy.Spider
         /// <returns></returns>
         public IValueConvert LoadFromString(string value)
         {
-            if (string.IsNullOrEmpty(value)) return new BitConvert();
-            return new BitConvert() { Index = byte.Parse(value) };
+            if (string.IsNullOrEmpty(value)) return new NumberToBitConvert();
+            return new NumberToBitConvert() { Index = byte.Parse(value) };
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public IValueConvert Clone()
         {
-            return new BitConvert() { Index = this.Index };
+            return new NumberToBitConvert() { Index = this.Index };
         }
     }
 }
