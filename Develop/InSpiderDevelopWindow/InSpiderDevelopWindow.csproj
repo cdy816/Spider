@@ -40,11 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\Resources - 复制.Designer.cs">
-      <DependentUpon>Resources.Designer.cs</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
+    <PackageReference Include="System.IO.Ports" Version="5.0.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

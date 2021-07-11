@@ -444,6 +444,7 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public void Init()
         {
+            ValueConvertManager.manager.Init();
             DevelopManager.Manager.Load();
             foreach(var vv in DevelopManager.Manager.ListMachines())
             {

@@ -32,6 +32,7 @@ namespace SpiderRuntime
         static Runer()
         {
             ServiceLocator.Locator.Registor<ILog>(new ConsoleLogger());
+            ValueConvertManager.manager.Init();
 
             ApiFactory.Factory.LoadForRun();
             LinkFactory.Factory.LoadForRun();

@@ -75,9 +75,20 @@
         </Style>
         
     </Window.Resources>
-    <Border Margin="5" BorderThickness="1" BorderBrush="DarkGray">
+    <Border Margin="5" BorderThickness="1" BorderBrush="DarkGray" >
         <Border.Background>
-            <ImageBrush x:Name="bgi" ImageSource="/Image/Spider.jpg" Opacity="0.8" Stretch="Fill" TileMode="None"/>
+            <VisualBrush>
+                <VisualBrush.Visual>
+                    <Image Source="/Image/Spider.jpg" Opacity="0.8" Stretch="Fill" >
+                        <Image.Effect>
+                            <BlurEffect Radius="10" RenderingBias="Performance" KernelType="Box" />
+                        </Image.Effect>
+                    </Image>
+                </VisualBrush.Visual>
+            </VisualBrush>
+            <!--<ImageBrush  x:Name="bgi" ImageSource="/Image/Spider.jpg" Opacity="0.8" Stretch="Fill" TileMode="None">
+               
+            </ImageBrush>-->
         </Border.Background>
         <Grid x:Name="bg" Background="#CF26282C">
         <Grid.RowDefinitions>
