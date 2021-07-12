@@ -1,4 +1,4 @@
-**Internet of things Troika：[Mars realtime database](https://github.com/cdy816/mars) 、Acquisition platform [Spider](https://github.com/cdy816/Spider) 、Cross platform UI solution [Chameleon](https://github.com/cdy816/Chameleon)**
+**Internet of things Troika：[Mars realtime database](https://github.com/cdy816/mars) 、Acquisition platform [Spider](https://github.com/cdy816/Spider) 、Cross platform UI solution [Chameleon](https://github.com/cdy816/Chameleon)**                 **>>[chinese](https://github.com/cdy816/Spider/edit/master/README.zh-CN.md)<<**
  <br />
  <br />
 [![Contributors][contributors-shield]][contributors-url]
