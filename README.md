@@ -1,4 +1,4 @@
-**物联网三板斧：[Mars 实时库](https://github.com/cdy816/mars) 、设备采集平台[Spider](https://github.com/cdy816/Spider) 、跨平台界面解决方案[Chameleon](https://github.com/cdy816/Chameleon)**
+**Internet of things Troika：[Mars realtime database](https://github.com/cdy816/mars) 、Acquisition platform[Spider](https://github.com/cdy816/Spider) 、Cross platform UI solution[Chameleon](https://github.com/cdy816/Chameleon)**
  <br />
  <br />
 [![Contributors][contributors-shield]][contributors-url]
@@ -14,41 +14,41 @@
 <br />
 <p align="center">
 
-  <h2 align="center">Spider 数据互联</h2>
+  <h2 align="center">Spider data interconnection</h2>
  
   <p align="center">
-    高性能、跨平台设备采集平台!        
+    High performance, cross platform equipment Internet of things collection platform!      
     <br />
     <br />
-    <a href="https://github.com/cdy816/Spider/tree/master/Doc">帮助文档</a>
+    <a href="https://github.com/cdy816/Spider/tree/master/Doc">document</a>
     ·
-    <a href="https://github.com/cdy816/Spider/issues">Bug 提交</a>
+    <a href="https://github.com/cdy816/Spider/issues">Bug submission</a>
     ·
-    <a href="https://github.com/cdy816/Spider/issues">功能申请</a>
+    <a href="https://github.com/cdy816/Spider/issues">Function application</a>
   </p>
 </p>
 
 # Spider
-跨平台(Window、Linux、嵌入式设备)的物联网设备采集平台。
+cross platform(Window、Linux、Iot) equipment Internet of things collection platform.Spider can be used with Mars as the device acquisition module of the database; At the same time, it can also run independently to match with other real-time database software.
 
-1. Spider 开发环境可以多个工程，每个工程是独立运行的一组物理设备采集单元。
-2. 多个工程之间支持以树形结构进行级联，以支持数据的汇总。
+1. Spider supports the development of multiple projects, and each project is a set of independent physical device acquisition units.
+2. Multiple projects can be cascaded in a tree structure to support data aggregation
 
-## 支持协议列表
+## List of supporting protocols
 1. MQTT
 2. OPC UA
 3. Modbus
-4. coap
+4. Coap
 
-## 运行环境
-系统采用.net 5 平台开发,实现了跨平台性，可以运行在桌面系统以及嵌入设备中（例如:树莓派等）。
-* 运行系统：可部署在window、Linux等操作系统中,也可以部署在Docker中。 
-* 开发系统：采用图形化的配置界面、CS结构,暂定采用桌面的方式实现，运行在Window系统中。
+## Runtime Environment
+The system platform is developed on. Net 5 platform, which can run on desktop system and embedded devices (such as raspberry pi)
+* runtime system：It can be deployed in windows, Linux, IOT and other operating systems, or in docker. 
+* development system：It adopts graphical configuration interface and CS structure, and is tentatively implemented in desktop mode, running in window system.
 
-## 帮助文档、接口开发文档
-1. [文档](https://github.com/cdy816/Spider/blob/master/Doc)
+## Quick get start document&development document
+1. [Document](https://github.com/cdy816/Spider/blob/master/Doc)
 
-## 版本发布
+## Rlease
 * [V0.2](https://github.com/cdy816/Spider/releases/tag/V0.2) 。
 
 
