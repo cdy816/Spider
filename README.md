@@ -49,7 +49,7 @@ The system platform is developed on. Net 5 platform, which can run on desktop sy
 1. [Document](https://github.com/cdy816/Spider/blob/master/Doc)
 
 ## Rlease
-* [V0.2](https://github.com/cdy816/Spider/releases/tag/V0.2) 。
+* [V0.2](https://github.com/cdy816/Spider/releases/tag/V0.2)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
