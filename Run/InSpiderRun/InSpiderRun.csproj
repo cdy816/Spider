@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\SpiderRuntime\SpiderRuntime.csproj" />
+    <ProjectReference Include="..\Driver\Cdy.Spider.SerisePortClient\Cdy.Spider.SerisePortClient.csproj" />
     <ProjectReference Include="..\Driver\Cdy.Spider.WebApiServer\Cdy.Spider.WebApiServer.csproj" />
   </ItemGroup>
 

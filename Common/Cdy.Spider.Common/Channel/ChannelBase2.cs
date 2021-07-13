@@ -33,7 +33,7 @@ namespace Cdy.Spider
         /// </summary>
         protected bool mIsConnected = false;
 
-        private ManualResetEvent mTakeEvent;
+        private AutoResetEvent mTakeEvent;
 
         protected bool mEnableSyncRead = false;
 
@@ -59,7 +59,7 @@ namespace Cdy.Spider
         /// </summary>
         public ChannelBase2()
         {
-            mTakeEvent = new ManualResetEvent(true);
+            mTakeEvent = new AutoResetEvent(true);
         }
         #endregion ...Constructor...
 
@@ -267,10 +267,18 @@ namespace Cdy.Spider
         {
             lock (mTakeEvent)
             {
-                var re = mTakeEvent.WaitOne(timeout);
-                if (re)
-                    mTakeEvent.Reset();
-                return re;
+                if (timeout > 0)
+                {
+                    var re = mTakeEvent.WaitOne(timeout);
+                    if (re)
+                        mTakeEvent.Reset();
+                    return re;
+                }
+                else
+                {
+                    mTakeEvent.WaitOne();
+                    return true;
+                }
             }
         }
 
@@ -289,7 +297,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public void Release()
         {
-            lock (mTakeEvent)
+            //lock (mTakeEvent)
                 mTakeEvent.Set();
         }
 

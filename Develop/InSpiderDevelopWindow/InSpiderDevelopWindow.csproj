@@ -38,10 +38,6 @@
     <None Remove="Image\spider.png" />
     <None Remove="Image\文件夹.png" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.IO.Ports" Version="5.0.1" />
-  </ItemGroup>
   
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -64,6 +60,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
+    <ProjectReference Include="..\..\Run\Driver\Cdy.Spider.SerisePortClient\Cdy.Spider.SerisePortClient.csproj" />
     <ProjectReference Include="..\InSpiderDevelop\InSpiderDevelop.csproj" />
   </ItemGroup>
 

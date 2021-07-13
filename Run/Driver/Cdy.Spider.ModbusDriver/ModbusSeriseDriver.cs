@@ -519,7 +519,7 @@ namespace Cdy.Spider
         /// </summary>
         private void ProcessRead()
         {
-            mComm.Take();
+            mComm.Take(-1);
             try
             {
                 foreach (var vv in mInputStatusPackage)
