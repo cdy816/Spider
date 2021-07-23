@@ -67,6 +67,7 @@ namespace Cdy.Spider
             {
                 this.HisValueBuffer.AppendValue(DateTime.UtcNow, value);
             }
+            ValueChangedCallBack?.Invoke(this, value);
         }
 
         /// <summary>

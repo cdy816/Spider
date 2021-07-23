@@ -219,6 +219,10 @@ namespace Cdy.Spider
         /// </summary>
         public IValueConvert Conveter { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public Action<Tagbase,object> ValueChangedCallBack { get; set; }
 
         #endregion ...Properties...
 
