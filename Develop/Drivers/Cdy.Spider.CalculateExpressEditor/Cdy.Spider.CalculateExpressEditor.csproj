@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+     <InternalsAssemblyNames>Microsoft.CodeAnalysis.CSharp;Microsoft.CodeAnalysis.Features;Microsoft.CodeAnalysis.CSharp.Features;Microsoft.CodeAnalysis.Scripting;Microsoft.CodeAnalysis.CSharp.Scripting;Microsoft.CodeAnalysis.Workspaces;Microsoft.CodeAnalysis.CSharp.Workspaces;Microsoft.CodeAnalysis.Extensions;Microsoft.CodeAnalysis.PooledObjects</InternalsAssemblyNames>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
+    <PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RoslynPad.Roslyn\RoslynPad.Roslyn.csproj" />
+  </ItemGroup>
+
+</Project>

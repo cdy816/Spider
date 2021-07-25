@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj" />
     <ProjectReference Include="..\..\..\Run\Driver\Cdy.Spider.CalculateDriver\Cdy.Spider.CalculateDriver.csproj" />
+    <ProjectReference Include="..\Cdy.Spider.CalculateExpressEditor\Cdy.Spider.CalculateExpressEditor.csproj" />
   </ItemGroup>
 
   <ItemGroup>
