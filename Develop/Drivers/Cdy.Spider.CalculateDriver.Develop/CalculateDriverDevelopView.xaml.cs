@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Cdy.Spider.CalculateDriver.Develop
 {
     /// <summary>
-    /// OpcDriverDevelopView.xaml 的交互逻辑
+    /// CalculateDriverDevelopView.xaml 的交互逻辑
     /// </summary>
-    public partial class OpcDriverDevelopView : UserControl
+    public partial class CalculateDriverDevelopView : UserControl
     {
-        public OpcDriverDevelopView()
+        public CalculateDriverDevelopView()
         {
             InitializeComponent();
         }

@@ -48,8 +48,13 @@ namespace Cdy.Spider.CalculateDriver.Develop
             {
                 if(mExpressionEditCommand==null)
                 {
-                    mExpressionEditCommand = new RelayCommand(() => { 
-                        
+                    mExpressionEditCommand = new RelayCommand(() => {
+                        ExpressionEditViewModel mm = new ExpressionEditViewModel();
+                        mm.Expresse = this.Expresstion;
+                        if(mm.ShowDialog().Value)
+                        {
+                            Expresstion = mm.Expresse;
+                        }
                     });
                 }
                 return mExpressionEditCommand;

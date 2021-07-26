@@ -66,7 +66,7 @@ namespace Cdy.Spider.CalculateDriver
             {
                 if (!string.IsNullOrEmpty(vv.DeviceInfo))
                 {
-                    var vsp = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(vv.DeviceInfo, sop,typeof(CalContext));
+                    var vsp = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(vv.DeviceInfo, sop, typeof(TagCallContext));
                     try
                     {
                         var cp = vsp.Compile();
@@ -85,7 +85,7 @@ namespace Cdy.Spider.CalculateDriver
                     {
                         LoggerService.Service.Erro("Calculate", ex.Message);
                     }
-                    mScriptMaps.Add(new CalItem() { Tag = vv, Script = vsp }.Init());
+                    mScriptMaps.Add(new CalItem() { TagRef = vv, Script = vsp }.Init());
                 }
             }
         }
@@ -133,9 +133,24 @@ namespace Cdy.Spider.CalculateDriver
     /// <summary>
     /// 
     /// </summary>
-    public class CalContext
+    public class TagCallContext
     {
         public Dictionary<string, Tagbase> TagMaps = new Dictionary<string, Tagbase>();
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        public bool IsTagQualityGood(string tag)
+        {
+            if (TagMaps.ContainsKey(tag))
+            {
+                return TagMaps[tag].Quality == Tagbase.GoodQuality;
+            }
+            return false;
+        }
 
         /// <summary>
         /// 
@@ -151,7 +166,32 @@ namespace Cdy.Spider.CalculateDriver
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool SetTagValue(string tag, object value)
+        {
+            try
+            {
+                if (TagMaps.ContainsKey(tag))
+                {
+                    TagMaps[tag].Value = value;
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
+
+
+
 
     /// <summary>
     /// 
@@ -163,7 +203,7 @@ namespace Cdy.Spider.CalculateDriver
         /// <summary>
         /// 
         /// </summary>
-        public Tagbase Tag { get; set; }
+        public Tagbase TagRef { get; set; }
 
         /// <summary>
         /// 
@@ -175,7 +215,10 @@ namespace Cdy.Spider.CalculateDriver
         /// </summary>
         public List<string> Tags { get; set; }
 
-        public CalContext Context { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public TagCallContext Tag { get; set; }
 
         /// <summary>
         /// 
@@ -183,14 +226,14 @@ namespace Cdy.Spider.CalculateDriver
         /// <returns></returns>
         public CalItem Init()
         {
-            Context = new CalContext();
+            Tag = new TagCallContext();
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
 
             List<string> ll = new List<string>();
 
-            if (string.IsNullOrEmpty(Tag.DeviceInfo))
+            if (string.IsNullOrEmpty(TagRef.DeviceInfo))
             {
-                var tags = AnalysizeTags(Tag.DeviceInfo);
+                var tags = AnalysizeTags(TagRef.DeviceInfo);
 
                 foreach (var vv in tags)
                 {
@@ -199,7 +242,7 @@ namespace Cdy.Spider.CalculateDriver
                     {
                         var vtag = manager.GetDevice(dd[0]).GetTag(dd[1]);
 
-                        Context.TagMaps.Add(vv, vtag);
+                        Tag.TagMaps.Add(vv, vtag);
 
                         vtag.ValueChangedCallBack=((sender, val) => {
                             IsNeedCal = true;
@@ -256,20 +299,20 @@ namespace Cdy.Spider.CalculateDriver
             {
                 try
                 {
-                    Tag.Value = Script.RunAsync(Context).Result.ReturnValue;
+                    TagRef.Value = Script.RunAsync(this).Result.ReturnValue;
                     byte bqa = 0;
-                    foreach (var vv in Context.TagMaps)
+                    foreach (var vv in Tag.TagMaps)
                     {
                         if(vv.Value.Quality>1)
                         {
                             bqa = Tagbase.BadCommQuality;
                         }
                     }
-                    Tag.Quality = bqa;
+                    TagRef.Quality = bqa;
                 }
                 catch (Exception ex)
                 {
-                    LoggerService.Service.Erro("CalculateDriver", Tag.Name + " : " + ex.Message);
+                    LoggerService.Service.Erro("CalculateDriver", TagRef.Name + " : " + ex.Message);
                 }
             }
         }

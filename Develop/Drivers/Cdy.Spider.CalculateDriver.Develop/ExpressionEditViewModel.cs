@@ -1,4 +1,5 @@
-﻿using Cdy.Spider.DevelopCommon;
+﻿using Cdy.Spider.CalculateExpressEditor;
+using Cdy.Spider.DevelopCommon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Cdy.Spider.CalculateDriver.Develop
         
         private string mExpresse = "";
 
+        private RoslynCodeEditor mExpressEditor;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -28,6 +31,28 @@ namespace Cdy.Spider.CalculateDriver.Develop
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public RoslynCodeEditor ExpressEditor
+        {
+            get
+            {
+                return mExpressEditor;
+            }
+            set
+            {
+                if (mExpressEditor != value)
+                {
+                    mExpressEditor = value;
+                    //mExpressEditor.Text = mExpresse;
+                    OnPropertyChanged("ExpressEditor");
+                }
+            }
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -42,6 +67,8 @@ namespace Cdy.Spider.CalculateDriver.Develop
                 if (mExpresse != value)
                 {
                     mExpresse = value;
+                    //if(mExpressEditor!=null)
+                    //mExpressEditor.Text = value;
                     OnPropertyChanged("Expresse");
                 }
             }
@@ -50,6 +77,15 @@ namespace Cdy.Spider.CalculateDriver.Develop
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetExpressResult()
+        {
+            return mExpressEditor.Text;
+        }
 
         #endregion ...Methods...
 
