@@ -913,6 +913,19 @@ namespace InSpiderDevelopWindow.ViewModel
             {
                 TagViewModel.mRegistorList = null;
             }
+
+            ResetTagEditMode();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ResetTagEditMode()
+        {
+            foreach(var vv in mTags)
+            {
+                vv.ResetEditModel();
+            }
         }
 
         /// <summary>
@@ -2170,6 +2183,15 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ResetEditModel()
+        {
+            mRegistorConfigModel = null;
+        }
 
         /// <summary>
         /// 
