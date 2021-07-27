@@ -742,6 +742,7 @@ namespace Cdy.Spider
             {
                 ctx.Add("Tags", mCachTags.Keys.ToList());
                 ctx.Add("DeviceName", this.Device.Name);
+                if(mComm!=null)
                 mComm.Prepare(ctx);
             }
         }

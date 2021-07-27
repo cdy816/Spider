@@ -27,7 +27,15 @@ namespace Cdy.Spider.CalculateDriver.Develop
         #endregion ...Events...
 
         #region ... Constructor...
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public ExpressionEditViewModel()
+        {
+            Title = Res.Get("Expresse");
+            DefaultWidth = 800;
+            DefaultHeight = 600;
+        }
         #endregion ...Constructor...
 
         #region ... Properties ...
@@ -77,6 +85,8 @@ namespace Cdy.Spider.CalculateDriver.Develop
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+
 
         /// <summary>
         /// 

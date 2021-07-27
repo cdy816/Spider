@@ -170,6 +170,17 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public Visibility IsChannelVisiable
+        {
+            get
+            {
+                return mSupportChannels.Count > 0 ? Visibility.Visible : Visibility.Hidden;
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -971,7 +982,7 @@ namespace InSpiderDevelopWindow.ViewModel
             //}
 
             ChannelView.Refresh();
-
+            OnPropertyChanged("IsChannelVisiable");
         }
 
         /// <summary>

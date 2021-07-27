@@ -8,6 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <editor:RoslynCodeEditor x:Name="rc"     />
+        <editor:RoslynCodeEditor x:Name="rc" Background="#7F000000" Foreground="White"   Margin="1"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
     </Grid>
 </UserControl>

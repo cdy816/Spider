@@ -300,12 +300,16 @@ namespace Cdy.Spider
             xx.SetAttributeValue("Id", tag.Id);
             xx.SetAttributeValue("Name", tag.Name);
             xx.SetAttributeValue("DatabaseName", tag.DatabaseName);
-            xx.SetAttributeValue("DeviceInfo", tag.DeviceInfo);
+            //xx.SetAttributeValue("DeviceInfo", tag.DeviceInfo);
             xx.SetAttributeValue("DataTranseDirection", (int)tag.DataTranseDirection);
             if (tag.Conveter != null)
             {
                 xx.SetAttributeValue("Conveter", tag.Conveter.Name + ":" + tag.Conveter.SaveToString());
             }
+
+            xx.Add(new XCData(tag.DeviceInfo));
+
+
             return xx;
         }
 
@@ -345,6 +349,11 @@ namespace Cdy.Spider
                     {
                         tag.Conveter = vtmp.LoadFromString(vres.Replace(sval[0] + ":", ""));
                     }
+                }
+
+                if(!string.IsNullOrEmpty(xe.Value))
+                {
+                    tag.DeviceInfo = xe.Value;
                 }
             }
             return tag;

@@ -79,7 +79,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// <returns></returns>
         public override IRegistorConfigModel RegistorConfig()
         {
-            return null;
+            return new ScriptExpressConfigModel();
             //throw new NotImplementedException();
         }
 

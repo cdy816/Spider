@@ -52,7 +52,10 @@ namespace Cdy.Spider.CalculateDriver.Develop
         private void Init()
         {
             List<Assembly> ass = new List<Assembly>();
-            ass.Add(typeof(Cdy.Spider.CalculateDriver.CalculateDriver).Assembly);
+            //ass.Add(typeof(Cdy.Spider.CalculateDriver.CalculateDriver).Assembly);
+            ass.Add(typeof(Cdy.Spider.CalculateExpressEditor.AvalonEditExtensions).Assembly);
+            ass.Add(typeof(Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel).Assembly);
+
             if (CalculateExtend.extend.ExtendDlls.Count > 0)
             {
                 ass.AddRange(CalculateExtend.extend.ExtendDlls.Select(e => Assembly.LoadFile(e)));
@@ -63,8 +66,15 @@ namespace Cdy.Spider.CalculateDriver.Develop
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(System.Text.RegularExpressions.Regex).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),
-            }).With(ass.Select(e=> MetadataReference.CreateFromFile(e.Location))));
-            rc.Initialize(mHost, new ClassificationHighlightColors(), Directory.GetCurrentDirectory(), (this.DataContext as ExpressionEditViewModel).Expresse);
+                MetadataReference.CreateFromFile(typeof(Tag).Assembly.Location)
+            }).With(ass.Select(e=> MetadataReference.CreateFromFile(e.Location))),new string[] { "Cdy.Spider" });
+
+            var colors = new ClassificationHighlightColors();
+            colors.DefaultBrush.Foreground = new  ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.White);
+            colors.KeywordBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.LightBlue);
+            colors.StringBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.OrangeRed);
+
+            rc.Initialize(mHost, colors, Directory.GetCurrentDirectory(), (this.DataContext as ExpressionEditViewModel).Expresse);
         }
 
     }

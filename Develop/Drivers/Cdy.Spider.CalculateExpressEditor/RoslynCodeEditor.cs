@@ -31,6 +31,7 @@ namespace Cdy.Spider.CalculateExpressEditor
             TextArea.TextView.BackgroundRenderers.Add(_textMarkerService);
             TextArea.TextView.LineTransformers.Add(_textMarkerService);
             TextArea.Caret.PositionChanged += CaretOnPositionChanged;
+            TextArea.Background = Brushes.Transparent;
         }
 
         public bool IsBraceCompletionEnabled
@@ -219,34 +220,34 @@ namespace Cdy.Spider.CalculateExpressEditor
 
         private void ProcessDiagnosticsOnUiThread(DiagnosticsUpdatedArgs args)
         {
-            _textMarkerService.RemoveAll(marker => Equals(args.Id, marker.Tag));
+            //_textMarkerService.RemoveAll(marker => Equals(args.Id, marker.Tag));
 
-            if (args.Kind != DiagnosticsUpdatedKind.DiagnosticsCreated)
-            {
-                return;
-            }
+            //if (args.Kind != DiagnosticsUpdatedKind.DiagnosticsCreated)
+            //{
+            //    return;
+            //}
 
-            foreach (var diagnosticData in args.Diagnostics)
-            {
-                if (diagnosticData.Severity == DiagnosticSeverity.Hidden || diagnosticData.IsSuppressed)
-                {
-                    continue;
-                }
+            //foreach (var diagnosticData in args.Diagnostics)
+            //{
+            //    if (diagnosticData.Severity == DiagnosticSeverity.Hidden || diagnosticData.IsSuppressed)
+            //    {
+            //        continue;
+            //    }
 
-                var span = diagnosticData.GetTextSpan();
-                if (span == null)
-                {
-                    continue;
-                }
+            //    var span = diagnosticData.GetTextSpan();
+            //    if (span == null)
+            //    {
+            //        continue;
+            //    }
 
-                var marker = _textMarkerService.TryCreate(span.Value.Start, span.Value.Length);
-                if (marker != null)
-                {
-                    marker.Tag = args.Id;
-                    marker.MarkerColor = GetDiagnosticsColor(diagnosticData);
-                    marker.ToolTip = diagnosticData.Message;
-                }
-            }
+            //    var marker = _textMarkerService.TryCreate(span.Value.Start, span.Value.Length);
+            //    if (marker != null)
+            //    {
+            //        marker.Tag = args.Id;
+            //        marker.MarkerColor = GetDiagnosticsColor(diagnosticData);
+            //        marker.ToolTip = diagnosticData.Message;
+            //    }
+            //}
         }
 
         private static Color GetDiagnosticsColor(DiagnosticData diagnosticData)

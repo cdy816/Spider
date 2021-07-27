@@ -1,0 +1,387 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cdy.Spider.CalculateDriver.Develop</name>
+    </assembly>
+    <members>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel.RegistorBrowsingCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel.Registor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel.UpdateRegistorCallBack">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel.Service">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel.Config">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel.FreshRegistor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="registor"></param>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel.OnDisActived">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.Data">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.TypeName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.ListSupportChannels">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.NewDriver">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.CreatNewData">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.Config">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.RegistorConfig">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelopView">
+            <summary>
+            CalculateDriverDevelopView.xaml 的交互逻辑
+            </summary>
+            <summary>
+            CalculateDriverDevelopView
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelopView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelopViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelopViewModel.Model">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelopViewModel.ScanCircleVisibility">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelopViewModel.ScanCircle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.Target">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.Property">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.Key">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.ProvideValue(System.IServiceProvider)">
+            <summary>
+            
+            </summary>
+            <param name="serviceProvider"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.GetValue">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.mTarget_Unloaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.Update">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.UpdateResource">
+            <summary>
+            更新资源
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ResMarkerExtension.ClearCach">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.ExpressionEditView">
+            <summary>
+            ExpressionEditView.xaml 的交互逻辑
+            </summary>
+            <summary>
+            ExpressionEditView
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditView.ExpressionEditView_Loaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditView.Init">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.ExpressEditor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.Expresse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.GetExpressResult">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.Properties.Resources">
+            <summary>
+              一个强类型的资源类，用于查找本地化的字符串等。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.ResourceManager">
+            <summary>
+              返回此类使用的缓存的 ResourceManager 实例。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Culture">
+            <summary>
+              重写当前线程的 CurrentUICulture 属性，对
+              使用此强类型资源类的所有资源查找执行重写。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Expresse">
+            <summary>
+              查找类似 Expresse 的本地化字符串。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.ScanCircle">
+            <summary>
+              查找类似 ScanCircle 的本地化字符串。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.UpdateRegistorCallBack">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.Service">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.Expresstion">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.ExpressionEditCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.ClearCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.Config">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.UpdateRegistor">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.Tag.GetTagValue(System.String)">
+            <summary>
+            获取变量的值
+            </summary>
+            <param name="tag"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.SetTagValue(System.String,System.Object)">
+            <summary>
+            设置变量的值
+            </summary>
+            <param name="tag"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.IsTagQualityGood(System.String)">
+            <summary>
+            变量的质量戳是否为有效值
+            </summary>
+            <param name="tag"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.TagValueSum(System.String[])">
+            <summary>
+            对变量的值求和
+            </summary>
+            <param name="tags">变量名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.TagValueAvg(System.String[])">
+            <summary>
+            对变量的值求平均值
+            </summary>
+            <param name="tags">变量名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.TagValueMax(System.String[])">
+            <summary>
+            对变量的值取最大
+            </summary>
+            <param name="tags">变量名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.TagValueMin(System.String[])">
+            <summary>
+            对变量的值取最小
+            </summary>
+            <param name="tags">变量名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.Avg(System.Object[])">
+            <summary>
+            对数值进行请平均值
+            </summary>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.Max(System.Object[])">
+            <summary>
+            对数值进行取最大值
+            </summary>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.Min(System.Object[])">
+            <summary>
+            对数值进行取最小值
+            </summary>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.Tag.Bit(System.Object,System.Byte)">
+            <summary>
+            对值进行取位
+            </summary>
+            <param name="value">值</param>
+            <param name="index">要取位的序号，从0开始</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

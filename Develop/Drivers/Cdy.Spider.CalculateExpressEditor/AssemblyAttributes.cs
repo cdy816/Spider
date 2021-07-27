@@ -5,3 +5,5 @@ using System.Windows;
     themeDictionaryLocation: ResourceDictionaryLocation.None,
     genericDictionaryLocation: ResourceDictionaryLocation.SourceAssembly
 )]
+
+[assembly: InternalsVisibleTo("Cdy.Spider.CalculateDriver.Develop")]

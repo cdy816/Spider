@@ -38,6 +38,11 @@ namespace Cdy.Spider
         /// </summary>
         SortedDictionary<int, Tagbase> mIdMapTags = new SortedDictionary<int, Tagbase>();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        Dictionary<string, Tagbase> mNameMapTags = new Dictionary<string, Tagbase>();
+
 
 
         /// <summary>
@@ -118,6 +123,11 @@ namespace Cdy.Spider
                 {
                     List<Tagbase> ll = new List<Tagbase>() { vv.Value };
                     mDeviceMapTags.Add(dvname, ll);
+                }
+
+                if(!mNameMapTags.ContainsKey(vv.Value.Name))
+                {
+                    mNameMapTags.Add(vv.Value.Name, vv.Value);
                 }
             }
 
@@ -765,7 +775,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public Tagbase GetTag(string name)
         {
-            return mDatabaseMapTags.ContainsKey(name) ? mDatabaseMapTags[name] : null;
+            return mNameMapTags.ContainsKey(name) ? mNameMapTags[name] : null;
         }
 
         /// <summary>

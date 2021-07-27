@@ -59,5 +59,23 @@ namespace Cdy.Spider.CalculateDriver.Develop.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Expresse 的本地化字符串。
+        /// </summary>
+        internal static string Expresse {
+            get {
+                return ResourceManager.GetString("Expresse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ScanCircle 的本地化字符串。
+        /// </summary>
+        internal static string ScanCircle {
+            get {
+                return ResourceManager.GetString("ScanCircle", resourceCulture);
+            }
+        }
     }
 }

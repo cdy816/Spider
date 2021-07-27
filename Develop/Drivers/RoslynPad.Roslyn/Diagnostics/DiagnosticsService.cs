@@ -34,11 +34,14 @@ namespace RoslynPad.Roslyn.Diagnostics
                 cancellationToken).Select(x => new DiagnosticData(x));
         }
 
-        public IEnumerable<UpdatedEventArgs> GetDiagnosticsUpdatedEventArgs(Workspace workspace, ProjectId projectId, DocumentId documentId,
-            CancellationToken cancellationToken)
-        {
-            return _inner.GetDiagnosticsUpdatedEventArgs(workspace, projectId, documentId, cancellationToken)
-                .Select(x => new UpdatedEventArgs(x));
-        }
+        //public IEnumerable<UpdatedEventArgs> GetDiagnosticsUpdatedEventArgs(Workspace workspace, ProjectId projectId, DocumentId documentId,
+        //    CancellationToken cancellationToken)
+        //{
+
+           
+
+        //    return _inner.GetDiagnosticsUpdatedEventArgs(workspace, projectId, documentId, cancellationToken)
+        //        .Select(x => new UpdatedEventArgs(x));
+        //}
     }
 }

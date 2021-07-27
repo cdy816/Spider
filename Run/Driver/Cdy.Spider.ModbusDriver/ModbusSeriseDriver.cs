@@ -218,15 +218,22 @@ namespace Cdy.Spider
                 mHoldtRegistorPackage.Add((ushort)hrstart, (ushort)hrlen);
             }
 
-            mComm.EnableSyncRead(true);
-            
-            if (mData.Type == ModbusSeriseType.Ascii)
+            if (mComm != null)
             {
-                mMaster = Modbus.Device.ModbusSerialMaster.CreateAscii(mComm);
+                mComm.EnableSyncRead(true);
+
+                if (mData.Type == ModbusSeriseType.Ascii)
+                {
+                    mMaster = Modbus.Device.ModbusSerialMaster.CreateAscii(mComm);
+                }
+                else
+                {
+                    mMaster = Modbus.Device.ModbusSerialMaster.CreateRtu(mComm);
+                }
             }
             else
             {
-                mMaster = Modbus.Device.ModbusSerialMaster.CreateRtu(mComm);
+                LoggerService.Service.Warn("ModbusSerisedriver", "open port fault.");
             }
             //mMaster.Transport.DataSendTimeout = mData.ScanCircle;
             
@@ -507,7 +514,7 @@ namespace Cdy.Spider
         /// </summary>
         protected override void ProcessTimerElapsed()
         {
-            if (mComm.IsConnected)
+            if (mComm!=null && mComm.IsConnected)
             {
                 ProcessRead();
             }

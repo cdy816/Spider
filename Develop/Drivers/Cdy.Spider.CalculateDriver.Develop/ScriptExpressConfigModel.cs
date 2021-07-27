@@ -11,13 +11,16 @@ namespace Cdy.Spider.CalculateDriver.Develop
     public class ScriptExpressConfigModel : ViewModelBase, IRegistorConfigModel
     {
         private ICommand mExpressionEditCommand;
+        private ICommand mClearCommand;
         private string mExpresstion = "";
         /// <summary>
         /// 
         /// </summary>
         public Action<string> UpdateRegistorCallBack { get; set; }
         
-        
+        /// <summary>
+        /// 
+        /// </summary>
         public IDeviceDevelopService Service { get; set; }
 
         /// <summary>
@@ -53,7 +56,8 @@ namespace Cdy.Spider.CalculateDriver.Develop
                         mm.Expresse = this.Expresstion;
                         if(mm.ShowDialog().Value)
                         {
-                            Expresstion = mm.Expresse;
+                            Expresstion = mm.GetExpressResult();
+                            UpdateRegistor();
                         }
                     });
                 }
@@ -61,9 +65,32 @@ namespace Cdy.Spider.CalculateDriver.Develop
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ClearCommand
+        {
+            get
+            {
+                if(mClearCommand==null)
+                {
+                    mClearCommand = new RelayCommand(() => {
+                        Expresstion = "";
+                        UpdateRegistor();
+                    });
+                }
+                return mClearCommand;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<string> Config()
         {
-            throw new NotImplementedException();
+            return new List<string>();
         }
 
         public void FreshRegistor(string registor)

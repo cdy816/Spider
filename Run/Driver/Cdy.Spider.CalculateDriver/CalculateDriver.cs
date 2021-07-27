@@ -66,7 +66,7 @@ namespace Cdy.Spider.CalculateDriver
             {
                 if (!string.IsNullOrEmpty(vv.DeviceInfo))
                 {
-                    var vsp = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(vv.DeviceInfo, sop, typeof(TagCallContext));
+                    var vsp = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(vv.DeviceInfo, sop, typeof(CalItem));
                     try
                     {
                         var cp = vsp.Compile();
@@ -85,9 +85,21 @@ namespace Cdy.Spider.CalculateDriver
                     {
                         LoggerService.Service.Erro("Calculate", ex.Message);
                     }
-                    mScriptMaps.Add(new CalItem() { TagRef = vv, Script = vsp }.Init());
+                    mScriptMaps.Add(new CalItem() { TagRef = vv, Script = vsp });
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Prepare()
+        {
+            foreach(var vv in mScriptMaps)
+            {
+                vv.Init();
+            }
+            base.Prepare();
         }
 
         /// <summary>
@@ -135,6 +147,9 @@ namespace Cdy.Spider.CalculateDriver
     /// </summary>
     public class TagCallContext
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public Dictionary<string, Tagbase> TagMaps = new Dictionary<string, Tagbase>();
 
 
@@ -161,7 +176,7 @@ namespace Cdy.Spider.CalculateDriver
         {
             if(TagMaps.ContainsKey(tag))
             {
-                return TagMaps[tag];
+                return TagMaps[tag].Value;
             }
             return null;
         }
@@ -188,6 +203,179 @@ namespace Cdy.Spider.CalculateDriver
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public  double TagValueSum(params string[] tags)
+        {
+            try
+            {
+                double[] dtmps = new double[tags.Length];
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    dtmps[i] = Convert.ToDouble(GetTagValue(tags[i]));
+                }
+                return dtmps.Sum();
+            }
+            catch (Exception ex)
+            {
+                LoggerService.Service.Erro("Calculate", ex.StackTrace);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 对变量的值求平局
+        /// </summary>
+        /// <param name="tags">变量名</param>
+        /// <returns></returns>
+        public double TagValueAvg(params string[] tags)
+        {
+            try
+            {
+                double[] dtmps = new double[tags.Length];
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    dtmps[i] = Convert.ToDouble(GetTagValue(tags[i]));
+                }
+                return dtmps.Average();
+            }
+            catch(Exception ex)
+            {
+                LoggerService.Service.Erro("Calculate", ex.StackTrace);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 对变量的值取最大
+        /// </summary>
+        /// <param name="tags">变量名</param>
+        /// <returns></returns>
+        public double TagValueMax(params string[] tags)
+        {
+            try
+            {
+                double[] dtmps = new double[tags.Length];
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    dtmps[i] = Convert.ToDouble(GetTagValue(tags[i]));
+                }
+                return dtmps.Max();
+            }
+            catch (Exception ex)
+            {
+                LoggerService.Service.Erro("Calculate", ex.StackTrace);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 对变量的值取最小
+        /// </summary>
+        /// <param name="tags">变量名</param>
+        /// <returns></returns>
+        public double TagValueMin(params string[] tags)
+        {
+            try
+            {
+                double[] dtmps = new double[tags.Length];
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    dtmps[i] = Convert.ToDouble(GetTagValue(tags[i]));
+                }
+                return dtmps.Min();
+            }
+            catch (Exception ex)
+            {
+                LoggerService.Service.Erro("Calculate", ex.StackTrace);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 对数值进行请平均值
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public double Avg(params object[] values)
+        {
+            try
+            {
+                double[] dtmps = new double[values.Length];
+                for (int i = 0; i < values.Length; i++)
+                {
+                    dtmps[i] = Convert.ToDouble(values[i]);
+                }
+                return dtmps.Average();
+            }
+            catch (Exception ex)
+            {
+                LoggerService.Service.Erro("Calculate", ex.StackTrace);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 对数值进行取最大值
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public double Max(params object[] values)
+        {
+            try
+            {
+                double[] dtmps = new double[values.Length];
+                for (int i = 0; i < values.Length; i++)
+                {
+                    dtmps[i] = Convert.ToDouble(values[i]);
+                }
+                return dtmps.Max();
+            }
+            catch(Exception ex)
+            {
+                LoggerService.Service.Erro("Calculate", ex.StackTrace);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 对数值进行取最小值
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public double Min(params object[] values)
+        {
+            try
+            {
+                double[] dtmps = new double[values.Length];
+                for (int i = 0; i < values.Length; i++)
+                {
+                    dtmps[i] = Convert.ToDouble(values[i]);
+                }
+                return dtmps.Min();
+            }
+            catch(Exception ex)
+            {
+                LoggerService.Service.Erro("Calculate", ex.StackTrace);
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 对值进行取位
+        /// </summary>
+        /// <param name="value">值</param>
+        /// <param name="index">要取位的序号，从0开始</param>
+        /// <returns></returns>
+        public  byte Bit(object value, byte index)
+        {
+            var val = Convert.ToInt64(value);
+            return (byte)(val >> index & 0x01);
+        }
+
     }
 
 
@@ -208,7 +396,7 @@ namespace Cdy.Spider.CalculateDriver
         /// <summary>
         /// 
         /// </summary>
-        public bool IsNeedCal { get; set; }
+        public bool IsNeedCal { get; set; } = true;
 
         /// <summary>
         /// 
@@ -231,7 +419,7 @@ namespace Cdy.Spider.CalculateDriver
 
             List<string> ll = new List<string>();
 
-            if (string.IsNullOrEmpty(TagRef.DeviceInfo))
+            if (!string.IsNullOrEmpty(TagRef.DeviceInfo))
             {
                 var tags = AnalysizeTags(TagRef.DeviceInfo);
 
@@ -240,13 +428,22 @@ namespace Cdy.Spider.CalculateDriver
                     var dd = GetDeviceAndTagsName(vv);
                     if(!ll.Contains(dd[0]))
                     {
-                        var vtag = manager.GetDevice(dd[0]).GetTag(dd[1]);
+                        if (!string.IsNullOrEmpty(dd[0]))
+                        {
+                            var dev = manager.GetDevice(dd[0]);
+                            if (dev != null)
+                            {
+                                var vtag = dev.GetTag(dd[1]);
 
-                        Tag.TagMaps.Add(vv, vtag);
+                                Tag.TagMaps.Add(vv, vtag);
 
-                        vtag.ValueChangedCallBack=((sender, val) => {
-                            IsNeedCal = true;
-                        });
+                                vtag.ValueChangedCallBack = ((sender, val) =>
+                                {
+                                    lock (Tag)
+                                        IsNeedCal = true;
+                                });
+                            }
+                        }
                     }
                 }
             }
@@ -260,8 +457,8 @@ namespace Cdy.Spider.CalculateDriver
         /// <returns></returns>
         private string[] GetDeviceAndTagsName(string tag)
         {
-            string stag = tag.Substring(tag.LastIndexOf("."));
-            string sdevice = tag.Replace("." + stag, "").Replace("Tag.","");
+            string stag = tag.Substring(tag.LastIndexOf(".")+1);
+            string sdevice = tag.Replace("Tag.", "").Replace("." + stag, "");
             return new string[2] { sdevice, stag };
         }
 
@@ -297,6 +494,8 @@ namespace Cdy.Spider.CalculateDriver
         {
             if (IsNeedCal)
             {
+                lock (Tag)
+                    IsNeedCal = false;
                 try
                 {
                     TagRef.Value = Script.RunAsync(this).Result.ReturnValue;

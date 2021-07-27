@@ -51,7 +51,7 @@ namespace RoslynPad.Roslyn.Completion.Providers
 
                 await ProvideCompletionsAsync(context, pathThroughLastSlash).ConfigureAwait(false);
             }
-            catch (Exception e) when (FatalError.ReportWithoutCrashUnlessCanceled(e))
+            catch (Exception e)
             {
                 // nop
             }
@@ -135,28 +135,30 @@ namespace RoslynPad.Roslyn.Completion.Providers
             ImmutableArray<string> extensions,
             CompletionItemRules completionRules)
         {
-            var serviceOpt = document.Project.Solution.Workspace.Services.GetService<IScriptEnvironmentService>();
-            var searchPaths = serviceOpt?.MetadataReferenceSearchPaths ?? ImmutableArray<string>.Empty;
-
+            //var serviceOpt = document.Project.Solution.Workspace.Services.GetService<IScriptEnvironmentService>();
+            //var searchPaths = serviceOpt?.MetadataReferenceSearchPaths ?? ImmutableArray<string>.Empty;
+            var searchPaths = new ImmutableArray<string>();
+            searchPaths.Add(Environment.CurrentDirectory);
+           
             return new FileSystemCompletionHelper(
                 Microsoft.CodeAnalysis.Glyph.OpenFolder,
                 itemGlyph,
                 searchPaths,
-                GetBaseDirectory(document, serviceOpt),
+                Environment.CurrentDirectory,
                 extensions,
                 completionRules);
         }
 
-        private static string GetBaseDirectory(Document document, IScriptEnvironmentService? environmentOpt)
-        {
-            var result = PathUtilities.GetDirectoryName(document.FilePath);
-            if (!PathUtilities.IsAbsolute(result))
-            {
-                result = environmentOpt?.BaseDirectory!;
-                Debug.Assert(result == null || PathUtilities.IsAbsolute(result));
-            }
+        //private static string GetBaseDirectory(Document document, IScriptEnvironmentService? environmentOpt)
+        //{
+        //    var result = PathUtilities.GetDirectoryName(document.FilePath);
+        //    if (!PathUtilities.IsAbsolute(result))
+        //    {
+        //        result = environmentOpt?.BaseDirectory!;
+        //        Debug.Assert(result == null || PathUtilities.IsAbsolute(result));
+        //    }
 
-            return result!;
-        }
+        //    return result!;
+        //}
     }
 }

@@ -9,8 +9,8 @@
         <Setter Property="IsOK" Value="{Binding IsOK}" />
         <Setter Property="IsCancel" Value="{Binding IsCancel}" />
         <Setter Property="Title" Value="{Binding Title}" />
-        <Setter Property="IconString" Value="{Binding Icon}" />
-        <Setter Property="Icon" Value="/Image/spider.png" />
+        <!--<Setter Property="IconString" Value="{Binding Icon}" />
+        <Setter Property="Icon" Value="/Image/spider.png" />-->
         <Setter Property="IsClosed" Value="{Binding IsClosed}" />
         <Setter Property="SizeToContent" Value="WidthAndHeight" />
         <Setter Property="IsEnableMax" Value="{Binding IsEnableMax}" />
@@ -33,7 +33,7 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid Background="#9F000000" x:Name="head" >
-                                        <Image Margin="5,0"  Source="{Binding Icon,RelativeSource={RelativeSource AncestorType=Window}}" Height="16" HorizontalAlignment="Left" Width="24" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
+                                        <Image Margin="5,0" Source="/Image/spider.png"   Height="16" HorizontalAlignment="Left" Width="24" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"  />
                                         <Label Margin="30,0,115,0" VerticalContentAlignment="Center" Content="{Binding Title,RelativeSource={RelativeSource AncestorType=Window}}" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Window}}"/>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                             <Button Style="{DynamicResource ButtonStyle1}" x:Name="minB" BorderThickness="0" Background="Transparent"   Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"   VerticalAlignment="Stretch" Width="32"  >

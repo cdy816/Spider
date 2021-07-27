@@ -58,7 +58,7 @@ namespace RoslynPad.Roslyn
 
         public RoslynHost(IEnumerable<Assembly>? additionalAssemblies = null,
             RoslynHostReferences? references = null,
-            ImmutableArray<string>? disabledDiagnostics = null)
+            string[] Imports = null)
         {
             if (references == null) references = RoslynHostReferences.Empty;
 
@@ -89,10 +89,17 @@ namespace RoslynPad.Roslyn
             _documentationProviderService = GetService<IDocumentationProviderService>();
 
             DefaultReferences = references.GetReferences(DocumentationProviderFactory);
-            DefaultImports = references.Imports;
 
-            DisabledDiagnostics = disabledDiagnostics ?? ImmutableArray<string>.Empty;
-            GetService<IDiagnosticService>().DiagnosticsUpdated += OnDiagnosticsUpdated;
+            List<string> ltmp = new List<string>();
+            ltmp.AddRange(references.Imports);
+            if(Imports!=null && Imports.Length>0)
+            ltmp.AddRange(Imports);
+
+            DefaultImports = ltmp.ToImmutableArray();
+
+
+            // DisabledDiagnostics = disabledDiagnostics ?? ImmutableArray<string>.Empty;
+            //GetService<IDiagnosticService>().DiagnosticsUpdated += OnDiagnosticsUpdated;
         }
 
         public Func<string, DocumentationProvider> DocumentationProviderFactory => _documentationProviderService.GetDocumentationProvider;
@@ -123,10 +130,13 @@ namespace RoslynPad.Roslyn
             {
                 if (diagnosticsUpdatedArgs.Kind == DiagnosticsUpdatedKind.DiagnosticsCreated)
                 {
-                    var remove = diagnosticsUpdatedArgs.Diagnostics.RemoveAll(d => DisabledDiagnostics.Contains(d.Id));
-                    if (remove.Length != diagnosticsUpdatedArgs.Diagnostics.Length)
+                    if (diagnosticsUpdatedArgs.Diagnostics != null && diagnosticsUpdatedArgs.Diagnostics.Length > 0)
                     {
-                        diagnosticsUpdatedArgs = diagnosticsUpdatedArgs.WithDiagnostics(remove);
+                        var remove = diagnosticsUpdatedArgs.Diagnostics.RemoveAll(d => DisabledDiagnostics.Contains(d.Id));
+                        if (remove.Length != diagnosticsUpdatedArgs.Diagnostics.Length)
+                        {
+                            diagnosticsUpdatedArgs = diagnosticsUpdatedArgs.WithDiagnostics(remove);
+                        }
                     }
                 }
 
