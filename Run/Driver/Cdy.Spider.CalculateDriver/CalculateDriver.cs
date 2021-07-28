@@ -57,10 +57,9 @@ namespace Cdy.Spider.CalculateDriver
             ScriptOptions sop = ScriptOptions.Default;
             if (CalculateExtend.extend.ExtendDlls.Count > 0)
             {
-                sop.AddReferences(CalculateExtend.extend.ExtendDlls.Select(e => Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(e)));
+              sop =  sop.AddReferences(CalculateExtend.extend.ExtendDlls.Select(e => Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(e)));
             }
-            sop.WithReferences(this.GetType().Assembly).WithImports(" Cdy.Spider.CalculateDriver");
-
+            sop = sop.AddReferences(typeof(System.Collections.Generic.ReferenceEqualityComparer).Assembly).AddReferences(this.GetType().Assembly).WithImports("Cdy.Spider.CalculateDriver","System", "System.Collections.Generic");
 
             foreach (var vv in Device.ListTags())
             {

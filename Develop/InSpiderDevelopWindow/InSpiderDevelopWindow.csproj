@@ -90,6 +90,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Config\Calculate.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Config\LinkDevelop.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

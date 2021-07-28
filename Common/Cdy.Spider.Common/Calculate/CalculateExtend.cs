@@ -54,12 +54,17 @@ namespace Cdy.Spider
         /// </summary>
         private void Init()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Calculate.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "Calculate.cfg");
             if(System.IO.File.Exists(sfile))
             {
                 var dlls = System.IO.File.ReadAllLines(sfile);
                 foreach(var vv in dlls)
                 {
+                    if(string.IsNullOrEmpty(vv)||vv.StartsWith("//"))
+                    {
+                        continue;
+                    }
+
                     if(System.IO.Path.IsPathRooted(vv))
                     {
                         mExtendDlls.Add(vv);
