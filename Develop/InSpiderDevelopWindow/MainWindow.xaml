@@ -102,7 +102,7 @@
             <Label Margin="30,0,115,0" VerticalContentAlignment="Center" Content="{Binding Title,RelativeSource={RelativeSource AncestorType=Window}}" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Window}}"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="minB" BorderThickness="0" Click="minB_Click"  Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
+                <Button x:Name="minB" BorderThickness="0" Click="minB_Click"  HorizontalAlignment="Left"  Margin="1,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -112,7 +112,7 @@
                     </Button.ContentTemplate>
                 </Button>
 
-                <Button x:Name="maxB"  BorderThickness="0" Click="maxB_Click"  Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="0,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
+                <Button x:Name="maxB"  BorderThickness="0" Click="maxB_Click"  HorizontalAlignment="Left"  Margin="0,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -148,7 +148,7 @@
                         </Button.ContentTemplate>
                     </Button>
 
-                        <Button  BorderThickness="0"  Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="10,0,0,0"  VerticalAlignment="Stretch"  Width="90" >
+                        <Button  BorderThickness="0"  Command="{Binding CancelCommand}" HorizontalAlignment="Left"  Margin="10,0,0,0"  VerticalAlignment="Stretch"  Width="90" >
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -208,7 +208,7 @@
                         <HierarchicalDataTemplate  DataType="{x:Type local:MachineViewModel}"  ItemsSource="{Binding Children}">
                             <StackPanel Background="Transparent" Orientation="Horizontal" ContextMenu="{StaticResource deviceMenu}" Height="24">
                                 <Image  IsHitTestVisible="False" Focusable="False" Source="/Image/computer.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                <Grid   Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
+                                <Grid    VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
                                     <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
                                     <TextBox Background="#FF000000" Foreground="{DynamicResource Window.Forground}" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" IsVisibleChanged="TextBox_IsVisibleChanged" Loaded="TextBox_Loaded" Text="{Binding Name,Mode=TwoWay,NotifyOnTargetUpdated=True,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Center" Visibility="{Binding IsEdit,Converter={StaticResource btv}}"  />
                                 </Grid>
@@ -218,7 +218,7 @@
                         <HierarchicalDataTemplate  DataType="{x:Type local:DeviceGroupViewModel}"  ItemsSource="{Binding View}">
                             <StackPanel Background="Transparent" Orientation="Horizontal" Height="24" ContextMenu="{StaticResource groupMenu}">
                                 <Image IsHitTestVisible="False" Focusable="False" Source="/Image/文件夹.png"  Margin="0,0,4,0" Height="18" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                <Grid   Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
+                                <Grid  VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
                                     <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
                                     <TextBox Background="#FF000000" Foreground="{DynamicResource Window.Forground}" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" IsVisibleChanged="TextBox_IsVisibleChanged" Loaded="TextBox_Loaded" Text="{Binding Name,Mode=TwoWay,NotifyOnTargetUpdated=True,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Center" Visibility="{Binding IsEdit,Converter={StaticResource btv}}"  />
                                 </Grid>
@@ -236,7 +236,7 @@
                         <DataTemplate  DataType="{x:Type local:DeviceTreeViewModel}">
                             <StackPanel  Background="Transparent" Orientation="Horizontal" Height="24" ContextMenu="{StaticResource deviceMenu}">
                                 <Image  IsHitTestVisible="False" Focusable="False" Source="/Image/devices.png" VerticalAlignment="Center" Margin="0,0,4,0" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                <Grid  Background="{Binding Background}" VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
+                                <Grid  VerticalAlignment="Center" Focusable="False"  Name="spanel"    >
                                     <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding Name}" VerticalAlignment="Center" />
                                     <TextBox Background="#FF000000" Foreground="{DynamicResource Window.Forground}" LostFocus="TextBox_LostFocus" KeyDown="TextBox_KeyDown" IsVisibleChanged="TextBox_IsVisibleChanged" Loaded="TextBox_Loaded" Text="{Binding Name,Mode=TwoWay,NotifyOnTargetUpdated=True,UpdateSourceTrigger=LostFocus}" VerticalAlignment="Center" Visibility="{Binding IsEdit,Converter={StaticResource btv}}"  />
                                 </Grid>

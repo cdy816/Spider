@@ -109,7 +109,7 @@ namespace InSpiderDevelopWindow
                             DevelopManager.Manager.Load();
                             Init();
                         }
-                    },()=> { return !string.IsNullOrEmpty(mDatabase); });
+                    });
                 }
                 return mCancelCommand;
             }
