@@ -3,20 +3,12 @@ using Microsoft.CodeAnalysis;
 using RoslynPad.Roslyn;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Collections.Immutable;
 
 namespace Cdy.Spider.CalculateDriver.Develop
 {
@@ -27,6 +19,9 @@ namespace Cdy.Spider.CalculateDriver.Develop
     {
 
         private RoslynHost mHost;
+        /// <summary>
+        /// 
+        /// </summary>
         public ExpressionEditView()
         {
             InitializeComponent();
@@ -52,7 +47,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
         private void Init()
         {
             List<Assembly> ass = new List<Assembly>();
-            //ass.Add(typeof(Cdy.Spider.CalculateDriver.CalculateDriver).Assembly);
+            //ass.Add(typeof(Cdy.Spider.Tag).Assembly);
             ass.Add(typeof(Cdy.Spider.CalculateExpressEditor.AvalonEditExtensions).Assembly);
             ass.Add(typeof(Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel).Assembly);
 
@@ -66,15 +61,21 @@ namespace Cdy.Spider.CalculateDriver.Develop
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(System.Text.RegularExpressions.Regex).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Tag).Assembly.Location)
-            }).With(ass.Select(e=> MetadataReference.CreateFromFile(e.Location))),new string[] { "Cdy.Spider" });
+                //MetadataReference.CreateFromFile(typeof(Tag).Assembly.Location)
+            }),new string[] { "Cdy.Spider" }, ass.Select(e=>e.Location).ToArray());
+
+
+            //mHost.DefaultReferences.AddRange(ass.Select(e => mHost.CreateMetadataReference(e.Location)));
+
+            //mHost.DefaultReferences.Add(mHost.CreateMetadataReference(typeof(Tag).Assembly.Location));
+
 
             var colors = new ClassificationHighlightColors();
             colors.DefaultBrush.Foreground = new  ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.White);
             colors.KeywordBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.LightBlue);
             colors.StringBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.OrangeRed);
 
-            rc.Initialize(mHost, colors, Directory.GetCurrentDirectory(), (this.DataContext as ExpressionEditViewModel).Expresse);
+            rc.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, (this.DataContext as ExpressionEditViewModel).Expresse);
         }
 
     }

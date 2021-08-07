@@ -51,6 +51,10 @@ namespace RoslynPad.Roslyn.WorkspaceServices
                 {
                     return referenceLocation;
                 }
+                else
+                {
+                    return location;
+                }
             }
 
             return null;

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
+    <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
     <PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
   </ItemGroup>
 

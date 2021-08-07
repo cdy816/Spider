@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Cdy.Spider
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Tag
     {
         /// <summary>

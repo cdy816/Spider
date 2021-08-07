@@ -58,9 +58,11 @@ namespace RoslynPad.Roslyn
 
         public RoslynHost(IEnumerable<Assembly>? additionalAssemblies = null,
             RoslynHostReferences? references = null,
-            string[] Imports = null)
+            string[] Imports = null,string[] appendAssemblys=null)
         {
             if (references == null) references = RoslynHostReferences.Empty;
+
+       
 
             _workspaces = new ConcurrentDictionary<DocumentId, RoslynWorkspace>();
             _diagnosticsUpdatedNotifiers = new ConcurrentDictionary<DocumentId, Action<DiagnosticsUpdatedArgs>>();
@@ -87,6 +89,12 @@ namespace RoslynPad.Roslyn
             ParseOptions = CreateDefaultParseOptions();
 
             _documentationProviderService = GetService<IDocumentationProviderService>();
+
+
+            if (appendAssemblys != null)
+            {
+                references = references.With(appendAssemblys.Select(e => this.CreateMetadataReference(e)));
+            }
 
             DefaultReferences = references.GetReferences(DocumentationProviderFactory);
 
@@ -120,6 +128,7 @@ namespace RoslynPad.Roslyn
             return MetadataReference.CreateFromFile(location,
                 documentation: _documentationProviderService.GetDocumentationProvider(location));
         }
+
 
         private void OnDiagnosticsUpdated(object sender, DiagnosticsUpdatedArgs diagnosticsUpdatedArgs)
         {
