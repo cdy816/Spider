@@ -229,12 +229,10 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBox Background="Transparent" Padding="0" CaretBrush="White" BorderThickness="0" Foreground="{DynamicResource Window.Forground}" Margin="5,0" Text="{Binding ConvertString}" VerticalAlignment="Center" MinWidth="60" />
                                             <Button Grid.Column="1" Margin="4,0" Background="#1FFFFFFF" Foreground="{DynamicResource Window.Forground}" Content="..." VerticalAlignment="Center" VerticalContentAlignment="Top" Command="{Binding ConvertEditCommand}" Width="24" />
-                                            <Button Grid.Column="2" Margin="4,0" Command="{Binding ConvertRemoveCommand}" BorderThickness="0"  Background="Transparent" >
+                                            <Button Grid.Column="2" Margin="4,0" VerticalAlignment="Center" Width="24" Height="20" Command="{Binding ConvertRemoveCommand}" BorderThickness="1"  Background="#1FFFFFFF" >
                                                 <Button.ContentTemplate>
                                                     <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal" Margin="0">
-                                                            <Image Source="/Image/close.png" Height="12" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,4,0"/>
-                                                        </StackPanel>
+                                                        <Image Source="/Image/close.png" Height="12" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,0,0"/>
                                                     </DataTemplate>
                                                 </Button.ContentTemplate>
                                             </Button>
