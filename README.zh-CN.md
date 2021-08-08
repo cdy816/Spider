@@ -50,7 +50,7 @@
 1. [文档](https://github.com/cdy816/Spider/blob/master/Doc)
 
 ## 版本发布
-* [V0.2](https://github.com/cdy816/Spider/releases/tag/V0.2) 。
+* [V0.4](https://github.com/cdy816/Spider/releases/tag/V0.4) 。
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
