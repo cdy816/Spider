@@ -138,7 +138,7 @@ namespace InSpiderDevelopWindow
         private void tv_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
            
-            (this.DataContext as MainViewModel).CurrentSelectTreeItem = null;
+            //(this.DataContext as MainViewModel).CurrentSelectTreeItem = null;
         }
     }
 }

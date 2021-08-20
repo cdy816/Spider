@@ -108,7 +108,7 @@ namespace Cdy.Spider.CalculateDriver
         {
             foreach(var vv in mScriptMaps)
             {
-                vv.Execute();
+                vv.Execute(this);
             }
             base.ProcessTimerElapsed();
         }
@@ -175,6 +175,7 @@ namespace Cdy.Spider.CalculateDriver
         {
             if(TagMaps.ContainsKey(tag))
             {
+                Console.WriteLine("get " + tag + " value:" + TagMaps[tag].Value);
                 return TagMaps[tag].Value;
             }
             return null;
@@ -489,16 +490,17 @@ namespace Cdy.Spider.CalculateDriver
         /// <summary>
         /// 
         /// </summary>
-        public void Execute()
+        public void Execute(CalculateDriver driver)
         {
-            if (IsNeedCal)
+            if (IsNeedCal||Tag.TagMaps.Count==0)
             {
                 lock (Tag)
                     IsNeedCal = false;
                 try
                 {
-                    TagRef.Value = Script.RunAsync(this).Result.ReturnValue;
-                    byte bqa = 0;
+                    var val = Script.RunAsync(this).Result.ReturnValue;
+                    //Console.WriteLine(" 变量执行结果" + TagRef.DeviceInfo +" --> "+  TagRef.Name + ":" + TagRef.Value.ToString() + "   " + DateTime.Now.ToString());
+                    byte bqa = Tagbase.GoodQuality;
                     foreach (var vv in Tag.TagMaps)
                     {
                         if(vv.Value.Quality>1)
@@ -506,7 +508,8 @@ namespace Cdy.Spider.CalculateDriver
                             bqa = Tagbase.BadCommQuality;
                         }
                     }
-                    TagRef.Quality = bqa;
+                    driver.Device.UpdateDeviceValue(TagRef.Id, val,bqa);
+                    // TagRef.Quality = bqa;
                 }
                 catch (Exception ex)
                 {

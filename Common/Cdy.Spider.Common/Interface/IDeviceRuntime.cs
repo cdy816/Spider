@@ -206,6 +206,9 @@ namespace Cdy.Spider
         void UpdateDeviceValue(int id, object value, byte quality);
 
 
+        void UpdateDeviceValue(string deviceTag, object value, byte quality);
+
+
         /// <summary>
         /// 更新所有变量的质量戳为通信故障
         /// </summary>

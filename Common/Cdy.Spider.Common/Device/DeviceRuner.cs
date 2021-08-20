@@ -703,6 +703,28 @@ namespace Cdy.Spider
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceTag"></param>
+        /// <param name="value"></param>
+        /// <param name="quality"></param>
+        public void UpdateDeviceValue(string deviceTag, object value, byte quality)
+        {
+            if (mDeviceMapTags.ContainsKey(deviceTag))
+            {
+                DateTime dtmp = DateTime.Now;
+                foreach (var vv in mDeviceMapTags[deviceTag])
+                {
+                    vv.Value = ConvertValue(vv, value);
+                    vv.Time = dtmp;
+                    vv.Quality = quality;
+
+                    mValueCallBack?.Invoke(this.Name, vv);
+                }
+            }
+        }
+
+        /// <summary>
         /// 更新某个变量的历史
         /// </summary>
         /// <param name="id"></param>
