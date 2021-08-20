@@ -1,4 +1,5 @@
-**Internet of things Troika：[Mars realtime database](https://github.com/cdy816/mars) 、Acquisition platform [Spider](https://github.com/cdy816/Spider) 、Cross platform UI solution [Chameleon](https://github.com/cdy816/Chameleon)**             
+**Internet of things Troika：[Mars realtime database](https://github.com/cdy816/mars) 、Acquisition platform [Spider](https://github.com/cdy816/Spider) 、Cross platform UI solution [Chameleon](https://github.com/cdy816/Chameleon)、Data alarm&analysis engine [ant](https://github.com/cdy816/Ant)**    
+
 **>>>>[中文](https://github.com/cdy816/Spider/blob/master/README.zh-CN.md)>>>>**
  <br />
  <br />
@@ -51,7 +52,7 @@ The system platform is developed on. Net 5 platform, which can run on desktop sy
 1. [Document](https://github.com/cdy816/Spider/blob/master/Doc)
 
 ## Rlease
-* [V0.2](https://github.com/cdy816/Spider/releases/tag/V0.2)
+* [V0.4](https://github.com/cdy816/Spider/releases/tag/V0.4)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
