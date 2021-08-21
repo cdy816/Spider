@@ -151,6 +151,11 @@ namespace Cdy.Spider.CalculateDriver
         /// </summary>
         public Dictionary<string, Tagbase> TagMaps = new Dictionary<string, Tagbase>();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<string, IDeviceRuntime> DeviceMap = new Dictionary<string, IDeviceRuntime>();
+
 
         /// <summary>
         /// 
@@ -175,7 +180,7 @@ namespace Cdy.Spider.CalculateDriver
         {
             if(TagMaps.ContainsKey(tag))
             {
-                Console.WriteLine("get " + tag + " value:" + TagMaps[tag].Value);
+                //Console.WriteLine("get " + tag + " value:" + TagMaps[tag].Value);
                 return TagMaps[tag].Value;
             }
             return null;
@@ -193,7 +198,10 @@ namespace Cdy.Spider.CalculateDriver
             {
                 if (TagMaps.ContainsKey(tag))
                 {
-                    TagMaps[tag].Value = value;
+                    var vtag = TagMaps[tag];
+                    //TagMaps[tag].Value = value;
+                    if (DeviceMap.ContainsKey(tag))
+                        (DeviceMap[tag] as DeviceRunner).UpdateDeviceValue(vtag.Id, value);
                 }
                 return true;
             }
@@ -436,6 +444,7 @@ namespace Cdy.Spider.CalculateDriver
                                 var vtag = dev.GetTag(dd[1]);
 
                                 Tag.TagMaps.Add(vv, vtag);
+                                Tag.DeviceMap.Add(vv,dev);
 
                                 vtag.ValueChangedCallBack = ((sender, val) =>
                                 {

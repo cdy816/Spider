@@ -14,7 +14,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 获取变量的值
         /// </summary>
-        /// <param name="tag"></param>
+        /// <param name="tag">格式:"Tag.设备名.点名"</param>
         /// <returns></returns>
         public static object GetTagValue(string tag)
         {
@@ -24,7 +24,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 设置变量的值
         /// </summary>
-        /// <param name="tag"></param>
+        /// <param name="tag">格式:"Tag.设备名.点名"</param>
         /// <param name="value"></param>
         /// <returns></returns>
         public static bool SetTagValue(string tag,object value)
@@ -35,7 +35,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 变量的质量戳是否为有效值
         /// </summary>
-        /// <param name="tag"></param>
+        /// <param name="tag">格式:"Tag.设备名.点名"</param>
         /// <returns></returns>
         public static bool IsTagQualityGood(string tag)
         {
@@ -46,7 +46,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 对变量的值求和
         /// </summary>
-        /// <param name="tags">变量名</param>
+        /// <param name="tags">变量名称集合 变量名格式:"Tag.设备名.点名"</param>
         /// <returns></returns>
         public static double TagValueSum(params string[] tags)
         {
@@ -56,7 +56,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 对变量的值求平均值
         /// </summary>
-        /// <param name="tags">变量名</param>
+        /// <param name="tags">变量名称集合 变量名格式:"Tag.设备名.点名"</param>
         /// <returns></returns>
         public static double TagValueAvg(params string[] tags)
         {
@@ -66,7 +66,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 对变量的值取最大
         /// </summary>
-        /// <param name="tags">变量名</param>
+        /// <param name="tags">变量名称集合 变量名格式:"Tag.设备名.点名"</param>
         /// <returns></returns>
         public static double TagValueMax(params string[] tags)
         {
@@ -76,7 +76,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 对变量的值取最小
         /// </summary>
-        /// <param name="tags">变量名</param>
+        /// <param name="tags">变量名称集合 变量名格式:"Tag.设备名.点名"</param>
         /// <returns></returns>
         public static double TagValueMin(params string[] tags)
         {
