@@ -126,15 +126,20 @@ namespace Cdy.Spider
         /// <summary>
         /// 缺省值
         /// </summary>
-        public const byte InitQuality = 0;
+        public const byte InitQuality = 63;
         /// <summary>
         /// 好值
         /// </summary>
-        public const byte GoodQuality = 1;
+        public const byte GoodQuality = 0;
         /// <summary>
         /// 通信故障
         /// </summary>
-        public const byte BadCommQuality = 10;
+        public const byte BadCommQuality = 20;
+
+        /// <summary>
+        /// 超出范围
+        /// </summary>
+        public const byte OutOfRang = 30;
 
         protected bool mIsBufferEnabled = false;
 

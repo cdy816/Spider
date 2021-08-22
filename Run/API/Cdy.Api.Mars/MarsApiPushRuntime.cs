@@ -196,203 +196,24 @@ namespace Cdy.Api.Mars
         /// </summary>
         private void ThreadPro()
         {
+            mProxy.UserName = mData.UserName;
+            mProxy.Password = mData.Password;
+
             while (!mIsClosed)
             {
-                //if (!mProxy.IsLogin)
-                //{
-                //    //if (mProxy.IsConnected)
-                //    //{
-                //    //    mIsConnected = true;
-                //    //    mProxy.Login(mData.UserName, mData.Password);
-                //    //    if (mProxy.IsLogin)
-                //    //    {
-                //    //        LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " sucessfull！");
-                //    //        UpdateTagId();
-                //    //        mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
-                //    //        UpdateAllValue();
-                //    //    }
-                //    //    else
-                //    //    {
-                //    //        LoggerService.Service.Info("MarApi", "Login "+ mData.ServerIp + " failed！");
-                //    //    }
-                //    //}
-                //    //else
-                //    {
-                //        if(mIsConnected)
-                //        {
-                //            LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " failed！");
-                //            mIsConnected = false;
-                //        }
-
-                //        lock (mChangedTags)
-                //        {
-                //            if (mCallBackTags.Count > 100) 
-                //                mCallBackTags.Clear();
-                //        }
-                //    }
-                //    Thread.Sleep(2000);
-                //}
-                //else
+                if (mProxy.IsConnected)
                 {
-                   
                     //如果是定时模式
                     UpdateChangedTag();
                     Thread.Sleep(mData.Circle);
                 }
+                else
+                {
+                    LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " failed！");
+                    Thread.Sleep(2000);
+                }
             }
         }
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //private void UpdateTagId()
-        //{
-        //    mIdNameMape.Clear();
-        //    mNameIdMape.Clear();
-
-        //    var vtags = mAllDatabaseTagNames.Keys.ToList();
-        //    var res = mProxy.QueryTagId(vtags);
-        //    if (res != null && res.Count > 0 && res.Count == mAllDatabaseTagNames.Count)
-        //    {
-        //        for (int i = 0; i < res.Count; i++)
-        //        {
-        //            int id = res[i];
-        //            string stag = vtags[i];
-
-        //            if (!mIdNameMape.ContainsKey(id))
-        //            {
-        //                mIdNameMape.Add(id, stag);
-        //            }
-
-        //            if (!mNameIdMape.ContainsKey(stag))
-        //            {
-        //                mNameIdMape.Add(stag, id);
-        //            }
-
-        //            if (mCallBackTags.ContainsKey(stag))
-        //            {
-        //                mCallBackTags[stag] = id;
-        //            }
-        //        }
-        //    }
-
-        //    var driverRecordtags = mProxy.GetDriverRecordTypeTagIds().Select(e => mIdNameMape.ContainsKey(e) ? mIdNameMape[e] : string.Empty);
-
-        //    var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
-        //    foreach (var vv in manager.ListDevice())
-        //    {
-        //        foreach(var vvv in vv.ListTags())
-        //        {
-        //            if(driverRecordtags.Contains(vvv.DatabaseName))
-        //            {
-        //                vvv.EnableHisBuffer(true);
-        //            }
-        //            else
-        //            {
-        //                vvv.EnableHisBuffer(false);
-        //            }
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //private void UpdateAllValue()
-        //{
-        //    var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
-
-        //    foreach (var vv in manager.ListDevice())
-        //    {
-        //        rdb.CheckAndResize(vv.ListTags().Count * (32+64));
-        //        rdb.Clear();
-
-        //        foreach (var vvv in vv.ListTags())
-        //        {
-        //            if (mNameIdMape.ContainsKey(vvv.DatabaseName) && vvv.Quality!= Tagbase.InitQuality)
-        //            {
-        //                string id = vvv.DatabaseName;
-        //                var tpu = (TagType)((int)vvv.Type);
-
-        //                //switch (vvv.Type)
-        //                //{
-
-        //                //    case TagType.Double:
-        //                //        rdb.AppendValue(id, Convert.ToDouble(vvv.Value),vvv.Quality);
-        //                //        break;
-        //                //    case TagType.Bool:
-        //                //        rdb.AppendValue(id, Convert.ToBoolean(vvv.Value), vvv.Quality);
-
-        //                //        break;
-        //                //    case TagType.Byte:
-        //                //        rdb.AppendValue(id, Convert.ToByte(vvv.Value), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.DateTime:
-        //                //        rdb.AppendValue(id, Convert.ToDateTime(vvv.Value), vvv.Quality);
-
-        //                //        break;
-        //                //    case TagType.Float:
-        //                //        rdb.AppendValue(id, Convert.ToSingle(vvv.Value), vvv.Quality);
-
-        //                //        break;
-        //                //    case TagType.Int:
-        //                //        rdb.AppendValue(id, Convert.ToInt32(vvv.Value), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.Long:
-        //                //        rdb.AppendValue(id,Convert.ToInt64(vvv.Value), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.UInt:
-        //                //        rdb.AppendValue(id,Convert.ToUInt32(vvv.Value), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.ULong:
-        //                //        rdb.AppendValue(id, Convert.ToUInt64(vvv.Value), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.UShort:
-        //                //        rdb.AppendValue(id,Convert.ToUInt16(vvv.Value), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.Short:
-        //                //        rdb.AppendValue(id, Convert.ToInt16(vvv.Value), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.IntPoint:
-        //                //        var vpp = (Spider.IntPoint)vvv.Value;
-        //                //        rdb.AppendValue(id,new Tag.IntPointData(vpp.X,vpp.Y), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.UIntPoint:
-        //                //        var uvpp = (Spider.UIntPoint)vvv.Value;
-        //                //        rdb.AppendValue(id, new Tag.UIntPointData(uvpp.X, uvpp.Y), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.IntPoint3:
-        //                //        var vpp3 = (Spider.IntPoint3)vvv.Value;
-        //                //        rdb.AppendValue(id, new Tag.IntPoint3Data(vpp3.X,vpp3.Y,vpp3.Z), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.UIntPoint3:
-        //                //        var uvpp3 = (Spider.IntPoint3)vvv.Value;
-        //                //        rdb.AppendValue(id, new Tag.IntPoint3Data(uvpp3.X, uvpp3.Y, uvpp3.Z), vvv.Quality);
-        //                //        break;
-        //                //    case TagType.LongPoint:
-        //                //        var lpp3 = (Spider.LongPoint)vvv.Value;
-        //                //        rdb.AppendValue(id, new Tag.LongPointData(lpp3.X,lpp3.Y),vvv.Quality);
-        //                //        break;
-        //                //    case TagType.ULongPoint:
-        //                //        var ulpp3 = (Spider.ULongPoint)vvv.Value;
-        //                //        rdb.AppendValue(id, new Tag.ULongPointData(ulpp3.X,ulpp3.Y));
-        //                //        break;
-        //                //    case TagType.LongPoint3:
-        //                //        var lp3 = (Spider.LongPoint3)vvv.Value;
-        //                //        rdb.AppendValue(id, new Tag.LongPoint3Data(lp3.X,lp3.Y,lp3.Z));
-        //                //        break;
-        //                //    case TagType.ULongPoint3:
-        //                //        var ulp3 = (Spider.ULongPoint3)vvv.Value;
-        //                //        rdb.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z));
-        //                //        break;
-        //                //}
-        //            }
-        //        }
-
-        //        if(rdb.ValueCount>0)
-        //        mProxy.SetTagValueAndQuality(rdb);
-        //    }
-        //}
 
         /// <summary>
         /// 
@@ -419,6 +240,8 @@ namespace Cdy.Api.Mars
                         }
 
                         string id = stag.DatabaseName;
+                        if (string.IsNullOrEmpty(id)) continue;
+
                         var tpu = (TagType)((int)stag.Type);
                         if (stag.IsBufferEnabled)
                         {
@@ -576,11 +399,12 @@ namespace Cdy.Api.Mars
                     }
 
                 }
+
                 if (rdb.ValueCount > 0)
-                    mProxy.SetTagValueAndQuality(rdb);
+                    mProxy.SetTagValueAndQuality2(rdb);
 
                 if (rdbh.ValueCount > 0)
-                    mProxy.SetTagRealAndHisValue(rdbh);
+                    mProxy.SetTagRealAndHisValue2(rdbh);
 
             }
             catch(Exception ex)
@@ -606,7 +430,7 @@ namespace Cdy.Api.Mars
         /// <returns></returns>
         public override IApi NewApi()
         {
-            return new MarsApiRuntime();
+            return new MarsApiPushRuntime();
         }
 
         #endregion ...Methods...

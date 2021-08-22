@@ -1951,7 +1951,7 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             get
             {
-                return mModel.Conveter;
+                return mModel != null ? mModel.Conveter : null;
             }
             set
             {
