@@ -441,6 +441,13 @@ namespace Cdy.Api.Mars
                                 hdb.AppendValue(id, val.Time, (Tag.ULongPoint3Data)(val.Value), 0);
                             }
                             break;
+                        case TagType.String:
+                            foreach (var val in vvv.ReadHisValues())
+                            {
+                                hdb.AppendValue(id, val.Time, val.Value.ToString(), 0);
+                            }
+
+                            break;
                     }
 
                     mProxy.SetMutiTagHisValue(hdb,10000);
@@ -492,6 +499,9 @@ namespace Cdy.Api.Mars
                                 break;
                             case TagType.Short:
                                 rdb.AppendValue(id, Convert.ToInt16(vvv.Value), vvv.Quality);
+                                break;
+                            case TagType.String:
+                                rdb.AppendValue(id, vvv.Value.ToString(), vvv.Quality);
                                 break;
                             case TagType.IntPoint:
                                 var vpp = (Spider.IntPoint)vvv.Value;
@@ -610,6 +620,9 @@ namespace Cdy.Api.Mars
                                 case TagType.Short:
                                     rdbh.AppendValue(id, Convert.ToInt16(stag.Value), stag.Quality);
                                     break;
+                                case TagType.String:
+                                    rdbh.AppendValue(id, stag.Value.ToString(), stag.Quality);
+                                    break;
                                 case TagType.IntPoint:
                                     var vpp = (Spider.IntPoint)stag.Value;
                                     rdbh.AppendValue(id, new Tag.IntPointData(vpp.X, vpp.Y), stag.Quality);
@@ -685,6 +698,9 @@ namespace Cdy.Api.Mars
                                     break;
                                 case TagType.Short:
                                     rdb.AppendValue(id, Convert.ToInt16(stag.Value), stag.Quality);
+                                    break;
+                                case TagType.String:
+                                    rdb.AppendValue(id, stag.Value.ToString(), stag.Quality);
                                     break;
                                 case TagType.IntPoint:
                                     var vpp = (Spider.IntPoint)stag.Value;
