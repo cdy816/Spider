@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Template.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeAnalysis.Scripting">
+      <HintPath>..\..\..\Develop\Drivers\RoslynPad.Roslyn\obj\GeneratedPublicizedAssemblies\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Template.txt" />
+  </ItemGroup>
+
+</Project>
