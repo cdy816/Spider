@@ -177,7 +177,7 @@ namespace Cdy.Spider
         /// </summary>
         public void Start()
         {
-            Driver.Start();
+            Driver?.Start();
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace Cdy.Spider
         /// </summary>
         public void Stop()
         {
-            Driver.Stop();
+            Driver?.Stop();
         }
 
         /// <summary>

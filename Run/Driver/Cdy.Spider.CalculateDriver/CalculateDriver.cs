@@ -55,11 +55,18 @@ namespace Cdy.Spider.CalculateDriver
         public override void Init()
         {
             ScriptOptions sop = ScriptOptions.Default;
-            if (CalculateExtend.extend.ExtendDlls.Count > 0)
+            try
             {
-              sop =  sop.AddReferences(CalculateExtend.extend.ExtendDlls.Select(e => Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(e)));
+                if (CalculateExtend.extend.ExtendDlls.Count > 0)
+                {
+                    sop = sop.AddReferences(CalculateExtend.extend.ExtendDlls.Select(e => Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(e)));
+                }
+                sop = sop.AddReferences(typeof(System.Collections.Generic.ReferenceEqualityComparer).Assembly).AddReferences(this.GetType().Assembly).WithImports("Cdy.Spider.CalculateDriver", "System", "System.Collections.Generic");
             }
-            sop = sop.AddReferences(typeof(System.Collections.Generic.ReferenceEqualityComparer).Assembly).AddReferences(this.GetType().Assembly).WithImports("Cdy.Spider.CalculateDriver","System", "System.Collections.Generic");
+            catch(Exception ex)
+            {
+                LoggerService.Service.Erro("Calculate", ex.Message);
+            }
 
             foreach (var vv in Device.ListTags())
             {

@@ -182,7 +182,7 @@ namespace Cdy.Api.Mars
         public override void Start()
         {
             mIsClosed = false;
-            mProxy.Open(mData.ServerIp, mData.Port);
+            mProxy?.Open(mData.ServerIp, mData.Port);
             
             mScanThread = new Thread(ThreadPro);
             mScanThread.IsBackground = true;
