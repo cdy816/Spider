@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Collections.Immutable;
 
-namespace Cdy.Spider.CalculateDriver.Develop
+namespace Cdy.Spider.CustomDriver.Develop
 {
     /// <summary>
     /// ExpressionEditView.xaml 的交互逻辑
@@ -37,7 +37,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
         private void ExpressionEditView_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= ExpressionEditView_Loaded;
-            (this.DataContext as ExpressionEditViewModel).ExpressEditor = rc;
+            (this.DataContext as ExpressionEditViewModel).ExpressEditor = rcInit;
             Init();
         }
 
@@ -49,26 +49,11 @@ namespace Cdy.Spider.CalculateDriver.Develop
             List<Assembly> ass = new List<Assembly>();
             //ass.Add(typeof(Cdy.Spider.Tag).Assembly);
             ass.Add(typeof(Cdy.Spider.CalculateExpressEditor.AvalonEditExtensions).Assembly);
-            ass.Add(typeof(Cdy.Spider.CalculateDriver.Develop.CalculateDriverConfigModel).Assembly);
+            ass.Add(typeof(Cdy.Spider.CustomDriver.CustomDriver).Assembly);
 
             if (CalculateExtend.extend.ExtendDlls.Count > 0)
             {
-                var vfiles = new List<Assembly>();
-                try
-                {
-                    foreach(var vv in CalculateExtend.extend.ExtendDlls)
-                    {
-                        if(System.IO.File.Exists(vv))
-                        {
-                            vfiles.Add(Assembly.LoadFile(vv));
-                        }
-                    }
-                }
-                catch
-                {
-
-                }
-                ass.AddRange(vfiles);
+                ass.AddRange(CalculateExtend.extend.ExtendDlls.Select(e => Assembly.LoadFile(e)));
             }
 
             mHost = new RoslynHost(ass.ToArray(), RoslynHostReferences.NamespaceDefault.With(new[]
@@ -90,7 +75,16 @@ namespace Cdy.Spider.CalculateDriver.Develop
             colors.KeywordBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.LightBlue);
             colors.StringBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.OrangeRed);
 
-            rc.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, (this.DataContext as ExpressionEditViewModel).Expresse);
+            rcInit.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, (this.DataContext as ExpressionEditViewModel).Expresse);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private string GetInitExpress()
+        {
+            return string.Empty;
         }
 
     }

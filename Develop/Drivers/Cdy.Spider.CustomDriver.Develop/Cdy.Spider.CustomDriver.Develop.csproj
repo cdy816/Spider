@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj" />
+    <ProjectReference Include="..\..\..\Run\Driver\Cdy.Spider.CustomDriver\Cdy.Spider.CustomDriver.csproj" />
+    <ProjectReference Include="..\Cdy.Spider.CalculateExpressEditor\Cdy.Spider.CalculateExpressEditor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ExpressionEditView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
+</Project>

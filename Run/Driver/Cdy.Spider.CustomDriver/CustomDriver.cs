@@ -1,7 +1,13 @@
-﻿using Microsoft.CodeAnalysis.Scripting;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Cdy.Spider.CustomDriver
 {
@@ -28,29 +34,9 @@ namespace Cdy.Spider.CustomDriver
         #region ... Variables  ...
         private CustomDriverData mData;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Script<object> mInitScript { get; set; }
+        private ICustomDriverImp mImp;
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Script<object> mOnReceiveDataScript { get; set; }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Script<object> mOnSetTagValueToDevicescript { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Script<object> mOnTimerFunScript { get; set; }
-
-        private string mTemplate = @"using System;
+        public const string mTemplate = @"using System;
                                     using System.Collections.Generic;
                                     using System.Text;
                                     using System.Linq;
@@ -64,26 +50,26 @@ namespace Cdy.Spider.CustomDriver
 	                                    /// <summary>
                                         /// 
                                         /// </summary>
-	                                    public class $ClassName$Driver:ICustomDriverImp
+	                                    public class $ClassName$Driver:Cdy.Spider.CustomDriver.CustomImp
 	                                    {
 
-		                                    public void Init()
+		                                    public override void Init()
 		                                    {
 			                                    $InitBody$
 		                                    }
 		
 		
-		                                    public object OnReceiveData(string key, object data)
+		                                    public override object OnReceiveData(string key, object data)
 		                                    {
 			                                    $OnReceiveDataBody$
 		                                    }
 
-		                                    public void ProcessTimerElapsed()
+		                                    public override void ProcessTimerElapsed()
 		                                    {
 			                                    $ProcessTimerElapsed$
 		                                    }
 
-		                                    public void WriteValue(string deviceInfo, object value, byte valueType)
+		                                    public override void WriteValue(string deviceInfo, object value, byte valueType)
 		                                    {
 			                                    $WriteValue$
 		                                    }
@@ -125,37 +111,88 @@ namespace Cdy.Spider.CustomDriver
         /// </summary>
         public override void Init()
         {
-            ScriptOptions sop = ScriptOptions.Default;
+            base.Init();
+
+            //ScriptOptions sop = ScriptOptions.Default;
             //if (CalculateExtend.extend.ExtendDlls.Count > 0)
             //{
             //    sop = sop.AddReferences(CalculateExtend.extend.ExtendDlls.Select(e => Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(e)));
             //}
             //sop = sop.AddReferences(typeof(System.Collections.Generic.ReferenceEqualityComparer).Assembly).AddReferences(this.GetType().Assembly).WithImports("Cdy.Spider", "System", "System.Collections.Generic", "System.Linq", "System.Text");
-
+            Assembly assembly=null;
             StringBuilder sb = new StringBuilder(mTemplate);
-            sb.Replace("$ClassName$", "C"+Guid.NewGuid().ToString().Replace("-",""));
+            string scname = "C" + Guid.NewGuid().ToString().Replace("-", "");
+            sb.Replace("$ClassName$", scname);
             sb.Replace("$InitBody$", mData.OnInitFunExpress);
             sb.Replace("$OnReceiveDataBody$", mData.OnReceiveDataFunExpress);
             sb.Replace("$WriteValue$", mData.OnSetTagValueToDeviceFunExpress);
             sb.Replace("$ProcessTimerElapsed$", mData.OnTimerFunExpress);
 
-           
+            // 元数据引用
+            MetadataReference[] references = new MetadataReference[]
+            {
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(DriverRunnerBase).Assembly.Location),
+                MetadataReference.CreateFromFile(this.GetType().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.MemoryExtensions).Assembly.Location)
+            };
 
-            base.Init();
+            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sb.ToString());
 
+            var compileOption = new CSharpCompilationOptions(Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary);
+            var cc = CSharpCompilation.Create("test", new SyntaxTree[] { syntaxTree }, references, compileOption);
+
+
+            using (var ms = new System.IO.MemoryStream())
+            {
+                var result = cc.Emit(ms);
+                if (result.Success)
+                {
+                    try
+                    {
+                        // 编译成功则从内存中加载程序集
+                        ms.Seek(0, SeekOrigin.Begin);
+                        assembly = Assembly.Load(ms.ToArray());
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                else
+                {
+                    IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
+                    diagnostic.IsWarningAsError ||
+                    diagnostic.Severity == DiagnosticSeverity.Error);
+
+                    foreach (Diagnostic diagnostic in failures)
+                    {
+                        Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                    }
+                }
+            }
            
+            if(assembly!=null)
+            {
+                try
+                {
+                    mImp = assembly.CreateInstance(scname + "Driver") as ICustomDriverImp;
+                    (mImp as CustomImp).Owner = this;
+                    (mImp as CustomImp).Comm = this.mComm;
+                    if(mImp!=null)
+                    {
+                        mImp.Init();
+                    }
+                }
+                catch(Exception ex)
+                {
+                    LoggerService.Service.Erro("CustomDriver", ex.Message);
+                }
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="exp"></param>
-        /// <param name="sop"></param>
-        /// <returns></returns>
-        private Script<object> OnCompile(string exp, ScriptOptions sop)
-        {
-            return null;
-        }
+
 
         /// <summary>
         /// 被动接受数据
@@ -166,9 +203,10 @@ namespace Cdy.Spider.CustomDriver
         /// <returns></returns>
         protected override object OnReceiveData(string key, object data, out bool handled)
         {
-            if (mOnReceiveDataScript != null)
+            if (mImp != null)
             {
-                mOnReceiveDataScript.RunAsync(this);
+                handled = true;
+               return mImp.OnReceiveData(key,data);
             }
             return base.OnReceiveData(key, data, out handled);
         }
@@ -179,9 +217,9 @@ namespace Cdy.Spider.CustomDriver
         /// </summary>
         protected override void ProcessTimerElapsed()
         {
-            if(this.mOnTimerFunScript!=null)
+            if(this.mImp != null)
             {
-                this.mOnTimerFunScript.RunAsync(this);
+                mImp.ProcessTimerElapsed();
             }
             base.ProcessTimerElapsed();
         }
@@ -194,7 +232,10 @@ namespace Cdy.Spider.CustomDriver
         /// <param name="valueType"></param>
         public override void WriteValue(string deviceInfo, object value, byte valueType)
         {
-            base.WriteValue(deviceInfo, value, valueType);
+           if(this.mImp!=null)
+            {
+                this.mImp.WriteValue(deviceInfo, value, valueType);
+            }
         }
 
 
@@ -207,6 +248,27 @@ namespace Cdy.Spider.CustomDriver
             return new CustomDriver();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public override void Load(XElement xe)
+        {
+            mData = new CustomDriverData();
+            mData.LoadFromXML(xe);
+            base.Load(xe);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceInfo"></param>
+        /// <param name="value"></param>
+        public void UpdateTagValue(string deviceInfo, object value)
+        {
+            this.UpdateValue(deviceInfo, value);
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...
@@ -214,5 +276,185 @@ namespace Cdy.Spider.CustomDriver
         #endregion ...Interfaces...
 
 
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CustomImp : ICustomDriverImp
+    {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public CustomDriver Owner { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommChannel2 Comm { get; set; }
+
+        /// <summary>
+        /// 更新数据库的值
+        /// </summary>
+        /// <param name="deviceInfo"></param>
+        /// <param name="value"></param>
+        protected void UpdateValue(string deviceInfo, object value)
+        {
+            byte[] bals=null;
+           var  vv=  bals.AsSpan<byte>();
+            Owner?.UpdateTagValue(deviceInfo, value);
+        }
+
+        /// <summary>
+        /// Json 字符串转换成对象
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected T JsonStringToObject<T>(string value)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        protected object JsonStringToObject(string value,Type type)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(value,type);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        protected Dictionary<string,object> JsonStringToDictionaryObject(string value)
+        {
+            Dictionary<string, object> re = new Dictionary<string, object>();
+            var objs = Newtonsoft.Json.Linq.JObject.Parse(value);
+            foreach(var vv in objs)
+            {
+                re.Add(vv.Key, JTokenToObject(vv.Value));
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private object JTokenToObject(Newtonsoft.Json.Linq.JToken value)
+        {
+            if(value is JProperty)
+            {
+                var jval = ((value as JProperty).Value as JValue);
+                if(jval.Value is byte[] || jval.Value==null)
+                return jval.Value;
+                else
+                {
+                    return jval.Value.ToString();
+                }
+            }
+            else if(value is JObject)
+            {
+                Dictionary<string, object> re = new Dictionary<string, object>();
+                foreach (var vv in (value as JObject))
+                {
+                    re.Add(vv.Key, JTokenToObject(vv.Value));
+                }
+                return re;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 如果 value 是 byte[] \List<byte> 以指定编码转换成字符串
+        /// 其他类型直接调用ToString
+        /// </summary>
+        /// <param name="values">byte[]\list<byte>\Object</param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        protected string BytesToStirng(object values, Encoding encoding)
+        {
+            if (values is byte[])
+            {
+                return encoding.GetString(values as byte[]);
+            }
+            else if(values is List<byte>)
+            {
+                return encoding.GetString((values as List<byte>).ToArray());
+            }
+            else
+            {
+                return values.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Bytes 数组转换成字符串
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        protected string BytesToStirng(byte[] values,Encoding encoding)
+        {
+            return encoding.GetString(values);
+        }
+
+        /// <summary>
+        /// Bytes 数组转换成字符串
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="start"></param>
+        /// <param name="len"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        protected string BytesToStirng(byte[] values,int start,int len, Encoding encoding)
+        {
+            return encoding.GetString(values,start,len);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Init()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public virtual object OnReceiveData(string key, object data)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void ProcessTimerElapsed()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceInfo"></param>
+        /// <param name="value"></param>
+        /// <param name="valueType"></param>
+        public virtual void WriteValue(string deviceInfo, object value, byte valueType)
+        {
+
+        }
     }
 }

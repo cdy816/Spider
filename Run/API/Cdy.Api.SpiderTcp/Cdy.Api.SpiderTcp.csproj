@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cheetah" Version="0.6.6" />
+    <PackageReference Include="Cheetah" Version="0.7.0" />
   </ItemGroup>
 
   <ItemGroup>
