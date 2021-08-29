@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Cdy.Spider
 {
@@ -17,6 +18,7 @@ namespace Cdy.Spider
         private string mOnReceiveDataFunExpress = "";
         private string mOnSetTagValueToDeviceFunExpress = "";
         private string mOnTimerFunExpress = "";
+        private string mVariableExpress = "";
 
         #endregion ...Variables...
 
@@ -31,9 +33,23 @@ namespace Cdy.Spider
         #region ... Properties ...
 
         /// <summary>
-        /// 初始化
+        /// 变量定义
         /// </summary>
-        public string OnInitFunExpress { get; set; }
+        public string VariableExpress
+        {
+            get
+            {
+                return mVariableExpress;
+            }
+            set
+            {
+                if (mVariableExpress != value)
+                {
+                    mVariableExpress = value;
+                }
+            }
+        }
+
 
         /// <summary>
         /// 被动接受数据表达式
@@ -93,7 +109,56 @@ namespace Cdy.Spider
         #endregion ...Properties...
 
         #region ... Methods    ...
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override XElement SaveToXML()
+        {
+            var re = base.SaveToXML();
+            XElement xx = new XElement("VariableExpress");
+            xx.SetValue(VariableExpress);
+            re.Add(xx);
 
+            xx = new XElement("OnReceiveDataFunExpress");
+            xx.SetValue(OnReceiveDataFunExpress);
+            re.Add(xx);
+
+            xx = new XElement("OnSetTagValueToDeviceFunExpress");
+            xx.SetValue(OnSetTagValueToDeviceFunExpress);
+            re.Add(xx);
+
+            xx = new XElement("OnTimerFunExpress");
+            xx.SetValue(OnTimerFunExpress);
+            re.Add(xx);
+
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public override void LoadFromXML(XElement xe)
+        {
+            base.LoadFromXML(xe);
+            if(xe.Element("VariableExpress") !=null)
+            {
+                this.VariableExpress = xe.Element("VariableExpress").Value;
+            }
+            if (xe.Element("OnReceiveDataFunExpress") != null)
+            {
+                this.OnReceiveDataFunExpress = xe.Element("OnReceiveDataFunExpress").Value;
+            }
+            if (xe.Element("OnSetTagValueToDeviceFunExpress") != null)
+            {
+                this.OnSetTagValueToDeviceFunExpress = xe.Element("OnSetTagValueToDeviceFunExpress").Value;
+            }
+            if (xe.Element("OnTimerFunExpress") != null)
+            {
+                this.OnTimerFunExpress = xe.Element("OnTimerFunExpress").Value;
+            }
+        }
         #endregion ...Methods...
 
         #region ... Interfaces ...

@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.1.2.30" />
+    <None Remove="Cdy.Spider.CalculateDriver.Develop.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj" />
     <ProjectReference Include="..\..\..\Run\Driver\Cdy.Spider.CalculateDriver\Cdy.Spider.CalculateDriver.csproj" />
     <ProjectReference Include="..\Cdy.Spider.CalculateExpressEditor\Cdy.Spider.CalculateExpressEditor.csproj" />
+    <ProjectReference Include="..\ICSharpCode.AvalonEdit\ICSharpCode.AvalonEdit.csproj" />
   </ItemGroup>
 
   <ItemGroup>

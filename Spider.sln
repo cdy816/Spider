@@ -123,7 +123,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoslynPad.Roslyn", "Develop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.CustomDriver", "Run\Driver\Cdy.Spider.CustomDriver\Cdy.Spider.CustomDriver.csproj", "{493D66A7-57F0-4604-8853-3117955C010B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.CustomDriver.Develop", "Develop\Drivers\Cdy.Spider.CustomDriver.Develop\Cdy.Spider.CustomDriver.Develop.csproj", "{C4982F90-0AE2-4DBA-B3E9-D23A25CB1938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.CustomDriver.Develop", "Develop\Drivers\Cdy.Spider.CustomDriver.Develop\Cdy.Spider.CustomDriver.Develop.csproj", "{C4982F90-0AE2-4DBA-B3E9-D23A25CB1938}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICSharpCode.AvalonEdit", "Develop\Drivers\ICSharpCode.AvalonEdit\ICSharpCode.AvalonEdit.csproj", "{CD71F202-0916-4163-BBAE-A341EF85FC62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -331,6 +333,10 @@ Global
 		{C4982F90-0AE2-4DBA-B3E9-D23A25CB1938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4982F90-0AE2-4DBA-B3E9-D23A25CB1938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4982F90-0AE2-4DBA-B3E9-D23A25CB1938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD71F202-0916-4163-BBAE-A341EF85FC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD71F202-0916-4163-BBAE-A341EF85FC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD71F202-0916-4163-BBAE-A341EF85FC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD71F202-0916-4163-BBAE-A341EF85FC62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -394,6 +400,7 @@ Global
 		{29DFDFA6-371C-4E83-A706-261BFFB20269} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
 		{493D66A7-57F0-4604-8853-3117955C010B} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
 		{C4982F90-0AE2-4DBA-B3E9-D23A25CB1938} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
+		{CD71F202-0916-4163-BBAE-A341EF85FC62} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}

@@ -1,0 +1,259 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cdy.Spider.CustomDriver</name>
+    </assembly>
+    <members>
+        <member name="T:Cdy.Spider.CustomDriver.ICustomDriverImp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ICustomDriverImp.Init">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ICustomDriverImp.OnReceiveData(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ICustomDriverImp.ProcessTimerElapsed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ICustomDriverImp.WriteValue(System.String,System.Object,System.Byte)">
+            <summary>
+            
+            </summary>
+            <param name="deviceInfo"></param>
+            <param name="value"></param>
+            <param name="valueType"></param>
+        </member>
+        <member name="T:Cdy.Spider.CustomDriver.CustomDriver">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Cdy.Spider.CustomDriver.CustomDriver.mTemplate">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriver.CustomDriver.TypeName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriver.CustomDriver.Data">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomDriver.Init">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomDriver.OnReceiveData(System.String,System.Object,System.Boolean@)">
+            <summary>
+            被动接受数据
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+            <param name="handled"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomDriver.ProcessTimerElapsed">
+            <summary>
+            定时执行
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomDriver.WriteValue(System.String,System.Object,System.Byte)">
+            <summary>
+            写入值到设备上
+            </summary>
+            <param name="deviceInfo"></param>
+            <param name="value"></param>
+            <param name="valueType"></param>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomDriver.NewApi">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomDriver.Load(System.Xml.Linq.XElement)">
+            <summary>
+            
+            </summary>
+            <param name="xe"></param>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomDriver.UpdateTagValue(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="deviceInfo"></param>
+            <param name="value"></param>
+        </member>
+        <member name="T:Cdy.Spider.CustomDriver.CustomImp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriver.CustomImp.Owner">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriver.CustomImp.Comm">
+            <summary>
+            通信对象
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.UpdateValue(System.String,System.Object)">
+            <summary>
+            写入值到变量
+            </summary>
+            <param name="deviceInfo">寄存器名称</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.JsonStringToObject``1(System.String)">
+            <summary>
+            Json 字符串转换成对象
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.JsonStringToObject(System.String,System.Type)">
+            <summary>
+            Json 字符串转换成对象
+            </summary>
+            <param name="value"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.JsonStringToDictionaryObject(System.String)">
+            <summary>
+            Json 字符串转换成字典对象
+            Json 属性的值为Json 对象时,字典的的值同样为字典对象
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.JTokenToObject(Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.BytesToStirng(System.Object,System.Text.Encoding)">
+            <summary>
+            如果 value 是 byte 数组 或者 List  以指定编码转换成字符串
+            其他类型直接调用ToString
+            </summary>
+            <param name="values">byte[]\list\Object</param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.BytesToStirng(System.Byte[],System.Text.Encoding)">
+            <summary>
+            Bytes 数组转换成字符串
+            </summary>
+            <param name="values"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.BytesToStirng(System.Byte[],System.Int32,System.Int32,System.Text.Encoding)">
+            <summary>
+            Bytes 数组转换成字符串
+            </summary>
+            <param name="values"></param>
+            <param name="start"></param>
+            <param name="len"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.Info(System.String)">
+            <summary>
+            打印日志 Info
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.Erro(System.String)">
+            <summary>
+            打印日志 Erro
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.Init">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.OnReceiveData(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.ProcessTimerElapsed">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.WriteValue(System.String,System.Object,System.Byte)">
+            <summary>
+            
+            </summary>
+            <param name="deviceInfo"></param>
+            <param name="value"></param>
+            <param name="valueType"></param>
+        </member>
+        <member name="T:Cdy.Spider.CustomDriverData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriverData.VariableExpress">
+            <summary>
+            变量定义
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriverData.OnReceiveDataFunExpress">
+            <summary>
+            被动接受数据表达式
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriverData.OnSetTagValueToDeviceFunExpress">
+            <summary>
+             响应数据库下发数据到设备
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriverData.OnTimerFunExpress">
+            <summary>
+            响应定时触发执行表达式
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriverData.SaveToXML">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriverData.LoadFromXML(System.Xml.Linq.XElement)">
+            <summary>
+            
+            </summary>
+            <param name="xe"></param>
+        </member>
+    </members>
+</doc>

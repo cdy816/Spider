@@ -16,12 +16,30 @@ namespace Cdy.Spider.CustomDriver
     /// </summary>
     public interface ICustomDriverImp
     {
+        /// <summary>
+        /// 
+        /// </summary>
         void Init();
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         object OnReceiveData(string key, object data);
         
+        /// <summary>
+        /// 
+        /// </summary>
         void ProcessTimerElapsed();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceInfo"></param>
+        /// <param name="value"></param>
+        /// <param name="valueType"></param>
         void WriteValue(string deviceInfo, object value, byte valueType);
     }
 
@@ -35,46 +53,44 @@ namespace Cdy.Spider.CustomDriver
         private CustomDriverData mData;
 
         private ICustomDriverImp mImp;
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string mTemplate =
+@"using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+using System.Xml.Linq;
+using System.Buffers;
+using System.Threading;
+using Cdy.Spider.CustomDriver;
 
-        public const string mTemplate = @"using System;
-                                    using System.Collections.Generic;
-                                    using System.Text;
-                                    using System.Linq;
-                                    using System.Xml.Linq;
-                                    using System.Buffers;
-                                    using System.Threading;
-                                    using Cdy.Spider.CustomDriver;
-
-                                    namespace Cdy.Spider
-                                    {
-	                                    /// <summary>
-                                        /// 
-                                        /// </summary>
-	                                    public class $ClassName$Driver:Cdy.Spider.CustomDriver.CustomImp
-	                                    {
-
-		                                    public override void Init()
-		                                    {
-			                                    $InitBody$
-		                                    }
+namespace Cdy.Spider
+{
+/// <summary>
+/// 
+/// </summary>
+public class $ClassName$Driver:Cdy.Spider.CustomDriver.CustomImp
+{
+$VariableBody$	                                   	
 		
-		
-		                                    public override object OnReceiveData(string key, object data)
-		                                    {
-			                                    $OnReceiveDataBody$
-		                                    }
+public override object OnReceiveData(string key, object data)
+{
+$OnReceiveDataBody$
+}
 
-		                                    public override void ProcessTimerElapsed()
-		                                    {
-			                                    $ProcessTimerElapsed$
-		                                    }
+public override void ProcessTimerElapsed()
+{
+$ProcessTimerElapsed$
+}
 
-		                                    public override void WriteValue(string deviceInfo, object value, byte valueType)
-		                                    {
-			                                    $WriteValue$
-		                                    }
-                                         }
-                                    }";
+public override void WriteValue(string deviceInfo, object value, byte valueType)
+{
+$WriteValue$
+}
+}
+}";
 
 
         #endregion ...Variables...
@@ -112,35 +128,30 @@ namespace Cdy.Spider.CustomDriver
         public override void Init()
         {
             base.Init();
-
-            //ScriptOptions sop = ScriptOptions.Default;
-            //if (CalculateExtend.extend.ExtendDlls.Count > 0)
-            //{
-            //    sop = sop.AddReferences(CalculateExtend.extend.ExtendDlls.Select(e => Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(e)));
-            //}
-            //sop = sop.AddReferences(typeof(System.Collections.Generic.ReferenceEqualityComparer).Assembly).AddReferences(this.GetType().Assembly).WithImports("Cdy.Spider", "System", "System.Collections.Generic", "System.Linq", "System.Text");
             Assembly assembly=null;
             StringBuilder sb = new StringBuilder(mTemplate);
             string scname = "C" + Guid.NewGuid().ToString().Replace("-", "");
             sb.Replace("$ClassName$", scname);
-            sb.Replace("$InitBody$", mData.OnInitFunExpress);
+            sb.Replace("$VariableBody$", mData.VariableExpress);
             sb.Replace("$OnReceiveDataBody$", mData.OnReceiveDataFunExpress);
             sb.Replace("$WriteValue$", mData.OnSetTagValueToDeviceFunExpress);
             sb.Replace("$ProcessTimerElapsed$", mData.OnTimerFunExpress);
 
             // 元数据引用
-            MetadataReference[] references = new MetadataReference[]
+            var references = new List<MetadataReference>
             {
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.Object).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(DriverRunnerBase).Assembly.Location),
                 MetadataReference.CreateFromFile(this.GetType().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.Xml.Linq.XElement).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(System.MemoryExtensions).Assembly.Location)
             };
+            Assembly.GetEntryAssembly().GetReferencedAssemblies().ToList().ForEach(e => references.Add(MetadataReference.CreateFromFile(Assembly.Load(e).Location)));
 
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(sb.ToString());
 
-            var compileOption = new CSharpCompilationOptions(Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary);
+            var compileOption = new CSharpCompilationOptions(Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary,allowUnsafe:true);
             var cc = CSharpCompilation.Create("test", new SyntaxTree[] { syntaxTree }, references, compileOption);
 
 
@@ -177,10 +188,10 @@ namespace Cdy.Spider.CustomDriver
             {
                 try
                 {
-                    mImp = assembly.CreateInstance(scname + "Driver") as ICustomDriverImp;
+                    mImp = assembly.CreateInstance("Cdy.Spider." + scname + "Driver") as ICustomDriverImp;
                     (mImp as CustomImp).Owner = this;
                     (mImp as CustomImp).Comm = this.mComm;
-                    if(mImp!=null)
+                    if (mImp != null)
                     {
                         mImp.Init();
                     }
@@ -290,15 +301,15 @@ namespace Cdy.Spider.CustomDriver
         public CustomDriver Owner { get; set; }
 
         /// <summary>
-        /// 
+        /// 通信对象
         /// </summary>
         public ICommChannel2 Comm { get; set; }
 
         /// <summary>
-        /// 更新数据库的值
+        /// 写入值到变量
         /// </summary>
-        /// <param name="deviceInfo"></param>
-        /// <param name="value"></param>
+        /// <param name="deviceInfo">寄存器名称</param>
+        /// <param name="value">值</param>
         protected void UpdateValue(string deviceInfo, object value)
         {
             byte[] bals=null;
@@ -317,7 +328,7 @@ namespace Cdy.Spider.CustomDriver
         }
 
         /// <summary>
-        /// 
+        /// Json 字符串转换成对象
         /// </summary>
         /// <param name="value"></param>
         /// <param name="type"></param>
@@ -328,7 +339,8 @@ namespace Cdy.Spider.CustomDriver
         }
 
         /// <summary>
-        /// 
+        /// Json 字符串转换成字典对象
+        /// Json 属性的值为Json 对象时,字典的的值同样为字典对象
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -373,10 +385,10 @@ namespace Cdy.Spider.CustomDriver
         }
 
         /// <summary>
-        /// 如果 value 是 byte[] \List<byte> 以指定编码转换成字符串
+        /// 如果 value 是 byte 数组 或者 List  以指定编码转换成字符串
         /// 其他类型直接调用ToString
         /// </summary>
-        /// <param name="values">byte[]\list<byte>\Object</param>
+        /// <param name="values">byte[]\list\Object</param>
         /// <param name="encoding"></param>
         /// <returns></returns>
         protected string BytesToStirng(object values, Encoding encoding)
@@ -420,11 +432,29 @@ namespace Cdy.Spider.CustomDriver
         }
 
         /// <summary>
+        /// 打印日志 Info
+        /// </summary>
+        /// <param name="msg"></param>
+        public void Info(string msg)
+        {
+            LoggerService.Service.Info("CustomDriver", msg);
+        }
+
+        /// <summary>
+        /// 打印日志 Erro
+        /// </summary>
+        /// <param name="msg"></param>
+        public void Erro(string msg)
+        {
+            LoggerService.Service.Erro("CustomDriver", msg);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         public virtual void Init()
         {
-
+            
         }
 
         /// <summary>

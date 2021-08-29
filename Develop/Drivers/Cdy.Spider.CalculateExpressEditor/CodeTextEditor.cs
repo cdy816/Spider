@@ -93,6 +93,43 @@ namespace Cdy.Spider.CalculateExpressEditor
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public int HideFirstRowCount
+        {
+            get
+            {
+                return Options.HideFirstRowCount;
+            }
+            set
+            {
+                if (Options.HideFirstRowCount != value)
+                {
+                    Options.HideFirstRowCount = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int HideLastRowCount
+        {
+            get
+            {
+                return Options.HideLastRowCount;
+            }
+            set
+            {
+                if (Options.HideLastRowCount != value)
+                {
+                    Options.HideLastRowCount = value;
+                }
+            }
+        }
+
+
         public bool IsInsightWindowOpen => _insightWindow?.IsVisible == true;
 
         public void CloseInsightWindow()
