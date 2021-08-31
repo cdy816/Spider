@@ -76,6 +76,17 @@ namespace Cdy.Link.Tcp
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="username"></param>
+        /// <param name="pass"></param>
+        /// <returns></returns>
+        public bool CheckLogin(string username,string pass)
+        {
+            return username == UserName && pass == Password;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public bool RefreshId(long id)

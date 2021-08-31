@@ -132,6 +132,9 @@
   <data name="Port" xml:space="preserve">
     <value>端口</value>
   </data>
+  <data name="PushDataOnly" xml:space="preserve">
+    <value>单向数据传输</value>
+  </data>
   <data name="Read" xml:space="preserve">
     <value>只读</value>
   </data>

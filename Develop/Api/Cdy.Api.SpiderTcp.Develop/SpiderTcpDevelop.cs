@@ -7,7 +7,7 @@ namespace Cdy.Api.SpiderTcp.Develop
     {
 
         #region ... Variables  ...
-        private ApiData mData;
+        private TcpApiData mData;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -22,7 +22,7 @@ namespace Cdy.Api.SpiderTcp.Develop
         /// <summary>
         /// 
         /// </summary>
-        public override ApiData Data { get => mData; set => mData = value; }
+        public override ApiData Data { get => mData; set { mData = value as TcpApiData; } }
 
         /// <summary>
         /// 
@@ -39,7 +39,7 @@ namespace Cdy.Api.SpiderTcp.Develop
         /// <returns></returns>
         public override object Config()
         {
-            if(mData==null) mData = new ApiData() { Port = 10000, UserName = "Admin", Password = "Admin", ServerIp = "127.0.0.1", Type = ApiData.TransType.Timer, Circle = 2000 };
+            if(mData==null) mData = new TcpApiData() { Port = 10000, UserName = "Admin", Password = "Admin", ServerIp = "127.0.0.1", Type = ApiData.TransType.Timer, Circle = 2000 };
             return new ApiConfigViewModel() { Model = mData };
         }
 
@@ -49,7 +49,7 @@ namespace Cdy.Api.SpiderTcp.Develop
         /// <returns></returns>
         protected override ApiData CreatNewData()
         {
-            return new ApiData() { Port = 10000,UserName= "Admin", Password="Admin",ServerIp="127.0.0.1",Type = ApiData.TransType.Timer,Circle=2000 };
+            return new TcpApiData() { Port = 10000,UserName= "Admin", Password="Admin",ServerIp="127.0.0.1",Type = ApiData.TransType.Timer,Circle=2000 };
         }
 
         public override IApiDevelop NewApi()

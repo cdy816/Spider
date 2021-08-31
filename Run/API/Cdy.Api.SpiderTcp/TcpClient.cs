@@ -45,6 +45,8 @@ namespace Cdy.Api.SpiderTcp
         public const byte Write = 4;
         public const byte NoLogin = 9;
 
+        public const byte Update2 = 103;
+
 
         private ManualResetEvent mLoginEvent = new ManualResetEvent(false);
         private ManualResetEvent mRegistorEvent = new ManualResetEvent(false);
@@ -70,6 +72,16 @@ namespace Cdy.Api.SpiderTcp
                 return mLoginId > 0;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string  Password { get; set; }
 
         #endregion ...Properties...
 
@@ -235,6 +247,21 @@ namespace Cdy.Api.SpiderTcp
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="deviceCount"></param>
+        /// <param name="tagcount"></param>
+        /// <param name="tagdatasize"></param>
+        /// <returns></returns>
+        public Cheetah.ByteBuffer AllowBufer2(int deviceCount, int tagcount, int tagdatasize)
+        {
+            var re = this.MemoryPool.Alloc(2 +  4 + tagcount * tagdatasize + (64 + 4) * deviceCount + UserName.Length * 2 + 4 + Password.Length * 2 + 4);
+            re.WriteIndex = 2 + UserName.Length * 2 + 4 + Password.Length * 2 + 4;
+            return re;
+        }
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="datas"></param>
         /// <returns></returns>
         public bool UpdateValue(Cheetah.ByteBuffer datas)
@@ -242,6 +269,21 @@ namespace Cdy.Api.SpiderTcp
             datas.WriteByte(0,RealValueFun);
             datas.WriteByte(1, Update);
             datas.WriteLong(2, mLoginId);
+            SendData(datas);
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        public bool UpdateValue2(Cheetah.ByteBuffer datas)
+        {
+            datas.WriteByte(0, RealValueFun);
+            datas.WriteByte(1, Update2);
+            datas.WriteString(2,UserName,Encoding.Unicode);
+            datas.WriteString(2+UserName.Length*2+4,Password,Encoding.Unicode);
             SendData(datas);
             return true;
         }

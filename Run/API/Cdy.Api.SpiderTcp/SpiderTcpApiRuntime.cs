@@ -13,7 +13,7 @@ namespace Cdy.Api.SpiderTcp
     {
 
         #region ... Variables  ...
-        private ApiData mData;
+        private TcpApiData mData;
 
         private Dictionary<string, Dictionary<Tagbase, bool>> mChangedTags = new Dictionary<string, Dictionary<Tagbase, bool>>();
 
@@ -56,7 +56,7 @@ namespace Cdy.Api.SpiderTcp
 
         public override void Load(XElement xe)
         {
-            mData = new ApiData();
+            mData = new TcpApiData();
             mData.LoadFromXML(xe);
         }
 
@@ -101,7 +101,7 @@ namespace Cdy.Api.SpiderTcp
                 });
             }
 
-            mClient = new TcpClient() { Port = mData.Port, ServerIp = mData.ServerIp };
+            mClient = new TcpClient() { Port = mData.Port, ServerIp = mData.ServerIp,UserName=mData.UserName,Password=mData.Password };
                       
         }
 
@@ -113,40 +113,48 @@ namespace Cdy.Api.SpiderTcp
             
             while (!mIsClosed)
             {
-                if (!mClient.IsLogin)
+                if (mData.PushDataOnly)
                 {
-                    if (mClient.IsConnected)
-                    {
-                        Login();
-                    }
-                    else
-                    {
-                        lock (mChangedTags)
-                        {
-                            if (mCallBackTags.Count > 100)
-                                mCallBackTags.Clear();
-                        }
-                    }
-                    Thread.Sleep(2000);
+                    UpdateChanged2();
+                    Thread.Sleep(mData.Circle);
                 }
                 else
                 {
-                    if (mIsNeedInited)
+                    if (!mClient.IsLogin)
                     {
-                        UpdateAllValue();
+                        if (mClient.IsConnected)
+                        {
+                            Login();
+                        }
+                        else
+                        {
+                            lock (mChangedTags)
+                            {
+                                if (mCallBackTags.Count > 100)
+                                    mCallBackTags.Clear();
+                            }
+                        }
+                        Thread.Sleep(2000);
                     }
                     else
                     {
-                        //如果是定时模式
-                        UpdateChanged();
-                    }
-                    if((DateTime.Now - mLastLoginTime).TotalSeconds>4*60)
-                    {
-                        mClient.Hart();
-                        mLastLoginTime = DateTime.Now;
-                    }
-                    Thread.Sleep(mData.Circle);
+                        if (mIsNeedInited)
+                        {
+                            UpdateAllValue();
+                        }
+                        else
+                        {
+                            //如果是定时模式
+                            UpdateChanged();
+                        }
+                        if ((DateTime.Now - mLastLoginTime).TotalSeconds > 4 * 60)
+                        {
+                            mClient.Hart();
+                            mLastLoginTime = DateTime.Now;
+                        }
+                        Thread.Sleep(mData.Circle);
 
+                    }
                 }
             }
         }
@@ -207,6 +215,40 @@ namespace Cdy.Api.SpiderTcp
 
             }
         }
+
+
+        //private void UpdateAllValue2()
+        //{
+        //    try
+        //    {
+        //        //UpdateDataFun fun = new UpdateDataFun();
+        //        var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+        //        int vcount = 0;
+
+        //        foreach (var vv in manager.ListDevice())
+        //        {
+        //            vcount += vv.ListTags().Count;
+        //        }
+        //        var dcount = manager.ListDevice().Count;
+        //        var vbuffer = mClient.AllowBufer2(dcount, vcount, 128);
+        //        vbuffer.Write(dcount);
+        //        foreach (var vv in manager.ListDevice())
+        //        {
+        //            vbuffer.Write(vv.Name);
+        //            vbuffer.Write(vv.ListTags().Count);
+        //            foreach (var vvv in vv.ListTags())
+        //            {
+        //                FillMemory(vbuffer, vvv);
+        //            }
+        //        }
+        //        mClient.UpdateValue2(vbuffer);
+        //        mIsNeedInited = false;
+        //    }
+        //    catch
+        //    {
+
+        //    }
+        //}
 
         /// <summary>
         /// 
@@ -324,6 +366,55 @@ namespace Cdy.Api.SpiderTcp
                 mClient.UpdateValue(vbuffer);
             }
             
+        }
+
+
+        private void UpdateChanged2()
+        {
+            //UpdateDataFun fun = new UpdateDataFun();
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+            var dcount = manager.ListDevice().Count;
+            int vcount = 0;
+
+            Dictionary<string, List<Tagbase>> mSends = new Dictionary<string, List<Tagbase>>();
+            lock (mChangedTags)
+            {
+                foreach (var vv in mChangedTags)
+                {
+                    foreach (var vvvv in vv.Value.Where(e => e.Value))
+                    {
+                        if (mSends.ContainsKey(vv.Key))
+                        {
+                            mSends[vv.Key].Add(vvvv.Key);
+                        }
+                        else
+                        {
+                            mSends.Add(vv.Key, new List<Tagbase>() { vvvv.Key });
+                        }
+                        mChangedTags[vv.Key][vvvv.Key] = false;
+                        vcount++;
+                    }
+                }
+            }
+
+            if (mSends.Count > 0)
+            {
+                var vbuffer = mClient.AllowBufer2(dcount, vcount, 128);
+                vbuffer.Write(mSends.Count);
+                foreach (var vv in mSends)
+                {
+                    string dev = vv.Key;
+                    vbuffer.Write(vv.Key);
+                    vbuffer.Write(vv.Value.Count);
+
+                    foreach (var vvv in vv.Value)
+                    {
+                        FillMemory(vbuffer, vvv);
+                    }
+                }
+                mClient.UpdateValue2(vbuffer);
+            }
+
         }
 
 

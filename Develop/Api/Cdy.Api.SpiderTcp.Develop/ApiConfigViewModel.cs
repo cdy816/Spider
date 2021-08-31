@@ -24,7 +24,7 @@ namespace Cdy.Api.SpiderTcp.Develop
 
         #region ... Variables  ...
         
-        private ApiData mModel;
+        private TcpApiData mModel;
 
         private List<string> mTransTypes;
 
@@ -45,7 +45,7 @@ namespace Cdy.Api.SpiderTcp.Develop
         /// <summary>
         /// 
         /// </summary>
-        public ApiData Model
+        public TcpApiData Model
         {
             get
             {
@@ -206,6 +206,25 @@ namespace Cdy.Api.SpiderTcp.Develop
             get
             {
                 return Model.Type == ApiData.TransType.Timer ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// 单向数据推送
+        /// </summary>
+        public bool PushDataOnly
+        {
+            get
+            {
+                return mModel.PushDataOnly;
+            }
+            set
+            {
+                if (mModel.PushDataOnly != value)
+                {
+                    mModel.PushDataOnly = value;
+                    OnPropertyChanged("PushDataOnly");
+                }
             }
         }
 

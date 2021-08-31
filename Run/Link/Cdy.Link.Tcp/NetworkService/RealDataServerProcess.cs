@@ -27,6 +27,8 @@ namespace Cdy.Link.Tcp
         public const byte Write = 4;
         public const byte NoLogin = 9;
 
+        public const byte Update2 = 103;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -79,41 +81,62 @@ namespace Cdy.Link.Tcp
             }
 
             byte cmd = data.ReadByte();
-            long id = data.ReadLong();
 
-            if(SecurityService.Service.CheckId(id))
+            if (cmd > 100)
             {
-                switch (cmd)
+                string user = data.ReadString();
+                string pass = data.ReadString();
+                if (SecurityService.Service.CheckLogin(user, pass))
                 {
-                    case Registor:
-                        string sdevice = data.ReadString();
-                        if(!string.IsNullOrEmpty(sdevice))
-                        {
-                            string[] devices = sdevice.Split(new char[] { ',' });
-                            lock (mMaps)
-                            {
-                                if (!mMaps.ContainsKey(client))
-                                {
-                                    mMaps.Add(client, devices);
-                                }
-                                else
-                                {
-                                    mMaps[client] = devices;
-                                }
-                            }
-                        }
-                        Parent.AsyncCallback(client,ToByteBuffer(FunId, Registor, 1));
-                        break;
-                    case Update:
-                        UpdateData(client, data);
-                        break;
+                    switch (cmd)
+                    {
+                        case Update2:
+                            UpdateData(client, data);
+                            break;
+                    }
                 }
-
+                else
+                {
+                    Console.WriteLine("无效登录:" + client + " " + user);
+                }
             }
             else
             {
-                Parent.AsyncCallback(client, ToByteBuffer(FunId, NoLogin, 0));
-                Console.WriteLine("无效登录:"+client+" "+id);
+                long id = data.ReadLong();
+                if (SecurityService.Service.CheckId(id))
+                {
+                    switch (cmd)
+                    {
+                        case Registor:
+                            string sdevice = data.ReadString();
+                            if (!string.IsNullOrEmpty(sdevice))
+                            {
+                                string[] devices = sdevice.Split(new char[] { ',' });
+                                lock (mMaps)
+                                {
+                                    if (!mMaps.ContainsKey(client))
+                                    {
+                                        mMaps.Add(client, devices);
+                                    }
+                                    else
+                                    {
+                                        mMaps[client] = devices;
+                                    }
+                                }
+                            }
+                            Parent.AsyncCallback(client, ToByteBuffer(FunId, Registor, 1));
+                            break;
+                        case Update:
+                            UpdateData(client, data);
+                            break;
+                    }
+
+                }
+                else
+                {
+                    Parent.AsyncCallback(client, ToByteBuffer(FunId, NoLogin, 0));
+                    Console.WriteLine("无效登录:" + client + " " + id);
+                }
             }
             base.ProcessSingleData(client, data);
         }
@@ -196,7 +219,7 @@ namespace Cdy.Link.Tcp
 
                 Service.UpdateValue(devicename, mValues);
             }
-            Parent.AsyncCallback(clientId, ToByteBuffer(FunId, Update, 1));
+            //Parent.AsyncCallback(clientId, ToByteBuffer(FunId, Update, 1));
         }
 
 

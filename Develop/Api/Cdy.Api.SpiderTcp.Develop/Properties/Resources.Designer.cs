@@ -115,6 +115,15 @@ namespace Cdy.Api.SpiderTcp.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 PushDataOnly 的本地化字符串。
+        /// </summary>
+        internal static string PushDataOnly {
+            get {
+                return ResourceManager.GetString("PushDataOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Read 的本地化字符串。
         /// </summary>
         internal static string Read {

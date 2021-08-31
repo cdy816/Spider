@@ -47,5 +47,7 @@
         <ComboBox Height="26" Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding TransTypes}" Margin="10,0,0,0" Grid.Row="4" VerticalAlignment="Center" Width="266" SelectedIndex="{Binding TransType,Mode=TwoWay}"/>
         <Label  Visibility="{Binding CircleVisiable}" Foreground="{DynamicResource Window.Forground}" Grid.Row="5" Content="ms" HorizontalAlignment="Left" Margin="287,0,0,0" VerticalAlignment="Center" Grid.Column="1"/>
 
+
+        <CheckBox IsChecked="{Binding PushDataOnly,Mode=TwoWay}" Content="{local:ResMarker PushDataOnly}" Background="Transparent" Foreground="{DynamicResource Window.Forground}" Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" />
     </Grid>
 </UserControl>

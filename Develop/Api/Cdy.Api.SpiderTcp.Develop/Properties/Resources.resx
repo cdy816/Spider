@@ -135,6 +135,9 @@
   <data name="Port" xml:space="preserve">
     <value>Port</value>
   </data>
+  <data name="PushDataOnly" xml:space="preserve">
+    <value>PushDataOnly</value>
+  </data>
   <data name="Read" xml:space="preserve">
     <value>Read</value>
   </data>

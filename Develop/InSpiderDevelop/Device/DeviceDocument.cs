@@ -171,11 +171,11 @@ namespace InSpiderDevelop
         /// <param name="newName"></param>
         public bool ReName(IDeviceDevelop Device, string newName)
         {
-            if (mDevices.ContainsKey(Device.Name))
+            if (mDevices.ContainsKey(Device.FullName))
             {
-                mDevices.Remove(Device.Name);
+                mDevices.Remove(Device.FullName);
                 Device.Name = newName;
-                mDevices.Add(Device.Name, Device);
+                mDevices.Add(Device.FullName, Device);
                 return true;
             }
             return false;

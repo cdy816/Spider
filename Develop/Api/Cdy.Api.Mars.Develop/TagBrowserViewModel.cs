@@ -785,7 +785,13 @@ namespace Cdy.Api.Mars
                     if (mCurrentPageIndex >= mLastPageCount) return;
 
                     mCurrentPageIndex++;
-                    var tags = mHelper.GetTagByGroup(CurrentDatabase, CurrentGroup != null ? CurrentGroup.FullName : "", mCurrentPageIndex, out mLastPageCount, mFilters);
+                    string group = CurrentGroup != null ? CurrentGroup.FullName.Replace(CurrentDatabase + ".", "") : "";
+                    if (group == CurrentDatabase)
+                    {
+                        group = "";
+                    }
+
+                    var tags = mHelper.GetTagByGroup(CurrentDatabase, group, mCurrentPageIndex, out mLastPageCount, mFilters);
                     if (tags != null && tags.Count > 0)
                     {
                         foreach (var vv in tags)
