@@ -192,6 +192,21 @@
             </summary>
             <param name="msg"></param>
         </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.QueryDataByString(System.String,System.Text.Encoding)">
+            <summary>
+            通过字符串请求数据
+            </summary>
+            <param name="value">请求字符串</param>
+            <param name="encoding">编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.QueryDataByBytes(System.Byte[])">
+            <summary>
+            通过字节数组请求数据
+            </summary>
+            <param name="value">请求字节数组</param>
+            <returns></returns>
+        </member>
         <member name="M:Cdy.Spider.CustomDriver.CustomImp.Init">
             <summary>
             
@@ -217,6 +232,40 @@
             <param name="deviceInfo"></param>
             <param name="value"></param>
             <param name="valueType"></param>
+        </member>
+        <member name="T:Cdy.Spider.CustomDriver.ImpExtends">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.JsonStringToDictionaryObject(System.String)">
+            <summary>
+            Json 字符串转换成字典对象
+            Json 属性的值为Json 对象时,字典的的值同样为字典对象
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.JTokenToObject(Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.JsonStringToObject``1(System.String)">
+            <summary>
+            Json 字符串转换成对象
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToJsonString(System.Object)">
+            <summary>
+            将对象转化成Json 字符串
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
         </member>
         <member name="T:Cdy.Spider.CustomDriverData">
             <summary>

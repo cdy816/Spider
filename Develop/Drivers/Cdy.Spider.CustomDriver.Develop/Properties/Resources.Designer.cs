@@ -61,6 +61,15 @@ namespace Cdy.Spider.CustomDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Apply 的本地化字符串。
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 InitExpress 的本地化字符串。
         /// </summary>
         internal static string InitExpress {
@@ -106,6 +115,24 @@ namespace Cdy.Spider.CustomDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 SaveAsTemplate 的本地化字符串。
+        /// </summary>
+        internal static string SaveAsTemplate {
+            get {
+                return ResourceManager.GetString("SaveAsTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save as template sucuessful! 的本地化字符串。
+        /// </summary>
+        internal static string SaveAsTemplateSucessfull {
+            get {
+                return ResourceManager.GetString("SaveAsTemplateSucessfull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ScanCircle 的本地化字符串。
         /// </summary>
         internal static string ScanCircle {
@@ -120,6 +147,24 @@ namespace Cdy.Spider.CustomDriver.Develop.Properties {
         internal static string ScriptCheck {
             get {
                 return ResourceManager.GetString("ScriptCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Template 的本地化字符串。
+        /// </summary>
+        internal static string Template {
+            get {
+                return ResourceManager.GetString("Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Template Name 的本地化字符串。
+        /// </summary>
+        internal static string TemplateFileName {
+            get {
+                return ResourceManager.GetString("TemplateFileName", resourceCulture);
             }
         }
         

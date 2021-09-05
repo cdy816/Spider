@@ -102,7 +102,6 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private List<string> mSupportChannels = new List<string>();
 
-
         private IDriverDevelop mDriver;
 
         private int mSelectIndex=1;
@@ -867,6 +866,18 @@ namespace InSpiderDevelopWindow.ViewModel
                 }
             }
         }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string[] RegistorList
+        {
+            get
+            {
+                return TagViewModel.mRegistorList;
+            }
+        }
+
 
 
         #endregion ...Properties...

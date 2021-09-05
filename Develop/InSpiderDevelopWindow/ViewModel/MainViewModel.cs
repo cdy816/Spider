@@ -49,6 +49,8 @@ namespace InSpiderDevelopWindow
 
         private ICommand mPasteCommand;
 
+        private ICommand mReNameCommand;
+
         private TreeItemViewModel mCurrentSelectTreeItem;
 
         private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mItems = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
@@ -93,7 +95,24 @@ namespace InSpiderDevelopWindow
 
         #region ... Properties ...
 
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ReNameCommand
+        {
+            get
+            {
+                if(mReNameCommand==null)
+                {
+                    mReNameCommand = new RelayCommand(() => {
+                        CurrentSelectTreeItem.ReNameCommand.Execute(null);
+                    },()=> { return CurrentSelectTreeItem != null && CurrentSelectTreeItem.CanRemove(); });
+                }
+                return mReNameCommand;
+            }
+        }
+
+
         /// <summary>
         /// 
         /// </summary>

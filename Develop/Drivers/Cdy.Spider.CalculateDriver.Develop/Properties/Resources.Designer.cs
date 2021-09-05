@@ -61,6 +61,15 @@ namespace Cdy.Spider.CalculateDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Command 的本地化字符串。
+        /// </summary>
+        internal static string Command {
+            get {
+                return ResourceManager.GetString("Command", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Expresse 的本地化字符串。
         /// </summary>
         internal static string Expresse {
@@ -75,6 +84,15 @@ namespace Cdy.Spider.CalculateDriver.Develop.Properties {
         internal static string ScanCircle {
             get {
                 return ResourceManager.GetString("ScanCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Script 的本地化字符串。
+        /// </summary>
+        internal static string Script {
+            get {
+                return ResourceManager.GetString("Script", resourceCulture);
             }
         }
     }

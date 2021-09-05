@@ -109,7 +109,7 @@
 
 
                             <CheckBox Background="Transparent" Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker Registor}" IsChecked="{Binding RegistorFilterEnable}" HorizontalAlignment="Left" Grid.Column="7" Grid.Row="0" VerticalAlignment="Center" Margin="10,0" />
-                            <ComboBox VerticalAlignment="Center" HorizontalAlignment="Left" IsEditable="False" Grid.Row="0" Grid.Column="8" Margin="10,0" Width="200" IsEnabled="{Binding RegistorFilterEnable}" BorderThickness="1" ItemsSource="{Binding RegistorList}" Text="{Binding FilterRegistorName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                            <ComboBox VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Row="0" Grid.Column="8" Margin="10,0" Width="200" IsEnabled="{Binding RegistorFilterEnable}" BorderThickness="1" IsEditable="True" ItemsSource="{Binding RegistorList}" Text="{Binding FilterRegistorName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
 
                             <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="8" HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <ToggleButton Style="{DynamicResource ToggleButtonStyle1}" Width="24" Margin="5,0" BorderThickness="0" Background="Transparent" IsChecked="{Binding RowSelectMode,Mode=TwoWay}" Grid.Row="1" VerticalAlignment="Center">

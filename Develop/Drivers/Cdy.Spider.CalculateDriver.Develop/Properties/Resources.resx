@@ -117,10 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Command" xml:space="preserve">
+    <value>Command</value>
+  </data>
   <data name="Expresse" xml:space="preserve">
     <value>Expresse</value>
   </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>ScanCircle</value>
+  </data>
+  <data name="Script" xml:space="preserve">
+    <value>Script</value>
   </data>
 </root>

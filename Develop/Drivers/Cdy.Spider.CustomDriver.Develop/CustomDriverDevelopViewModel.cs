@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace Cdy.Spider.CustomDriver.Develop
 {
@@ -135,10 +136,15 @@ $WriteValue$
         private ICommand mOnReceiveDataCompileCommand;
         private ICommand mOnSetValueToDeviceCommand;
         private ICommand mOnTimerProcessCommand;
+        private ICommand mSaveAsTemplateCommand;
 
         public delegate void CompileMessage(object sender, string msg,int state);
 
         public event CompileMessage CompileMessageEvent;
+
+        private string mCurrentTemplate = "";
+
+        private ICommand mApplyCommand;
 
         #endregion ...Variables...
 
@@ -319,6 +325,76 @@ $WriteValue$
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> CustomTemplates { get; set; }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string CurrentTemplate
+        {
+            get
+            {
+                return mCurrentTemplate;
+            }
+            set
+            {
+                if (mCurrentTemplate != value)
+                {
+                    mCurrentTemplate = value;
+                    OnPropertyChanged("CurrentTemplate");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ApplyCommand
+        {
+            get
+            {
+                if (mApplyCommand == null)
+                {
+                    mApplyCommand = new RelayCommand(() =>
+                    {
+                        LoadTemplate(CurrentTemplate);
+                    }, () => { return !string.IsNullOrEmpty(CurrentTemplate); });
+                }
+                return mApplyCommand;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand SaveAsTemplateCommand
+        {
+            get
+            {
+                if(mSaveAsTemplateCommand==null)
+                {
+                    mSaveAsTemplateCommand = new RelayCommand(() => {
+                        SaveAsFileDialogViewModel sfd = new SaveAsFileDialogViewModel();
+                        if(sfd.ShowDialog().Value)
+                        {
+                            SaveAsTemplate(sfd.FileName + ".xml");
+
+                            if (CustomTemplates == null) CustomTemplates = new List<string>();
+                            CustomTemplates.Add(sfd.FileName + ".xml");
+                            OnPropertyChanged("CustomTemplates");
+
+                            System.Windows.MessageBox.Show(Res.Get("SaveAsTemplateSucessfull"));
+                        }
+                    });
+                }
+                return mSaveAsTemplateCommand;
+            }
+        }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -346,6 +422,8 @@ $WriteValue$
                 MetadataReference.CreateFromFile(typeof(System.MemoryExtensions).Assembly.Location)
                 //MetadataReference.CreateFromFile(typeof(Tag).Assembly.Location)
             }), new string[] { "Cdy.Spider" }, ass.Select(e => e.Location).ToArray());
+
+            ListTemplate();
         }
 
         /// <summary>
@@ -363,8 +441,6 @@ $WriteValue$
             TimerProcessExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnTimerProcessExpress);
             OnReceiveDataExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnReceiveDataExpress);
             OnSetValueToDeviceExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnSetValueToDeviceExpress);
-
-           
 
         }
 
@@ -480,6 +556,106 @@ $WriteValue$
                 CompileMessageEvent?.Invoke(this, sb.ToString(),iserro?2:0);
             }
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sname"></param>
+        private void SaveAsTemplate(string sname)
+        {
+            var ss = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "CustomTemplate", sname);
+            XElement xx = new XElement("Template");
+            XElement xe = new XElement("InitExpress");
+            xe.Add(new XCData(Model.VariableExpress));
+            xx.Add(xe);
+
+            xe = new XElement("TimerProcessExpress");
+            xe.Add(new XCData(Model.OnTimerFunExpress));
+            xx.Add(xe);
+
+            xe = new XElement("OnReceiveDataExpress");
+            xe.Add(new XCData(Model.OnReceiveDataFunExpress));
+            xx.Add(xe);
+
+            xe = new XElement("OnSetValueToDeviceExpress");
+            xe.Add(new XCData(Model.OnSetTagValueToDeviceFunExpress));
+            xx.Add(xe);
+
+            xx.Save(ss);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sfile"></param>
+        private void LoadTemplate(string sfile)
+        {
+            var ss = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "CustomTemplate", sfile);
+            if(System.IO.File.Exists(ss))
+            {
+                try
+                {
+                    string initexpress = "",timerprocessexress="",onreceivedataexpress="",onsetvaluetodeviceexpress="";
+                    var xe = XElement.Load(ss);
+                    if(xe.Element("InitExpress")!=null)
+                    {
+                        initexpress = xe.Element("InitExpress").Value;
+                    }
+
+                    if (xe.Element("TimerProcessExpress") != null)
+                    {
+                        timerprocessexress = xe.Element("TimerProcessExpress").Value;
+                    }
+
+                    if (xe.Element("OnReceiveDataExpress") != null)
+                    {
+                        onreceivedataexpress = xe.Element("OnReceiveDataExpress").Value;
+                    }
+
+                    if (xe.Element("OnSetValueToDeviceExpress") != null)
+                    {
+                        onsetvaluetodeviceexpress = xe.Element("OnSetValueToDeviceExpress").Value;
+                    }
+
+                    mModel.VariableExpress = initexpress;
+                    mModel.OnReceiveDataFunExpress = onreceivedataexpress;
+                    mModel.OnSetTagValueToDeviceFunExpress = onsetvaluetodeviceexpress;
+                    mModel.OnTimerFunExpress = timerprocessexress;
+
+                    mOnVariableExpresse = mOnVariableDefineTemplate.Replace("$VariableBody$", mModel.VariableExpress);
+                    mOnReceiveDataExpress = mOnReceiveDataTemplate.Replace("$OnReceiveDataBody$", mModel.OnReceiveDataFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", "").Replace("\n", ""));
+                    mOnSetValueToDeviceExpress = mOnSetValueToDeviceTemplate.Replace("$WriteValue$", mModel.OnSetTagValueToDeviceFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", "").Replace("\n", ""));
+                    mOnTimerProcessExpress = mOnProcessTimerElapsedTemplate.Replace("$ProcessTimerElapsed$", mModel.OnTimerFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", "").Replace("\n", ""));
+
+                    InitExpressEditor.Text = mOnVariableExpresse;
+                    TimerProcessExpressEditor.Text = mOnTimerProcessExpress;
+                    OnReceiveDataExpressEditor.Text = mOnReceiveDataExpress;
+                    OnSetValueToDeviceExpressEditor.Text = mOnSetValueToDeviceExpress;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ListTemplate()
+        {
+            List<string> ltmp = new List<string>();
+            string stmp = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "CustomTemplate");
+            if(!System.IO.Directory.Exists(stmp))
+            {
+                System.IO.Directory.CreateDirectory(stmp);
+            }
+            foreach(var vv in System.IO.Directory.EnumerateFiles(stmp))
+            {
+                ltmp.Add(System.IO.Path.GetFileName(vv));
+            }
+            CustomTemplates = ltmp;
         }
 
         #endregion ...Methods...

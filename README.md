@@ -36,6 +36,7 @@ cross platform(Window、Linux、Iot) equipment Internet of things collection pla
 1. Spider supports the development of multiple projects, and each project is a set of independent physical device acquisition units.
 2. Multiple projects can be cascaded in a tree structure to support data aggregation
 3. Supports computational devices and variables that allow users to implement specific engineering logic by embedding their own c# script code (provides direct access to standard or customized .net class libraries).
+4. Resolution of device protocol through embedded c# script (provides direct access to standard or customized .net class libraries).
 
 ## List of supporting protocols
 1. MQTT

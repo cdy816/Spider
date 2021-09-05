@@ -225,6 +225,16 @@
             
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.Commands">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.Scripts">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.ExpressEditor">
             <summary>
             
@@ -235,11 +245,140 @@
             
             </summary>
         </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.Init">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.LoadFunction">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.LoadScript">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.GetExpressResult">
             <summary>
             
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.ScriptItem">
+            <summary>
+            脚本片段
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptItem.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptItem.Desc">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptItem.Body">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptItem.InsertCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ScriptItem.LoadFromXML(System.Xml.Linq.XElement)">
+            <summary>
+            
+            </summary>
+            <param name="xe"></param>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.CommandItem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.Function">
+            <summary>
+            函数定义
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.InsertCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CommandItem.LoadFromXML(System.Xml.Linq.XElement)">
+            <summary>
+            
+            </summary>
+            <param name="xe"></param>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.Function">
+            <summary>
+            函数
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Function.Body">
+            <summary>
+            函数体
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Function.Parameters">
+            <summary>
+            参数
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.Function.LoadFromXML(System.Xml.Linq.XElement)">
+            <summary>
+            
+            </summary>
+            <param name="xe"></param>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.Parameter">
+            <summary>
+            参数
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Parameter.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Parameter.Type">
+            <summary>
+            类型
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Parameter.Desc">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Parameter.Value">
+            <summary>
+            配置的值
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.Parameter.LoadFromXML(System.Xml.Linq.XElement)">
+            <summary>
+            
+            </summary>
+            <param name="xe"></param>
         </member>
         <member name="T:Cdy.Spider.CalculateDriver.Develop.Properties.Resources">
             <summary>
@@ -257,6 +396,11 @@
               使用此强类型资源类的所有资源查找执行重写。
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Command">
+            <summary>
+              查找类似 Command 的本地化字符串。
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Expresse">
             <summary>
               查找类似 Expresse 的本地化字符串。
@@ -265,6 +409,11 @@
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.ScanCircle">
             <summary>
               查找类似 ScanCircle 的本地化字符串。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Script">
+            <summary>
+              查找类似 Script 的本地化字符串。
             </summary>
         </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.UpdateRegistorCallBack">

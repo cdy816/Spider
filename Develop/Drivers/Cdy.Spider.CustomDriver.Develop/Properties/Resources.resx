@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="InitExpress" xml:space="preserve">
     <value>InitExpress</value>
   </data>
@@ -132,11 +135,23 @@
   <data name="Protocol" xml:space="preserve">
     <value>Protocol</value>
   </data>
+  <data name="SaveAsTemplate" xml:space="preserve">
+    <value>SaveAsTemplate</value>
+  </data>
+  <data name="SaveAsTemplateSucessfull" xml:space="preserve">
+    <value>Save as template sucuessful!</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>ScanCircle</value>
   </data>
   <data name="ScriptCheck" xml:space="preserve">
     <value>ScriptCheck</value>
+  </data>
+  <data name="Template" xml:space="preserve">
+    <value>Template</value>
+  </data>
+  <data name="TemplateFileName" xml:space="preserve">
+    <value>Template Name</value>
   </data>
   <data name="VariableDefine" xml:space="preserve">
     <value>Globel variable define</value>

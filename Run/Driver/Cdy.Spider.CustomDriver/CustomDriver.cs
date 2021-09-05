@@ -298,7 +298,7 @@ $WriteValue$
         /// <summary>
         /// 
         /// </summary>
-        public CustomDriver Owner { get; set; }
+        internal CustomDriver Owner { get; set; }
 
         /// <summary>
         /// 通信对象
@@ -435,7 +435,7 @@ $WriteValue$
         /// 打印日志 Info
         /// </summary>
         /// <param name="msg"></param>
-        public void Info(string msg)
+        protected void Info(string msg)
         {
             LoggerService.Service.Info("CustomDriver", msg);
         }
@@ -444,9 +444,38 @@ $WriteValue$
         /// 打印日志 Erro
         /// </summary>
         /// <param name="msg"></param>
-        public void Erro(string msg)
+        protected void Erro(string msg)
         {
             LoggerService.Service.Erro("CustomDriver", msg);
+        }
+
+        /// <summary>
+        /// 通过字符串请求数据
+        /// </summary>
+        /// <param name="value">请求字符串</param>
+        /// <param name="encoding">编码</param>
+        /// <returns></returns>
+        protected string QueryDataByString(string value,Encoding encoding)
+        {
+            var re = Comm.SendAndWait(encoding.GetBytes(value));
+            if(re!=null)
+            {
+                return encoding.GetString(re);
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 通过字节数组请求数据
+        /// </summary>
+        /// <param name="value">请求字节数组</param>
+        /// <returns></returns>
+        protected byte[] QueryDataByBytes(byte[] value)
+        {
+            return Comm.SendAndWait(value);
         }
 
         /// <summary>
@@ -487,4 +516,77 @@ $WriteValue$
 
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class ImpExtends
+    {
+        /// <summary>
+        /// Json 字符串转换成字典对象
+        /// Json 属性的值为Json 对象时,字典的的值同样为字典对象
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Dictionary<string, object> JsonStringToDictionaryObject(this string value)
+        {
+            Dictionary<string, object> re = new Dictionary<string, object>();
+            var objs = Newtonsoft.Json.Linq.JObject.Parse(value);
+            foreach (var vv in objs)
+            {
+                re.Add(vv.Key, JTokenToObject(vv.Value));
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private static object JTokenToObject(Newtonsoft.Json.Linq.JToken value)
+        {
+            if (value is JProperty)
+            {
+                var jval = ((value as JProperty).Value as JValue);
+                if (jval.Value is byte[] || jval.Value == null)
+                    return jval.Value;
+                else
+                {
+                    return jval.Value.ToString();
+                }
+            }
+            else if (value is JObject)
+            {
+                Dictionary<string, object> re = new Dictionary<string, object>();
+                foreach (var vv in (value as JObject))
+                {
+                    re.Add(vv.Key, JTokenToObject(vv.Value));
+                }
+                return re;
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// Json 字符串转换成对象
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static T JsonStringToObject<T>(this string value)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(value);
+        }
+
+        /// <summary>
+        /// 将对象转化成Json 字符串
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string ToJsonString(this object value)
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(value);
+        }
+    }
+
 }
