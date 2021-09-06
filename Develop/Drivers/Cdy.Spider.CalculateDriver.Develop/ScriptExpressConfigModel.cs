@@ -8,6 +8,9 @@ using System.Windows.Input;
 
 namespace Cdy.Spider.CalculateDriver.Develop
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ScriptExpressConfigModel : ViewModelBase, IRegistorConfigModel
     {
         private ICommand mExpressionEditCommand;
@@ -93,11 +96,18 @@ namespace Cdy.Spider.CalculateDriver.Develop
             return new List<string>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registor"></param>
         public void FreshRegistor(string registor)
         {
             Expresstion = registor;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void OnDisActived()
         {
             UpdateRegistor();

@@ -120,6 +120,9 @@
   <data name="Command" xml:space="preserve">
     <value>函数</value>
   </data>
+  <data name="DoubleClickToInsert" xml:space="preserve">
+    <value>双击插入代码</value>
+  </data>
   <data name="Expresse" xml:space="preserve">
     <value>表达式</value>
   </data>

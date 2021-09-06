@@ -84,7 +84,7 @@ namespace Cdy.Spider
         }
 
         /// <summary>
-        /// 对数值进行请平均值
+        /// 对一组数值进行求平均值
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
@@ -94,7 +94,7 @@ namespace Cdy.Spider
         }
 
         /// <summary>
-        /// 对数值进行取最大值
+        /// 对一组数值取最大值
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
@@ -104,7 +104,7 @@ namespace Cdy.Spider
         }
 
         /// <summary>
-        /// 对数值进行取最小值
+        /// 对一组数值取最小值
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>

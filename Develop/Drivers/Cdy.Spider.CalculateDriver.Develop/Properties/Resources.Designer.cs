@@ -70,6 +70,15 @@ namespace Cdy.Spider.CalculateDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 DoubleClick to insert 的本地化字符串。
+        /// </summary>
+        internal static string DoubleClickToInsert {
+            get {
+                return ResourceManager.GetString("DoubleClickToInsert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Expresse 的本地化字符串。
         /// </summary>
         internal static string Expresse {

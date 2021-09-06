@@ -26,6 +26,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
 
         private System.Collections.ObjectModel.ObservableCollection<ScriptItem> mScripts = new System.Collections.ObjectModel.ObservableCollection<ScriptItem>();
 
+        private CommandItem mCurrentCommand;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -39,7 +40,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
         public ExpressionEditViewModel()
         {
             Title = Res.Get("Expresse");
-            DefaultWidth = 800;
+            DefaultWidth = 1020;
             DefaultHeight = 600;
             Init();
         }
@@ -113,9 +114,41 @@ namespace Cdy.Spider.CalculateDriver.Develop
             }
         }
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public CommandItem CurrentCommand
+        {
+            get
+            {
+                return mCurrentCommand;
+            }
+            set
+            {
+                if (mCurrentCommand != value)
+                {
+                    if (mCurrentCommand != null) mCurrentCommand.IsSelected = false;
+                    mCurrentCommand = value;
+                    OnPropertyChanged("CurrentCommand");
+                }
+            }
+        }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="exp"></param>
+        public void InsertTextDelegate(string exp)
+        {
+            ExpressEditor.SelectedText = exp;
+            ExpressEditor.SelectionLength = 0;
+            ExpressEditor.SelectionStart += (exp.Length);
+        }
 
         /// <summary>
         /// 
@@ -132,13 +165,13 @@ namespace Cdy.Spider.CalculateDriver.Develop
         private void LoadFunction()
         {
             mCommands.Clear();
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Command.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Command.xml");
             if(System.IO.File.Exists(sfile))
             {
-                XElement xe = XElement.Load(sfile);
-                foreach(var vv in xe.Elements())
+                XDocument xe = XDocument.Load(sfile);
+                foreach(var vv in (xe.FirstNode as XElement).Elements())
                 {
-                    mCommands.Add(new CommandItem().LoadFromXML(vv));
+                    mCommands.Add(new CommandItem() { Parent = this }.LoadFromXML(vv));
                 }
             }
         }
@@ -149,13 +182,13 @@ namespace Cdy.Spider.CalculateDriver.Develop
         private void LoadScript()
         {
             mScripts.Clear();
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Script.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Script.xml");
             if (System.IO.File.Exists(sfile))
             {
-                XElement xe = XElement.Load(sfile);
-                foreach (var vv in xe.Elements())
+                XDocument xe = XDocument.Load(sfile);
+                foreach (var vv in (xe.FirstNode as XElement).Elements())
                 {
-                    mScripts.Add(new ScriptItem().LoadFromXML(vv));
+                    mScripts.Add(new ScriptItem() { Parent = this }.LoadFromXML(vv));
                 }
                
             }
@@ -200,6 +233,11 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// <summary>
         /// 
         /// </summary>
+        public ExpressionEditViewModel Parent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand InsertCommand
         {
             get
@@ -207,7 +245,10 @@ namespace Cdy.Spider.CalculateDriver.Develop
                 if(mInsertCommand==null)
                 {
                     mInsertCommand = new RelayCommand(() => { 
-                        
+                        if(Parent!=null)
+                        {
+                            Parent.InsertTextDelegate(this.Body);
+                        }
                     });
                 }
                 return mInsertCommand;
@@ -220,6 +261,18 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// <param name="xe"></param>
         public ScriptItem LoadFromXML(XElement xe)
         {
+            if (xe.Attribute("Name") != null)
+            {
+                this.Name = xe.Attribute("Name").Value;
+            }
+
+            if (xe.Attribute("Desc") != null)
+            {
+                this.Desc = xe.Attribute("Desc").Value;
+            }
+
+            this.Body = xe.Value;
+
             return this;
         }
     }
@@ -228,9 +281,11 @@ namespace Cdy.Spider.CalculateDriver.Develop
     /// <summary>
     /// 
     /// </summary>
-    public class CommandItem
+    public class CommandItem:ViewModelBase
     {
         private ICommand mInsertCommand;
+        private ICommand mSelectCommand;
+        private bool mIsSelected = false;
 
         /// <summary>
         /// 名称
@@ -249,6 +304,17 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// <summary>
         /// 
         /// </summary>
+        public List<Parameter> Parameters
+        {
+            get
+            {
+                return Function.Parameters;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand InsertCommand
         {
             get
@@ -256,7 +322,12 @@ namespace Cdy.Spider.CalculateDriver.Develop
                 if (mInsertCommand == null)
                 {
                     mInsertCommand = new RelayCommand(() => {
-
+                        ParametersViewModel mm = new ParametersViewModel();
+                        mm.Init(this.Parameters.Select(e => e.Clone()).ToList());
+                        if(mm.ShowDialog().Value)
+                        {
+                            Parent?.InsertTextDelegate(GetInsertBody(mm.GetResult()));
+                        }
                     });
                 }
                 return mInsertCommand;
@@ -264,12 +335,96 @@ namespace Cdy.Spider.CalculateDriver.Develop
         }
 
         /// <summary>
+            /// 
+            /// </summary>
+        public bool IsSelected
+        {
+            get
+            {
+                return mIsSelected;
+            }
+            set
+            {
+                if (mIsSelected != value)
+                {
+                    mIsSelected = value;
+                    OnPropertyChanged("IsSelected");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand SelectCommand
+        {
+            get
+            {
+                if(mSelectCommand==null)
+                {
+                    mSelectCommand = new RelayCommand(() => {
+                        IsSelected = true;
+                        Parent.CurrentCommand = this;
+                    });
+                }
+                return mSelectCommand;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ExpressionEditViewModel Parent { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="xe"></param>
         public CommandItem LoadFromXML(XElement xe)
         {
+            if(xe.Attribute("Name")!=null)
+            {
+                this.Name = xe.Attribute("Name").Value;
+            }
+
+            if (xe.Attribute("Desc") != null)
+            {
+                this.Description = xe.Attribute("Desc").Value;
+            }
+
+            Function ff = new Function();
+            ff.LoadFromXML(xe.FirstNode as XElement);
+            this.Function = ff;
+
             return this;
+        }
+
+        private string GetInsertBody(List<Parameter> vals)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(this.Function.Body);
+            sb.Append("(");
+            foreach(var vv in vals)
+            {
+                if(vv.Type.Equals("string",StringComparison.OrdinalIgnoreCase))
+                {
+                    sb.Append("\"");
+                    sb.Append(vv.Value.ToString());
+                    sb.Append("\"");
+                }
+                else
+                {
+                    if(vv.Value!=null)
+                    {
+                        sb.Append(vv.Value.ToString());
+                    }
+                }
+                sb.Append(",");
+            }
+            if (vals.Count > 0) sb.Length = sb.Length - 1;
+            sb.Append(");");
+            return sb.ToString();
         }
     }
 
@@ -282,6 +437,12 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// 函数体
         /// </summary>
         public string Body { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ReturnType { get; set; }
+
         /// <summary>
         /// 参数
         /// </summary>
@@ -294,7 +455,17 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// <param name="xe"></param>
         public void LoadFromXML(XElement xe)
         {
+            this.Body = xe.Attribute("Body") != null ? xe.Attribute("Body").Value : "";
+            
+            this.ReturnType = xe.Attribute("ReturnType") != null ? xe.Attribute("ReturnType").Value : "";
 
+            this.Parameters = new List<Parameter>();
+            foreach(var vv in xe.Elements())
+            {
+                Parameter pp = new Parameter();
+                pp.LoadFromXML(vv);
+                this.Parameters.Add(pp);
+            }
         }
 
     }
@@ -312,6 +483,12 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// 类型
         /// </summary>
         public string Type { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string DesignType { get; set; }
+
         /// <summary>
         /// 描述
         /// </summary>
@@ -329,7 +506,20 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// <param name="xe"></param>
         public void LoadFromXML(XElement xe)
         {
+            Name = xe.Attribute("Name") != null ? xe.Attribute("Name").Value : string.Empty;
+            Type = xe.Attribute("Type") != null ? xe.Attribute("Type").Value : string.Empty;
+            Desc = xe.Attribute("Desc") != null ? xe.Attribute("Desc").Value : string.Empty;
+            Value = xe.Attribute("Value") != null ? xe.Attribute("Value").Value : string.Empty;
+            DesignType = xe.Attribute("DesignType") != null ? xe.Attribute("DesignType").Value : string.Empty;
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Parameter Clone()
+        {
+            return new Parameter() { Name = this.Name, Type = this.Type, Desc = this.Desc, Value = this.Value,DesignType=this.DesignType };
         }
 
     }

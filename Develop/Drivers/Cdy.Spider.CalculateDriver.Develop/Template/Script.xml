@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScriptDocument  Version="0.1">
+  <Script Name="SetTagValue" Desc="设置变量的值示例">
+    <![CDATA[
+      Tag.SetTagValue("Tag.tag1",1);
+   ]]>
+  </Script>
+</ScriptDocument>

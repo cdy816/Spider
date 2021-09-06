@@ -120,6 +120,9 @@
   <data name="Command" xml:space="preserve">
     <value>Command</value>
   </data>
+  <data name="DoubleClickToInsert" xml:space="preserve">
+    <value>DoubleClick to insert</value>
+  </data>
   <data name="Expresse" xml:space="preserve">
     <value>Expresse</value>
   </data>

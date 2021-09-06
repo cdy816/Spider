@@ -36,7 +36,7 @@
                                         <Image Margin="5,0" Source="/Image/spider.png"   Height="16" HorizontalAlignment="Left" Width="24" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Uniform"  />
                                         <Label Margin="30,0,115,0" VerticalContentAlignment="Center" Content="{Binding Title,RelativeSource={RelativeSource AncestorType=Window}}" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Window}}"/>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button Style="{DynamicResource ButtonStyle1}" x:Name="minB" BorderThickness="0" Background="Transparent"   Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
+                                            <Button Style="{DynamicResource ButtonStyle1}" x:Name="minB" BorderThickness="0" Background="Transparent"    HorizontalAlignment="Left"  Margin="1,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
                                                 <Button.ContentTemplate>
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Horizontal">
@@ -46,7 +46,7 @@
                                                 </Button.ContentTemplate>
                                             </Button>
 
-                                            <Button Style="{DynamicResource ButtonStyle1}" x:Name="maxB" BorderThickness="0"  Background="Transparent" Command="{Binding ReloadCommand}" HorizontalAlignment="Left"  Margin="0,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
+                                            <Button Style="{DynamicResource ButtonStyle1}" x:Name="maxB" BorderThickness="0"  Background="Transparent" HorizontalAlignment="Left"  Margin="0,0,0,0"   VerticalAlignment="Stretch" Width="32"  >
                                                 <Button.ContentTemplate>
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Horizontal">

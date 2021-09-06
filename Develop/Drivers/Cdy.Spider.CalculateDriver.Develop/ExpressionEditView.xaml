@@ -158,6 +158,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <BooleanToVisibilityConverter x:Key="bvc" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -167,37 +169,74 @@
         <Grid.Resources>
             
             <DataTemplate DataType="{x:Type local:CommandItem}">
-                <Grid ToolTip="{Binding Description}">
-                    
+                <Grid ToolTip="{local:ResMarker DoubleClickToInsert}" x:Name="mb"  Background="Transparent"  Margin="2,2" Cursor="Hand" Grid.IsSharedSizeScope="True">
+                    <Grid.InputBindings>
+                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding InsertCommand}" />
+                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectCommand}" />
+                    </Grid.InputBindings>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20" />
                         <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock Text="{Binding Name}" />
-                    <TextBlock Text="{Binding Description}" Grid.Row="1" TextTrimming="CharacterEllipsis" />
-                    <Grid.InputBindings>
-                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding InsertCommand}" />
-                    </Grid.InputBindings>
+                    <TextBlock Margin="2,0,0,0" Text="{Binding Description}" Grid.Row="1" TextTrimming="CharacterEllipsis" Opacity="0.5" ToolTip="{Binding Description}"/>
+
+                    <ItemsControl Grid.Row="2" Margin="4,2" ItemsSource="{Binding Parameters}" Visibility="{Binding IsSelected,Converter={StaticResource bvc}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
                 </Grid>
+                <DataTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True" >
+                        <Setter TargetName="mb" Property="Background" Value="#1FFFFFFF" />
+                    </Trigger>
+                    <DataTrigger Binding="{Binding IsSelected}"  Value="True" >
+                        <Setter TargetName="mb" Property="Background" Value="#7F00FFFF" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type local:ScriptItem}">
-                <Grid ToolTip="{Binding Description}" x:Name="mb" Background="Transparent">
+                <Grid ToolTip="{local:ResMarker DoubleClickToInsert}" x:Name="mb" Background="Transparent" Cursor="Hand" Margin="2,2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20" />
                         <RowDefinition Height="20" />
                     </Grid.RowDefinitions>
                     <TextBlock Text="{Binding Name}" />
-                    <TextBlock Text="{Binding Desc}" Grid.Row="1" />
+                    <TextBlock Margin="2,0,0,0" Text="{Binding Desc}" Grid.Row="1"  Opacity="0.5"  ToolTip="{Binding Desc}"/>
                     <Grid.InputBindings>
                         <MouseBinding Gesture="LeftDoubleClick" Command="{Binding InsertCommand}" />
                     </Grid.InputBindings>
                 </Grid>
+                <DataTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True" >
+                        <Setter TargetName="mb" Property="Background" Value="#1FFFFFFF" />
+                    </Trigger>
+                </DataTemplate.Triggers>
+                    
             </DataTemplate>
+
+            <DataTemplate DataType="{x:Type local:Parameter}">
+                <Grid Margin="1,2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="gg"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Name}" Margin="0,0,5,0" />
+                    <TextBlock Text="{Binding Desc}" Grid.Column="1"  />
+                    <TextBlock Text="{Binding Type}" Grid.Column="2" />
+                </Grid>
+            </DataTemplate>
+            
         </Grid.Resources>
         <editor:RoslynCodeEditor x:Name="rc" Background="#7F000000" Foreground="White"   Margin="1"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
         <GridSplitter VerticalAlignment="Stretch" Width="5"  HorizontalAlignment="Right" Background="Transparent" />
-        <TabControl Margin="0,0,0,-1" TabStripPlacement="Bottom" MinWidth="200" BorderThickness="1,0,0,1"  Grid.Column="1" Foreground="{DynamicResource  Window.Forground}" Background="#5F000000" Style="{DynamicResource TabControlStyle1}"  ItemContainerStyle="{DynamicResource TabControlItemContainerStyle1}"  >
+        <TabControl Margin="0,0,0,-1" TabStripPlacement="Bottom" MinWidth="300" BorderThickness="1,0,0,1"  Grid.Column="1" Foreground="{DynamicResource  Window.Forground}" Background="#5F000000" Style="{DynamicResource TabControlStyle1}"  ItemContainerStyle="{DynamicResource TabControlItemContainerStyle1}"  >
             <TabItem Header="{local:ResMarker Command}">
                 <TabItem.HeaderTemplate>
                     <DataTemplate>
@@ -210,7 +249,7 @@
                             <VirtualizingStackPanel Orientation="Vertical" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
+                    <!--<ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid x:Name="gd">
                                 <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
@@ -227,7 +266,7 @@
                                 </Trigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
+                    </ItemsControl.ItemTemplate>-->
                 </ItemsControl>
             </TabItem>
            

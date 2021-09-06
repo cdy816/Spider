@@ -245,6 +245,17 @@
             
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.CurrentCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.InsertTextDelegate(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="exp"></param>
+        </member>
         <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.Init">
             <summary>
             
@@ -286,6 +297,11 @@
             
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptItem.Parent">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptItem.InsertCommand">
             <summary>
             
@@ -317,7 +333,27 @@
             函数定义
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.Parameters">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.InsertCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.IsSelected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.SelectCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandItem.Parent">
             <summary>
             
             </summary>
@@ -336,6 +372,11 @@
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Function.Body">
             <summary>
             函数体
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Function.ReturnType">
+            <summary>
+            
             </summary>
         </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Function.Parameters">
@@ -364,6 +405,11 @@
             类型
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Parameter.DesignType">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Parameter.Desc">
             <summary>
             描述
@@ -379,6 +425,136 @@
             
             </summary>
             <param name="xe"></param>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.Parameter.Clone">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.ParametersView">
+            <summary>
+            ParametersView.xaml 的交互逻辑
+            </summary>
+            <summary>
+            ParametersView
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ParametersView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.ParametersViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Cdy.Spider.CalculateDriver.Develop.ParametersViewModel.mParameters">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ParametersViewModel.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ParametersViewModel.Parameters">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ParametersViewModel.Init(System.Collections.Generic.List{Cdy.Spider.CalculateDriver.Develop.Parameter})">
+            <summary>
+            
+            </summary>
+            <param name="paras"></param>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ParametersViewModel.InnerInit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ParametersViewModel.GetResult">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase.#ctor(Cdy.Spider.CalculateDriver.Develop.Parameter)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase.Model">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase.Desc">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase.Value">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.TagParameterDesignViewModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.TagParameterDesignViewModel.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.TagParameterDesignViewModel.#ctor(Cdy.Spider.CalculateDriver.Develop.Parameter)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.TagParameterDesignViewModel.TagBrowseCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.TagParameterDesignViewModel.Value">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.TagParameterDesignViewModel.New(Cdy.Spider.CalculateDriver.Develop.Parameter)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
         </member>
         <member name="T:Cdy.Spider.CalculateDriver.Develop.Properties.Resources">
             <summary>
@@ -401,6 +577,11 @@
               查找类似 Command 的本地化字符串。
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.DoubleClickToInsert">
+            <summary>
+              查找类似 DoubleClick to insert 的本地化字符串。
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Expresse">
             <summary>
               查找类似 Expresse 的本地化字符串。
@@ -414,6 +595,11 @@
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Script">
             <summary>
               查找类似 Script 的本地化字符串。
+            </summary>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel">
+            <summary>
+            
             </summary>
         </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.UpdateRegistorCallBack">
@@ -446,6 +632,17 @@
             
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.FreshRegistor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="registor"></param>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.OnDisActived">
+            <summary>
+            
+            </summary>
         </member>
         <member name="M:Cdy.Spider.CalculateDriver.Develop.ScriptExpressConfigModel.UpdateRegistor">
             <summary>
@@ -515,21 +712,21 @@
         </member>
         <member name="M:Cdy.Spider.Tag.Avg(System.Object[])">
             <summary>
-            对数值进行请平均值
+            对一组数值进行求平均值
             </summary>
             <param name="values"></param>
             <returns></returns>
         </member>
         <member name="M:Cdy.Spider.Tag.Max(System.Object[])">
             <summary>
-            对数值进行取最大值
+            对一组数值取最大值
             </summary>
             <param name="values"></param>
             <returns></returns>
         </member>
         <member name="M:Cdy.Spider.Tag.Min(System.Object[])">
             <summary>
-            对数值进行取最小值
+            对一组数值取最小值
             </summary>
             <param name="values"></param>
             <returns></returns>

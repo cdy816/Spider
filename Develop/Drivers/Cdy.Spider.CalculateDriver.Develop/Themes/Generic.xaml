@@ -23,4 +23,8 @@
             <Button Style="{DynamicResource ButtonStyle1}" Foreground="Red" BorderBrush="{DynamicResource Window.Forground}" Margin="4,4,0,0" BorderThickness="1"  Background="#1FFFFFFF" Content="X" HorizontalAlignment="Center" VerticalAlignment="Top"  Grid.Column="2" Width="26" Command="{Binding ClearCommand}" />
         </Grid>
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type local:ParametersViewModel}">
+        <local:ParametersView />
+    </DataTemplate>
 </ResourceDictionary>

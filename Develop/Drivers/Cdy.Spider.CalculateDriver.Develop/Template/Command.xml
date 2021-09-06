@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CommandDocument Version="0.1">
+  
+  <Command Name="SetTagValue" Desc="设置变量的值">
+    <Function Body="Tag.SetTagValue" ReturnType="void">
+      <Parameter Name="tag" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+      <Parameter Name="value" Type="object"  Desc="变量的值" Value="0" />
+    </Function>
+  </Command>
+
+  <Command Name="GetTagValue" Desc="获取变量的值">
+    <Function Body="Tag.SetTagValue"  ReturnType="object">
+      <Parameter Name="tag" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+    </Function>
+  </Command>
+
+  <Command Name="IsTagQualityGood" Desc="变量的质量戳是否为有效值">
+    <Function Body="Tag.IsTagQualityGood"  ReturnType="object">
+      <Parameter Name="tag" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+    </Function>
+  </Command>
+
+  <Command Name="TagValueSum" Desc="求多个变量值的和">
+    <Function Body="Tag.TagValueSum"  ReturnType="object">
+      <Parameter Name="tag1" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+      <Parameter Name="tag2" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+    </Function>
+  </Command>
+
+  <Command Name="TagValueAvg" Desc="求多个变量的平均值">
+    <Function Body="Tag.TagValueAvg"  ReturnType="object">
+      <Parameter Name="tag1" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+      <Parameter Name="tag2" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+    </Function>
+  </Command>
+
+  <Command Name="TagValueMax" Desc="求多个变量的最大值">
+    <Function Body="Tag.TagValueMax"  ReturnType="object">
+      <Parameter Name="tag1" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+      <Parameter Name="tag2" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
+    </Function>
+  </Command>
+
+
+  <Command Name="Avg" Desc="对一组数值进行求平均值">
+    <Function Body="Tag.Avg"  ReturnType="object">
+      <Parameter Name="val1" Type="object"  Desc="数值1" Value="0" />
+      <Parameter Name="val2" Type="object"  Desc="数值2" Value="0" />
+    </Function>
+  </Command>
+
+
+  <Command Name="Max" Desc="对一组数值取最大值">
+    <Function Body="Tag.Max"  ReturnType="object">
+      <Parameter Name="val1" Type="object"  Desc="数值1" Value="0" />
+      <Parameter Name="val2" Type="object"  Desc="数值2" Value="0" />
+    </Function>
+  </Command>
+
+  <Command Name="Min" Desc="对一组数值取最小值">
+    <Function Body="Tag.Min"  ReturnType="object">
+      <Parameter Name="val1" Type="object"  Desc="数值1" Value="0" />
+      <Parameter Name="val2" Type="object"  Desc="数值2" Value="0" />
+    </Function>
+  </Command>
+
+
+  <Command Name="Bit" Desc="对值进行取位">
+    <Function Body="Tag.Bit"  ReturnType="object">
+      <Parameter Name="value" Type="object"  Desc="数值" Value="0" />
+      <Parameter Name="index" Type="object"  Desc="要取位的序号，从0开始" Value="0" />
+    </Function>
+  </Command>
+  
+</CommandDocument>
