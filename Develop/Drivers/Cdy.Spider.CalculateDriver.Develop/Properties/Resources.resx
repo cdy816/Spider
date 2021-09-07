@@ -126,6 +126,9 @@
   <data name="Expresse" xml:space="preserve">
     <value>Expresse</value>
   </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>ScanCircle</value>
   </data>

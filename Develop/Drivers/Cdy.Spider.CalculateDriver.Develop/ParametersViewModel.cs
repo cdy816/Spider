@@ -38,6 +38,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
             InnerInit();
             DefaultWidth = 600;
             DefaultHeight = 400;
+            Title = Res.Get("Parameter");
         }
         #endregion ...Constructor...
 
@@ -227,7 +228,11 @@ namespace Cdy.Spider.CalculateDriver.Develop
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public virtual ParameterDesignViewModelBase New(Parameter model)
         {
             return new ParameterDesignViewModelBase(model);

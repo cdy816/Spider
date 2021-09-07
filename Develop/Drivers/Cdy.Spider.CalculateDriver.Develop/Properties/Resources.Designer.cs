@@ -88,6 +88,15 @@ namespace Cdy.Spider.CalculateDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Parameter 的本地化字符串。
+        /// </summary>
+        internal static string Parameter {
+            get {
+                return ResourceManager.GetString("Parameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ScanCircle 的本地化字符串。
         /// </summary>
         internal static string ScanCircle {

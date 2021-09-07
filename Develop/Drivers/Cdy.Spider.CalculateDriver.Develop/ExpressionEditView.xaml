@@ -234,7 +234,68 @@
             </DataTemplate>
             
         </Grid.Resources>
-        <editor:RoslynCodeEditor x:Name="rc" Background="#7F000000" Foreground="White"   Margin="1"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <editor:RoslynCodeEditor x:Name="rc" Background="#7F000000" Foreground="White"   Margin="1"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+            <Grid x:Name="bd" Height="74" Grid.Row="1">
+                <Button x:Name="ss" Height="14" Padding="0" Background="#1F000000" VerticalAlignment="Top" Foreground="White" BorderThickness="0" Click="ss_Click" Cursor="Hand">
+                    <Button.Content>
+                        <TextBlock Text="&gt;"  x:Name="tb">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5" />
+                                    <TranslateTransform Y="2" X="10"/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </Button.Content>
+                </Button>
+                <Grid Margin="0,14,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button Content="Return" Margin="2" Command="{Binding InsertCharCommand}" Style="{DynamicResource ButtonStyle1}" CommandParameter="Return"  Cursor="Hand"/>
+                    <Button Content="+" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="+" Grid.Column="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="-" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="-" Grid.Column="2"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="*" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="*" Grid.Column="3"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="/" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="/" Grid.Column="4"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="%" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="%" Grid.Column="5"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content=";" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter=";" Grid.Column="6"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="=" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="=" Grid.Column="7"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="Space" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="Space" Grid.Column="8"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+
+                    <Button Content="Try" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="Try" Grid.Column="0" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="If" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="If" Grid.Column="1" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="()" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="()" Grid.Column="2" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="{}{}" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="{}{\r\n}" Grid.Column="3" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="[]" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="[]" Grid.Column="4" Grid.Row="1"   Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    
+                    <Button Content="|" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="|" Grid.Column="5" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="&amp;" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="&amp;" Grid.Column="6" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="&quot;" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="&quot;" Grid.Column="7" Grid.Row="1"   Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    
+                    
+                    <Button Content="Enter" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="Enter" Grid.Column="8" Grid.Row="1"   Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    
+                </Grid>
+            </Grid>
+        </Grid>
+        
         <GridSplitter VerticalAlignment="Stretch" Width="5"  HorizontalAlignment="Right" Background="Transparent" />
         <TabControl Margin="0,0,0,-1" TabStripPlacement="Bottom" MinWidth="300" BorderThickness="1,0,0,1"  Grid.Column="1" Foreground="{DynamicResource  Window.Forground}" Background="#5F000000" Style="{DynamicResource TabControlStyle1}"  ItemContainerStyle="{DynamicResource TabControlItemContainerStyle1}"  >
             <TabItem Header="{local:ResMarker Command}">

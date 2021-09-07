@@ -27,6 +27,8 @@ namespace Cdy.Spider.CalculateDriver.Develop
         private System.Collections.ObjectModel.ObservableCollection<ScriptItem> mScripts = new System.Collections.ObjectModel.ObservableCollection<ScriptItem>();
 
         private CommandItem mCurrentCommand;
+
+        private ICommand mInsertCharCommand;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -47,6 +49,47 @@ namespace Cdy.Spider.CalculateDriver.Develop
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand InsertCharCommand
+        {
+            get
+            {
+                if(mInsertCharCommand==null)
+                {
+                    mInsertCharCommand = new RelayCommand<object>((obj) => {
+                        string str = obj.ToString();
+                        if(str=="Try")
+                        {
+                            InsertTextDelegate("try\r\n{\r\n}\r\ncatch (Exception e)\r\n{\r\n}");
+                        }
+                        else if (str == "If")
+                        {
+                            InsertTextDelegate("if(true)\r\n{\r\n}");
+                        }
+                        else if(str=="Enter")
+                        {
+                            InsertTextDelegate("\r\n");
+                        }
+                        else if (str == "Space")
+                        {
+                            InsertTextDelegate(" ");
+                        }
+                        else if(str=="Return")
+                        {
+                            InsertTextDelegate("return");
+                        }
+                        else
+                        {
+                            InsertTextDelegate(str);
+                        }
+                    });
+                }
+                return mInsertCharCommand;
+            }
+        }
 
         /// <summary>
         /// 
@@ -148,6 +191,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
             ExpressEditor.SelectedText = exp;
             ExpressEditor.SelectionLength = 0;
             ExpressEditor.SelectionStart += (exp.Length);
+            ExpressEditor.Focus();
         }
 
         /// <summary>
@@ -423,7 +467,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
                 sb.Append(",");
             }
             if (vals.Count > 0) sb.Length = sb.Length - 1;
-            sb.Append(");");
+            sb.Append(")");
             return sb.ToString();
         }
     }

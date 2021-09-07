@@ -225,6 +225,11 @@
             
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.InsertCharCommand">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.Commands">
             <summary>
             
@@ -523,6 +528,13 @@
             
             </summary>
         </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.ParameterDesignViewModelBase.New(Cdy.Spider.CalculateDriver.Develop.Parameter)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cdy.Spider.CalculateDriver.Develop.TagParameterDesignViewModel">
             <summary>
             
@@ -585,6 +597,11 @@
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Expresse">
             <summary>
               查找类似 Expresse 的本地化字符串。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Parameter">
+            <summary>
+              查找类似 Parameter 的本地化字符串。
             </summary>
         </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.ScanCircle">

@@ -93,5 +93,25 @@ namespace Cdy.Spider.CalculateDriver.Develop
             rc.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, (this.DataContext as ExpressionEditViewModel).Expresse);
         }
 
+        private void ss_Click(object sender, RoutedEventArgs e)
+        {
+            if(bd.Height==74)
+            {
+                var tg = new TransformGroup();
+                tg.Children.Add(new RotateTransform() { Angle = -90 });
+                tg.Children.Add(new TranslateTransform() { Y = 10 });
+                bd.Height = 14;
+                tb.RenderTransform = tg;
+            }
+            else
+            {
+                var tg = new TransformGroup();
+                tg.Children.Add(new RotateTransform() { Angle = 90 });
+                tg.Children.Add(new TranslateTransform() { Y = 2,X=14 });
+              
+                bd.Height = 74;
+                tb.RenderTransform = tg;
+            }
+        }
     }
 }

@@ -126,6 +126,9 @@
   <data name="Expresse" xml:space="preserve">
     <value>表达式</value>
   </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>参数设定</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>执行周期</value>
   </data>
