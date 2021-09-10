@@ -110,7 +110,8 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
+        <BooleanToVisibilityConverter x:Key="bvc" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -119,23 +120,36 @@
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="5,0,10,0" Text="{local:ResMarker Server,:}" VerticalAlignment="Center" />
-            <TextBox VerticalContentAlignment="Center" Height="24" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" CaretBrush="White" Grid.Column="1" Text="{Binding ServerAddress,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="260" VerticalAlignment="Center"/>
-            <TextBlock Margin="10,0" Grid.Column="2" Text="{local:ResMarker UserName,:}"  VerticalAlignment="Center"/>
-            <TextBox VerticalContentAlignment="Center" Height="24" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" CaretBrush="White" Grid.Column="3" Text="{Binding ServerUserName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="120"  VerticalAlignment="Center"/>
-            <TextBlock Margin="10,0" Grid.Column="4" Text="{local:ResMarker Password,:}"  VerticalAlignment="Center"/>
-            <dc:PasswordControl Grid.Column="5" Password="{Binding ServerPassword,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Button Margin="20,0" Style="{DynamicResource ButtonStyle1}"  BorderBrush="Green"  BorderThickness="0,0,0,2" Command="{Binding ConnectCommand}" Content="{Binding ConnectString,Mode=OneWay}"  Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Center" Height="24" MinWidth="60" />
+            <Label Content="{local:ResMarker ServerModel}" VerticalAlignment="Center" Foreground="{DynamicResource Window.Forground}" />
+            <ComboBox Grid.Column="1" SelectedIndex="{Binding ServerModel,Mode=TwoWay}" Width="80" VerticalAlignment="Center" Margin="5,0">
+                <ComboBoxItem Content="{local:ResMarker Local}" />
+                <ComboBoxItem Content="{local:ResMarker Remote}" />
+            </ComboBox>
+            <Grid Grid.Column="2" Visibility="{Binding IsRemoteServer,Converter={StaticResource bvc}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="5,0,10,0" Text="{local:ResMarker Server,:}" VerticalAlignment="Center" />
+                <TextBox VerticalContentAlignment="Center" Height="24" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" CaretBrush="White" Grid.Column="1" Text="{Binding ServerAddress,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="260" VerticalAlignment="Center"/>
+                <TextBlock Margin="10,0" Grid.Column="2" Text="{local:ResMarker UserName,:}"  VerticalAlignment="Center"/>
+                <TextBox VerticalContentAlignment="Center" Height="24" Foreground="{DynamicResource Window.Forground}" Background="#1FFFFFFF" CaretBrush="White" Grid.Column="3" Text="{Binding ServerUserName,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="120"  VerticalAlignment="Center"/>
+                <TextBlock Margin="10,0" Grid.Column="4" Text="{local:ResMarker Password,:}"  VerticalAlignment="Center"/>
+                <dc:PasswordControl Grid.Column="5" Password="{Binding ServerPassword,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button Margin="20,0" Style="{DynamicResource ButtonStyle1}"  BorderBrush="Green"  BorderThickness="0,0,0,2" Command="{Binding ConnectCommand}" Content="{Binding ConnectString,Mode=OneWay}"  Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Center" Height="24" MinWidth="60" />
+            </Grid>
         </Grid>
+        
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>

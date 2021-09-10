@@ -86,6 +86,10 @@ namespace Cdy.Api.Mars
 
         private int mLastPageCount = 0;
 
+        private static int mServerModel = 1;
+
+        private Tag.RealDatabase mLocalDatabase;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -117,6 +121,61 @@ namespace Cdy.Api.Mars
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public int ServerModel
+        {
+            get
+            {
+                return mServerModel;
+            }
+            set
+            {
+                if (mServerModel != value)
+                {
+                    mServerModel = value;
+
+                    OnPropertyChanged("ServerModel");
+                    OnPropertyChanged("IsLocalServer");
+                    OnPropertyChanged("IsRemoteServer");
+
+                    if (IsLocalServer)
+                    {
+                        LoadFromLocal();
+                    }
+                    else
+                    {
+                        ConnectCommand.Execute(null);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsLocalServer
+        {
+            get
+            {
+                return ServerModel == 0;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsRemoteServer
+        {
+            get
+            {
+                return ServerModel == 1;
+            }
+        }
+
+
 
         /// <summary>
         /// 
@@ -329,6 +388,7 @@ namespace Cdy.Api.Mars
                 {
                     mCurrentDatabase = value;
                     mCurrentGroup = null;
+
                     UpdateTagGroup();
                     NewQueryTags();
                     OnPropertyChanged("CurrentDatabase");
@@ -534,12 +594,20 @@ namespace Cdy.Api.Mars
         {
             EnableFilter = false;
             //Task.Run(() => {
-                BuildFilters();
-                mRequery = true;
+            BuildFilters();
+            mRequery = true;
+            if (IsLocalServer)
+            {
+                ContinueQueryLocalTags();
+            }
+            else
+            {
                 ContinueQueryTags();
-                Application.Current?.Dispatcher.Invoke(new Action(() => {
-                    EnableFilter = true;
-                }));
+            }
+            Application.Current?.Dispatcher.Invoke(new Action(() =>
+            {
+                EnableFilter = true;
+            }));
             //});
         }
 
@@ -595,6 +663,25 @@ namespace Cdy.Api.Mars
         }
 
         /// <summary>
+        /// 从本地文件加载数据库
+        /// </summary>
+        public void LoadFromLocal()
+        {
+            string spath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "TagBrowserCach");
+
+            if(!System.IO.Directory.Exists(spath))
+            {
+                System.IO.Directory.CreateDirectory(spath);
+            }
+
+            Databases = (new System.IO.DirectoryInfo(spath)).EnumerateDirectories().Select(e => e.Name).ToList();
+            if (Databases.Count > 0)
+            {
+                CurrentDatabase = Databases[0];
+            }
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         public void Load()
@@ -618,6 +705,8 @@ namespace Cdy.Api.Mars
                 }
                 else
                 {
+                    Databases = new List<string>();
+                    CurrentGroup = null;
                     IsConnected = false;
                     CommandManager.InvalidateRequerySuggested();
                     MessageBox.Show("Logging server failed!");
@@ -649,7 +738,15 @@ namespace Cdy.Api.Mars
         /// </summary>
         public void UpdateTagGroup()
         {
-            Task.Run(() => { QueryGroups(); });
+            if (IsLocalServer)
+            {
+                Task.Run(() => { QueryGroupsFromLocal(); });
+            }
+            else
+            {
+                Task.Run(() => { QueryGroups(); });
+            }
+            
         }
 
         /// <summary>
@@ -672,7 +769,6 @@ namespace Cdy.Api.Mars
                     CurrentGroup = root;
                 });
                 
-
                 var vv = mHelper.GetTagGroup(CurrentDatabase);
                 if (vv != null)
                 {
@@ -689,6 +785,54 @@ namespace Cdy.Api.Mars
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void QueryGroupsFromLocal()
+        {
+            Application.Current?.Dispatcher.Invoke(() => {
+                this.mTagGroups.Clear();
+            });
+
+            if (!string.IsNullOrEmpty(CurrentDatabase))
+            {
+                mLocalDatabase = LoadDatabase(CurrentDatabase);
+
+                TagGroupViewModel root = null;
+                Application.Current?.Dispatcher.Invoke(() =>
+                {
+                    root = new TagGroupViewModel() { Database = CurrentDatabase, Name = CurrentDatabase, IsExpended = true, IsSelected = true };
+                    mTagGroups.Add(root);
+
+                    CurrentGroup = root;
+                });
+
+               
+                if(mLocalDatabase!=null)
+                {
+                    var vv = mLocalDatabase.Groups;
+
+                    foreach (var vvv in vv.Where(e => e.Value.Parent==null))
+                    {
+                        Application.Current?.Dispatcher.Invoke(() =>
+                        {
+                            TagGroupViewModel groupViewModel = new TagGroupViewModel() { Name = vvv.Value.Name, Database = CurrentDatabase, Parent = root };
+                            root.Children.Add(groupViewModel);
+                            groupViewModel.InitData(vv.Values.ToList());
+                        });
+                    }
+
+                    //CurrentGroup = root;
+                }
+            }
+        }
+
+        private Tag.RealDatabase LoadDatabase(string database)
+        {
+            string spath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "TagBrowserCach",database,database+ ".xdb");
+            Cdy.Tag.RealDatabaseSerise rd = new Tag.RealDatabaseSerise();
+            return rd.Load(spath);
+        }
 
 
         /// <summary>
@@ -817,6 +961,78 @@ namespace Cdy.Api.Mars
                     else
                     {
                         mCurrentPageIndex--;
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            mIsBusy = false;
+        }
+
+
+        private void ContinueQueryLocalTags()
+        {
+            if (mIsBusy) return;
+
+            mIsBusy = true;
+            try
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    mTags.Clear();
+                }));
+                mCurrentPageIndex = 0;
+
+                string group = CurrentGroup != null ? CurrentGroup.FullName.Replace(CurrentDatabase + ".", "") : "";
+                if (group == CurrentDatabase)
+                {
+                    group = "";
+                }
+
+                if (mLocalDatabase == null) return;
+                //var tags = mHelper.GetTagByGroup(CurrentDatabase, group, mCurrentPageIndex, out mLastPageCount, mFilters);
+
+                var tags = mLocalDatabase.Tags.Values.Where(e=>e.Group ==group);
+
+
+                if (tags != null)
+                {
+                    var retags = tags.AsEnumerable();
+                    foreach (var vv in mFilters)
+                    {
+                        if (vv.Key == "keyword")
+                        {
+                            retags = retags.Where(e => e.Name.Contains(vv.Value) || e.Desc.Contains(vv.Value)).ToList();
+                        }
+                        else if (vv.Key == "type")
+                        {
+                            retags = retags.Where(e => (byte)e.Type == int.Parse(vv.Value));
+                        }
+                        else if (vv.Key == "readwritetype")
+                        {
+                            retags = retags.Where(e => (byte)e.ReadWriteType == int.Parse(vv.Value));
+                        }
+                    }
+                    foreach (var vv in retags)
+                    {
+                        var vtag = new TagViewModel() { Name = vv.Name, Desc = vv.Desc, Type = vv.Type.ToString(), ReadWriteMode = vv.ReadWriteType.ToString(), Group = CurrentGroup != null ? CurrentGroup.FullName : "" };
+                        if (vv is Cdy.Tag.NumberTagBase)
+                        {
+                            vtag.MaxValue = (vv as Cdy.Tag.NumberTagBase).MaxValue;
+                            vtag.MinValue = (vv as Cdy.Tag.NumberTagBase).MinValue;
+                        }
+                        if (vv is Cdy.Tag.FloatingTagBase)
+                        {
+                            vtag.Precision = (vv as Cdy.Tag.FloatingTagBase).Precision;
+                        }
+
+                        Application.Current?.Dispatcher.Invoke(new Action(() =>
+                        {
+                            mTags.Add(vtag);
+                        }));
+
                     }
                 }
             }
@@ -1010,12 +1226,32 @@ namespace Cdy.Api.Mars
 
         #region ... Methods    ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="groups"></param>
         public void InitData(List<DBDevelopClientWebApi.TagGroup> groups)
         {
             foreach (var vv in groups.Where(e => e.Parent == this.FullName))
             {
                 TagGroupViewModel groupViewModel = new TagGroupViewModel() { Name = vv.Name, Database = Database };
                 groupViewModel.Parent = this;
+                groupViewModel.InitData(groups);
+                this.Children.Add(groupViewModel);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="groups"></param>
+        public void InitData(List<Tag.TagGroup> groups)
+        {
+            foreach (var vv in groups.Where(e => e.Parent!=null && e.Parent.FullName == this.FullName))
+            {
+                TagGroupViewModel groupViewModel = new TagGroupViewModel() { Name = vv.Name, Database = Database };
+                groupViewModel.Parent = this;
+                groupViewModel.InitData(groups);
                 this.Children.Add(groupViewModel);
             }
         }

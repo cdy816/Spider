@@ -165,6 +165,12 @@
   <data name="Server" xml:space="preserve">
     <value>服务器</value>
   </data>
+  <data name="ServerModel" xml:space="preserve">
+    <value>服务器模式</value>
+  </data>
+  <data name="TagBrowser" xml:space="preserve">
+    <value>Mars  数据库变量浏览</value>
+  </data>
   <data name="TagFilter" xml:space="preserve">
     <value>变量过滤</value>
   </data>

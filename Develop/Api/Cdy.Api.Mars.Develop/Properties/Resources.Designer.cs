@@ -205,6 +205,24 @@ namespace Cdy.Api.Mars.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 ServerModel 的本地化字符串。
+        /// </summary>
+        internal static string ServerModel {
+            get {
+                return ResourceManager.GetString("ServerModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 TagBrowser 的本地化字符串。
+        /// </summary>
+        internal static string TagBrowser {
+            get {
+                return ResourceManager.GetString("TagBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 TagFilter 的本地化字符串。
         /// </summary>
         internal static string TagFilter {

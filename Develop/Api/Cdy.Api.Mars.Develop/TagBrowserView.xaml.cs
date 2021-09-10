@@ -27,7 +27,14 @@ namespace Cdy.Api.Mars
         private void TagBrowserView_Loaded(object sender, RoutedEventArgs e)
         {
             (this.DataContext as TagBrowserViewModel).Grid = dg;
-            (this.DataContext as TagBrowserViewModel).ConnectCommand.Execute(null);
+            if ((this.DataContext as TagBrowserViewModel).IsLocalServer)
+            {
+                (this.DataContext as TagBrowserViewModel).LoadFromLocal();
+            }
+            else
+            {
+                (this.DataContext as TagBrowserViewModel).ConnectCommand.Execute(null);
+            }
         }
 
         private void tv_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -55,7 +62,8 @@ namespace Cdy.Api.Mars
 
             if (dscoll > 0 && (dscoll - e.VerticalOffset) / dscoll < 0.25)
             {
-                (this.DataContext as TagBrowserViewModel).ContinueLoadData();
+                if (!(this.DataContext as TagBrowserViewModel).IsLocalServer)
+                    (this.DataContext as TagBrowserViewModel).ContinueLoadData();
             }
         }
 

@@ -2,6 +2,7 @@
 using Cdy.Spider.DevelopCommon;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,13 +23,16 @@ namespace Cdy.Spider.CalculateDriver.Develop
 
         private RoslynCodeEditor mExpressEditor;
 
-        private System.Collections.ObjectModel.ObservableCollection<CommandItem> mCommands = new System.Collections.ObjectModel.ObservableCollection<CommandItem>();
+        private System.Collections.ObjectModel.ObservableCollection<CommandGroup> mCommands = new System.Collections.ObjectModel.ObservableCollection<CommandGroup>();
 
         private System.Collections.ObjectModel.ObservableCollection<ScriptItem> mScripts = new System.Collections.ObjectModel.ObservableCollection<ScriptItem>();
 
         private CommandItem mCurrentCommand;
 
         private ICommand mInsertCharCommand;
+
+        private CommandGroup mCurrentCommandGroup;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -81,6 +85,32 @@ namespace Cdy.Spider.CalculateDriver.Develop
                         {
                             InsertTextDelegate("return");
                         }
+                        else if(str=="Clear")
+                        {
+                            ExpressEditor.Text = string.Empty;
+                            ExpressEditor.CaretOffset = 0;
+                            ExpressEditor.Focus();
+                        }
+                        else if(str== "Backspace")
+                        {
+                            var cf = ExpressEditor.SelectionStart;
+                            if (ExpressEditor.SelectionLength == 0)
+                            {
+                                if (ExpressEditor.SelectionStart > 0)
+                                {
+                                    ExpressEditor.SelectionStart = ExpressEditor.SelectionStart - 1;
+                                    ExpressEditor.SelectionLength = 1;
+                                    ExpressEditor.SelectedText = string.Empty;
+                                    cf -= 1;
+                                }
+                            }
+                            else
+                            {
+                                ExpressEditor.SelectedText = string.Empty;
+                            }
+                            ExpressEditor.CaretOffset = cf;
+                            ExpressEditor.Focus();
+                        }
                         else
                         {
                             InsertTextDelegate(str);
@@ -94,7 +124,7 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// <summary>
         /// 
         /// </summary>
-        public System.Collections.ObjectModel.ObservableCollection<CommandItem> Commands
+        public System.Collections.ObjectModel.ObservableCollection<CommandGroup> Commands
         {
             get
             {
@@ -177,6 +207,26 @@ namespace Cdy.Spider.CalculateDriver.Develop
             }
         }
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public CommandGroup CurrentCommandGroup
+        {
+            get
+            {
+                return mCurrentCommandGroup;
+            }
+            set
+            {
+                if (mCurrentCommandGroup != value)
+                {
+                    if (mCurrentCommandGroup != null) mCurrentCommandGroup.IsSelected = false;
+                    mCurrentCommandGroup = value;
+                    OnPropertyChanged("CurrentCommandGroup");
+                }
+            }
+        }
+
 
         #endregion ...Properties...
 
@@ -215,7 +265,23 @@ namespace Cdy.Spider.CalculateDriver.Develop
                 XDocument xe = XDocument.Load(sfile);
                 foreach(var vv in (xe.FirstNode as XElement).Elements())
                 {
-                    mCommands.Add(new CommandItem() { Parent = this }.LoadFromXML(vv));
+                    var cg = new CommandGroup() { Parent = this }.LoadFromXML(vv);
+                    mCommands.Add(cg);
+                    cg.PropertyChanged += Cg_PropertyChanged;
+                }
+            }
+            if(mCommands.Count>0)
+            mCommands.First().IsSelected = true; ;
+
+        }
+
+        private void Cg_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+           if(e.PropertyName=="IsSelected")
+            {
+                if((sender as CommandGroup).IsSelected)
+                {
+                    CurrentCommandGroup = sender as CommandGroup;
                 }
             }
         }
@@ -252,6 +318,64 @@ namespace Cdy.Spider.CalculateDriver.Develop
         #region ... Interfaces ...
 
         #endregion ...Interfaces...
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CommandGroup:ViewModelBase
+    {
+        private bool mIsSelected = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<CommandItem> Commands { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ExpressionEditViewModel Parent { get; set; }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public bool IsSelected
+        {
+            get
+            {
+                return mIsSelected;
+            }
+            set
+            {
+                if (mIsSelected != value)
+                {
+                    mIsSelected = value;
+                    OnPropertyChanged("IsSelected");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xe"></param>
+        public CommandGroup LoadFromXML(XElement xe)
+        {
+            Commands = new ObservableCollection<CommandItem>();
+
+            this.Name = xe.Attribute("Name") != null ? xe.Attribute("Name").Value : string.Empty;
+            foreach(var vv in xe.Elements())
+            Commands.Add(new CommandItem() { Parent = this.Parent }.LoadFromXML(vv));
+            return this;
+        }
+
     }
 
     /// <summary>

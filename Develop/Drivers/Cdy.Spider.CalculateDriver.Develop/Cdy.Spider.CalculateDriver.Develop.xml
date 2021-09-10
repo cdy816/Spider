@@ -255,6 +255,11 @@
             
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.CurrentCommandGroup">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Cdy.Spider.CalculateDriver.Develop.ExpressionEditViewModel.InsertTextDelegate(System.String)">
             <summary>
             
@@ -281,6 +286,37 @@
             
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.CommandGroup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandGroup.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandGroup.Commands">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandGroup.Parent">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CommandGroup.IsSelected">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cdy.Spider.CalculateDriver.Develop.CommandGroup.LoadFromXML(System.Xml.Linq.XElement)">
+            <summary>
+            
+            </summary>
+            <param name="xe"></param>
         </member>
         <member name="T:Cdy.Spider.CalculateDriver.Develop.ScriptItem">
             <summary>

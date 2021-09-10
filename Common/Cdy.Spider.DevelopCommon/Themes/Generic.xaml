@@ -23,8 +23,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:CustomWindowBase}">
-                    <Border Background="#01000000">
-                        <Border BorderThickness="1" BorderBrush="DarkGray" Margin="1" x:Name="bd" Background="MintCream" >
+                    <Border >
+                        <Border BorderThickness="1" BorderBrush="DarkGray" Margin="1" x:Name="bd" Background="#EF777777" >
                             <Grid>
                                 <Grid Background="{TemplateBinding Background}" >
                                     <Grid.RowDefinitions>

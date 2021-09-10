@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <CommandDocument Version="0.1">
-  
+  <CommandGroup Name="Tag">
+    
   <Command Name="SetTagValue" Desc="设置变量的值">
     <Function Body="Tag.SetTagValue" ReturnType="void">
       <Parameter Name="tag" Type="string" DesignType="tag" Desc="变量名称" Value="Tag." />
@@ -71,5 +72,5 @@
       <Parameter Name="index" Type="object"  Desc="要取位的序号，从0开始" Value="0" />
     </Function>
   </Command>
-  
+  </CommandGroup>
 </CommandDocument>

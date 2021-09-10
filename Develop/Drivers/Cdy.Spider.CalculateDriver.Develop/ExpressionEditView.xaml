@@ -159,6 +159,82 @@
             </Setter>
         </Style>
 
+
+        <Style x:Key="ExpanderHeaderFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border>
+                            <Rectangle Margin="0" StrokeDashArray="1 2" SnapsToDevicePixels="true" StrokeThickness="1" Stroke="Black"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Padding="{TemplateBinding Padding}" Cursor="Hand" MinHeight="26">
+                            <Grid Background="#1FFFFFFF" SnapsToDevicePixels="False" x:Name="bg">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="19"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<Ellipse x:Name="circle" Fill="{StaticResource Expander.Static.Circle.Fill}" HorizontalAlignment="Center" Height="19" Stroke="{StaticResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>-->
+                                <Path Grid.Column="1" x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" HorizontalAlignment="Center" SnapsToDevicePixels="false" StrokeThickness="2" Stroke="{TemplateBinding Foreground}" VerticalAlignment="Center"/>
+                                <ContentPresenter HorizontalAlignment="Left" Margin="4,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Data" TargetName="arrow" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="bg" Value="#3FFFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="bg" Value="#5FFFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="bg" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="ExpanderStyle1" TargetType="{x:Type Expander}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Expander}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" SnapsToDevicePixels="true">
+                            <DockPanel>
+                                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontFamily="{TemplateBinding FontFamily}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" MinHeight="0" MinWidth="0" Margin="1" Padding="{TemplateBinding Padding}" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Visibility="Collapsed"/>
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="true">
+                                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <BooleanToVisibilityConverter x:Key="bvc" />
     </UserControl.Resources>
     <Grid>
@@ -167,9 +243,21 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.Resources>
+
+            <DataTemplate DataType="{x:Type local:CommandGroup}">
+                <Expander Header="{Binding Name}" IsExpanded="{Binding IsSelected,Mode=TwoWay}" Margin="-4,-2" Foreground="{DynamicResource  Window.Forground}" Style="{StaticResource ExpanderStyle1}">
+                    <ItemsControl ItemsSource="{Binding Commands}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </Expander>
+            </DataTemplate>
             
             <DataTemplate DataType="{x:Type local:CommandItem}">
-                <Grid ToolTip="{local:ResMarker DoubleClickToInsert}" x:Name="mb"  Background="Transparent"  Margin="2,2" Cursor="Hand" Grid.IsSharedSizeScope="True">
+                <Grid ToolTip="{local:ResMarker DoubleClickToInsert}" x:Name="mb"  Background="Transparent"  Margin="6,2" Cursor="Hand" Grid.IsSharedSizeScope="True">
                     <Grid.InputBindings>
                         <MouseBinding Gesture="LeftDoubleClick" Command="{Binding InsertCommand}" />
                         <MouseBinding Gesture="LeftClick" Command="{Binding SelectCommand}" />
@@ -264,6 +352,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -278,6 +367,7 @@
                     <Button Content=";" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter=";" Grid.Column="6"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
                     <Button Content="=" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="=" Grid.Column="7"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
                     <Button Content="Space" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="Space" Grid.Column="8"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="Backspace" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="Backspace" Grid.Column="9"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
 
                     <Button Content="Try" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="Try" Grid.Column="0" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
                     <Button Content="If" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="If" Grid.Column="1" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
@@ -288,9 +378,9 @@
                     <Button Content="|" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="|" Grid.Column="5" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
                     <Button Content="&amp;" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="&amp;" Grid.Column="6" Grid.Row="1"  Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
                     <Button Content="&quot;" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="&quot;" Grid.Column="7" Grid.Row="1"   Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
-                    
-                    
+
                     <Button Content="Enter" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="Enter" Grid.Column="8" Grid.Row="1"   Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
+                    <Button Content="Clear" Margin="2" Command="{Binding InsertCharCommand}" CommandParameter="Clear" Grid.Column="9" Grid.Row="1"   Style="{DynamicResource ButtonStyle1}"  Cursor="Hand"/>
                     
                 </Grid>
             </Grid>
@@ -304,31 +394,17 @@
                         <TextBlock Text="{Binding}" Background="Transparent" Foreground="{DynamicResource  Window.Forground}" />
                     </DataTemplate>
                 </TabItem.HeaderTemplate>
-                <ItemsControl ItemsSource="{Binding Commands}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Orientation="Vertical" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <!--<ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid x:Name="gd">
-                                <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                            </Grid>
-                            <DataTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True" >
-                                    <Setter TargetName="gd" Property="Background" Value="#1FFFFFFF" />
-                                </Trigger>
-                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                    <Setter TargetName="gd" Property="Background" Value="#5FFFFFFF" />
-                                </DataTrigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Opacity" TargetName="gd" Value="0.5"/>
-                                </Trigger>
-                            </DataTemplate.Triggers>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>-->
-                </ItemsControl>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Commands}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                    </ItemsControl>
+                </ScrollViewer>
+                
             </TabItem>
            
             <TabItem Header="{local:ResMarker Script}">
