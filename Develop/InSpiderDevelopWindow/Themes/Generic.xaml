@@ -51,6 +51,11 @@
         <view:StringFormatConvertView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type model:AdvanceConvertViewModel}">
+        <view:AdvanceConvertView />
+    </DataTemplate>
+    
+
     <BooleanToVisibilityConverter x:Key="bvc" />
     <!--<SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>

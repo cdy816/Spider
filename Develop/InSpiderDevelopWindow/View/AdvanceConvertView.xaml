@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="InSpiderDevelopWindow.View.AdvanceConvertView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:InSpiderDevelopWindow.View"
+             xmlns:res="clr-namespace:InSpiderDevelopWindow"
+             mc:Ignorable="d" Name="cfg"  Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=UserControl}}"
+              xmlns:editor="clr-namespace:Cdy.Spider.CalculateExpressEditor;assembly=Cdy.Spider.CalculateExpressEditor"
+             d:DesignHeight="120.626" d:DesignWidth="303.05">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label Foreground="{Binding Foreground,ElementName=cfg}" Content="{res:ResMarker Convert,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <editor:RoslynCodeEditor x:Name="exp" Grid.Column="1" Background="#1F000000" Foreground="White"  ShowLineNumbers="False" HideFirstRowCount="13" HideLastRowCount="2"  Margin="1,1,1,1"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+
+        <Border BorderBrush="White" BorderThickness="0,1,0,0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+            
+        </Border>
+        <Label Grid.Row="1" Foreground="{Binding Foreground,ElementName=cfg}" Content="{res:ResMarker ConvertBack,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <editor:RoslynCodeEditor x:Name="expback" Grid.Row="1" Grid.Column="1" Background="#1F000000" Foreground="White"  ShowLineNumbers="False" HideFirstRowCount="13" HideLastRowCount="2"  Margin="1,1,1,1"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+
+    </Grid>
+</UserControl>

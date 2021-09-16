@@ -61,6 +61,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\Run\Driver\Cdy.Spider.SerisePortClient\Cdy.Spider.SerisePortClient.csproj" />
+    <ProjectReference Include="..\Drivers\Cdy.Spider.CalculateExpressEditor\Cdy.Spider.CalculateExpressEditor.csproj" />
     <ProjectReference Include="..\InSpiderDevelop\InSpiderDevelop.csproj" />
   </ItemGroup>
 
@@ -108,6 +109,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="View\AdvanceConvertView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\BitInverteConvertView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

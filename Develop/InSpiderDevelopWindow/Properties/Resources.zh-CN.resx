@@ -112,16 +112,19 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
     <value>添加</value>
   </data>
   <data name="AddGroup" xml:space="preserve">
     <value>添加组</value>
+  </data>
+  <data name="Advance" xml:space="preserve">
+    <value>高级</value>
   </data>
   <data name="API" xml:space="preserve">
     <value>API</value>
@@ -152,6 +155,9 @@
   </data>
   <data name="Convert" xml:space="preserve">
     <value>转换</value>
+  </data>
+  <data name="ConvertBack" xml:space="preserve">
+    <value>反向转换</value>
   </data>
   <data name="Copy" xml:space="preserve">
     <value>拷贝</value>

@@ -1,9 +1,13 @@
 ﻿
 using Cdy.Spider;
+using Cdy.Spider.CalculateExpressEditor;
+using Microsoft.CodeAnalysis;
+using RoslynPad.Roslyn;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace InSpiderDevelopWindow.ViewModel
@@ -36,7 +40,7 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             Tag = tag;
             Init();
-            DefaultWidth = 400;
+            DefaultWidth = 500;
             DefaultHeight = 200;
             Title = Res.Get("Convert");
         }
@@ -88,6 +92,10 @@ namespace InSpiderDevelopWindow.ViewModel
                 mItems.Add(new BitInvertConvertViewModel() { Model = new BitInvertConvert() });
             if (new StringFormateConvert().SupportTag(Tag))
                 mItems.Add(new StringFormatConvertViewModel() { Model = new StringFormateConvert() });
+
+            if (new AdvanceConvert().SupportTag(Tag))
+                mItems.Add(new AdvanceConvertViewModel() { Model = new AdvanceConvert() });
+
             CurrentSelectModel = mItems.First();
         }
 
@@ -250,6 +258,138 @@ namespace InSpiderDevelopWindow.ViewModel
                     OnPropertyChanged("Formate");
                 }
             }
+        }
+
+    }
+
+    public class AdvanceConvertViewModel : ConvertViewModel
+    {
+        private RoslynHost mHost;
+
+        public const string mOnVariableDefineTemplate =
+@"using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+using System.Xml.Linq;
+using System.Buffers;
+using System.Threading;
+using Cdy.Spider;
+namespace Cdy.Spider
+{
+public class Driver:Cdy.Spider.ConvertExecuteContext
+{
+public void Init(){
+$VariableBody$
+}}
+}";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public RoslynCodeEditor ExpressEditor
+        {
+            get;
+            set;
+        }
+
+        public RoslynCodeEditor CallBackExpressEditor
+        {
+            get;
+            set;
+        }
+
+        public AdvanceConvertViewModel()
+        {
+            InnerInit();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void InnerInit()
+        {
+            List<Assembly> ass = new List<Assembly>();
+            ass.Add(typeof(Cdy.Spider.CalculateExpressEditor.AvalonEditExtensions).Assembly);
+            ass.Add(typeof(Cdy.Spider.Tagbase).Assembly);
+
+            if (CalculateExtend.extend.ExtendDlls.Count > 0)
+            {
+                ass.AddRange(CalculateExtend.extend.ExtendDlls.Select(e => Assembly.LoadFile(e)));
+            }
+            
+            mHost = new RoslynHost(ass.ToArray(), RoslynHostReferences.NamespaceDefault.With(new[]
+            {
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.Text.RegularExpressions.Regex).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Cdy.Spider.ConvertExecuteContext).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.Xml.Linq.XElement).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.MemoryExtensions).Assembly.Location)
+                //MetadataReference.CreateFromFile(typeof(Tag).Assembly.Location)
+            }), new string[] { "Cdy.Spider" }, ass.Select(e => e.Location).ToArray());
+        }
+
+
+        public void InitEditor()
+        {
+
+            var colors = new ClassificationHighlightColors();
+            colors.DefaultBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(System.Windows.Media.Colors.White);
+            colors.KeywordBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(System.Windows.Media.Colors.LightBlue);
+            colors.StringBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(System.Windows.Media.Colors.OrangeRed);
+
+            ExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnVariableDefineTemplate.Replace("$VariableBody$", (Model as AdvanceConvert).Express));
+            CallBackExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnVariableDefineTemplate.Replace("$VariableBody$", (Model as AdvanceConvert).ConvertBackExpress));
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Express
+        {
+            get
+            {
+                return (Model as AdvanceConvert).Express;
+            }
+            set
+            {
+                (Model as AdvanceConvert).Express = SubString(ExpressEditor.Text, "$VariableBody$", mOnVariableDefineTemplate);
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public string CallBackExpress
+        {
+            get
+            {
+                return (Model as AdvanceConvert).ConvertBackExpress;
+            }
+            set
+            {
+                (Model as AdvanceConvert).ConvertBackExpress = SubString(CallBackExpressEditor.Text, "$VariableBody$", mOnVariableDefineTemplate);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="org"></param>
+        /// <param name="key"></param>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        private string SubString(string org, string key, string template)
+        {
+            int sindex = template.IndexOf(key);
+            int eindex = template.Length - sindex - key.Length;
+            string re = org;
+            re = re.Substring(sindex);
+            re = re.Substring(0, re.Length - eindex);
+            return re;
         }
 
     }

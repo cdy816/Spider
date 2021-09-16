@@ -44,6 +44,7 @@ namespace SpiderRuntime
             ServiceLocator.Locator.Registor<ILinkFactory>(LinkFactory.Factory);
             ServiceLocator.Locator.Registor<ICommChannelFactory2>(ChannelFactory2.Factory);
             ServiceLocator.Locator.Registor<IDriverFactory>(DriverFactory.Factory);
+            ServiceLocator.Locator.Registor<IScriptService>(ScriptService.Service);
         }
 
         #endregion ...Constructor...

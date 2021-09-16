@@ -79,6 +79,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Advance 的本地化字符串。
+        /// </summary>
+        internal static string Advance {
+            get {
+                return ResourceManager.GetString("Advance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 API 的本地化字符串。
         /// </summary>
         internal static string API {
@@ -165,6 +174,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Convert {
             get {
                 return ResourceManager.GetString("Convert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ConvertBack 的本地化字符串。
+        /// </summary>
+        internal static string ConvertBack {
+            get {
+                return ResourceManager.GetString("ConvertBack", resourceCulture);
             }
         }
         
