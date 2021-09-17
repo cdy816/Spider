@@ -159,6 +159,9 @@
   <data name="ConvertBack" xml:space="preserve">
     <value>反向转换</value>
   </data>
+  <data name="ConvertExpressTooltip" xml:space="preserve">
+    <value>编辑一个表达式将变量 'Value' 转换为目标值</value>
+  </data>
   <data name="Copy" xml:space="preserve">
     <value>拷贝</value>
   </data>

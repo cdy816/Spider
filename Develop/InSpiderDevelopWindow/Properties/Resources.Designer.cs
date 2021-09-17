@@ -187,6 +187,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Make a express to convert &apos;Value&apos;  的本地化字符串。
+        /// </summary>
+        internal static string ConvertExpressTooltip {
+            get {
+                return ResourceManager.GetString("ConvertExpressTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Copy 的本地化字符串。
         /// </summary>
         internal static string Copy {

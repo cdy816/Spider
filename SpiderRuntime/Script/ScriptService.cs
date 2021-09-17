@@ -117,7 +117,7 @@ namespace SpiderRuntime
         {
             if(mCachedScripts.ContainsKey(id))
             {
-                return mCachedScripts[id].RunAsync(context);
+                return mCachedScripts[id].RunAsync(context).Result.ReturnValue;
             }
             return null;
         }

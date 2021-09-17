@@ -315,7 +315,7 @@ $VariableBody$
 
             if (CalculateExtend.extend.ExtendDlls.Count > 0)
             {
-                ass.AddRange(CalculateExtend.extend.ExtendDlls.Select(e => Assembly.LoadFile(e)));
+                ass.AddRange(CalculateExtend.extend.ExtendDlls.Where(e=> System.IO.File.Exists(e)).Select(e => Assembly.LoadFile(e)));
             }
             
             mHost = new RoslynHost(ass.ToArray(), RoslynHostReferences.NamespaceDefault.With(new[]
@@ -339,8 +339,8 @@ $VariableBody$
             colors.KeywordBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(System.Windows.Media.Colors.LightBlue);
             colors.StringBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(System.Windows.Media.Colors.OrangeRed);
 
-            ExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnVariableDefineTemplate.Replace("$VariableBody$", (Model as AdvanceConvert).Express));
-            CallBackExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnVariableDefineTemplate.Replace("$VariableBody$", (Model as AdvanceConvert).ConvertBackExpress));
+            ExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnVariableDefineTemplate.Replace("$VariableBody$", string.IsNullOrEmpty((Model as AdvanceConvert).Express)?"return Value;": (Model as AdvanceConvert).Express));
+            CallBackExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnVariableDefineTemplate.Replace("$VariableBody$", string.IsNullOrEmpty((Model as AdvanceConvert).ConvertBackExpress)?"return Value;": (Model as AdvanceConvert).ConvertBackExpress));
 
         }
 

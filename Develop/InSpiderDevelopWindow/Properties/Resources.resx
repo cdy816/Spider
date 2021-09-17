@@ -159,6 +159,9 @@
   <data name="ConvertBack" xml:space="preserve">
     <value>ConvertBack</value>
   </data>
+  <data name="ConvertExpressTooltip" xml:space="preserve">
+    <value>Make a express to convert 'Value' </value>
+  </data>
   <data name="Copy" xml:space="preserve">
     <value>Copy</value>
   </data>

@@ -10,6 +10,7 @@
              d:DesignHeight="120.626" d:DesignWidth="303.05">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -17,14 +18,20 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Label Foreground="{Binding Foreground,ElementName=cfg}" Content="{res:ResMarker Convert,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
-        <editor:RoslynCodeEditor x:Name="exp" Grid.Column="1" Background="#1F000000" Foreground="White"  ShowLineNumbers="False" HideFirstRowCount="13" HideLastRowCount="2"  Margin="1,1,1,1"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+        <Label Content="{res:ResMarker ConvertExpressTooltip}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="5,0"  Foreground="{Binding Foreground,ElementName=cfg}"/>
 
-        <Border BorderBrush="White" BorderThickness="0,1,0,0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+        <Border   BorderBrush="LightGray" BorderThickness="0,1,0,0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+
+        </Border>
+        
+        <Label Grid.Row="1" Foreground="{Binding Foreground,ElementName=cfg}" Content="{res:ResMarker Convert,:}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
+        <editor:RoslynCodeEditor x:Name="exp"  BorderBrush="White" BorderThickness="0,0,0,0" Grid.Row="1" Grid.Column="1" Background="#1F000000" Foreground="White"  ShowLineNumbers="False" HideFirstRowCount="13" HideLastRowCount="2"  Margin="0,10,0,0"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+
+        <Border  Grid.Row="1" BorderBrush="LightGray" BorderThickness="0,1,0,0" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
             
         </Border>
-        <Label Grid.Row="1" Foreground="{Binding Foreground,ElementName=cfg}" Content="{res:ResMarker ConvertBack,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
-        <editor:RoslynCodeEditor x:Name="expback" Grid.Row="1" Grid.Column="1" Background="#1F000000" Foreground="White"  ShowLineNumbers="False" HideFirstRowCount="13" HideLastRowCount="2"  Margin="1,1,1,1"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
+        <Label  Grid.Row="2" Foreground="{Binding Foreground,ElementName=cfg}" Content="{res:ResMarker ConvertBack,:}" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"/>
+        <editor:RoslynCodeEditor x:Name="expback" Grid.Row="2"  BorderBrush="White" BorderThickness="0,0,0,0"  Grid.Column="1" Background="#1F000000" Foreground="White"  ShowLineNumbers="False" HideFirstRowCount="13" HideLastRowCount="2"  Margin="0,10,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" />
 
     </Grid>
 </UserControl>
