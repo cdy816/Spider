@@ -138,6 +138,9 @@
   <data name="Keyword" xml:space="preserve">
     <value>关键字</value>
   </data>
+  <data name="Local" xml:space="preserve">
+    <value>本地</value>
+  </data>
   <data name="MaxValue" xml:space="preserve">
     <value>最大值</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="ReadWriteMode" xml:space="preserve">
     <value>读写模式</value>
+  </data>
+  <data name="Remote" xml:space="preserve">
+    <value>远程</value>
   </data>
   <data name="Server" xml:space="preserve">
     <value>服务器</value>

@@ -124,6 +124,15 @@ namespace Cdy.Api.Mars.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Local 的本地化字符串。
+        /// </summary>
+        internal static string Local {
+            get {
+                return ResourceManager.GetString("Local", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 MaxValue 的本地化字符串。
         /// </summary>
         internal static string MaxValue {
@@ -192,6 +201,15 @@ namespace Cdy.Api.Mars.Develop.Properties {
         internal static string ReadWriteMode {
             get {
                 return ResourceManager.GetString("ReadWriteMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remote 的本地化字符串。
+        /// </summary>
+        internal static string Remote {
+            get {
+                return ResourceManager.GetString("Remote", resourceCulture);
             }
         }
         
