@@ -47,7 +47,13 @@ namespace Cdy.Spider
         /// </summary>
         public override void Prepare()
         {
-            ServiceLocator.Locator.Resolve<ILink>().RegistorValueUpdateCallBack(this.Device.Name, UpdateValues);
+            var vlink = ServiceLocator.Locator.Resolve<ILink>();
+            if (vlink != null)
+                vlink.RegistorValueUpdateCallBack(this.Device.Name, UpdateValues);
+            else
+            {
+                LoggerService.Service.Warn(this.mData.Name,"ILink Service is null.");
+            }
         }
 
         /// <summary>

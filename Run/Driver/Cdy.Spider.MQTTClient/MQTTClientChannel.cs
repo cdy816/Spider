@@ -106,8 +106,8 @@ namespace Cdy.Spider.MQTTClient
 
             options.Credentials = new MqttClientCredentials
             {
-                Username = mData.UserName,
-                Password = Encoding.UTF8.GetBytes(mData.Password)
+                Username = mData.UserName==null?"":mData.UserName,
+                Password = mData.Password==null?new byte[0]:  Encoding.UTF8.GetBytes(mData.Password)
             };
 
             options.CleanSession = true;
@@ -128,8 +128,23 @@ namespace Cdy.Spider.MQTTClient
         {
             ConnectedChanged(true);
             Task.Run(() => {
-                this.mqttClient.SubscribeAsync(mData.LocalTopic);
-                this.mqttClient.SubscribeAsync(mData.RemoteResponseTopic);
+                if (string.IsNullOrEmpty(mData.LocalTopic))
+                {
+                    LoggerService.Service.Warn(mData.Name, "MQTT LocalTopic is null");
+                }
+                else
+                {
+                    this.mqttClient.SubscribeAsync(mData.LocalTopic);
+                }
+
+                if (string.IsNullOrEmpty(mData.RemoteResponseTopic))
+                {
+                    LoggerService.Service.Warn(mData.Name, "MQTT RemoteResponseTopic is null");
+                }
+                else
+                {
+                    this.mqttClient.SubscribeAsync(mData.RemoteResponseTopic);
+                }
             });
         }
 
@@ -240,6 +255,16 @@ namespace Cdy.Spider.MQTTClient
         private void SendToTopicData(string topic, string responeTopic, Span<byte> data)
         {
             var vdata = data.ToArray();
+            if(string.IsNullOrEmpty(topic))
+            {
+                LoggerService.Service.Warn(mData.Name, "MQTT topic is null");
+                return;
+            }
+            if(responeTopic==null)
+            {
+                LoggerService.Service.Warn(mData.Name, "MQTT ResponseTopic is null");
+                return;
+            }
             var msg = new MqttApplicationMessageBuilder().WithTopic(topic).WithResponseTopic(responeTopic).WithPayload(vdata).WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce).WithRetainFlag().Build();
             this.mqttClient.PublishAsync(msg);
         }
