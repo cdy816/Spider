@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mars.SpiderDriver.ClientApi" Version="1.2.4" />
+    <PackageReference Include="Mars.SpiderDriver.ClientApi" Version="1.2.5" />
   </ItemGroup>
 
   <ItemGroup>
