@@ -5,6 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Linq;
+using System.Runtime.Loader;
+using System.Reflection;
+using Microsoft.CodeAnalysis.Scripting.Hosting;
 
 namespace Cdy.Spider.CalculateDriver
 {
@@ -68,11 +71,26 @@ namespace Cdy.Spider.CalculateDriver
                 LoggerService.Service.Erro("Calculate", ex.Message);
             }
 
+            InteractiveAssemblyLoader ass = new InteractiveAssemblyLoader();
+
+            foreach (var vv in CalculateExtend.extend.ExtendDlls)
+            {
+                try
+                {
+                    var assb = new PluginLoadContext(vv).LoadFromAssemblyPath(vv);
+                    ass.RegisterDependency(assb);
+                }
+                catch (Exception eex)
+                {
+                    LoggerService.Service.Erro("ScriptAlarmTagRun", eex.Message);
+                }
+            }
+
             foreach (var vv in Device.ListTags())
             {
                 if (!string.IsNullOrEmpty(vv.DeviceInfo))
                 {
-                    var vsp = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(vv.DeviceInfo, sop, typeof(CalItem));
+                    var vsp = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(vv.DeviceInfo, sop, typeof(CalItem), ass);
                     try
                     {
                         var cp = vsp.Compile();
@@ -532,6 +550,41 @@ namespace Cdy.Spider.CalculateDriver
                     LoggerService.Service.Erro("CalculateDriver", TagRef.Name + " : " + ex.Message);
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PluginLoadContext : AssemblyLoadContext
+    {
+        private AssemblyDependencyResolver _resolver;
+
+        public PluginLoadContext(string pluginPath)
+        {
+            _resolver = new AssemblyDependencyResolver(pluginPath);
+        }
+
+        protected override Assembly Load(AssemblyName assemblyName)
+        {
+            string assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
+            if (assemblyPath != null)
+            {
+                return LoadFromAssemblyPath(assemblyPath);
+            }
+
+            return null;
+        }
+
+        protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
+        {
+            string libraryPath = _resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
+            if (libraryPath != null)
+            {
+                return LoadUnmanagedDllFromPath(libraryPath);
+            }
+
+            return IntPtr.Zero;
         }
     }
 
