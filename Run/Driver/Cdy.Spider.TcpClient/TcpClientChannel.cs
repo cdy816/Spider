@@ -119,16 +119,31 @@ namespace Cdy.Spider.TcpClient
                     Thread.Sleep(mData.ReTryDuration);
                     try
                     {
-                        if (mClient.Connected)
+                        try
                         {
-                            break;
+                            if (mClient != null)
+                            {
+                                mClient.Close();
+                                mClient = null;
+                            }
                         }
+                        catch
+                        {
+
+                        }
+                        //if (mClient.Connected)
+                        //{
+                        //    break;
+                        //}
                         mClient = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Tcp);
                         mClient.Connect(System.Net.IPAddress.Parse(mData.ServerIp), mData.Port);
+
+                        mIsConnected = mClient.Connected;
                         if (mClient.Connected)
                         {
                             break;
                         }
+                       
                     }
                     catch
                     {
@@ -171,7 +186,8 @@ namespace Cdy.Spider.TcpClient
                 }
                 else
                 {
-                    if (mClient != null && !IsOnline(mClient))
+                    //if (mClient != null && !IsOnline(mClient))
+                    if(mClient!=null && !mClient.Connected)
                     {
                         StartConnect();
                         Thread.Sleep(mData.ReTryDuration);
@@ -250,7 +266,8 @@ namespace Cdy.Spider.TcpClient
         /// <returns></returns>
         public static bool IsOnline(System.Net.Sockets.Socket c)
         {
-            return !((c.Poll(1000, System.Net.Sockets.SelectMode.SelectRead) && (c.Available == 0)) || !c.Connected);
+            return c.Connected;
+            //return !((c.Poll(1000, System.Net.Sockets.SelectMode.SelectRead) && (c.Available == 0)) || !c.Connected);
         }
 
         /// <summary>

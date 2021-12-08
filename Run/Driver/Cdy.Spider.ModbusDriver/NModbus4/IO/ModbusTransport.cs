@@ -152,6 +152,7 @@
                                 }
                                 else
                                 {
+                                    LoggerService.Service.Warn("ModbusTransport", exceptionResponse.ToString());
                                     throw new SlaveException(exceptionResponse);
                                 }
                             }
