@@ -147,6 +147,9 @@
   <data name="CancelSave" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="canceltosavemsg" xml:space="preserve">
+    <value>you will be lost all data you have modify. To continue?</value>
+  </data>
   <data name="CommType" xml:space="preserve">
     <value>Channel</value>
   </data>

@@ -158,7 +158,14 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         protected virtual void UpdateValue(List<int> id,object value)
         {
-            Device?.UpdateDeviceValue(id, value);
+            try
+            {
+                Device?.UpdateDeviceValue(id, value);
+            }
+            catch(Exception ex)
+            {
+                LoggerService.Service.Warn(this.Name, ex.Message);
+            }
         }
 
         /// <summary>

@@ -147,6 +147,9 @@
   <data name="CancelSave" xml:space="preserve">
     <value>撤销</value>
   </data>
+  <data name="canceltosavemsg" xml:space="preserve">
+    <value>你将会丢失所有已经修改的数据，是否继续？</value>
+  </data>
   <data name="CommType" xml:space="preserve">
     <value>通道</value>
   </data>

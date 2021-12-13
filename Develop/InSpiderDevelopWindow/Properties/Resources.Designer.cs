@@ -151,6 +151,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 you will be lost all data you have modify. To continue? 的本地化字符串。
+        /// </summary>
+        internal static string canceltosavemsg {
+            get {
+                return ResourceManager.GetString("canceltosavemsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Channel 的本地化字符串。
         /// </summary>
         internal static string CommType {
