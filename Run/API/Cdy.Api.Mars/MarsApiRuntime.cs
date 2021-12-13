@@ -91,6 +91,9 @@ namespace Cdy.Api.Mars
         public override void Init()
         {
             base.Init();
+            mCallBackTags.Clear();
+            mAllDatabaseTagNames.Clear();
+            mChangedTags.Clear();
 
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
 
@@ -106,13 +109,16 @@ namespace Cdy.Api.Mars
                 
                 foreach(var vvv in vv.ListDatabaseNames())
                 {
-                    if (mAllDatabaseTagNames.ContainsKey(vvv))
+                    if (!string.IsNullOrEmpty(vvv))
                     {
-                        mAllDatabaseTagNames[vvv].Add(vv.Name);
-                    }
-                    else
-                    {
-                        mAllDatabaseTagNames.Add(vvv, new List<string>() { vv.Name });
+                        if (mAllDatabaseTagNames.ContainsKey(vvv))
+                        {
+                            mAllDatabaseTagNames[vvv].Add(vv.Name);
+                        }
+                        else
+                        {
+                            mAllDatabaseTagNames.Add(vvv, new List<string>() { vv.Name });
+                        }
                     }
                 }
 
@@ -224,20 +230,28 @@ namespace Cdy.Api.Mars
                             mIsConnected = false;
                         }
 
-                        lock (mChangedTags)
-                        {
-                            if (mCallBackTags.Count > 100) 
-                                mCallBackTags.Clear();
-                        }
+                        //lock (mChangedTags)
+                        //{
+                        //    if (mCallBackTags.Count > 100) 
+                        //        mCallBackTags.Clear();
+                        //}
                     }
                     Thread.Sleep(2000);
                 }
                 else
                 {
-                   
-                    //如果是定时模式
-                    UpdateChangedTag();
-                    Thread.Sleep(mData.Circle);
+                    if (mIdNameMape.Count == 0 && mAllDatabaseTagNames.Count>0)
+                    {
+                        UpdateTagId();
+                        mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
+                        UpdateAllValue();
+                    }
+                    else
+                    {
+                        //如果是定时模式
+                        UpdateChangedTag();
+                        Thread.Sleep(mData.Circle);
+                    }
                 }
             }
         }
@@ -316,6 +330,9 @@ namespace Cdy.Api.Mars
                 
                 foreach(var vvv in vv.ListCacheHistoryTags())
                 {
+                    if (!mNameIdMape.ContainsKey(vvv.DatabaseName))
+                        continue;
+
                     int id = mNameIdMape[vvv.DatabaseName];
                     var tpu = (Tag.TagType)((int)vvv.Type);
 
@@ -551,15 +568,6 @@ namespace Cdy.Api.Mars
         {
             try
             {
-                //List<Tag.RealTagValue> values = new List<Tag.RealTagValue>();
-
-                //foreach(var vv in mChangedTags.Where(e=>e.Value).ToList())
-                //{
-                //    int id = mNameIdMape[vv.Key.DatabaseName];
-                //    values.Add(new Tag.RealTagValue() { ValueType = (byte)vv.Key.Type, Value = vv.Key.Value, Id = id, Quality = vv.Key.Quality });
-                //}
-                //mProxy.SetTagRealAndHisValue(values);
-
 
                 rdb.Clear();
                 rdbh.Clear();
@@ -580,7 +588,11 @@ namespace Cdy.Api.Mars
                         //lock(mChangedTags)
                         //stag = mChangedTags.Dequeue();
 
+                        if (!mNameIdMape.ContainsKey(stag.DatabaseName))
+                            continue;
+
                         int id = mNameIdMape[stag.DatabaseName];
+
                         var tpu = (TagType)((int)stag.Type);
 
                         if (stag.IsBufferEnabled)
