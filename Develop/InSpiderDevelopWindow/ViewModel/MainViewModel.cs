@@ -125,8 +125,7 @@ namespace InSpiderDevelopWindow
                     mCancelCommand = new RelayCommand(() => { 
                         if(MessageBox.Show(Res.Get("canceltosavemsg"),"",MessageBoxButton.YesNo)== MessageBoxResult.Yes)
                         {
-                            DevelopManager.Manager.Load();
-                            Init();
+                            Reload();
                         }
                     });
                 }
@@ -463,6 +462,7 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public void Init()
         {
+            mItems.Clear();
             ValueConvertManager.manager.Init();
             DevelopManager.Manager.Load();
             foreach(var vv in DevelopManager.Manager.ListMachines())
@@ -471,6 +471,27 @@ namespace InSpiderDevelopWindow
             }
 
             if(mItems.Count>0)
+            {
+                CurrentSelectTreeItem = mItems[0];
+                CurrentSelectTreeItem.IsExpanded = true;
+                CurrentSelectTreeItem.IsSelected = true;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Reload()
+        {
+            mItems.Clear();
+            ValueConvertManager.manager.Init();
+            DevelopManager.Manager.ReLoad();
+            foreach (var vv in DevelopManager.Manager.ListMachines())
+            {
+                mItems.Add(new MachineViewModel { Model = vv, Parent = this });
+            }
+
+            if (mItems.Count > 0)
             {
                 CurrentSelectTreeItem = mItems[0];
                 CurrentSelectTreeItem.IsExpanded = true;
