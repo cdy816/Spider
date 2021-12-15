@@ -542,15 +542,15 @@ namespace Cdy.Api.Mars
                                 break;
                             case TagType.ULongPoint:
                                 var ulpp3 = (Spider.ULongPoint)vvv.Value;
-                                rdb.AppendValue(id, new Tag.ULongPointData(ulpp3.X,ulpp3.Y));
+                                rdb.AppendValue(id, new Tag.ULongPointData(ulpp3.X,ulpp3.Y), vvv.Quality);
                                 break;
                             case TagType.LongPoint3:
                                 var lp3 = (Spider.LongPoint3)vvv.Value;
-                                rdb.AppendValue(id, new Tag.LongPoint3Data(lp3.X,lp3.Y,lp3.Z));
+                                rdb.AppendValue(id, new Tag.LongPoint3Data(lp3.X,lp3.Y,lp3.Z), vvv.Quality);
                                 break;
                             case TagType.ULongPoint3:
                                 var ulp3 = (Spider.ULongPoint3)vvv.Value;
-                                rdb.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z));
+                                rdb.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z), vvv.Quality);
                                 break;
                         }
                     }
@@ -558,6 +558,117 @@ namespace Cdy.Api.Mars
 
                 if(rdb.ValueCount>0)
                 mProxy.SetTagValueAndQuality(rdb);
+            }
+        }
+
+        /// <summary>
+        /// 更新质量戳为坏
+        /// </summary>
+        private void UpdateBadQuality()
+        {
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+
+            foreach (var vv in manager.ListDevice())
+            {
+                //Dictionary<int, Tuple<Cdy.Tag.TagType, object,byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
+                rdb.CheckAndResize(vv.ListTags().Count * 32);
+                rdb.Clear();
+
+                long size = 0;
+                //vv.ListCacheHistoryTags().ForEach(e => size += e.HisValueBuffer.Length);
+                //hdb.CheckAndResize(size);
+                //hdb.Clear();
+
+                //离线质量戳
+                byte badquality = 33;
+
+                foreach (var vvv in vv.ListTags())
+                {
+                    if (mNameIdMape.ContainsKey(vvv.DatabaseName) && vvv.Quality != Tagbase.InitQuality)
+                    {
+                        int id = mNameIdMape[vvv.DatabaseName];
+                        var tpu = (TagType)((int)vvv.Type);
+
+                        switch (vvv.Type)
+                        {
+
+                            case TagType.Double:
+                                rdb.AppendValue(id, Convert.ToDouble(vvv.Value), badquality);
+                                break;
+                            case TagType.Bool:
+                                rdb.AppendValue(id, Convert.ToBoolean(vvv.Value), badquality);
+
+                                break;
+                            case TagType.Byte:
+                                rdb.AppendValue(id, Convert.ToByte(vvv.Value), badquality);
+                                break;
+                            case TagType.DateTime:
+                                rdb.AppendValue(id, Convert.ToDateTime(vvv.Value), badquality);
+
+                                break;
+                            case TagType.Float:
+                                rdb.AppendValue(id, Convert.ToSingle(vvv.Value), badquality);
+
+                                break;
+                            case TagType.Int:
+                                rdb.AppendValue(id, Convert.ToInt32(vvv.Value), badquality);
+                                break;
+                            case TagType.Long:
+                                rdb.AppendValue(id, Convert.ToInt64(vvv.Value), badquality);
+                                break;
+                            case TagType.UInt:
+                                rdb.AppendValue(id, Convert.ToUInt32(vvv.Value), badquality);
+                                break;
+                            case TagType.ULong:
+                                rdb.AppendValue(id, Convert.ToUInt64(vvv.Value), badquality);
+                                break;
+                            case TagType.UShort:
+                                rdb.AppendValue(id, Convert.ToUInt16(vvv.Value), badquality);
+                                break;
+                            case TagType.Short:
+                                rdb.AppendValue(id, Convert.ToInt16(vvv.Value), badquality);
+                                break;
+                            case TagType.String:
+                                rdb.AppendValue(id, vvv.Value.ToString(), badquality);
+                                break;
+                            case TagType.IntPoint:
+                                var vpp = (Spider.IntPoint)vvv.Value;
+                                rdb.AppendValue(id, new Tag.IntPointData(vpp.X, vpp.Y), badquality);
+                                break;
+                            case TagType.UIntPoint:
+                                var uvpp = (Spider.UIntPoint)vvv.Value;
+                                rdb.AppendValue(id, new Tag.UIntPointData(uvpp.X, uvpp.Y), badquality);
+                                break;
+                            case TagType.IntPoint3:
+                                var vpp3 = (Spider.IntPoint3)vvv.Value;
+                                rdb.AppendValue(id, new Tag.IntPoint3Data(vpp3.X, vpp3.Y, vpp3.Z), badquality);
+                                break;
+                            case TagType.UIntPoint3:
+                                var uvpp3 = (Spider.IntPoint3)vvv.Value;
+                                rdb.AppendValue(id, new Tag.IntPoint3Data(uvpp3.X, uvpp3.Y, uvpp3.Z), badquality);
+                                break;
+                            case TagType.LongPoint:
+                                var lpp3 = (Spider.LongPoint)vvv.Value;
+                                rdb.AppendValue(id, new Tag.LongPointData(lpp3.X, lpp3.Y), badquality);
+                                break;
+                            case TagType.ULongPoint:
+                                var ulpp3 = (Spider.ULongPoint)vvv.Value;
+                                rdb.AppendValue(id, new Tag.ULongPointData(ulpp3.X, ulpp3.Y),badquality);
+                                break;
+                            case TagType.LongPoint3:
+                                var lp3 = (Spider.LongPoint3)vvv.Value;
+                                rdb.AppendValue(id, new Tag.LongPoint3Data(lp3.X, lp3.Y, lp3.Z), badquality);
+                                break;
+                            case TagType.ULongPoint3:
+                                var ulp3 = (Spider.ULongPoint3)vvv.Value;
+                                rdb.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z), badquality);
+                                break;
+                        }
+                    }
+                }
+
+                if (rdb.ValueCount > 0)
+                    mProxy.SetTagValueAndQuality(rdb);
             }
         }
 
@@ -771,6 +882,13 @@ namespace Cdy.Api.Mars
         public override void Stop()
         {
             mIsClosed = true;
+            while (mScanThread.IsAlive) Thread.Sleep(1);
+
+            if(mProxy.IsConnected)
+            {
+                UpdateBadQuality();
+            }
+
             mProxy.Close();
             base.Stop();
         }
