@@ -206,6 +206,12 @@ namespace Cdy.Spider
         void UpdateDeviceValue(int id, object value, byte quality);
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceTag"></param>
+        /// <param name="value"></param>
+        /// <param name="quality"></param>
         void UpdateDeviceValue(string deviceTag, object value, byte quality);
 
 

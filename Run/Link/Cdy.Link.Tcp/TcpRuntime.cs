@@ -137,6 +137,18 @@ namespace Cdy.Link.Tcp
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        public void UpdateBadQuality(string device)
+        {
+            if(mCallback.ContainsKey(device))
+            {
+                mCallback[device](null);
+            }
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

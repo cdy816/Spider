@@ -467,6 +467,11 @@ namespace Cdy.Spider.CalculateDriver
                             if (dev != null)
                             {
                                 var vtag = dev.GetTag(dd[1]);
+                                if (vtag == null)
+                                {
+                                    LoggerService.Service.Warn(TagRef.Name, $"tag '{vv}' is not exist in expresse '{TagRef.DeviceInfo}'");
+                                    continue;
+                                }
 
                                 Tag.TagMaps.Add(vv, vtag);
                                 Tag.DeviceMap.Add(vv,dev);

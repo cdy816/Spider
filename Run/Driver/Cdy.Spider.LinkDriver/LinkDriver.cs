@@ -62,9 +62,16 @@ namespace Cdy.Spider
         /// <param name="values"></param>
         private void UpdateValues(Dictionary<string,object> values)
         {
-            foreach(var vv in values)
+            if (values == null)
             {
-                this.UpdateValue(vv.Key, vv.Value);
+                this.UpdateAllTagQualityToCommBad();
+            }
+            else
+            {
+                foreach (var vv in values)
+                {
+                    this.UpdateValue(vv.Key, vv.Value);
+                }
             }
         }
 

@@ -150,6 +150,17 @@ namespace Cdy.Spider
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceInfo"></param>
+        /// <param name="quality"></param>
+        protected virtual void UpdateAllTagQualityToCommBad()
+        {
+            Device?.UpdateAllTagQualityToCommBad();
+        }
+
+
 
         /// <summary>
         /// 

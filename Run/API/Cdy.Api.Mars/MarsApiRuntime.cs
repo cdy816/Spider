@@ -580,7 +580,7 @@ namespace Cdy.Api.Mars
                 //hdb.Clear();
 
                 //离线质量戳
-                byte badquality = 33;
+                byte badquality = Tagbase.BadCommQuality;
 
                 foreach (var vvv in vv.ListTags())
                 {

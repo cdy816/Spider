@@ -191,6 +191,8 @@ namespace Cdy.Api.Mars
             base.Start();
         }
 
+        private bool mIsConnected = false;
+
         /// <summary>
         /// 
         /// </summary>
@@ -203,16 +205,31 @@ namespace Cdy.Api.Mars
             {
                 if (mProxy.IsConnected)
                 {
+                    if(!mIsConnected)
+                    {
+                        mIsConnected = true;
+                        NotifyTags();
+                    }
                     //如果是定时模式
                     UpdateChangedTag();
                     Thread.Sleep(mData.Circle);
                 }
                 else
                 {
+                    mIsConnected = false;
                     LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " failed！");
                     Thread.Sleep(2000);
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void NotifyTags()
+        {
+            var vtags = mAllDatabaseTagNames.Keys.ToList();
+            mProxy.NotifyTags(vtags);
         }
 
         /// <summary>
@@ -427,7 +444,7 @@ namespace Cdy.Api.Mars
                 rdb.Clear();
 
                 //离线质量戳
-                byte badquality = 33;
+                byte badquality = Tagbase.BadCommQuality;
 
                 foreach (var vvv in vv.ListTags())
                 {

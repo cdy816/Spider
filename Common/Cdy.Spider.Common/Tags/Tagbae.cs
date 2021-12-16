@@ -134,7 +134,7 @@ namespace Cdy.Spider
         /// <summary>
         /// 通信故障
         /// </summary>
-        public const byte BadCommQuality = 20;
+        public const byte BadCommQuality = 33;
 
         /// <summary>
         /// 超出范围

@@ -323,6 +323,10 @@ namespace Cdy.Link.Tcp
             {
                 if (mMaps.ContainsKey(id))
                 {
+                    foreach (var vv in mMaps[id])
+                    {
+                        Service.UpdateBadQuality(vv);
+                    }
                     mMaps.Remove(id);
                 }
             }

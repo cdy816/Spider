@@ -667,7 +667,11 @@ namespace Cdy.Spider
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
         public void UpdateDeviceValue(int id, object value)
         {
             DateTime dtmp = DateTime.Now;
