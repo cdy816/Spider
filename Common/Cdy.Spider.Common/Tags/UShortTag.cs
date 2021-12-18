@@ -49,7 +49,7 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         private void AppendHisValue(ushort value)
         {
-            if (mIsBufferEnabled)
+            if (mIsBufferEnabled && IsBufferStarted)
             {
                 this.HisValueBuffer.AppendValue(DateTime.UtcNow, value);
             }

@@ -1835,6 +1835,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     var driver = Machine.Driver.GetDriver(this.Document.Name);
                     this.mRegistorConfigModel = driver?.RegistorConfig();
+                    if(mRegistorConfigModel!=null)
                     mRegistorConfigModel.Service = Parent;
                 }
 

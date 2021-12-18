@@ -110,9 +110,14 @@ namespace Cdy.Spider.OpcClient
                 mClient.ConnectComplete += MClient_ConnectComplete;
                 mClient.ConnectServer(this.mData.ServerIp).Wait();
                
+                if(mClient.Connected)
+                {
+                    LoggerService.Service.Info("OpcUA", $"connect to {this.mData.ServerIp} sucessfull.");
+                }
                 return base.InnerOpen();
             }catch
             {
+                LoggerService.Service.Warn("OpcUA", $"connect to {this.mData.ServerIp} failed.");
                 Task.Run(TryConnect);
                 return false;
             }
@@ -129,6 +134,10 @@ namespace Cdy.Spider.OpcClient
                 try
                 {
                     mClient.ConnectServer(this.mData.ServerIp).Wait();
+                    if (mClient.Connected)
+                    {
+                        LoggerService.Service.Info("OpcUA", $"connect to {this.mData.ServerIp} sucessfull.");
+                    }
                 }
                 catch(Exception ex)
                 {

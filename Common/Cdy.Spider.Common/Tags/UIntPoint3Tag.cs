@@ -63,7 +63,7 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         private void AppendHisValue(UIntPoint3 value)
         {
-            if (mIsBufferEnabled)
+            if (mIsBufferEnabled && IsBufferStarted)
             {
                 this.HisValueBuffer.AppendValue(DateTime.UtcNow, value);
             }

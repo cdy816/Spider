@@ -127,6 +127,9 @@ namespace Cdy.Spider.MQTTClient
         private void OnConnected(MqttClientConnectedEventArgs x)
         {
             ConnectedChanged(true);
+
+            LoggerService.Service.Info("MQTTClient", $"connect to {this.mData.ServerIp} sucessfull.");
+
             Task.Run(() => {
                 if (string.IsNullOrEmpty(mData.LocalTopic))
                 {

@@ -120,6 +120,9 @@ namespace Cdy.Spider.MQTTServer
                     }
 
                     c.ReasonCode = MqttConnectReasonCode.Success;
+
+                    LoggerService.Service.Info("MQTTServer", $"Client {c.Endpoint} connection successful.");
+
                 });
 
             try

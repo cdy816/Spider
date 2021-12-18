@@ -90,9 +90,11 @@ namespace Cdy.Spider.SerisePortClient
             {
                 mClient.Open();
                 mIsConnected = true;
+                LoggerService.Service.Info("SerisePort", $"Open {mData.PortName} successful.");
             }
             catch
             {
+                LoggerService.Service.Warn("OpcUA", $"connect to {this.mData.PortName} failed.");
                 Task.Run(() => {
 
                     TryConnect();
@@ -115,11 +117,12 @@ namespace Cdy.Spider.SerisePortClient
                     if(!mClient.IsOpen)
                     mClient.Open();
                     mIsConnected = true;
+                    LoggerService.Service.Info("SerisePort", $"Open {mData.PortName} successful.");
                     break;
                 }
                 catch
                 {
-
+                    //LoggerService.Service.Warn("SerisePort", $"Open {mData.PortName} failed.");
                 }
             }
         }

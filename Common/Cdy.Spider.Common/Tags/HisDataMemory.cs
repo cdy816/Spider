@@ -1086,6 +1086,9 @@ namespace Cdy.Spider
             Position = WriteIndex * 16;
             this.WriteLong(Position, time.ToBinary());
             this.WriteDouble(Position, value);
+
+            //LoggerService.Service.Info("AppendValue", ReadIndex + " " + WriteIndex + "  " + time + "," + value);
+
             return this;
         }
 
@@ -1597,6 +1600,8 @@ namespace Cdy.Spider
                 Position = ReadIndex * 16;
                 time = DateTime.FromBinary(this.ReadLong());
                 value = this.ReadDouble();
+
+                //LoggerService.Service.Info("ReadValue", ReadIndex + " " + WriteIndex + "  " + time + "," + value);
                 return true;
             }
             else

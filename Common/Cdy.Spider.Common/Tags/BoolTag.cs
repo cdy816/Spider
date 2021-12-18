@@ -63,7 +63,7 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         private void AppendHisValue(bool value)
         {
-            if(mIsBufferEnabled)
+            if(mIsBufferEnabled && IsBufferStarted)
             {
                 this.HisValueBuffer.AppendValue(DateTime.UtcNow, Convert.ToByte(value));
             }

@@ -78,6 +78,7 @@ namespace InSpiderRun
                                     mRunner.Init();
                                     mRunner.Start();
                                 }
+                                Console.Title = "InSpiderRun-" + cmd[1];
                             }
                             else
                             {

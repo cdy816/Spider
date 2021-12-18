@@ -143,6 +143,11 @@ namespace Cdy.Spider
 
         protected bool mIsBufferEnabled = false;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        protected object mLockObj = new object();
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -206,6 +211,11 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         public HisDataMemory HisValueBuffer { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsBufferStarted { get; set; }
 
         /// <summary>
         /// 

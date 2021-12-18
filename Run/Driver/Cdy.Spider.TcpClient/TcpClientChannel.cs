@@ -141,8 +141,13 @@ namespace Cdy.Spider.TcpClient
                         mIsConnected = mClient.Connected;
                         if (mClient.Connected)
                         {
+                            LoggerService.Service.Info("TcpClient", $"Connect {mData.ServerIp}:{mData.Port} successful.");
                             break;
                         }
+                        //else
+                        //{
+                        //    LoggerService.Service.Info("TcpClient", $"Connect {mData.ServerIp}:{mData.Port} failed.");
+                        //}
                        
                     }
                     catch

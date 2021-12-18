@@ -21,6 +21,7 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         private double mValue;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -50,9 +51,10 @@ namespace Cdy.Spider
         /// <param name="value"></param>
         private void AppendHisValue(double value)
         {
-            if (mIsBufferEnabled)
+            if (mIsBufferEnabled && IsBufferStarted)
             {
-                this.HisValueBuffer.AppendValue(DateTime.UtcNow, value);
+                lock(mLockObj)
+                this.HisValueBuffer?.AppendValue(DateTime.UtcNow, value);
             }
             ValueChangedCallBack?.Invoke(this, value);
         }
@@ -65,9 +67,12 @@ namespace Cdy.Spider
         {
             DateTime time;
             double value;
-            while (this.HisValueBuffer.ReadValue(out time, out value))
+            lock (mLockObj)
             {
-                yield return new HisValue() { Time = time, Value = value };
+                while (this.HisValueBuffer.ReadValue(out time, out value))
+                {
+                    yield return new HisValue() { Time = time, Value = value };
+                }
             }
         }
 

@@ -94,7 +94,15 @@ namespace Cdy.Api.SpiderTcp
         public override void OnConnected(bool isConnected)
         {
             ConnectedChanged?.Invoke(this,isConnected);
-            if (!isConnected) mLoginId = 0;
+            if (!isConnected)
+            {
+                mLoginId = 0;
+                LoggerService.Service.Warn("SpiderTcp", $"connect to {this.ServerIp} failed.");
+            }
+            else
+            {
+                LoggerService.Service.Info("SpiderTcp", $"connect to {this.ServerIp} sucessfull.");
+            }
             base.OnConnected(isConnected);
         }
 

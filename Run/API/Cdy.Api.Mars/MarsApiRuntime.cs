@@ -213,7 +213,15 @@ namespace Cdy.Api.Mars
                         if (mProxy.IsLogin)
                         {
                             LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " sucessfull！");
-                            UpdateTagId();
+                            if(!UpdateTagId())
+                            {
+                                Thread.Sleep(1000);
+                                mProxy.Logout();
+                                //mProxy.Close();
+                                //mProxy.Open(mData.ServerIp, mData.Port);
+                                continue;
+                            }
+                            StopBuffer();
                             mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
                             UpdateAllValue();
                         }
@@ -226,15 +234,10 @@ namespace Cdy.Api.Mars
                     {
                         if(mIsConnected)
                         {
+                            StartBuffer();
                             LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " failed！");
                             mIsConnected = false;
                         }
-
-                        //lock (mChangedTags)
-                        //{
-                        //    if (mCallBackTags.Count > 100) 
-                        //        mCallBackTags.Clear();
-                        //}
                     }
                     Thread.Sleep(2000);
                 }
@@ -242,7 +245,14 @@ namespace Cdy.Api.Mars
                 {
                     if (mIdNameMape.Count == 0 && mAllDatabaseTagNames.Count>0)
                     {
-                        UpdateTagId();
+                        if (!UpdateTagId())
+                        {
+                            Thread.Sleep(1000);
+                            mProxy.Logout();
+                            //mProxy.Close();
+                            //mProxy.Open(mData.ServerIp, mData.Port);
+                            continue;
+                        }
                         mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
                         UpdateAllValue();
                     }
@@ -259,13 +269,54 @@ namespace Cdy.Api.Mars
         /// <summary>
         /// 
         /// </summary>
-        private void UpdateTagId()
+        private void StartBuffer()
         {
+            LoggerService.Service.Info("MarApi", "开始数据缓冲");
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+            foreach (var vv in manager.ListDevice())
+            {
+                foreach (var vvv in vv.ListTags())
+                {
+                    vvv.IsBufferStarted = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StopBuffer()
+        {
+            LoggerService.Service.Info("MarApi", "停止数据缓冲");
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+            foreach (var vv in manager.ListDevice())
+            {
+                foreach (var vvv in vv.ListTags())
+                {
+                    vvv.IsBufferStarted = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool UpdateTagId()
+        {
+            Thread.Sleep(1000);
+
             mIdNameMape.Clear();
             mNameIdMape.Clear();
 
             var vtags = mAllDatabaseTagNames.Keys.ToList();
             var res = mProxy.QueryTagId(vtags);
+
+            if(res==null || res.Count!=vtags.Count)
+            {
+                LoggerService.Service.Info("MarsApi", "网络通信错误，重试中...");
+                return false;
+            }
+            LoggerService.Service.Info("MarsApi", $"开始同步变量ID信息 { res.Count } ");
             if (res != null && res.Count > 0 && res.Count == mAllDatabaseTagNames.Count)
             {
                 for (int i = 0; i < res.Count; i++)
@@ -290,14 +341,16 @@ namespace Cdy.Api.Mars
                 }
             }
 
-            var driverRecordtags = mProxy.GetDriverRecordTypeTagIds().Select(e => mIdNameMape.ContainsKey(e) ? mIdNameMape[e] : string.Empty);
+            var gr = mProxy.GetDriverRecordTypeTagIds();
+
+            var driverRecordtags = gr.Select(e => mIdNameMape.ContainsKey(e) ? mIdNameMape[e] : string.Empty);
 
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
             foreach (var vv in manager.ListDevice())
             {
                 foreach(var vvv in vv.ListTags())
                 {
-                    if(driverRecordtags.Contains(vvv.DatabaseName))
+                    if(driverRecordtags.Contains(vvv.DatabaseName) && !string.IsNullOrEmpty(vvv.DatabaseName))
                     {
                         vvv.EnableHisBuffer(true);
                     }
@@ -307,6 +360,9 @@ namespace Cdy.Api.Mars
                     }
                 }
             }
+
+            LoggerService.Service.Info("MarsApi", "变量ID同步完成...");
+            return true;
         }
 
         /// <summary>
@@ -316,9 +372,13 @@ namespace Cdy.Api.Mars
         {
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
 
+            LoggerService.Service.Info("MarsApi", "首次数据同步...");
+
             foreach (var vv in manager.ListDevice())
             {
                 //Dictionary<int, Tuple<Cdy.Tag.TagType, object,byte>> values = new Dictionary<int, Tuple<Cdy.Tag.TagType, object, byte>>();
+
+
                 rdb.CheckAndResize(vv.ListTags().Count * 32);
                 rdb.Clear();
 
@@ -326,8 +386,8 @@ namespace Cdy.Api.Mars
                 vv.ListCacheHistoryTags().ForEach(e => size += e.HisValueBuffer.Length);
                 hdb.CheckAndResize(size);
                 hdb.Clear();
-                
-                
+                hdb.Position = 0;
+                          
                 foreach(var vvv in vv.ListCacheHistoryTags())
                 {
                     if (!mNameIdMape.ContainsKey(vvv.DatabaseName))
@@ -466,8 +526,12 @@ namespace Cdy.Api.Mars
 
                             break;
                     }
-
-                    mProxy.SetMutiTagHisValue(hdb,10000);
+                    if (hdb.ValueCount > 0)
+                    {
+                        LoggerService.Service.Info("MarsApi", $"同步 设备{vv.Name} 的历史缓存数据 { hdb.ValueCount}...");
+                        mProxy.SetMutiTagHisValue(hdb, 10000);
+                       
+                    }
                     
                 }
 
@@ -559,6 +623,8 @@ namespace Cdy.Api.Mars
                 if(rdb.ValueCount>0)
                 mProxy.SetTagValueAndQuality(rdb);
             }
+
+            LoggerService.Service.Info("MarsApi", "首次数据同步完成...");
         }
 
         /// <summary>
@@ -768,15 +834,15 @@ namespace Cdy.Api.Mars
                                     break;
                                 case TagType.ULongPoint:
                                     var ulpp3 = (Spider.ULongPoint)stag.Value;
-                                    rdbh.AppendValue(id, new Tag.ULongPointData(ulpp3.X, ulpp3.Y));
+                                    rdbh.AppendValue(id, new Tag.ULongPointData(ulpp3.X, ulpp3.Y), stag.Quality);
                                     break;
                                 case TagType.LongPoint3:
                                     var lp3 = (Spider.LongPoint3)stag.Value;
-                                    rdbh.AppendValue(id, new Tag.LongPoint3Data(lp3.X, lp3.Y, lp3.Z));
+                                    rdbh.AppendValue(id, new Tag.LongPoint3Data(lp3.X, lp3.Y, lp3.Z), stag.Quality);
                                     break;
                                 case TagType.ULongPoint3:
                                     var ulp3 = (Spider.ULongPoint3)stag.Value;
-                                    rdbh.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z));
+                                    rdbh.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z), stag.Quality);
                                     break;
                             }
                         }
@@ -847,15 +913,15 @@ namespace Cdy.Api.Mars
                                     break;
                                 case TagType.ULongPoint:
                                     var ulpp3 = (Spider.ULongPoint)stag.Value;
-                                    rdb.AppendValue(id, new Tag.ULongPointData(ulpp3.X, ulpp3.Y));
+                                    rdb.AppendValue(id, new Tag.ULongPointData(ulpp3.X, ulpp3.Y), stag.Quality);
                                     break;
                                 case TagType.LongPoint3:
                                     var lp3 = (Spider.LongPoint3)stag.Value;
-                                    rdb.AppendValue(id, new Tag.LongPoint3Data(lp3.X, lp3.Y, lp3.Z));
+                                    rdb.AppendValue(id, new Tag.LongPoint3Data(lp3.X, lp3.Y, lp3.Z), stag.Quality);
                                     break;
                                 case TagType.ULongPoint3:
                                     var ulp3 = (Spider.ULongPoint3)stag.Value;
-                                    rdb.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z));
+                                    rdb.AppendValue(id, new Tag.ULongPoint3Data(ulp3.X, ulp3.Y, ulp3.Z), stag.Quality);
                                     break;
                             }
                         }
