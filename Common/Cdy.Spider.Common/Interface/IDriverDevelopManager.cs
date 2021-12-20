@@ -49,6 +49,13 @@ namespace Cdy.Spider
         /// <returns></returns>
         IDriverDevelop GetDriver(string name);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Driver"></param>
+        /// <param name="newName"></param>
+        /// <returns></returns>
+        bool ReName(IDriverDevelop Driver, string newName);
 
         #endregion ...Methods...
 

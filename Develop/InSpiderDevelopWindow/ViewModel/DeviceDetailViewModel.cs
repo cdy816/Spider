@@ -1704,6 +1704,15 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="tag"></param>
+        public void CheckTagDeviceInfo(Tagbase tag)
+        {
+            mDriver?.CheckTagDeviceInfo(tag);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Active()
         {
             this.grid = mGrid;
@@ -2031,7 +2040,9 @@ namespace InSpiderDevelopWindow.ViewModel
                 if (mModel != null && mModel.Name != value && value.Length<=64)
                 {
                     mModel.Name = value;
+                    Parent.CheckTagDeviceInfo(this.Model);
                     OnPropertyChanged("Name");
+                    OnPropertyChanged("DeviceInfo");
                 }
             }
         }

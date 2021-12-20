@@ -22,6 +22,7 @@ namespace Cdy.Spider
 
         #region ... Variables  ...
         private ICommChannelDevelop mCommChannel;
+        private IDriverDevelopManager mDriverManager;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -107,8 +108,10 @@ namespace Cdy.Spider
         /// </summary>
         public void UpdateDriverName()
         {
+            //if (this.Driver != null)
+            //    this.Driver.Name = FullName;
             if (this.Driver != null)
-                this.Driver.Name = FullName;
+                mDriverManager?.ReName(this.Driver, FullName);
         }
 
         /// <summary>
@@ -137,6 +140,7 @@ namespace Cdy.Spider
             {
                 this.Driver = context.Get<IDriverDevelopManager>().GetDriver(this.Name);
             }
+            mDriverManager = context.Get<IDriverDevelopManager>();
         }
 
         /// <summary>
