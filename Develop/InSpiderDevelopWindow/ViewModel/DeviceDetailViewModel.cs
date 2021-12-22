@@ -1581,12 +1581,13 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             if (CurrentSelectTag != null)
             {
-                var vtag = CurrentSelectTag.Clone();           
+                var vtag = CurrentSelectTag.Clone();
+                vtag.Parent = this;
                 vtag.Name = GetNewName();
                 vtag.IsNew = true;
                 vtag.Document = mModel.Data;
                 vtag.Machine = this.MachineModel;
-                vtag.Parent = this;
+               
 
                 mDriver?.CheckTagDeviceInfo(vtag.Model);
 
@@ -1682,12 +1683,12 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     var vtag = vv.Clone();
                     mDriver?.CheckTagDeviceInfo(vtag.Model);
-
+                    vtag.Parent = this;
                     vtag.Name = GetNewName(vv.Name);
                     vtag.IsNew = true;
                     vtag.Machine = this.MachineModel;
                     vtag.Document = mModel.Data;
-                    vtag.Parent = this;
+                   
 
                     if (mModel.Data.AppendTag(vtag.Model))
                     {
