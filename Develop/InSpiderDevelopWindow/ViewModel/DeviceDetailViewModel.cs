@@ -1556,7 +1556,7 @@ namespace InSpiderDevelopWindow.ViewModel
 
             foreach (var vv in grid.SelectedItems)
             {
-                mCopyTags.Add(vv as TagViewModel);
+                mCopyTags.Add((vv as TagViewModel).Clone());
             }
         }
 
