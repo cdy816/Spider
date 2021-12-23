@@ -243,7 +243,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     mChannelView = CollectionViewSource.GetDefaultView(mChannelList);
                     mChannelView.Filter = new Predicate<object>((e) => 
                     {
-                        return mSupportChannels.Contains(e);
+                        return mSupportChannels.Contains(e)||e.Equals("");
                     });
                 }
                 return mChannelView;

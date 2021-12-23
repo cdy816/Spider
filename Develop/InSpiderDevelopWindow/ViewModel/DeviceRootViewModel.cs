@@ -244,8 +244,27 @@ namespace InSpiderDevelopWindow
                     OnNameRefresh();
 
                     var driver = (vv as DeviceDevelop).Driver;
+                    driver.Name = vv.FullName;
                     var driverdoc = GetMachineViewModel(this).Model.Driver;
                     driverdoc?.AddDriver(driver);
+
+                    if(!string.IsNullOrEmpty(vv.Data.ChannelName))
+                    {
+                        var chd = GetMachineViewModel(this).Model.Channel;
+                        var ch =  chd.GetChannel(vv.Data.ChannelName);
+                        if(ch!=null)
+                        {
+                            string sname = chd.GetAvaiableName(ch.Name);
+                            var chn = (ch as ChannelDevelopBase).Clone();
+                            chn.Name = sname;
+
+                            chd.AddChannel(chn);
+
+                            vv.Data.ChannelName = chn.Name;
+                            
+                        }
+                    }
+
                 }
             }
             else if (CopyPasteHelper.Helper.CopyObj is DeviceGroup)

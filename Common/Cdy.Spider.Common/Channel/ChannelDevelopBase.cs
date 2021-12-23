@@ -104,6 +104,18 @@ namespace Cdy.Spider
         /// 
         /// </summary>
         /// <returns></returns>
+        public ICommChannelDevelop Clone()
+        {
+            var xe = this.Save();
+            var re = NewChannel();
+            re.Load(xe);
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public abstract ICommChannelDevelop NewChannel();
     }
 }
