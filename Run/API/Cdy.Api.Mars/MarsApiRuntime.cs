@@ -49,6 +49,11 @@ namespace Cdy.Api.Mars
 
         private bool mIsConnected = false;
 
+        /// <summary>
+        /// 是否需要重新初始化
+        /// </summary>
+        private bool mIsNeedReInit = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -163,6 +168,10 @@ namespace Cdy.Api.Mars
                     }
                 }
             });
+
+            mProxy.DatabaseChanged = new SpiderDriver.ClientApi.DriverProxy.DatabaseChangedDelegate((realchanged, hischanged) => {
+                mIsNeedReInit = realchanged | hischanged;
+            });
         }
 
         /// <summary>
@@ -243,7 +252,7 @@ namespace Cdy.Api.Mars
                 }
                 else
                 {
-                    if (mIdNameMape.Count == 0 && mAllDatabaseTagNames.Count>0)
+                    if ((mIdNameMape.Count == 0 && mAllDatabaseTagNames.Count>0)|| mIsNeedReInit)
                     {
                         if (!UpdateTagId())
                         {
@@ -252,6 +261,10 @@ namespace Cdy.Api.Mars
                             //mProxy.Close();
                             //mProxy.Open(mData.ServerIp, mData.Port);
                             continue;
+                        }
+                        else
+                        {
+                            mIsNeedReInit = false;
                         }
                         mProxy.AppendRegistorDataChangedCallBack(mCallBackTags.Values.ToList());
                         UpdateAllValue();

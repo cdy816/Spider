@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mars.DBDevelopClientWebApi" Version="1.0.1" />
+    <PackageReference Include="Mars.DBDevelopClientWebApi" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
