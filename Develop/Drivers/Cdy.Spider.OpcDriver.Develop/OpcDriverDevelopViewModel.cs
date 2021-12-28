@@ -82,6 +82,26 @@ namespace Cdy.Spider.OpcDriver.Develop
             }
         }
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public int PackageCount
+        {
+            get
+            {
+                return Model.PackageCount;
+            }
+            set
+            {
+                if (Model.PackageCount != value)
+                {
+                    Model.PackageCount = value;
+                    OnPropertyChanged("PackageCount");
+                }
+            }
+        }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...

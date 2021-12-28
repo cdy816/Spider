@@ -151,6 +151,15 @@ namespace Cdy.Spider.OpcDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 PackageCount 的本地化字符串。
+        /// </summary>
+        internal static string PackageCount {
+            get {
+                return ResourceManager.GetString("PackageCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Passivity 的本地化字符串。
         /// </summary>
         internal static string Passivity {

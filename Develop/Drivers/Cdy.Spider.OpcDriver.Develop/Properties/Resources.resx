@@ -147,6 +147,9 @@
   <data name="OpcBrowserTitle" xml:space="preserve">
     <value>Registor browse and select</value>
   </data>
+  <data name="PackageCount" xml:space="preserve">
+    <value>PackageCount</value>
+  </data>
   <data name="Passivity" xml:space="preserve">
     <value>Passivity</value>
   </data>

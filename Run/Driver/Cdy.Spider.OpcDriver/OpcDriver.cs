@@ -45,6 +45,24 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        public override void Prepare()
+        {
+            using (ChannelPrepareContext ctx = new ChannelPrepareContext())
+            {
+                ctx.Add("IsSubscriptionMode", mData.Model == WorkMode.Passivity);
+                if (mData.Model == WorkMode.Passivity)
+                {
+                    ctx.Add("Tags", mCachTags.Keys.ToList());
+                    ctx.Add("DeviceName", this.Device.Name);
+                }
+                if (mComm != null)
+                    mComm.Prepare(ctx);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="mComm"></param>
         public override void RegistorReceiveCallBack(ICommChannel2 mComm)
         {
@@ -85,17 +103,17 @@ namespace Cdy.Spider
         /// </summary>
         protected override void ProcessTimerElapsed()
         {
-            int count = this.mCachTags.Count / 100;
-            count = this.mCachTags.Count % 100 > 0 ? count + 1 : count;
+            int count = this.mCachTags.Count / mData.PackageCount;
+            count = this.mCachTags.Count % mData.PackageCount > 0 ? count + 1 : count;
 
             for (int i = 0; i < count; i++)
             {
-                int icount = (i + 1) * 100;
+                int icount = (i + 1) * mData.PackageCount;
                 if (icount > this.mCachTags.Count)
                 {
-                    icount = this.mCachTags.Count - i * 100;
+                    icount = this.mCachTags.Count - i * mData.PackageCount;
                 }
-                var vkeys = this.mCachTags.Keys.Skip(i * 100).Take(icount);
+                var vkeys = this.mCachTags.Keys.Skip(i * mData.PackageCount).Take(icount);
                 SendGroupTags(vkeys.ToList());
                 Thread.Sleep(10);
             }

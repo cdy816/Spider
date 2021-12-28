@@ -58,6 +58,11 @@ namespace Cdy.Spider.OpcClient
         /// </summary>
         public override string RemoteDescription => mData.ServerIp+":"+mData.Port;
 
+        /// <summary>
+        /// 是否为订阅模式
+        /// </summary>
+        public bool IsSubscriptionMode { get; set; } = true;
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -82,18 +87,27 @@ namespace Cdy.Spider.OpcClient
         /// <param name="deviceInfos"></param>
         public override void Prepare(ChannelPrepareContext deviceInfos)
         {
-            mSubscription = new Dictionary<string, string>();
-            foreach(var vv in deviceInfos["Tags"] as IEnumerable<string>)
+            if(deviceInfos.ContainsKey("IsSubscriptionMode"))
             {
-                if(vv.IndexOf("||")>0)
+                IsSubscriptionMode = (bool)deviceInfos["IsSubscriptionMode"];
+            }
+
+            mSubscription = new Dictionary<string, string>();
+            
+            if (IsSubscriptionMode)
+            {
+                foreach (var vv in deviceInfos["Tags"] as IEnumerable<string>)
                 {
-                    string skey = vv.Substring(0, vv.LastIndexOf("||"));
-                    string stype = vv.Substring(vv.LastIndexOf("||") + 2);
-                    mSubscription.Add(skey, stype);
-                }
-                else
-                {
-                    mSubscription.Add(vv, "");
+                    if (vv.IndexOf("||") > 0)
+                    {
+                        string skey = vv.Substring(0, vv.LastIndexOf("||"));
+                        string stype = vv.Substring(vv.LastIndexOf("||") + 2);
+                        mSubscription.Add(skey, stype);
+                    }
+                    else
+                    {
+                        mSubscription.Add(vv, "");
+                    }
                 }
             }
             base.Prepare(deviceInfos);
@@ -159,11 +173,14 @@ namespace Cdy.Spider.OpcClient
             {
                 Task.Run(() =>
                 {
-                    mClient.AddSubscription("spider", this.mSubscription.Keys.ToArray(), new Action<string, Opc.Ua.Client.MonitoredItem, Opc.Ua.Client.MonitoredItemNotificationEventArgs>((tag, item, arg) => {
-
-                        MonitoredItemNotification notification = arg.NotificationValue as MonitoredItemNotification;
-                        OnReceiveCallBack(item.DisplayName, notification.Value.Value);
-                    }));
+                    if (IsSubscriptionMode)
+                    {
+                        mClient.AddSubscription("spider", this.mSubscription.Keys.ToArray(), new Action<string, Opc.Ua.Client.MonitoredItem, Opc.Ua.Client.MonitoredItemNotificationEventArgs>((tag, item, arg) =>
+                        {
+                            MonitoredItemNotification notification = arg.NotificationValue as MonitoredItemNotification;
+                            OnReceiveCallBack(item.DisplayName, notification.Value.Value);
+                        }));
+                    }
 
                     Dictionary<string, string> dtmp = new Dictionary<string, string>();
                     foreach (var vv in mSubscription.Where(e => string.IsNullOrEmpty(e.Value)))

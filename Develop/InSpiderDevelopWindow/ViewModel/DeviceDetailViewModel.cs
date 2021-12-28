@@ -1282,7 +1282,7 @@ namespace InSpiderDevelopWindow.ViewModel
             ofd.Filter = "csv|*.csv";
             if (ofd.ShowDialog().Value)
             {
-                var stream = new StreamWriter(File.Open(ofd.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite));
+                var stream = new StreamWriter(File.Open(ofd.FileName, FileMode.Create, FileAccess.ReadWrite));
 
                 Task.Run(() => {
                     ServiceLocator.Locator.Resolve<IProcessNotify>().BeginShowNotify();
