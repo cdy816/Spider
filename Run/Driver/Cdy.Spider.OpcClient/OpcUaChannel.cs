@@ -63,6 +63,10 @@ namespace Cdy.Spider.OpcClient
         /// </summary>
         public bool IsSubscriptionMode { get; set; } = true;
 
+        public int PackageCount { get; set; } = int.MaxValue;
+
+        public int ScanCircle { get; set; } = 0;
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -90,6 +94,16 @@ namespace Cdy.Spider.OpcClient
             if(deviceInfos.ContainsKey("IsSubscriptionMode"))
             {
                 IsSubscriptionMode = (bool)deviceInfos["IsSubscriptionMode"];
+            }
+
+            if(deviceInfos.ContainsKey("PackageCount"))
+            {
+                PackageCount = (int)(deviceInfos["PackageCount"]);
+            }
+
+            if(deviceInfos.ContainsKey("ScanCircle"))
+            {
+                ScanCircle = (int)(deviceInfos["ScanCircle"]);
             }
 
             mSubscription = new Dictionary<string, string>();
@@ -175,11 +189,24 @@ namespace Cdy.Spider.OpcClient
                 {
                     if (IsSubscriptionMode)
                     {
-                        mClient.AddSubscription("spider", this.mSubscription.Keys.ToArray(), new Action<string, Opc.Ua.Client.MonitoredItem, Opc.Ua.Client.MonitoredItemNotificationEventArgs>((tag, item, arg) =>
+                        int count = this.mSubscription.Keys.Count / PackageCount;
+                        count = this.mSubscription.Keys.Count % PackageCount > 0 ? count + 1 : count;
+
+                        for (int i = 0; i < count; i++)
                         {
-                            MonitoredItemNotification notification = arg.NotificationValue as MonitoredItemNotification;
-                            OnReceiveCallBack(item.DisplayName, notification.Value.Value);
-                        }));
+                            int icount = (i + 1) * PackageCount;
+                            if (icount > this.mSubscription.Count)
+                            {
+                                icount = this.mSubscription.Count - i * PackageCount;
+                            }
+                            var vkeys = this.mSubscription.Keys.Skip(i * PackageCount).Take(icount);
+
+                            mClient.AddSubscription("spider_"+this.Data.Name+"_"+i, vkeys.ToArray(), new Action<string, Opc.Ua.Client.MonitoredItem, Opc.Ua.Client.MonitoredItemNotificationEventArgs>((tag, item, arg) =>
+                            {
+                                MonitoredItemNotification notification = arg.NotificationValue as MonitoredItemNotification;
+                                OnReceiveCallBack(item.DisplayName, notification.Value.Value);
+                            }),ScanCircle);
+                        }
                     }
 
                     Dictionary<string, string> dtmp = new Dictionary<string, string>();
@@ -202,7 +229,7 @@ namespace Cdy.Spider.OpcClient
         {
             if(mClient!=null)
             {
-                mClient.RemoveSubscription("spider");
+                //mClient.RemoveSubscription("spider");
                 mClient.Disconnect();
                 mClient.ConnectComplete -= MClient_ConnectComplete;
                 mClient = null;

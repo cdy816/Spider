@@ -156,6 +156,12 @@
   <data name="Password" xml:space="preserve">
     <value>密码</value>
   </data>
+  <data name="PublishCircle" xml:space="preserve">
+    <value>推送周期</value>
+  </data>
+  <data name="PublishCircleInfo" xml:space="preserve">
+    <value>0 表示以最快的速度工作</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>扫描周期</value>
   </data>

@@ -178,6 +178,24 @@ namespace Cdy.Spider.OpcDriver.Develop.Properties {
         }
         
         /// <summary>
+        ///   查找类似 PublishCircle 的本地化字符串。
+        /// </summary>
+        internal static string PublishCircle {
+            get {
+                return ResourceManager.GetString("PublishCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 0 means working at the fastest speed 的本地化字符串。
+        /// </summary>
+        internal static string PublishCircleInfo {
+            get {
+                return ResourceManager.GetString("PublishCircleInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ScanCircle 的本地化字符串。
         /// </summary>
         internal static string ScanCircle {

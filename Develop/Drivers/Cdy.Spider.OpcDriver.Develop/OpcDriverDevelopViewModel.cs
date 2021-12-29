@@ -46,7 +46,8 @@ namespace Cdy.Spider.OpcDriver.Develop
                 {
                     Model.Model = (WorkMode)value;
                     OnPropertyChanged("WorkModel");
-                    OnPropertyChanged("ScanCircleVisibility");
+                    OnPropertyChanged("PublishVisibility");
+                    OnPropertyChanged("ScanText");
                 }
             }
         }
@@ -54,11 +55,23 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// <summary>
         /// 
         /// </summary>
-        public System.Windows.Visibility ScanCircleVisibility
+        public string ScanText
         {
             get
             {
-                return Model.Model == WorkMode.Active ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+                return Model.Model == WorkMode.Active ? Res.Get("ScanCircle")+":" : Res.Get("PublishCircle")+":";
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public System.Windows.Visibility PublishVisibility
+        {
+            get
+            {
+                return Model.Model == WorkMode.Passivity ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
             }
         }
 

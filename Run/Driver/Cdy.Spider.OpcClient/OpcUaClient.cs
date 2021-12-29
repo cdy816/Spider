@@ -965,12 +965,13 @@ namespace Cdy.Spider.OpcClient
         /// <param name="key">关键字</param>
         /// <param name="tags">节点名称数组</param>
         /// <param name="callback">回调方法</param>
-        public void AddSubscription(string key, string[] tags, Action<string, MonitoredItem, MonitoredItemNotificationEventArgs> callback)
+        /// <param name="PublishInterval">0:标识最快的频率</param>
+        public void AddSubscription(string key, string[] tags, Action<string, MonitoredItem, MonitoredItemNotificationEventArgs> callback,int PublishInterval=0)
         {
             Subscription m_subscription = new Subscription(m_session.DefaultSubscription);
 
             m_subscription.PublishingEnabled = true;
-            m_subscription.PublishingInterval = 0;
+            m_subscription.PublishingInterval = PublishInterval;
             m_subscription.KeepAliveCount = uint.MaxValue;
             m_subscription.LifetimeCount = uint.MaxValue;
             m_subscription.MaxNotificationsPerPublish = uint.MaxValue;

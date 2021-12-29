@@ -153,7 +153,7 @@ namespace Cdy.Spider
             lock (mOpenLock)
             {
                 mOpenCount--;
-                if (mOpenCount == 0)
+                if (mOpenCount <= 0)
                 {
                     return InnerClose();
                 }

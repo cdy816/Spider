@@ -50,6 +50,9 @@ namespace Cdy.Spider
             using (ChannelPrepareContext ctx = new ChannelPrepareContext())
             {
                 ctx.Add("IsSubscriptionMode", mData.Model == WorkMode.Passivity);
+                ctx.Add("PackageCount",mData.PackageCount);
+                ctx.Add("ScanCircle", mData.ScanCircle);
+
                 if (mData.Model == WorkMode.Passivity)
                 {
                     ctx.Add("Tags", mCachTags.Keys.ToList());

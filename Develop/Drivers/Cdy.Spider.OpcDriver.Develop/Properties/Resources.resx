@@ -156,6 +156,12 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="PublishCircle" xml:space="preserve">
+    <value>PublishCircle</value>
+  </data>
+  <data name="PublishCircleInfo" xml:space="preserve">
+    <value>0 means working at the fastest speed</value>
+  </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>ScanCircle</value>
   </data>
