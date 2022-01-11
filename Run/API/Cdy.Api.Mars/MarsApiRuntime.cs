@@ -553,6 +553,9 @@ namespace Cdy.Api.Mars
                     if (mNameIdMape.ContainsKey(vvv.DatabaseName) && vvv.Quality!= Tagbase.InitQuality)
                     {
                         int id = mNameIdMape[vvv.DatabaseName];
+                        
+                        if (id < 0) continue;
+
                         var tpu = (TagType)((int)vvv.Type);
 
                         switch (vvv.Type)
@@ -782,6 +785,8 @@ namespace Cdy.Api.Mars
                             continue;
 
                         int id = mNameIdMape[stag.DatabaseName];
+
+                        if (id < 0) continue;
 
                         var tpu = (TagType)((int)stag.Type);
 
