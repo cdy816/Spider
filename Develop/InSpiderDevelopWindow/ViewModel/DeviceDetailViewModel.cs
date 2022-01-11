@@ -1210,7 +1210,7 @@ namespace InSpiderDevelopWindow.ViewModel
 
             if(page<pagecount)
             {
-                int icount = pagecount;
+                int icount = mPerPageCount;
                 if((page+1)*mPerPageCount> count)
                 {
                     icount = count - page * mPerPageCount;
