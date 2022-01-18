@@ -67,22 +67,32 @@ namespace InSpiderRun
                         }
                         break;
                     case "start":
-                        if (cmd.Length > 0)
+                        string prj;
+                        if (cmd.Length > 1)
                         {
-                            if (SpiderRuntime.Runer.CheckNameExit(cmd[1]))
+                            prj = cmd[1];
+                        }
+                        else
+                        {
+                            prj = ListAvaiableProject();
+                        }
+
+                        if (!string.IsNullOrEmpty(prj))
+                        {
+                            if (SpiderRuntime.Runer.CheckNameExit(prj))
                             {
                                 if (mRunner == null)
-                                    mRunner = new SpiderRuntime.Runer() { Name = cmd[1] };
+                                    mRunner = new SpiderRuntime.Runer() { Name = prj };
                                 if (!mRunner.IsStarted)
                                 {
                                     mRunner.Init();
                                     mRunner.Start();
                                 }
-                                Console.Title = "InSpiderRun-" + cmd[1];
+                                Console.Title = "InSpiderRun-" + prj;
                             }
                             else
                             {
-                                Console.WriteLine(cmd[1] +" is not exist!");
+                                Console.WriteLine(prj + " is not exist!");
                             }
                         }
                         break;
@@ -95,6 +105,20 @@ namespace InSpiderRun
                 }
             }
            
+        }
+
+        private static string ListAvaiableProject()
+        {
+            var path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(Program).Assembly.Location), "Data");
+            if(System.IO.Directory.Exists(path))
+            {
+                var dd = new System.IO.DirectoryInfo(path).GetDirectories();
+                if(dd!=null && dd.Length>0)
+                {
+                    return dd[0].Name;
+                }
+            }
+            return string.Empty;
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
