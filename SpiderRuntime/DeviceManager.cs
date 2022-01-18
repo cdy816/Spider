@@ -16,7 +16,7 @@ using System.Xml.Linq;
 
 namespace SpiderRuntime
 {
-    public class DeviceManager: IDeviceRuntimeManager
+    public class DeviceManager: IDeviceRuntimeManager, IRealDataService
     {
 
         #region ... Variables  ...
@@ -141,6 +141,59 @@ namespace SpiderRuntime
         public List<IDeviceRuntime> ListDevice()
         {
             return mDevices.Values.ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public IEnumerable<string> ListTags(string device)
+        {
+            if(mDevices.ContainsKey(device))
+            {
+                mDevices[device].ListTags().Select(e => e.Name);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public Dictionary<string, Tuple<object, byte>> GetDeviceALLTagValues(string device)
+        {
+            Dictionary<string, Tuple<object, byte>> re = new Dictionary<string, Tuple<object, byte>>();
+            if(mDevices.ContainsKey(device))
+            {
+                var vtags = mDevices[device].ListTags();
+                if(vtags!=null)
+                {
+                    foreach(var vv in vtags)
+                    {
+                        re.Add(vv.Name, new Tuple<object, byte>(vv.Value, vv.Quality));
+                    }
+                }
+            }
+            return re;
+        }
+
+        public Dictionary<string, Tuple<object, byte>> GetTagValues(string device, IEnumerable<string> tags)
+        {
+            Dictionary<string, Tuple<object, byte>> re = new Dictionary<string, Tuple<object, byte>>();
+            if (mDevices.ContainsKey(device))
+            {
+                var vtags = mDevices[device].ListTags();
+                if (vtags != null)
+                {
+                    foreach (var vv in vtags)
+                    {
+                        re.Add(vv.Name, new Tuple<object, byte>(vv.Value, vv.Quality));
+                    }
+                }
+            }
+            return re;
         }
 
         #endregion ...Methods...
