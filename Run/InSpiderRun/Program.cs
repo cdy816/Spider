@@ -18,17 +18,17 @@ namespace InSpiderRun
             AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-           
-            
-            if(args.Length>1)
+
+
+            Console.WriteLine(Res.Get("HelpMsg"));
+
+            if (args.Length>1)
             {
                 mRunner = new SpiderRuntime.Runer() { Name = args[1] };
-                mRunner.Name = args[0];
+                mRunner.Name = args[1];
                 mRunner.Init();
                 mRunner.Start();
             }
-
-            Console.WriteLine(Res.Get("HelpMsg"));
 
             while (!mIsClosed)
             {

@@ -47,6 +47,15 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        public void ClearAll()
+        {
+            this.Clear();
+            mNamedTags?.Clear();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public IEnumerable<string> TagNames { get { return mNamedTags.Keys; } }
 
         /// <summary>

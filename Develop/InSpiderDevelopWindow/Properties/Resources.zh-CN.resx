@@ -297,6 +297,9 @@
   <data name="SpiderTitle" xml:space="preserve">
     <value>欢迎来到 Spider 开发平台</value>
   </data>
+  <data name="Stop" xml:space="preserve">
+    <value>停止</value>
+  </data>
   <data name="StringFormate" xml:space="preserve">
     <value>字符串格式化</value>
   </data>
@@ -317,5 +320,8 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>类型</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>值</value>
   </data>
 </root>

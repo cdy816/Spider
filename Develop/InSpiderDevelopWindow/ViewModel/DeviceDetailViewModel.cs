@@ -1199,13 +1199,15 @@ namespace InSpiderDevelopWindow.ViewModel
                 var vpp = GetTag(mCurrentPage);
                 if (vpp != null)
                 {
-                    foreach (var vv in vpp)
+                    Application.Current?.Dispatcher.Invoke(new Action(() =>
                     {
-                        Application.Current?.Dispatcher.Invoke(new Action(() =>
+                        foreach (var vv in vpp)
                         {
-                            mTags.Add(new TagViewModel() { Model = vv, Document = mModel.Data,Machine=this.MachineModel,Parent=this });
-                        }));
-                    }
+                            mTags.Add(new TagViewModel() { Model = vv, Document = mModel.Data, Machine = this.MachineModel, Parent = this });
+                        }
+                        
+                    }));
+                   
                 }
             });
             TagCount = mModel.Data.Tags.Count;
@@ -1268,7 +1270,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     icount = count - page * mPerPageCount;
                 }
-                return mModel.Data.Tags.Where(e=>Filter(e)).Skip(page * pagecount).Take(icount).Select(e=>e.Value);
+                return mModel.Data.Tags.Where(e=>Filter(e)).Skip(page * mPerPageCount).Take(icount).Select(e=>e.Value);
             }
             return null;
         }
@@ -1311,19 +1313,21 @@ namespace InSpiderDevelopWindow.ViewModel
                 var vpp = GetTag(mCurrentPage);
                 if (vpp != null)
                 {
-                    foreach (var vv in vpp)
+                    Application.Current?.Dispatcher.Invoke(new Action(() =>
                     {
-                        if (mIdCach.Contains(vv.Id))
+                        foreach (var vv in vpp)
                         {
-                            mIdCach.Remove(vv.Id);
-                            continue;
+                            if (mIdCach.Contains(vv.Id))
+                            {
+                                mIdCach.Remove(vv.Id);
+                                continue;
+                            }
+                            mTags.Add(new TagViewModel() { Model = vv, Document = mModel.Data, Machine = this.MachineModel, Parent = this });
                         }
+                       
+                    }));
 
-                        Application.Current?.Dispatcher.Invoke(new Action(() =>
-                        {
-                            mTags.Add(new TagViewModel() { Model = vv,Document=mModel.Data, Machine = this.MachineModel, Parent = this });
-                        }));
-                    }
+                    
                 }
             });
             TagCount = mModel.Data.Tags.Count;
@@ -1401,7 +1405,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 //删除所有，重新添加
                 if (mode == 1)
                 {
-                    mModel.Data.Tags.Clear();
+                    mModel.Data.Tags.ClearAll();
                     Application.Current?.Dispatcher.Invoke(new Action(() =>
                     {
                         foreach (var vv in this.mTags)
@@ -1840,9 +1844,9 @@ namespace InSpiderDevelopWindow.ViewModel
             if(MonitorParameter.Parameter.Server.Contains("127.0.0.1")||(MonitorParameter.Parameter.Server.Contains("local")))
             {
                 var vss = Process.GetProcessesByName("InSpiderRun");
-                if(vss!=null && vss.Length>0)
+                if (vss != null && vss.Length > 0)
                 {
-                    vss[0].Kill();
+                    return;
                 }
 
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -1954,8 +1958,11 @@ namespace InSpiderDevelopWindow.ViewModel
 
             var vtags = tags.ToDictionary(e => e.Name);
 
-            var rq = new RealValueRequestByTagName() { DeviceName = this.Model.FullName, Tags = vtags.Keys.ToList(), UserName = MonitorParameter.Parameter.UserName, Password = MonitorParameter.Parameter.Password };
-            var sval = Post(MonitorParameter.Parameter.Server, "GetTagValues", JsonConvert.SerializeObject(rq));
+            var rq = new RealValueRequestByTagName() { Device = this.Model.FullName, Tags = vtags.Keys.ToList(), UserName = MonitorParameter.Parameter.UserName, Password = MonitorParameter.Parameter.Password };
+            var sval = Post(MonitorParameter.Parameter.Server+ "/RealValue", "GetTagValues", JsonConvert.SerializeObject(rq));
+
+            if (string.IsNullOrEmpty(sval)) return;
+
             var result = JsonConvert.DeserializeObject<RealValueResult>(sval);
 
             if (result != null && result.Result)
@@ -1978,11 +1985,18 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <returns></returns>
         private string Post(string url,string fun, string sval)
         {
-            if (mClient == null)
-                mClient = new WebClient();
-            mClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            mClient.Encoding = Encoding.UTF8;
-            return mClient.UploadString(url + "/" + fun, sval);
+            try
+            {
+                if (mClient == null)
+                    mClient = new WebClient();
+                mClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                mClient.Encoding = Encoding.UTF8;
+                return mClient.UploadString(url + "/" + fun, sval);
+            }
+            catch(Exception ex)
+            {
+                return string.Empty;
+            }
         }
 
         #endregion ...Methods...
@@ -2768,7 +2782,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
         /// 设备名称
         /// </summary>
-        public string DeviceName { get; set; }
+        public string Device { get; set; }
 
         /// <summary>
         /// 用户名
@@ -2789,7 +2803,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
         /// 设备名称
         /// </summary>
-        public string DeviceName { get; set; }
+        public string Device { get; set; }
 
         /// <summary>
         /// 用户名

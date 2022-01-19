@@ -179,17 +179,28 @@ namespace SpiderRuntime
             return re;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
         public Dictionary<string, Tuple<object, byte>> GetTagValues(string device, IEnumerable<string> tags)
         {
             Dictionary<string, Tuple<object, byte>> re = new Dictionary<string, Tuple<object, byte>>();
             if (mDevices.ContainsKey(device))
             {
-                var vtags = mDevices[device].ListTags();
-                if (vtags != null)
+                var vdd = mDevices[device];
+                foreach (var vv in tags)
                 {
-                    foreach (var vv in vtags)
+                    var vtag = vdd.GetTag(vv);
+                    if(vtag==null)
                     {
-                        re.Add(vv.Name, new Tuple<object, byte>(vv.Value, vv.Quality));
+                        re.Add(vv, new Tuple<object, byte>("", (byte)255));
+                    }
+                    else
+                    {
+                        re.Add(vtag.Name, new Tuple<object, byte>(vtag.Value, vtag.Quality));
                     }
                 }
             }

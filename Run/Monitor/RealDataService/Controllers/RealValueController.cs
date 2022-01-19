@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Cdy.Spider.RealDataService
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class RealValueController : ControllerBase
     {
@@ -17,9 +17,9 @@ namespace Cdy.Spider.RealDataService
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        public RealValueResult Get([FromBody] RealValueRequest request)
+        public RealValueResult Post([FromBody] RealValueRequest request)
         {
-            RealValueResult rr = new RealValueResult();
+            RealValueResult rr = new RealValueResult() { Result = true };
             if (UserConfigDocument.ConfigInstance.CheckUser(request.UserName,request.Password))
             {
                 var service = Cdy.Spider.ServiceLocator.Locator.Resolve<Cdy.Spider.IRealDataService>();
@@ -33,6 +33,7 @@ namespace Cdy.Spider.RealDataService
                         {
                             re.Add(new RealValueItem() { TagName = vv.Key, Value = vv.Value.Item1, Quality = vv.Value.Item2 });
                         }
+                        rr.Value = re;
                     }
                 }
                 else
@@ -57,13 +58,13 @@ namespace Cdy.Spider.RealDataService
         [HttpPost("GetTagValues")]
         public RealValueResult GetTagValues([FromBody] RealValueRequestByTagName request)
         {
-            RealValueResult rr = new RealValueResult();
+            RealValueResult rr = new RealValueResult() { Result = true };
             if (UserConfigDocument.ConfigInstance.CheckUser(request.UserName, request.Password))
             {
                 var service = Cdy.Spider.ServiceLocator.Locator.Resolve<Cdy.Spider.IRealDataService>();
                 if (service != null)
                 {
-                    var vals = service.GetTagValues(request.DeviceName,request.Tags);
+                    var vals = service.GetTagValues(request.Device,request.Tags);
                     if (vals != null)
                     {
                         List<RealValueItem> re = new List<RealValueItem>();
@@ -71,6 +72,7 @@ namespace Cdy.Spider.RealDataService
                         {
                             re.Add(new RealValueItem() { TagName = vv.Key, Value = vv.Value.Item1, Quality = vv.Value.Item2 });
                         }
+                        rr.Value = re;
                     }
                 }
                 else
@@ -129,7 +131,7 @@ namespace Cdy.Spider.RealDataService
         /// <summary>
         /// 设备名称
         /// </summary>
-        public string DeviceName { get; set; }
+        public string Device { get; set; }
 
         /// <summary>
         /// 用户名

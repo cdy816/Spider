@@ -42,7 +42,7 @@ namespace Cdy.Spider.RealDataService
         /// <summary>
         /// 
         /// </summary>
-        public bool UseHttps { get; set; } = true;
+        public bool UseHttps { get; set; } = false;
 
         /// <summary>
         /// 

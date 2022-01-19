@@ -4,13 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:InSpiderDevelopWindow"
+             xmlns:ll="clr-namespace:InSpiderDevelopWindow.View"
              mc:Ignorable="d" Background="#7F000000"
              d:DesignHeight="524" d:DesignWidth="1378">
     <UserControl.Resources>
         <local:IndexConverter x:Key="ic" />
         <BooleanToVisibilityConverter x:Key="btv" />
         <local:BoolInvertConvert x:Key="biv" />
-
+            
         <ContextMenu x:Key="ctxmenu">
             <MenuItem Header="{local:ResMarker Add}" Command="{Binding AddCommand}" />
             <MenuItem Header="{local:ResMarker Remove}" Command="{Binding RemoveCommand}" />
@@ -27,8 +28,10 @@
             <MenuItem Header="{local:ResMarker DatabaseTagSelect}" Command="{Binding ConfigDatabaseCommand}" />
             <MenuItem Header="{local:ResMarker RegistorConfig}" Command="{Binding ConfigDriverRegisorCommand}" />
         </ContextMenu>
+
     </UserControl.Resources>
     <Grid>
+        <CheckBox x:Name="proxyele" IsChecked="{Binding IsMonitMode}" Visibility="Hidden" />
         <TabControl SelectedIndex="{Binding SelectIndex,Mode=TwoWay}"  ItemContainerStyle="{DynamicResource TabControlItemContainerStyle1}"  Style="{DynamicResource TabControlStyle1}" Background="Transparent" BorderThickness="0,1,0,0">
             <TabItem Header="{local:ResMarker Communication}">
                 <Grid  Background="#0FE5E5E5">
@@ -256,7 +259,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="{local:ResMarker Value}" Width="*" Visibility="{Binding DataConext.IsMonitMode,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=DataGrid},Converter={StaticResource bool2VisibilityConverter}}">
+                            <DataGridTemplateColumn Header="{local:ResMarker Value}" Width="*" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Foreground="{DynamicResource Window.Forground}" Margin="5,0" Text="{Binding Value}" VerticalAlignment="Center" />

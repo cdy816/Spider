@@ -807,6 +807,24 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public IEnumerable<Tagbase> GetTags(IEnumerable<string> tags)
+        {
+            List<Tagbase> re = new List<Tagbase>();
+            foreach(var vv in tags)
+            {
+                if(mNameMapTags.ContainsKey(vv))
+                {
+                    re.Add(mNameMapTags[vv]);
+                }
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public List<Tagbase> ListCacheHistoryTags()
         {

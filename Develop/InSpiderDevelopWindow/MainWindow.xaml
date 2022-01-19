@@ -159,15 +159,13 @@
                         </Button.ContentTemplate>
                     </Button>
                     <Border BorderBrush="LightGray" BorderThickness="1,0,0,0" Width="1" VerticalAlignment="Stretch" Margin="3,4" />
-                        <Button  BorderThickness="0"  Command="{Binding MonitorCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"  VerticalAlignment="Stretch"  Width="80" >
-                            <Button.ContentTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Image/monitor.png" Height="20" Stretch="Uniform" RenderOptions.BitmapScalingMode="NearestNeighbor" />
-                                        <TextBlock Text="{local:ResMarker Monitor}" FontWeight="Bold"  VerticalAlignment="Center" Margin="5,0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </Button.ContentTemplate>
+                        <Button  BorderThickness="0" DataContext="{Binding}"  Command="{Binding MonitorCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"  VerticalAlignment="Stretch"  Width="80" >
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Image/monitor.png" Height="18" Stretch="Uniform" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                    <TextBlock Text="{Binding MonitorString}" MinWidth="10" FontWeight="Bold"  VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </Button.Content>
                         </Button>
                     </StackPanel>
             </Grid>

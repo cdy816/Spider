@@ -27,6 +27,7 @@
     <None Remove="Image\max.png" />
     <None Remove="Image\maximize.png" />
     <None Remove="Image\minus.png" />
+    <None Remove="Image\monitor.png" />
     <None Remove="Image\ok.png" />
     <None Remove="Image\publish.png" />
     <None Remove="Image\reload.png" />
@@ -82,6 +83,7 @@
     <Resource Include="Image\link.png" />
     <Resource Include="Image\max.png" />
     <Resource Include="Image\minus.png" />
+    <Resource Include="Image\monitor.png" />
     <Resource Include="Image\ok.png" />
     <Resource Include="Image\publish.png" />
     <Resource Include="Image\reload.png" />

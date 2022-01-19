@@ -100,6 +100,36 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        private bool IsMonitor
+        {
+            get
+            {
+                if(ContentViewModel is DeviceDetailViewModel)
+                {
+                    return (ContentViewModel as DeviceDetailViewModel).IsMonitMode;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public string MonitorString
+        {
+            get 
+            { 
+                return !IsMonitor?Res.Get("Monitor"):Res.Get("Stop"); 
+            }
+            set
+            {
+                ;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand MonitorCommand
         {
             get
@@ -108,6 +138,7 @@ namespace InSpiderDevelopWindow
                 {
                     mMonitorCommand = new RelayCommand(() => {
                         (ContentViewModel as DeviceDetailViewModel).StartMonitCommand.Execute(null);
+                        OnPropertyChanged("MonitorString");
                     },()=> { return ContentViewModel is DeviceDetailViewModel; });
                 }
                 return mMonitorCommand;
