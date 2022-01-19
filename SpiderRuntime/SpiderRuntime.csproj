@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
+    <ProjectReference Include="..\Run\Monitor\RealDataService\RealDataService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

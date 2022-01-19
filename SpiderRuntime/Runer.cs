@@ -1,5 +1,6 @@
 ﻿using Cdy.Spider;
 using System;
+using System.Threading.Tasks;
 
 namespace SpiderRuntime
 {
@@ -136,6 +137,7 @@ namespace SpiderRuntime
             ServiceLocator.Locator.Registor<IDriverRuntimeManager>(mDriver);
             ServiceLocator.Locator.Registor<ICommChannelRuntimeManager>(mChannel);
             ServiceLocator.Locator.Registor<IDeviceRuntimeManager>(mDevice);
+            ServiceLocator.Locator.Registor<IRealDataService>(mDevice);
             
         }
 
@@ -163,6 +165,9 @@ namespace SpiderRuntime
                     vv.Start();
                 }
 
+                Task.Run(() => {
+                    Cdy.Spider.RealDataService.WebApiServer.Server.Start();
+                });
                 
 
             }
@@ -193,6 +198,8 @@ namespace SpiderRuntime
             {
                 vv.Stop();
             }
+
+            Cdy.Spider.RealDataService.WebApiServer.Server.Stop();
             mIsStarted = false;
         }
 

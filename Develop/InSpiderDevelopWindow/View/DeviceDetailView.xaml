@@ -256,6 +256,15 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
+                            <DataGridTemplateColumn Header="{local:ResMarker Value}" Width="*" Visibility="{Binding DataConext.IsMonitMode,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=DataGrid},Converter={StaticResource bool2VisibilityConverter}}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Foreground="{DynamicResource Window.Forground}" Margin="5,0" Text="{Binding Value}" VerticalAlignment="Center" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                               
+                            </DataGridTemplateColumn>
+
                         </DataGrid.Columns>
 
                     </DataGrid>

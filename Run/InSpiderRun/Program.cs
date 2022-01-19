@@ -20,7 +20,7 @@ namespace InSpiderRun
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
            
             
-            if(args.Length>0)
+            if(args.Length>1)
             {
                 mRunner = new SpiderRuntime.Runer() { Name = args[1] };
                 mRunner.Name = args[0];

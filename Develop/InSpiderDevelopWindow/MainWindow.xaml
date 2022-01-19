@@ -141,7 +141,7 @@
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Image/save.png" Height="16" RenderOptions.BitmapScalingMode="HighQuality" Width="20" VerticalAlignment="Center" />
+                                        <Image Source="/Image/save.png" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor" Width="20" VerticalAlignment="Center" />
                                     <TextBlock Text="{local:ResMarker Save}" FontWeight="Bold"  VerticalAlignment="Center" Margin="5,0"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -152,23 +152,23 @@
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Image/reload.png" Height="16" RenderOptions.BitmapScalingMode="HighQuality" />
+                                        <Image Source="/Image/reload.png" Height="16" RenderOptions.BitmapScalingMode="NearestNeighbor" />
                                     <TextBlock Text="{local:ResMarker CancelSave}" FontWeight="Bold"  VerticalAlignment="Center" Margin="5,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-                    <!--<Border BorderBrush="LightGray" BorderThickness="1,0,0,0" Width="1" VerticalAlignment="Stretch" Margin="3,4" />
-                        <Button  BorderThickness="0"  Command="{Binding PublishCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"  VerticalAlignment="Stretch"  Width="80" >
+                    <Border BorderBrush="LightGray" BorderThickness="1,0,0,0" Width="1" VerticalAlignment="Stretch" Margin="3,4" />
+                        <Button  BorderThickness="0"  Command="{Binding MonitorCommand}" HorizontalAlignment="Left"  Margin="1,0,0,0"  VerticalAlignment="Stretch"  Width="80" >
                             <Button.ContentTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Image/publish.png" Height="18" RenderOptions.BitmapScalingMode="HighQuality" />
-                                        <TextBlock Text="{local:ResMarker Publish}" FontWeight="Bold"  VerticalAlignment="Center" Margin="5,0"/>
+                                        <Image Source="/Image/monitor.png" Height="20" Stretch="Uniform" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                                        <TextBlock Text="{local:ResMarker Monitor}" FontWeight="Bold"  VerticalAlignment="Center" Margin="5,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </Button.ContentTemplate>
-                        </Button>-->
+                        </Button>
                     </StackPanel>
             </Grid>
         </Border>

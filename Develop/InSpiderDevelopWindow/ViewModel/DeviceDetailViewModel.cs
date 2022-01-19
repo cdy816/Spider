@@ -10,6 +10,7 @@
 using Cdy.Spider;
 using InSpiderDevelop;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,13 +18,17 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Xml.Linq;
 
 namespace InSpiderDevelopWindow.ViewModel
 {
@@ -53,6 +58,8 @@ namespace InSpiderDevelopWindow.ViewModel
         private ICommand mCellCopyCommand;
         private ICommand mPasteCommand;
         private ICommand mCellPasteCommand;
+
+        private ICommand mStartMonitCommand;
 
         private static List<TagViewModel> mCopyTags = new List<TagViewModel>();
 
@@ -106,6 +113,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private int mSelectIndex=1;
 
+        private bool mIsMonitMode = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -128,6 +137,50 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public bool IsMonitMode
+        {
+            get
+            {
+                return mIsMonitMode;
+            }
+            set
+            {
+                if (mIsMonitMode != value)
+                {
+                    mIsMonitMode = value;
+                    OnPropertyChanged("IsMonitMode");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public  ICommand StartMonitCommand
+        {
+            get
+            {
+                if(mStartMonitCommand==null)
+                {
+                    mStartMonitCommand = new RelayCommand(() => { 
+                        if(!mIsMonitMode)
+                        {
+                            StartRealDataMonitor();
+                        }
+                        else
+                        {
+                            StopRealDataMonitor();
+                        }
+                    });
+                }
+                return mStartMonitCommand;
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -1778,11 +1831,234 @@ namespace InSpiderDevelopWindow.ViewModel
             return string.Empty;
         }
 
+        private bool mIsMonitorStoped = false;
+        private Thread mMonitorScan;
+        private WebClient mClient;
+
+        private void CheckStartLocal()
+        {
+            if(MonitorParameter.Parameter.Server.Contains("127.0.0.1")||(MonitorParameter.Parameter.Server.Contains("local")))
+            {
+                var vss = Process.GetProcessesByName("InSpiderRun");
+                if(vss!=null && vss.Length>0)
+                {
+                    vss[0].Kill();
+                }
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    var info = new ProcessStartInfo() { FileName = "InSpiderRun.exe" };
+                    info.UseShellExecute = true;
+                    info.Arguments = "start " + mMachineModel.Name;
+                    info.WorkingDirectory = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
+                    Process.Start(info).WaitForExit(1000);
+                }
+                else
+                {
+                    var info = new ProcessStartInfo() { FileName = "dotnet" };
+                    info.UseShellExecute = true;
+                    info.CreateNoWindow = false;
+                    info.Arguments = "./InSpiderRun.dll start " + mMachineModel.Name;
+                    info.WorkingDirectory = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
+                    Process.Start(info).WaitForExit(1000);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StartRealDataMonitor()
+        {
+            IsMonitMode = true;
+            mIsMonitorStoped = false;
+            mMonitorScan = new Thread(RealDataMonitorProcess);
+            mMonitorScan.IsBackground = true;
+            mMonitorScan.Start();
+            CheckStartLocal();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StopRealDataMonitor()
+        {
+            mIsMonitorStoped = true;
+            IsMonitMode = false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void RealDataMonitorProcess()
+        {
+            IEnumerable<TagViewModel> mtagquery=null;
+            int pagecount = 200;
+            int count = 0;
+            int pp;
+
+            while (!mIsMonitorStoped)
+            {
+                lock (mTags)
+                {
+                     count = mTags.Count / pagecount;
+                     pp = mTags.Count % pagecount;
+                    if (pp > 0) count++;
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    lock (mTags)
+                    {
+                        try
+                        {
+                            var vstart = i * pagecount;
+                            var len = pagecount;
+
+                            if (vstart + pagecount > mTags.Count)
+                            {
+                                len = mTags.Count - vstart;
+                            }
+                            if (len > 0)
+                            {
+                                mtagquery = mTags.Skip(vstart).Take(len);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        catch
+                        {
+                            mtagquery = null;
+                        }
+                    }
+
+                    if(mtagquery!=null)
+                    GetRealData(mtagquery);
+
+                    Thread.Sleep(10);
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tags"></param>
+        private void GetRealData(IEnumerable<TagViewModel> tags)
+        {
+            if (tags == null) return;
+
+            var vtags = tags.ToDictionary(e => e.Name);
+
+            var rq = new RealValueRequestByTagName() { DeviceName = this.Model.FullName, Tags = vtags.Keys.ToList(), UserName = MonitorParameter.Parameter.UserName, Password = MonitorParameter.Parameter.Password };
+            var sval = Post(MonitorParameter.Parameter.Server, "GetTagValues", JsonConvert.SerializeObject(rq));
+            var result = JsonConvert.DeserializeObject<RealValueResult>(sval);
+
+            if (result != null && result.Result)
+            {
+                foreach (var vv in result.Value)
+                {
+                    if(vtags.ContainsKey(vv.TagName))
+                    {
+                        vtags[vv.TagName].Value = vv.Value!=null?vv.Value.ToString():"";
+                    }
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sval"></param>
+        /// <returns></returns>
+        private string Post(string url,string fun, string sval)
+        {
+            if (mClient == null)
+                mClient = new WebClient();
+            mClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            mClient.Encoding = Encoding.UTF8;
+            return mClient.UploadString(url + "/" + fun, sval);
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...
 
         #endregion ...Interfaces...
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class MonitorParameter:ViewModelBase
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public static MonitorParameter Parameter = new MonitorParameter();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public MonitorParameter()
+        {
+            Init();
+        }
+
+        private string mServer= "http://127.0.0.1:23232";
+        private string mUserName= "Guest";
+        private string mPassword= "Guest";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Server { get { return mServer; } set { mServer = value; OnPropertyChanged("Server"); } }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public string UserName { get { return mUserName; } set { mUserName = value; OnPropertyChanged("UserName"); } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Password { get { return mPassword; } set { mPassword = value; OnPropertyChanged("Password"); } }
+
+        public void Init()
+        {
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location),"Config", "MonitorConfig.cfg");
+            if(System.IO.File.Exists(sfile))
+            {
+                XElement xe = XElement.Load(sfile);
+                if(xe.Attribute("")!=null)
+                {
+                    Server = xe.Attribute("Server").Value;
+                    Password = xe.Attribute("Password").Value;
+                    UserName = xe.Attribute("UserName").Value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Save()
+        {
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "MonitorConfig.cfg");
+            if (System.IO.File.Exists(sfile))
+            {
+                XElement xx = new XElement("Config");
+                xx.SetAttributeValue("Server", Server);
+                xx.SetAttributeValue("UserName", UserName);
+                xx.SetAttributeValue("Password", Password);
+                xx.Save(sfile);
+            }
+        }
     }
 
     /// <summary>
@@ -1812,6 +2088,10 @@ namespace InSpiderDevelopWindow.ViewModel
         private ICommand mConvertEditCommand;
 
         private ICommand mConvertRemoveCommand;
+
+        private string mValue = "";
+
+        private byte mQuality = 0;
 
         #endregion ...Variables...
 
@@ -2202,6 +2482,44 @@ namespace InSpiderDevelopWindow.ViewModel
             set;
         }
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public string Value
+        {
+            get
+            {
+                return mValue;
+            }
+            set
+            {
+                if (mValue != value)
+                {
+                    mValue = value;
+                    OnPropertyChanged("Value");
+                }
+            }
+        }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public byte Quality
+        {
+            get
+            {
+                return mQuality;
+            }
+            set
+            {
+                if (mQuality != value)
+                {
+                    mQuality = value;
+                    OnPropertyChanged("Quality");
+                }
+            }
+        }
+
 
 
         #endregion ...Properties...
@@ -2440,6 +2758,83 @@ namespace InSpiderDevelopWindow.ViewModel
         #region ... Interfaces ...
 
         #endregion ...Interfaces...
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class RealValueRequest
+    {
+        /// <summary>
+        /// 设备名称
+        /// </summary>
+        public string DeviceName { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public string Password { get; set; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class RealValueRequestByTagName
+    {
+        /// <summary>
+        /// 设备名称
+        /// </summary>
+        public string DeviceName { get; set; }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string UserName { get; set; }
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> Tags { get; set; }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class RealValueItem
+    {
+        /// <summary>
+        /// 变量名称
+        /// </summary>
+        public string TagName { get; set; }
+        /// <summary>
+        /// 值
+        /// </summary>
+        public object Value { get; set; }
+        /// <summary>
+        /// 质量戳
+        /// </summary>
+        public byte Quality { get; set; }
+    }
+
+
+    public class RealValueResult
+    {
+        public bool Result { get; set; }
+
+        public string ErroMessage { get; set; }
+
+
+        public List<RealValueItem> Value { get; set; }
     }
 
 }

@@ -51,6 +51,8 @@ namespace InSpiderDevelopWindow
 
         private ICommand mReNameCommand;
 
+        private ICommand mMonitorCommand;
+
         private TreeItemViewModel mCurrentSelectTreeItem;
 
         private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mItems = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
@@ -94,6 +96,23 @@ namespace InSpiderDevelopWindow
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand MonitorCommand
+        {
+            get
+            {
+                if(mMonitorCommand==null)
+                {
+                    mMonitorCommand = new RelayCommand(() => {
+                        (ContentViewModel as DeviceDetailViewModel).StartMonitCommand.Execute(null);
+                    },()=> { return ContentViewModel is DeviceDetailViewModel; });
+                }
+                return mMonitorCommand;
+            }
+        }
 
         /// <summary>
         /// 

@@ -385,6 +385,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Monitor 的本地化字符串。
+        /// </summary>
+        internal static string Monitor {
+            get {
+                return ResourceManager.GetString("Monitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Name 的本地化字符串。
         /// </summary>
         internal static string Name {

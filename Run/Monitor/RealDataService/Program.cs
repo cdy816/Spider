@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RealDataService
+namespace Cdy.Spider.RealDataService
 {
     public class Program
     {
