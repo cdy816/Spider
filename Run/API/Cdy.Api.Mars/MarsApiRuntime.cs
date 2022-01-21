@@ -54,6 +54,8 @@ namespace Cdy.Api.Mars
         /// </summary>
         private bool mIsNeedReInit = false;
 
+        private int mNoDataCount = 0;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -266,7 +268,7 @@ namespace Cdy.Api.Mars
                     }
                     Thread.Sleep(2000);
 
-                    if(mcount>10)
+                    if(mcount>9)
                     {
                         LoggerService.Service.Info("MarApi", "ReInit to " + mData.ServerIp + "");
                         try
@@ -988,19 +990,29 @@ namespace Cdy.Api.Mars
                     }
 
                 }
+
                 if (rdb.ValueCount > 0)
                     mProxy.SetTagValueAndQuality(rdb);
-
-
 
                 if (rdbh.ValueCount > 0)
                     mProxy.SetTagRealAndHisValue(rdbh);
 
-                
+                if (rdb.ValueCount == 0 && rdbh.ValueCount == 0)
+                {
+                    //长时间无数据，则发送心跳包
+                    mNoDataCount++;
+                    if (mNoDataCount > 10)
+                    {
+                        mNoDataCount = 0;
+                        mProxy.Hart();
+                    }
+                }
+                else
+                    mNoDataCount = 0;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                LoggerService.Service.Erro("MarsAPiRuntime"," UpdateChangedTag "+ ex.Message);
+                LoggerService.Service.Erro("MarsAPiRuntime", " UpdateChangedTag " + ex.Message);
             }
         }
 
