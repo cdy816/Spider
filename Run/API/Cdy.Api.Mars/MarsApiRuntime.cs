@@ -150,18 +150,24 @@ namespace Cdy.Api.Mars
                     }
                 });
             }
-          
+            InitProxy();
+        }
+
+        private void InitProxy()
+        {
+
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
 
             mProxy = new SpiderDriver.ClientApi.DriverProxy();
             //接受到数据库消费端修改数据
-            mProxy.ValueChanged = new SpiderDriver.ClientApi.DriverProxy.ProcessDataPushDelegate((values) => { 
+            mProxy.ValueChanged = new SpiderDriver.ClientApi.DriverProxy.ProcessDataPushDelegate((values) => {
 
-                foreach(var vv in values)
+                foreach (var vv in values)
                 {
-                    if(mIdNameMape.ContainsKey(vv.Key))
+                    if (mIdNameMape.ContainsKey(vv.Key))
                     {
                         string stag = mIdNameMape[vv.Key];
-                        foreach(var vvd in mAllDatabaseTagNames[stag])
+                        foreach (var vvd in mAllDatabaseTagNames[stag])
                         {
                             manager.GetDevice(vvd).WriteValueByDatabaseName(stag, vv.Value);
                         }
@@ -172,6 +178,7 @@ namespace Cdy.Api.Mars
             mProxy.DatabaseChanged = new SpiderDriver.ClientApi.DriverProxy.DatabaseChangedDelegate((realchanged, hischanged) => {
                 mIsNeedReInit = realchanged | hischanged;
             });
+
         }
 
         /// <summary>
@@ -211,6 +218,7 @@ namespace Cdy.Api.Mars
         /// </summary>
         private void ThreadPro()
         {
+            int mcount = 0;
             while (!mIsClosed)
             {
                 if (!mProxy.IsLogin)
@@ -226,6 +234,8 @@ namespace Cdy.Api.Mars
                             {
                                 Thread.Sleep(1000);
                                 mProxy.Logout();
+
+                                mcount++;
                                 //mProxy.Close();
                                 //mProxy.Open(mData.ServerIp, mData.Port);
                                 continue;
@@ -236,6 +246,7 @@ namespace Cdy.Api.Mars
                         }
                         else
                         {
+                            mcount++;
                             LoggerService.Service.Info("MarApi", "Login "+ mData.ServerIp + " failed！");
                         }
                     }
@@ -246,12 +257,36 @@ namespace Cdy.Api.Mars
                             StartBuffer();
                             LoggerService.Service.Info("MarApi", "Login " + mData.ServerIp + " failed！");
                             mIsConnected = false;
+                            mcount++;
+                        }
+                        else
+                        {
+                            mcount++;
                         }
                     }
                     Thread.Sleep(2000);
+
+                    if(mcount>10)
+                    {
+                        LoggerService.Service.Info("MarApi", "ReInit to " + mData.ServerIp + "");
+                        try
+                        {
+                            mcount = 0;
+                            //如果长时间中断，则重新初始化
+                            mProxy?.Close();
+                            Thread.Sleep(1000);
+                            InitProxy();
+                            mProxy.Open(mData.ServerIp, mData.Port);
+                        }
+                        catch(Exception ex)
+                        {
+                            LoggerService.Service.Warn("MarApi", $"{ex.Message}  {ex.StackTrace}");
+                        }
+                    }
                 }
                 else
                 {
+                    mcount = 0;
                     if ((mIdNameMape.Count == 0 && mAllDatabaseTagNames.Count>0)|| mIsNeedReInit)
                     {
                         if (!UpdateTagId())
@@ -322,6 +357,8 @@ namespace Cdy.Api.Mars
             mNameIdMape.Clear();
 
             var vtags = mAllDatabaseTagNames.Keys.ToList();
+
+            LoggerService.Service.Info("MarsApi", $"开始初始化，获取变量ID {vtags.Count}");
             var res = mProxy.QueryTagId(vtags);
 
             if(res==null || res.Count!=vtags.Count)
@@ -354,9 +391,14 @@ namespace Cdy.Api.Mars
                 }
             }
 
+            LoggerService.Service.Info("MarsApi", $"开始获取驱动记录类型变量列表");
             var gr = mProxy.GetDriverRecordTypeTagIds();
 
-            var driverRecordtags = gr.Select(e => mIdNameMape.ContainsKey(e) ? mIdNameMape[e] : string.Empty);
+            int icount = gr != null ? gr.Count : 0;
+
+            LoggerService.Service.Info("MarsApi", $"完成开始获取驱动记录类型变量列表 {icount}");
+
+            var driverRecordtags = gr.Where(e=>mIdNameMape.ContainsKey(e)).Select(e => mIdNameMape[e]).ToList();
 
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
             foreach (var vv in manager.ListDevice())
@@ -953,6 +995,8 @@ namespace Cdy.Api.Mars
 
                 if (rdbh.ValueCount > 0)
                     mProxy.SetTagRealAndHisValue(rdbh);
+
+                
             }
             catch(Exception ex)
             {
