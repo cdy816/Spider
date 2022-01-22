@@ -1944,7 +1944,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     Thread.Sleep(10);
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(MonitorParameter.Parameter.ScanCircle);
             }
         }
 
@@ -2042,6 +2042,12 @@ namespace InSpiderDevelopWindow.ViewModel
         /// 
         /// </summary>
         public string Password { get { return mPassword; } set { mPassword = value; OnPropertyChanged("Password"); } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ScanCircle { get; set; } = 1000;
+
 
         public void Init()
         {

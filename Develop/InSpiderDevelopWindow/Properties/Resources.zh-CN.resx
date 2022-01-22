@@ -228,6 +228,9 @@
   <data name="Monitor" xml:space="preserve">
     <value>监视</value>
   </data>
+  <data name="MonitorSetting" xml:space="preserve">
+    <value>监视设置</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>名称</value>
   </data>
@@ -239,6 +242,9 @@
   </data>
   <data name="OK" xml:space="preserve">
     <value>确定</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
   </data>
   <data name="Paste" xml:space="preserve">
     <value>粘贴</value>
@@ -285,8 +291,14 @@
   <data name="SaveSucessfull" xml:space="preserve">
     <value>保存成功!</value>
   </data>
+  <data name="ScanCircle" xml:space="preserve">
+    <value>扫描周期</value>
+  </data>
   <data name="Selected" xml:space="preserve">
     <value>选择</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>服务器地址</value>
   </data>
   <data name="ShareChannel" xml:space="preserve">
     <value>通道共享</value>
@@ -320,6 +332,9 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>类型</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>用户名</value>
   </data>
   <data name="Value" xml:space="preserve">
     <value>值</value>

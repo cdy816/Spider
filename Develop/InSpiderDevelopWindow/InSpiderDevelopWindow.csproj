@@ -34,6 +34,7 @@
     <None Remove="Image\remove.png" />
     <None Remove="Image\rowselect.png" />
     <None Remove="Image\save.png" />
+    <None Remove="Image\settings.png" />
     <None Remove="Image\spider.ico" />
     <None Remove="Image\Spider.jpg" />
     <None Remove="Image\spider.png" />
@@ -90,6 +91,7 @@
     <Resource Include="Image\remove.png" />
     <Resource Include="Image\rowselect.png" />
     <Resource Include="Image\save.png" />
+    <Resource Include="Image\settings.png" />
     <Resource Include="Image\spider.ico" />
     <Resource Include="Image\Spider.jpg" />
     <Resource Include="Image\spider.png" />

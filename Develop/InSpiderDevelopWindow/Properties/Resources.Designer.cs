@@ -394,6 +394,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 MonitorSetting 的本地化字符串。
+        /// </summary>
+        internal static string MonitorSetting {
+            get {
+                return ResourceManager.GetString("MonitorSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Name 的本地化字符串。
         /// </summary>
         internal static string Name {
@@ -426,6 +435,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Password 的本地化字符串。
+        /// </summary>
+        internal static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
@@ -565,11 +583,29 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 ScanCircle 的本地化字符串。
+        /// </summary>
+        internal static string ScanCircle {
+            get {
+                return ResourceManager.GetString("ScanCircle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Selected 的本地化字符串。
         /// </summary>
         internal static string Selected {
             get {
                 return ResourceManager.GetString("Selected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Server 的本地化字符串。
+        /// </summary>
+        internal static string Server {
+            get {
+                return ResourceManager.GetString("Server", resourceCulture);
             }
         }
         
@@ -669,6 +705,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UserName 的本地化字符串。
+        /// </summary>
+        internal static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
         

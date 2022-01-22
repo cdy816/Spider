@@ -53,6 +53,8 @@ namespace InSpiderDevelopWindow
 
         private ICommand mMonitorCommand;
 
+        private ICommand mMonitorSettingCommand;
+
         private TreeItemViewModel mCurrentSelectTreeItem;
 
         private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mItems = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
@@ -96,6 +98,34 @@ namespace InSpiderDevelopWindow
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand MonitorSettingCommand
+        {
+            get
+            {
+                if(mMonitorSettingCommand == null)
+                {
+                    mMonitorSettingCommand = new RelayCommand(() => {
+                        MonitorSettingViewModel mm = new MonitorSettingViewModel();
+                        mm.Server = MonitorParameter.Parameter.Server;
+                        mm.UserName = MonitorParameter.Parameter.UserName;
+                        mm.Password = MonitorParameter.Parameter.Password;
+                        mm.ScanCircle = MonitorParameter.Parameter.ScanCircle;
+                        if(mm.ShowDialog().Value)
+                        {
+                            MonitorParameter.Parameter.Server = mm.Server;
+                            MonitorParameter.Parameter.UserName = mm.UserName;
+                            MonitorParameter.Parameter.Password = mm.Password;
+                            MonitorParameter.Parameter.ScanCircle = mm.ScanCircle;
+                        }
+                    });
+                }
+                return mMonitorSettingCommand;
+            }
+        }
 
         /// <summary>
         /// 

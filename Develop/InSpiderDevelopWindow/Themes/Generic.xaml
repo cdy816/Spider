@@ -54,7 +54,12 @@
     <DataTemplate DataType="{x:Type model:AdvanceConvertViewModel}">
         <view:AdvanceConvertView />
     </DataTemplate>
-    
+
+
+    <DataTemplate DataType="{x:Type model:MonitorSettingViewModel}">
+        <view:MonitorSettingView />
+    </DataTemplate>
+
 
     <BooleanToVisibilityConverter x:Key="bvc" />
     <!--<SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
