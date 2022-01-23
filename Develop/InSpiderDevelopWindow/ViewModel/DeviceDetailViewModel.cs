@@ -2051,7 +2051,7 @@ namespace InSpiderDevelopWindow.ViewModel
 
         public void Init()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location),"Config", "MonitorConfig.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location),"Config", "SpiderMonitorConfig.cfg");
             if(System.IO.File.Exists(sfile))
             {
                 XElement xe = XElement.Load(sfile);
@@ -2069,7 +2069,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public void Save()
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "MonitorConfig.cfg");
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Config", "SpiderMonitorConfig.cfg");
             if (System.IO.File.Exists(sfile))
             {
                 XElement xx = new XElement("Config");

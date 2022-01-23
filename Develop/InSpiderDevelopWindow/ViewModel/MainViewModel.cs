@@ -120,6 +120,7 @@ namespace InSpiderDevelopWindow
                             MonitorParameter.Parameter.UserName = mm.UserName;
                             MonitorParameter.Parameter.Password = mm.Password;
                             MonitorParameter.Parameter.ScanCircle = mm.ScanCircle;
+                            MonitorParameter.Parameter.Save();
                         }
                     });
                 }
