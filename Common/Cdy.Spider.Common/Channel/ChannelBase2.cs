@@ -192,7 +192,7 @@ namespace Cdy.Spider
             }
             catch(Exception ex)
             {
-                LoggerService.Service.Info("Channel", "Open channel " + this.Name+" failed."+ex.Message);
+                LoggerService.Service.Warn("Channel", "Open channel " + this.Name+" failed."+ex.Message);
                 return false;
             }
         }
