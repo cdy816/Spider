@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cheetah" Version="0.7.3" />
+    <PackageReference Include="Cheetah" Version="0.7.2" />
   </ItemGroup>
 
   <ItemGroup>
