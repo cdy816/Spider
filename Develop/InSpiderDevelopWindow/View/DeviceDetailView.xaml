@@ -259,7 +259,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="{local:ResMarker Value}" Width="*" >
+                            <DataGridTemplateColumn Header="{local:ResMarker Value}" Width="*" Visibility="Collapsed">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Foreground="{DynamicResource Window.Forground}" Margin="5,0" Text="{Binding Value}" VerticalAlignment="Center" />

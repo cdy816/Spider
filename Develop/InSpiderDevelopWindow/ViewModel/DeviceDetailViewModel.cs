@@ -1880,6 +1880,9 @@ namespace InSpiderDevelopWindow.ViewModel
             mMonitorScan.IsBackground = true;
             mMonitorScan.Start();
             CheckStartLocal();
+
+            this.grid.Columns[this.grid.Columns.Count-1].Visibility = System.Windows.Visibility.Visible;
+
         }
 
         /// <summary>
@@ -1889,6 +1892,7 @@ namespace InSpiderDevelopWindow.ViewModel
         {
             mIsMonitorStoped = true;
             IsMonitMode = false;
+            this.grid.Columns[this.grid.Columns.Count - 1].Visibility = System.Windows.Visibility.Collapsed;
         }
 
         /// <summary>
