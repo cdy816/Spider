@@ -537,6 +537,7 @@ namespace Cdy.Spider.OpcDriver.Develop
 
                         for (int ii = 0; ii < continuationPoints.Count; ii++)
                         {
+                            if (ii >= results.Count) break;
                             // check for error.
                             if (StatusCode.IsBad(results[ii].StatusCode))
                             {
@@ -878,9 +879,16 @@ namespace Cdy.Spider.OpcDriver.Develop
                 uint attributeId = nodesToRead[ii].AttributeId;
                 string skey = Attributes.GetBrowseName(attributeId);
 
-                string sval = GetAttributeDisplayText(m_session, attributeId, results[ii].WrappedValue);
+                try
+                {
+                    string sval = GetAttributeDisplayText(m_session, attributeId, results[ii].WrappedValue);
 
-                re.Add(skey, sval);
+                    re.Add(skey, sval);
+                }
+                catch
+                {
+                    re.Add(skey,results[ii].Value.ToString());
+                }
             }
 
             return re;
@@ -929,7 +937,14 @@ namespace Cdy.Spider.OpcDriver.Develop
 
                 case Attributes.DataType:
                     {
-                        return session.NodeCache.GetDisplayText(value.Value as NodeId);
+                        if (session.NodeCache != null)
+                        {
+                            return session.NodeCache.GetDisplayText(value.Value as NodeId);
+                        }
+                        else
+                        {
+                            return value.Value!=null?value.Value.ToString():"";
+                        }
                     }
 
                 case Attributes.ValueRank:
