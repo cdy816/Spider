@@ -537,9 +537,9 @@ namespace Cdy.Spider.OpcDriver.Develop
                         this.AccessLevel = re["AccessLevel"];
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                Console.WriteLine(ex.ToString());
             }
             
         }
