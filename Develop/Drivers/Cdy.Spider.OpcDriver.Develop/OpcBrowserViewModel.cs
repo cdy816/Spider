@@ -519,15 +519,27 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// </summary>
         private void Init()
         {
-            var re = mParent.Client.ReadAttributes((NodeId)this.mModel.NodeId);
-            if(re!=null && re.Count>0)
+            try
             {
-                this.NodeId = re["NodeId"];
-                this.BrowseName = re["BrowseName"];
-                this.DisplayName = re["DisplayName"];
-                this.Description = re["Description"];
-                this.DataType = re["DataType"];
-                this.AccessLevel = re["AccessLevel"];
+                var re = mParent.Client.ReadAttributes((NodeId)this.mModel.NodeId);
+                if (re != null && re.Count > 0)
+                {
+                    this.NodeId = re["NodeId"];
+                    if (re.ContainsKey("BrowseName"))
+                        this.BrowseName = re["BrowseName"];
+                    if (re.ContainsKey("DisplayName"))
+                        this.DisplayName = re["DisplayName"];
+                    if (re.ContainsKey("Description"))
+                        this.Description = re["Description"];
+                    if (re.ContainsKey("DataType"))
+                        this.DataType = re["DataType"];
+                    if (re.ContainsKey("AccessLevel"))
+                        this.AccessLevel = re["AccessLevel"];
+                }
+            }
+            catch
+            {
+
             }
             
         }
