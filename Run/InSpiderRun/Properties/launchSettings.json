@@ -2,7 +2,7 @@
   "profiles": {
     "InSpiderRun": {
       "commandName": "Executable",
-      "executablePath": "C:\\Users\\chongdaoyang.JIUSIYI\\source\\repos\\cdy816\\Spider\\Output\\InSpiderRun.exe"
+      "executablePath": "C:\\Users\\cdy81\\source\\repos\\cdy816\\Spider\\Output\\InSpiderRun.exe"
     },
     "WSL 2": {
       "commandName": "WSL2",

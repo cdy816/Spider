@@ -20,10 +20,42 @@ namespace InSpiderDevelopWindow
     /// </summary>
     public partial class MainWindow : Window
     {
+        private double mOldHeight;
+        private double mOldWidth;
+
+        private WindowState mWindowState;
+
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = new MainViewModel();
+            InitBd();
+            this.SizeChanged += MainWindow_SizeChanged;
+            this.StateChanged += MainWindow_StateChanged;
+        }
+
+        private void MainWindow_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+                Max();
+            }
+        }
+
+        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            bd.Clip = new RectangleGeometry() { Rect = new Rect(1, 1, bd.ActualWidth - 2, bd.ActualHeight - 2), RadiusX = 5, RadiusY = 5 };
+        }
+
+        private void InitBd()
+        {
+            Border bd = new Border();
+            Grid.SetRowSpan(bd, 3);
+            bd.BorderThickness = new Thickness(2);
+            bd.BorderBrush = Brushes.DarkGray;
+            bd.CornerRadius = new CornerRadius(5);
+            bg.Children.Add(bd);
         }
 
         private void closeB_Click(object sender, RoutedEventArgs e)
@@ -41,39 +73,62 @@ namespace InSpiderDevelopWindow
             //(sender as Grid).CaptureMouse();
             if (e.ClickCount > 1)
             {
-                if (WindowState == WindowState.Maximized)
+                if (mWindowState == WindowState.Maximized)
                 {
-                    WindowState = WindowState.Normal;
+                    Normal();
+
                 }
                 else
                 {
-                    WindowState = WindowState.Maximized;
+                    Max();
                 }
             }
             else
             {
 
-                if (WindowState == WindowState.Maximized)
+                if (mWindowState == WindowState.Maximized)
                 {
 
                     double dsx = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
 
                     var rec = this.RestoreBounds;
                     var ll = e.GetPosition(this);
-                    var dx = ll.X / this.ActualWidth * rec.Width;
-                    var dy = ll.Y / this.ActualHeight * rec.Height;
+                    var dx = ll.X / this.ActualWidth * mOldWidth;
+                    var dy = ll.Y / this.ActualHeight * mOldHeight;
                     var pp = this.PointToScreen(ll);
 
                     pp = new Point(pp.X / dsx, pp.Y / dsx);
 
                     this.Left = pp.X - dx - 8;
-                    this.Top = pp.Y - dy - 24;
-
-                    this.WindowState = WindowState.Normal;
+                    this.Top = pp.Y - dy - 4;
+                    this.Normal(false);
 
                 }
 
                 this.DragMove();
+            }
+        }
+
+        private void Max()
+        {
+            mOldHeight = this.Height;
+            mOldWidth = this.Width;
+            this.Top = SystemParameters.WorkArea.Top;
+            this.Left = SystemParameters.WorkArea.Left;
+            this.Height = SystemParameters.WorkArea.Height;
+            this.Width = SystemParameters.WorkArea.Width;
+            mWindowState = WindowState.Maximized;
+        }
+
+        private void Normal(bool iscenter = true)
+        {
+            this.Height = mOldHeight;
+            this.Width = mOldWidth;
+            mWindowState = WindowState.Normal;
+            if (iscenter)
+            {
+                this.Left = (SystemParameters.WorkArea.Width - this.Width) / 2;
+                this.Top = (SystemParameters.WorkArea.Height - this.Height) / 2;
             }
         }
 
