@@ -333,12 +333,16 @@ namespace Cdy.Spider.OpcDriver.Develop
 
             if(res!=null)
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-                    foreach (var vv in res.Where(e => e.NodeClass == NodeClass.Variable))
-                    {
-                        mVariablesChildren.Add(new VariableItem(vv, this,SelectItem));
-                    }
-                }));
+                foreach (var vv in res.Where(e => e.NodeClass == NodeClass.Variable))
+                {
+                    var vitem = new VariableItem(vv, this, SelectItem);
+               
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => {
+                        mVariablesChildren.Add(vitem);
+                    }));
+                }
+
+                
                 
             }
         }
@@ -384,7 +388,7 @@ namespace Cdy.Spider.OpcDriver.Develop
                 var re = mClient.Browse(Opc.Ua.ObjectIds.ObjectsFolder, ReferenceTypeIds.Organizes, ReferenceTypeIds.Aggregates);
                 if(re!=null)
                 {
-                    foreach(var vv in re)
+                    foreach(var vv in re.Distinct())
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() => {
                             mChildren.Add(new NodeItem(vv) { Parent = this });
@@ -701,11 +705,22 @@ namespace Cdy.Spider.OpcDriver.Develop
                 Children.Clear();
                 if (this.mMode.NodeClass == NodeClass.Object)
                 {
-                    var re = Parent.Client.Browse((NodeId)this.mMode.NodeId, ReferenceTypeIds.Organizes, ReferenceTypeIds.Aggregates);
-                    foreach (var vv in re.Where(e=>e.NodeClass == NodeClass.Object))
-                    {
-                        Children.Add(new NodeItem(vv) { Parent = this.Parent,Owner=this });
-                    }
+                    Task.Run(() => {
+                        var re = Parent.Client.Browse((NodeId)this.mMode.NodeId, ReferenceTypeIds.Organizes, ReferenceTypeIds.Aggregates);
+                        if (re != null)
+                        {
+                            foreach (var vv in re.Where(e => e.NodeClass == NodeClass.Object))
+                            {
+                                var nitem = new NodeItem(vv) { Parent = this.Parent, Owner = this };
+                                Application.Current.Dispatcher.BeginInvoke(new Action(() => {
+                                    Children.Add(nitem);
+                                }));
+                              
+                            }
+                        }
+
+                    });
+                    
                 }
             }
         }

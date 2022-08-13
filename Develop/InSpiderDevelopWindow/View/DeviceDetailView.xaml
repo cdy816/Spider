@@ -314,7 +314,7 @@
                             </Button.ContentTemplate>
                         </Button>
                     </StackPanel>
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.Column="1" Height="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.Column="1" Height="32" HorizontalAlignment="Right" Margin="5,0" VerticalAlignment="Bottom" >
                         <Label VerticalAlignment="Center" Content="{local:ResMarker TagCount,:}" Foreground="{DynamicResource Window.Forground}"/>
                         <Label VerticalAlignment="Center" Content="{Binding TagCount}" Foreground="{DynamicResource Window.Forground}"/>
                     </StackPanel>

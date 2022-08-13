@@ -29,6 +29,8 @@ namespace Cdy.Spider.OpcDriver.Develop
         private EventHandler m_ConnectComplete;
         private EventHandler<OpcUaStatusEventArgs> m_OpcStatusChange;
 
+        static Dictionary<NodeId,string> mValueTypes = new Dictionary<NodeId, string>();
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -36,6 +38,11 @@ namespace Cdy.Spider.OpcDriver.Develop
         #endregion ...Events...
 
         #region ... Constructor...
+
+        static OpcUaClient()
+        {
+            InitDataTypeIds();
+        }
         /// <summary>
         /// 默认的构造函数，实例化一个新的OPC UA类
         /// </summary>
@@ -879,6 +886,8 @@ namespace Cdy.Spider.OpcDriver.Develop
                 uint attributeId = nodesToRead[ii].AttributeId;
                 string skey = Attributes.GetBrowseName(attributeId);
 
+                //re.Add(skey, results[ii].Value != null ? results[ii].Value.ToString() : "");
+
                 try
                 {
                     string sval = GetAttributeDisplayText(m_session, attributeId, results[ii].WrappedValue);
@@ -887,11 +896,27 @@ namespace Cdy.Spider.OpcDriver.Develop
                 }
                 catch
                 {
-                    re.Add(skey,results[ii].Value.ToString());
+                    re.Add(skey, results[ii].Value != null ? results[ii].Value.ToString() : "");
                 }
             }
 
             return re;
+        }
+
+        private static void InitDataTypeIds()
+        {
+            if (mValueTypes.Count == 0)
+            {
+                Dictionary<NodeId, string> re = new Dictionary<NodeId, string>();
+                var vv = typeof(DataTypeIds).GetFields();
+                foreach (var vvv in vv)
+                {
+                    var val = vvv.GetValue(null);
+                    if (val is NodeId)
+                        re.Add(val as NodeId, vvv.Name);
+                }
+                mValueTypes = re;
+            }
         }
 
         /// <summary>
@@ -901,13 +926,13 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// <param name="attributeId">The id of the attribute.</param>
         /// <param name="value">The value of the attribute.</param>
         /// <returns>The attribute formatted as a string.</returns>
-        public static string GetAttributeDisplayText(Session session, uint attributeId, Variant value)
+        public string GetAttributeDisplayText(Session session, uint attributeId, Variant value)
         {
             if (value == Variant.Null)
             {
                 return String.Empty;
             }
-
+         
             switch (attributeId)
             {
                 case Attributes.AccessLevel:
@@ -937,13 +962,21 @@ namespace Cdy.Spider.OpcDriver.Develop
 
                 case Attributes.DataType:
                     {
-                        if (session.NodeCache != null)
+                        try
                         {
-                            return session.NodeCache.GetDisplayText(value.Value as NodeId);
+                            if(value.Value is NodeId && mValueTypes.ContainsKey(value.Value as NodeId))
+                            {
+                                return mValueTypes[value.Value as NodeId];
+                            }
+                            else
+                            {
+                                
+                                return value.Value != null ? value.Value.ToString() : "";
+                            }
                         }
-                        else
+                        catch
                         {
-                            return value.Value!=null?value.Value.ToString():"";
+                            return value.Value != null ? value.Value.ToString() : "";
                         }
                     }
 
