@@ -1,5 +1,6 @@
 ﻿using Opc.Ua;
 using Opc.Ua.Client;
+using Opc.Ua.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,8 @@ namespace Cdy.Spider.OpcDriver.Develop
             };
             certificateValidator.Update(securityConfigurationcv);
 
+            var spath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Certificates");
+
             // Build the application configuration
             var configuration = new ApplicationConfiguration
             {
@@ -95,17 +98,17 @@ namespace Cdy.Spider.OpcDriver.Develop
                     {
                         StoreType = CertificateStoreType.X509Store,
                         StorePath = "CurrentUser\\My",
-                        SubjectName = OpcUaName,
+                        SubjectName = $"CN={OpcUaName}, C=CN, S=Cdy, O=Spider, DC=localhost",
                     },
                     TrustedIssuerCertificates = new CertificateTrustList
                     {
-                        StoreType = CertificateStoreType.X509Store,
-                        StorePath = "CurrentUser\\Root",
+                        StoreType = CertificateStoreType.Directory,
+                        StorePath = spath+"\\Issuer",
                     },
                     TrustedPeerCertificates = new CertificateTrustList
                     {
-                        StoreType = CertificateStoreType.X509Store,
-                        StorePath = "CurrentUser\\Root",
+                        StoreType = CertificateStoreType.Directory,
+                        StorePath = spath + "\\Peer",
                     }
                 },
 
@@ -130,6 +133,8 @@ namespace Cdy.Spider.OpcDriver.Develop
 
             configuration.Validate(ApplicationType.Client);
             m_configuration = configuration;
+
+            configuration.ApplicationUri = X509Utils.GetApplicationUriFromCertificate(configuration.SecurityConfiguration.ApplicationCertificate.Certificate);
         }
         #endregion ...Constructor...
 

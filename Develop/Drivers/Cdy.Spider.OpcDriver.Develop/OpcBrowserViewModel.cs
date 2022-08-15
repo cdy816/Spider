@@ -222,6 +222,15 @@ namespace Cdy.Spider.OpcDriver.Develop
                         {
                             try
                             {
+                                if (!string.IsNullOrEmpty(UserName))
+                                {
+                                    mClient.UseSecurity = true;
+                                    mClient.UserIdentity = new Opc.Ua.UserIdentity(UserName, Password);
+                                }
+                                else
+                                {
+                                    mClient.UserIdentity = new UserIdentity(new AnonymousIdentityToken());
+                                }
                                 mClient.ConnectServer(ServerAddress).Wait();
                             }
                             catch

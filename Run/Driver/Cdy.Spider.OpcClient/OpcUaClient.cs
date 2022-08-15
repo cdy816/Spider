@@ -21,8 +21,6 @@ namespace Cdy.Spider.OpcClient
         /// </summary>
         public OpcUaClient()
         {
-            dic_subscriptions = new Dictionary<string, Subscription>();
-
             var certificateValidator = new CertificateValidator();
             certificateValidator.CertificateValidation += (sender, eventArgs) =>
             {
@@ -31,7 +29,7 @@ namespace Cdy.Spider.OpcClient
                 else if (eventArgs.Error.StatusCode.Code == StatusCodes.BadCertificateUntrusted)
                     eventArgs.Accept = true;
                 else
-                    LoggerService.Service.Warn("OpcClient",string.Format("Failed to validate certificate with error code {0}: {1}", eventArgs.Error.Code, eventArgs.Error.AdditionalInfo));
+                    LoggerService.Service.Warn("OpcClient", string.Format("Failed to validate certificate with error code {0}: {1}", eventArgs.Error.Code, eventArgs.Error.AdditionalInfo));
             };
 
             SecurityConfiguration securityConfigurationcv = new SecurityConfiguration
@@ -41,6 +39,8 @@ namespace Cdy.Spider.OpcClient
                 MinimumCertificateKeySize = 1024,
             };
             certificateValidator.Update(securityConfigurationcv);
+
+            var spath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Certificates");
 
             // Build the application configuration
             var configuration = new ApplicationConfiguration
@@ -70,17 +70,17 @@ namespace Cdy.Spider.OpcClient
                     {
                         StoreType = CertificateStoreType.X509Store,
                         StorePath = "CurrentUser\\My",
-                        SubjectName = OpcUaName,
+                        SubjectName = $"CN={OpcUaName}, C=CN, S=Cdy, O=Spider, DC=localhost",
                     },
                     TrustedIssuerCertificates = new CertificateTrustList
                     {
-                        StoreType = CertificateStoreType.X509Store,
-                        StorePath = "CurrentUser\\Root",
+                        StoreType = CertificateStoreType.Directory,
+                        StorePath = spath + "\\Issuer",
                     },
                     TrustedPeerCertificates = new CertificateTrustList
                     {
-                        StoreType = CertificateStoreType.X509Store,
-                        StorePath = "CurrentUser\\Root",
+                        StoreType = CertificateStoreType.Directory,
+                        StorePath = spath + "\\Peer",
                     }
                 },
 
@@ -105,6 +105,8 @@ namespace Cdy.Spider.OpcClient
 
             configuration.Validate(ApplicationType.Client);
             m_configuration = configuration;
+
+            configuration.ApplicationUri = X509Utils.GetApplicationUriFromCertificate(configuration.SecurityConfiguration.ApplicationCertificate.Certificate);
         }
 
         #endregion Constructors
