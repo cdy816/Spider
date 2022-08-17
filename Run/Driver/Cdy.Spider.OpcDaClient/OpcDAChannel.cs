@@ -23,7 +23,7 @@ namespace Cdy.Spider.OpcDAClient
     /// <summary>
     /// 
     /// </summary>
-    public class OpcUaChannel : ChannelBase2
+    public class OpcDAChannel : ChannelBase2
     {
 
         #region ... Variables  ...
@@ -87,7 +87,7 @@ namespace Cdy.Spider.OpcDAClient
         /// <param name="host"></param>
         private Opc.Da.Server InitClient(Specification spec, string name,string host)
         {
-            Opc.Server[] servers = m_discovery.GetAvailableServers(spec, host, null);
+            Opc.Server[] servers = m_discovery.GetAvailableServers(spec, host,string.IsNullOrEmpty(mData.UserName)? null:new ConnectData(new System.Net.NetworkCredential() { UserName=mData.UserName,Password=mData.Password}));
 
             if (servers != null)
             {
@@ -121,15 +121,7 @@ namespace Cdy.Spider.OpcDAClient
                 }
             }
 
-            if (IsSubscriptionMode)
-            {
-                mMonitoringGroup.Name = "Monitoring";                          // Group Name
-                mMonitoringGroup.ServerHandle = null;                          // The handle assigned by the server to the group.
-                mMonitoringGroup.ClientHandle = Guid.NewGuid().ToString();     // The handle assigned by the client to the group.
-                mMonitoringGroup.Active = true;                                // Activate the group.
-                mMonitoringGroup.UpdateRate = ScanCircle;                             // The refresh rate is 1 second. -> 1000
-                mMonitoringGroup.Deadband = 0;                                 // When the dead zone value is set to 0, the server will notify the group of any data changes in the group.
-            }
+            
 
             base.Init();
         }
@@ -472,7 +464,7 @@ namespace Cdy.Spider.OpcDAClient
         /// <returns></returns>
         public override ICommChannel2 NewApi()
         {
-            return new OpcUaChannel();
+            return new OpcDAChannel();
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace Cdy.Spider.OpcDAClient
             base.LoadFromXML(xe);
             if (xe.Attribute("ServerName") != null)
             {
-                this.ServerIp = xe.Attribute("ServerName").Value;
+                this.ServerName = xe.Attribute("ServerName").Value;
             }
         }
 
