@@ -11,6 +11,10 @@
         <local:OpcBrowserView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type local:OpcDABrowserViewModel}">
+        <local:OpcDABrowserView/>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type local:OpcDriverConfigModel}">
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>

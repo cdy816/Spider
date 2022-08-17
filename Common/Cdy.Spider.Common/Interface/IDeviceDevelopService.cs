@@ -27,6 +27,18 @@ namespace Cdy.Spider
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        /// <summary>
+        /// 获取通道类型
+        /// </summary>
+        /// <returns></returns>
+        string GetChannelType();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<string, string> GetChannelParameter();
         
         /// <summary>
         /// 

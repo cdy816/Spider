@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj" />
     <ProjectReference Include="..\..\..\Run\Driver\Cdy.Spider.OpcDriver\Cdy.Spider.OpcDriver.csproj" />
+    <ProjectReference Include="..\..\..\Run\Driver\OPCDALib\OPCDALib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +33,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="OpcDABrowserView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

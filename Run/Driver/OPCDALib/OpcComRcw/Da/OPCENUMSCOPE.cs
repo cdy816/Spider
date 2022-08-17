@@ -1,0 +1,21 @@
+﻿using System;
+
+namespace OpcRcw.Da
+{
+	// Token: 0x02000088 RID: 136
+	public enum OPCENUMSCOPE
+	{
+		// Token: 0x040003B6 RID: 950
+		OPC_ENUM_PRIVATE_CONNECTIONS = 1,
+		// Token: 0x040003B7 RID: 951
+		OPC_ENUM_PUBLIC_CONNECTIONS,
+		// Token: 0x040003B8 RID: 952
+		OPC_ENUM_ALL_CONNECTIONS,
+		// Token: 0x040003B9 RID: 953
+		OPC_ENUM_PRIVATE,
+		// Token: 0x040003BA RID: 954
+		OPC_ENUM_PUBLIC,
+		// Token: 0x040003BB RID: 955
+		OPC_ENUM_ALL
+	}
+}

@@ -56,7 +56,7 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// <returns></returns>
         public override List<string> ListSupportChannels()
         {
-            return new List<string>() { "OpcUa" };
+            return new List<string>() { "OpcUa","OpcDA" };
         }
 
         /// <summary>

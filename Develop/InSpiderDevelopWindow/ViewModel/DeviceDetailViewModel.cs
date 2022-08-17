@@ -2003,6 +2003,36 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetChannelType()
+        {
+            var data = (Model as DeviceDevelop).Channel.Data;
+            if (data !=null)
+            {
+                return (Model as DeviceDevelop).Channel.TypeName;
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetChannelParameter()
+        {
+            Dictionary<string, string> re = new Dictionary<string, string>();
+            var data = (Model as DeviceDevelop).Channel.Data;
+            foreach(var vv in  data.GetType().GetProperties())
+            {
+                var val = vv.GetValue(data);
+                re.Add(vv.Name,val!=null?val.ToString():"");
+            }
+            return re;
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

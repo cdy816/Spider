@@ -1,0 +1,21 @@
+﻿using System;
+
+namespace OpcRcw.Hda
+{
+	// Token: 0x02000039 RID: 57
+	public enum OPCHDA_OPERATORCODES
+	{
+		// Token: 0x040001EA RID: 490
+		OPCHDA_EQUAL = 1,
+		// Token: 0x040001EB RID: 491
+		OPCHDA_LESS,
+		// Token: 0x040001EC RID: 492
+		OPCHDA_LESSEQUAL,
+		// Token: 0x040001ED RID: 493
+		OPCHDA_GREATER,
+		// Token: 0x040001EE RID: 494
+		OPCHDA_GREATEREQUAL,
+		// Token: 0x040001EF RID: 495
+		OPCHDA_NOTEQUAL
+	}
+}

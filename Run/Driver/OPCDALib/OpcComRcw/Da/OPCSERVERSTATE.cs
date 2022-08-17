@@ -1,0 +1,21 @@
+﻿using System;
+
+namespace OpcRcw.Da
+{
+	// Token: 0x02000087 RID: 135
+	public enum OPCSERVERSTATE
+	{
+		// Token: 0x040003AF RID: 943
+		OPC_STATUS_RUNNING = 1,
+		// Token: 0x040003B0 RID: 944
+		OPC_STATUS_FAILED,
+		// Token: 0x040003B1 RID: 945
+		OPC_STATUS_NOCONFIG,
+		// Token: 0x040003B2 RID: 946
+		OPC_STATUS_SUSPENDED,
+		// Token: 0x040003B3 RID: 947
+		OPC_STATUS_TEST,
+		// Token: 0x040003B4 RID: 948
+		OPC_STATUS_COMM_FAULT
+	}
+}

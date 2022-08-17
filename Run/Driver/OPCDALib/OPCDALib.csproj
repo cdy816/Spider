@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).XML&quot; copy &quot;$(TargetDir)$(TargetName).XML&quot; &quot;$(SolutionDir)\Output\Xml&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).pdb&quot;  copy &quot;$(TargetDir)$(TargetName).pdb&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;copy &quot;$(TargetDir)*.dll&quot; &quot;$(SolutionDir)\Output&quot; /y" />
+  </Target>
+
+</Project>

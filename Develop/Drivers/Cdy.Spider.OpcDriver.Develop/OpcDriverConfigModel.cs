@@ -41,29 +41,68 @@ namespace Cdy.Spider.OpcDriver.Develop
                 if(mRegistorBrowsingCommand == null)
                 {
                     mRegistorBrowsingCommand = new RelayCommand(() => {
-                        OpcBrowserViewModel opv = new OpcBrowserViewModel();
-                        if(Service!=null)
-                        {
-                            string ss = Service.GetConfigServerUrl();
-                            if(!string.IsNullOrEmpty(ss))
-                            {
-                                opv.ServerAddress = ss;
-                            }
-                            string user = Service.GetConfigUserName();
-                            if(!string.IsNullOrEmpty(ss))
-                            {
-                                opv.UserName = user;
-                            }
 
-                            string pass = Service.GetConfigPassword();
-                            if(!string.IsNullOrEmpty(pass))
-                            {
-                                opv.Password = pass;
-                            }
-                        }
-                        if(opv.ShowDialog().Value)
+                        if (Service != null)
                         {
-                            Registor = opv.SelectVariable.NodeId + "||" + opv.SelectVariable.DataType;
+                            var vss = Service.GetChannelType();
+
+                            if (vss == "OpcDA")
+                            {
+                                OpcDABrowserViewModel opv = new OpcDABrowserViewModel();
+                                string ss = Service.GetConfigServerUrl();
+                                if (!string.IsNullOrEmpty(ss))
+                                {
+                                    opv.ServerAddress = ss;
+                                }
+                                string user = Service.GetConfigUserName();
+                                if (!string.IsNullOrEmpty(user))
+                                {
+                                    opv.UserName = user;
+                                }
+
+                                string pass = Service.GetConfigPassword();
+                                if (!string.IsNullOrEmpty(pass))
+                                {
+                                    opv.Password = pass;
+                                }
+
+                                var pps = Service.GetChannelParameter();
+                                if(pps!=null && pps.ContainsKey("ServerName"))
+                                {
+                                    opv.ServerName = pps["ServerName"];
+                                }
+
+                                if (opv.ShowDialog().Value)
+                                {
+                                    Registor = opv.SelectVariable.NodeId + "||" + opv.SelectVariable.DataType;
+                                }
+                            }
+                            else
+                            {
+                                OpcBrowserViewModel opv = new OpcBrowserViewModel();
+
+                                string ss = Service.GetConfigServerUrl();
+                                if (!string.IsNullOrEmpty(ss))
+                                {
+                                    opv.ServerAddress = ss;
+                                }
+                                string user = Service.GetConfigUserName();
+                                if (!string.IsNullOrEmpty(user))
+                                {
+                                    opv.UserName = user;
+                                }
+
+                                string pass = Service.GetConfigPassword();
+                                if (!string.IsNullOrEmpty(pass))
+                                {
+                                    opv.Password = pass;
+                                }
+                                if (opv.ShowDialog().Value)
+                                {
+                                    Registor = opv.SelectVariable.NodeId + "||" + opv.SelectVariable.DataType;
+                                }
+                            }
+                           
                         }
                     });
                 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30128.74
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.Common", "Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj", "{2FB1F976-DCC8-42E0-BE3F-6300307724C4}"
 EndProject
@@ -129,7 +129,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICSharpCode.AvalonEdit", "D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monitor", "Monitor", "{1A90B4D9-3105-42CC-99AD-BCBF5B5C8576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealDataService", "Run\Monitor\RealDataService\RealDataService.csproj", "{C9B02969-DBFE-417C-930A-A3734365E975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealDataService", "Run\Monitor\RealDataService\RealDataService.csproj", "{C9B02969-DBFE-417C-930A-A3734365E975}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OPCDALib", "Run\Driver\OPCDALib\OPCDALib.csproj", "{C20E3945-4B2D-42A3-BB6F-1967CDD7E211}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.OpcDaClient", "Run\Driver\Cdy.Spider.OpcDaClient\Cdy.Spider.OpcDaClient.csproj", "{196C1B6A-E79F-4FD0-B477-B24C4715C473}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.OpcDA.Develop", "Develop\Drivers\Cdy.Spider.OpcDA.Develop\Cdy.Spider.OpcDA.Develop.csproj", "{0EC9C413-2E6A-4C3C-B732-6B1E5E410168}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -345,6 +351,18 @@ Global
 		{C9B02969-DBFE-417C-930A-A3734365E975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9B02969-DBFE-417C-930A-A3734365E975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9B02969-DBFE-417C-930A-A3734365E975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C20E3945-4B2D-42A3-BB6F-1967CDD7E211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C20E3945-4B2D-42A3-BB6F-1967CDD7E211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C20E3945-4B2D-42A3-BB6F-1967CDD7E211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C20E3945-4B2D-42A3-BB6F-1967CDD7E211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{196C1B6A-E79F-4FD0-B477-B24C4715C473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{196C1B6A-E79F-4FD0-B477-B24C4715C473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{196C1B6A-E79F-4FD0-B477-B24C4715C473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{196C1B6A-E79F-4FD0-B477-B24C4715C473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EC9C413-2E6A-4C3C-B732-6B1E5E410168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EC9C413-2E6A-4C3C-B732-6B1E5E410168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EC9C413-2E6A-4C3C-B732-6B1E5E410168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EC9C413-2E6A-4C3C-B732-6B1E5E410168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -411,6 +429,9 @@ Global
 		{CD71F202-0916-4163-BBAE-A341EF85FC62} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
 		{1A90B4D9-3105-42CC-99AD-BCBF5B5C8576} = {07B74F9B-1241-4F72-B1CF-088FCA014248}
 		{C9B02969-DBFE-417C-930A-A3734365E975} = {1A90B4D9-3105-42CC-99AD-BCBF5B5C8576}
+		{C20E3945-4B2D-42A3-BB6F-1967CDD7E211} = {D513F97D-8C3F-459E-B12E-C49B3F07175A}
+		{196C1B6A-E79F-4FD0-B477-B24C4715C473} = {D513F97D-8C3F-459E-B12E-C49B3F07175A}
+		{0EC9C413-2E6A-4C3C-B732-6B1E5E410168} = {CD918E22-A45C-48FC-890E-21E8F3FAB73B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}
