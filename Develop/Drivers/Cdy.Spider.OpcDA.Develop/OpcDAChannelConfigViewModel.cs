@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Cdy.Spider.OpcDA.Develop
 {
@@ -23,6 +25,8 @@ namespace Cdy.Spider.OpcDA.Develop
         private OpcDAChannelData mModel;
 
         private List<string> mServerNameList;
+
+        private ICommand mListServerCommand;
 
         private static ServerEnumerator m_discovery = new ServerEnumerator();
         #endregion ...Variables...
@@ -51,9 +55,26 @@ namespace Cdy.Spider.OpcDA.Develop
                 if (mModel != value)
                 {
                     mModel = value;
-                    ListServers();
+                    Task.Run(() => {
+                        ListServers();
+                    });
+                  
                     OnPropertyChanged("Model");
                 }
+            }
+        }
+
+        public ICommand ListServerCommand
+        {
+            get
+            {
+                if(mListServerCommand==null)
+                {
+                    mListServerCommand = new RelayCommand(() => {
+                        ListServers();
+                    });
+                }
+                return mListServerCommand;
             }
         }
 
@@ -61,50 +82,59 @@ namespace Cdy.Spider.OpcDA.Develop
 
         #region ... Methods    ...
 
-        private void ListServers()
+        private  void ListServers()
         {
-            var slist = new List<string>();
-
-            if (!string.IsNullOrEmpty(UserName)||(mModel.ServerIp!="localhost"&&mModel.ServerIp!="127.0.0.1"))
+            try
             {
-               var res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_10, mModel.ServerIp, new Opc.ConnectData(new System.Net.NetworkCredential() { UserName = UserName, Password = Password }));
-                if(res.Any())
-                {
-                    slist.AddRange(res.Select(e=>e.Name));
-                }
-                res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_20, mModel.ServerIp, new Opc.ConnectData(new System.Net.NetworkCredential() { UserName = UserName, Password = Password }));
-                if (res.Any())
-                {
-                    slist.AddRange(res.Select(e => e.Name));
-                }
+                var slist = new List<string>();
 
-                res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_30, mModel.ServerIp, new Opc.ConnectData(new System.Net.NetworkCredential() { UserName = UserName, Password = Password }));
-                if (res.Any())
+                if (!string.IsNullOrEmpty(UserName) || (mModel.ServerIp != "localhost" && mModel.ServerIp != "127.0.0.1"))
                 {
-                    slist.AddRange(res.Select(e => e.Name));
+                    var res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_10, mModel.ServerIp, new Opc.ConnectData(new System.Net.NetworkCredential() { UserName = UserName, Password = Password }));
+                    if (res.Any())
+                    {
+                        slist.AddRange(res.Select(e => e.Name));
+                    }
+                    res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_20, mModel.ServerIp, new Opc.ConnectData(new System.Net.NetworkCredential() { UserName = UserName, Password = Password }));
+                    if (res.Any())
+                    {
+                        slist.AddRange(res.Select(e => e.Name));
+                    }
+
+                    res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_30, mModel.ServerIp, new Opc.ConnectData(new System.Net.NetworkCredential() { UserName = UserName, Password = Password }));
+                    if (res.Any())
+                    {
+                        slist.AddRange(res.Select(e => e.Name));
+                    }
                 }
+                else
+                {
+                    var res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_10, "localhost", null);
+                    if (res.Any())
+                    {
+                        slist.AddRange(res.Where(e => e != null).Select(e => e.Name));
+                    }
+                    res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_20, "localhost", null);
+                    if (res.Any())
+                    {
+                        slist.AddRange(res.Where(e => e != null).Select(e => e.Name));
+                    }
+
+                    res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_30, "localhost", null);
+                    if (res.Any())
+                    {
+                        slist.AddRange(res.Where(e => e != null).Select(e => e.Name));
+                    }
+                }
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    ServerNameList = slist.Distinct().ToList();
+                }));
             }
-            else
+            catch
             {
-               var res =  m_discovery.GetAvailableServers(Opc.Specification.COM_DA_10,"localhost",null);
-                if (res.Any())
-                {
-                    slist.AddRange(res.Where(e=>e!=null).Select(e => e.Name));
-                }
-                res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_20, "localhost", null);
-                if (res.Any())
-                {
-                    slist.AddRange(res.Where(e => e != null).Select(e => e.Name));
-                }
 
-                res = m_discovery.GetAvailableServers(Opc.Specification.COM_DA_30, "localhost", null);
-                if (res.Any())
-                {
-                    slist.AddRange(res.Where(e => e != null).Select(e => e.Name));
-                }
             }
-
-            ServerNameList = slist.Distinct().ToList();
         }
 
         /// <summary>

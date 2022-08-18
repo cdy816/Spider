@@ -106,6 +106,7 @@ namespace Cdy.Spider.OpcClient
             configuration.Validate(ApplicationType.Client);
             m_configuration = configuration;
 
+            if(configuration.SecurityConfiguration.ApplicationCertificate.Certificate!=null)
             configuration.ApplicationUri = X509Utils.GetApplicationUriFromCertificate(configuration.SecurityConfiguration.ApplicationCertificate.Certificate);
         }
 

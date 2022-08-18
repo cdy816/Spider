@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="reload.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj" />
     <ProjectReference Include="..\..\..\Run\Driver\Cdy.Spider.OpcDaClient\Cdy.Spider.OpcDaClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="reload.png" />
   </ItemGroup>
 
   <ItemGroup>
