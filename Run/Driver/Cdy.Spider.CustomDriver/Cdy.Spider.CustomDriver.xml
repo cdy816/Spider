@@ -233,6 +233,26 @@
             <param name="value"></param>
             <param name="valueType"></param>
         </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.ListTags">
+            <summary>
+            获取该设备定义的变量名称列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.WriteToDeviceSync(System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.WriteToDeviceAsync(System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="T:Cdy.Spider.CustomDriver.ImpExtends">
             <summary>
             

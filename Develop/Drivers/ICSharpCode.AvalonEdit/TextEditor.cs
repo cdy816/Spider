@@ -547,7 +547,6 @@ namespace ICSharpCode.AvalonEdit
 			var document = GetDocument();
 			document.Remove(0, document.TextLength);
 			document.Insert(0, textData);
-			
 		}
 
 		/// <summary>

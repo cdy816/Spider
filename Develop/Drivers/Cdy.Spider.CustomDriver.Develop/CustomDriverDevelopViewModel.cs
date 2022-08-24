@@ -455,14 +455,18 @@ $WriteValue$
         /// <param name="key"></param>
         /// <param name="template"></param>
         /// <returns></returns>
-        private string SubString(string org,string key,string template)
+        private string SubString(string org, string key, string template)
         {
             int sindex = template.IndexOf(key);
-            int eindex = template.Length-sindex - key.Length;
+            int eindex = template.Length - sindex - key.Length;
             string re = org;
             re = re.Substring(sindex);
-            if(re.Length>eindex)
-            re = re.Substring(0, re.Length - eindex);
+            if (re.Length > eindex)
+                re = re.Substring(0, re.Length - eindex);
+            else if (re.Length == eindex)
+            {
+                re = "";
+            }
             return re;
         }
 
@@ -493,20 +497,22 @@ $WriteValue$
 
 
             //TimerProcessExpressEditor.Text = mOnTimerProcessExpress;
+            TimerProcessExpressEditor.ReplaceText(mOnTimerProcessExpress);
             TimerProcessExpressEditor.HideFirstRowCount = 15 + count;
             TimerProcessExpressEditor.HideLastRowCount = 3;
 
+
             //OnReceiveDataExpressEditor.Text = mOnReceiveDataExpress;
+            OnReceiveDataExpressEditor.ReplaceText(mOnReceiveDataExpress);
             OnReceiveDataExpressEditor.HideFirstRowCount = 15 + count;
             OnReceiveDataExpressEditor.HideLastRowCount = 3;
 
             //OnSetValueToDeviceExpressEditor.Text = mOnSetValueToDeviceExpress;
+            OnSetValueToDeviceExpressEditor.ReplaceText(mOnSetValueToDeviceExpress);
             OnSetValueToDeviceExpressEditor.HideFirstRowCount = 15 + count;
             OnSetValueToDeviceExpressEditor.HideLastRowCount = 3;
 
-            TimerProcessExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnTimerProcessExpress);
-            OnReceiveDataExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnReceiveDataExpress);
-            OnSetValueToDeviceExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnSetValueToDeviceExpress);
+
         }
 
         /// <summary>
@@ -515,7 +521,7 @@ $WriteValue$
         /// <returns></returns>
         public void UpdateOnReceiveExpressExpress()
         {
-            Model.OnReceiveDataFunExpress = SubString(OnReceiveDataExpressEditor.Text, "$OnReceiveDataBody$", mOnReceiveDataTemplate.Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", "")));
+            Model.OnReceiveDataFunExpress = SubString(OnReceiveDataExpressEditor.Text, "$OnReceiveDataBody$", mOnReceiveDataTemplate.Replace("$VariableBody$", mModel.VariableExpress));
         }
 
         /// <summary>
@@ -524,7 +530,7 @@ $WriteValue$
         /// <returns></returns>
         public void UpdateOnSetValueToDeviceExpress()
         {
-            Model.OnSetTagValueToDeviceFunExpress = SubString(OnSetValueToDeviceExpressEditor.Text, "$WriteValue$", mOnSetValueToDeviceTemplate.Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", "")));
+            Model.OnSetTagValueToDeviceFunExpress = SubString(OnSetValueToDeviceExpressEditor.Text, "$WriteValue$", mOnSetValueToDeviceTemplate.Replace("$VariableBody$", mModel.VariableExpress));
         }
 
         /// <summary>
@@ -533,7 +539,7 @@ $WriteValue$
         /// <returns></returns>
         public void UpdateOnTimeProcessExpress()
         {
-            Model.OnTimerFunExpress = SubString(TimerProcessExpressEditor.Text, "$ProcessTimerElapsed$", mOnProcessTimerElapsedTemplate.Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", "")));
+            Model.OnTimerFunExpress = SubString(TimerProcessExpressEditor.Text, "$ProcessTimerElapsed$", mOnProcessTimerElapsedTemplate.Replace("$VariableBody$", mModel.VariableExpress));
         }
 
         /// <summary>
