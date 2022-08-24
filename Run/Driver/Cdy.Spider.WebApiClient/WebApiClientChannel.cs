@@ -68,6 +68,21 @@ namespace Cdy.Spider.WebApiClient
         /// <param name="fun"></param>
         /// <param name="sval"></param>
         /// <returns></returns>
+        private byte[] Post(string fun, byte[] sval)
+        {
+            if (mClient == null)
+                mClient = new WebClient();
+            mClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            mClient.Encoding = Encoding.UTF8;
+            return mClient.UploadData(mData.ServerUrl + "/" + fun, sval);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fun"></param>
+        /// <param name="sval"></param>
+        /// <returns></returns>
         private string Get(string fun, string sval)
         {
             if (mClient == null)
@@ -75,6 +90,21 @@ namespace Cdy.Spider.WebApiClient
             mClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             mClient.Encoding = Encoding.UTF8;
             return mClient.UploadString(mData.ServerUrl + "/" + fun, "GET", sval);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fun"></param>
+        /// <param name="sval"></param>
+        /// <returns></returns>
+        private byte[] Get(string fun, byte[] sval)
+        {
+            if (mClient == null)
+                mClient = new WebClient();
+            mClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            mClient.Encoding = Encoding.UTF8;
+            return mClient.UploadData(mData.ServerUrl + "/" + fun, "GET", sval);
         }
 
         /// <summary>
@@ -116,6 +146,48 @@ namespace Cdy.Spider.WebApiClient
             else
             {
                 return Post(string.Empty, value.ToString());
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="timeout"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, out bool result)
+        {
+            if (mData.Method == WebApiMethod.Get)
+            {
+                var res = Get(string.Empty, data.ToArray());
+                result = res != null;
+                return res;
+            }
+            else
+            {
+                var res = Post(string.Empty, data.ToArray());
+                  result = res != null;
+                return res;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected override bool SendInner(Span<byte> data)
+        {
+            if (mData.Method == WebApiMethod.Get)
+            {
+                return Get(string.Empty, data.ToArray())!=null;
+            }
+            else
+            {
+                return Post(string.Empty, data.ToArray())!=null;
             }
         }
 

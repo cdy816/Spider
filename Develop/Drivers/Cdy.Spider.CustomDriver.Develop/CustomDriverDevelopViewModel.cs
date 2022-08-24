@@ -146,6 +146,8 @@ $WriteValue$
 
         private ICommand mApplyCommand;
 
+        private ClassificationHighlightColors colors;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -238,9 +240,9 @@ $WriteValue$
         /// </summary>
         public CustomDriverData Model { get { return mModel; } set { mModel = value;
                 mOnVariableExpresse = mOnVariableDefineTemplate.Replace("$VariableBody$", mModel.VariableExpress);
-                mOnReceiveDataExpress = mOnReceiveDataTemplate.Replace("$OnReceiveDataBody$", mModel.OnReceiveDataFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n","").Replace("\n", ""));
-                mOnSetValueToDeviceExpress = mOnSetValueToDeviceTemplate.Replace("$WriteValue$", mModel.OnSetTagValueToDeviceFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", "").Replace("\n", ""));
-                mOnTimerProcessExpress = mOnProcessTimerElapsedTemplate.Replace("$ProcessTimerElapsed$", mModel.OnTimerFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", "").Replace("\n", ""));
+                mOnReceiveDataExpress = mOnReceiveDataTemplate.Replace("$OnReceiveDataBody$", mModel.OnReceiveDataFunExpress).Replace("$VariableBody$", mModel.VariableExpress);
+                mOnSetValueToDeviceExpress = mOnSetValueToDeviceTemplate.Replace("$WriteValue$", mModel.OnSetTagValueToDeviceFunExpress).Replace("$VariableBody$", mModel.VariableExpress);
+                mOnTimerProcessExpress = mOnProcessTimerElapsedTemplate.Replace("$ProcessTimerElapsed$", mModel.OnTimerFunExpress).Replace("$VariableBody$", mModel.VariableExpress);
             } }
 
 
@@ -432,7 +434,7 @@ $WriteValue$
         public void InitEditor()
         {
 
-            var colors = new ClassificationHighlightColors();
+            colors = new ClassificationHighlightColors();
             colors.DefaultBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.White);
             colors.KeywordBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.LightBlue);
             colors.StringBrush.Foreground = new ICSharpCode.AvalonEdit.Highlighting.SimpleHighlightingBrush(Colors.OrangeRed);
@@ -441,6 +443,8 @@ $WriteValue$
             TimerProcessExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnTimerProcessExpress);
             OnReceiveDataExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnReceiveDataExpress);
             OnSetValueToDeviceExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnSetValueToDeviceExpress);
+
+            OnSetValueToDeviceExpressEditor.HideFirstRowCount = OnReceiveDataExpressEditor.HideFirstRowCount = TimerProcessExpressEditor.HideFirstRowCount = 15 + (string.IsNullOrEmpty(Model.VariableExpress) ? 0 : Model.VariableExpress.Split("\n").Length - 1);
 
         }
 
@@ -457,6 +461,7 @@ $WriteValue$
             int eindex = template.Length-sindex - key.Length;
             string re = org;
             re = re.Substring(sindex);
+            if(re.Length>eindex)
             re = re.Substring(0, re.Length - eindex);
             return re;
         }
@@ -469,14 +474,39 @@ $WriteValue$
         {
             Model.VariableExpress= SubString(InitExpressEditor.Text, "$VariableBody$", mOnVariableDefineTemplate);
 
-            mOnReceiveDataExpress = mOnReceiveDataTemplate.Replace("$OnReceiveDataBody$", mModel.OnReceiveDataFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", ""));
-            mOnSetValueToDeviceExpress = mOnSetValueToDeviceTemplate.Replace("$WriteValue$", mModel.OnSetTagValueToDeviceFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", ""));
-            mOnTimerProcessExpress = mOnProcessTimerElapsedTemplate.Replace("$ProcessTimerElapsed$", mModel.OnTimerFunExpress).Replace("$VariableBody$", mModel.VariableExpress.Replace("\r\n", ""));
+            mOnReceiveDataExpress = mOnReceiveDataTemplate.Replace("$OnReceiveDataBody$", mModel.OnReceiveDataFunExpress).Replace("$VariableBody$", mModel.VariableExpress);
 
-            TimerProcessExpressEditor.Text = mOnTimerProcessExpress;
-            OnReceiveDataExpressEditor.Text = mOnReceiveDataExpress;
-            OnSetValueToDeviceExpressEditor.Text = mOnSetValueToDeviceExpress;
+            mOnSetValueToDeviceExpress = mOnSetValueToDeviceTemplate.Replace("$WriteValue$", mModel.OnSetTagValueToDeviceFunExpress).Replace("$VariableBody$", mModel.VariableExpress);
+            mOnTimerProcessExpress = mOnProcessTimerElapsedTemplate.Replace("$ProcessTimerElapsed$", mModel.OnTimerFunExpress).Replace("$VariableBody$", mModel.VariableExpress);
 
+            int count = 0;
+             
+            if(!string.IsNullOrEmpty(Model.VariableExpress))
+            {
+                var vtmps = Model.VariableExpress.Split("\n");
+                count = vtmps.Length - 1;
+                if (vtmps.Length>1 && vtmps[vtmps.Length-1]=="")
+                {
+                    count--;
+                }
+            }
+
+
+            //TimerProcessExpressEditor.Text = mOnTimerProcessExpress;
+            TimerProcessExpressEditor.HideFirstRowCount = 15 + count;
+            TimerProcessExpressEditor.HideLastRowCount = 3;
+
+            //OnReceiveDataExpressEditor.Text = mOnReceiveDataExpress;
+            OnReceiveDataExpressEditor.HideFirstRowCount = 15 + count;
+            OnReceiveDataExpressEditor.HideLastRowCount = 3;
+
+            //OnSetValueToDeviceExpressEditor.Text = mOnSetValueToDeviceExpress;
+            OnSetValueToDeviceExpressEditor.HideFirstRowCount = 15 + count;
+            OnSetValueToDeviceExpressEditor.HideLastRowCount = 3;
+
+            TimerProcessExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnTimerProcessExpress);
+            OnReceiveDataExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnReceiveDataExpress);
+            OnSetValueToDeviceExpressEditor.Initialize(mHost, colors, AppDomain.CurrentDomain.BaseDirectory, mOnSetValueToDeviceExpress);
         }
 
         /// <summary>

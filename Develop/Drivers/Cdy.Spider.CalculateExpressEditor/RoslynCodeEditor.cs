@@ -92,7 +92,7 @@ namespace Cdy.Spider.CalculateExpressEditor
                 roslynHost.AddDocument(new DocumentCreationArgs(avalonEditTextContainer, workingDirectory,
                     args => ProcessDiagnostics(args), text => avalonEditTextContainer.UpdateText(text)));
 
-            AppendText(documentText);
+            ReplaceText(documentText);
             Document.UndoStack.ClearAll();
             AsyncToolTipRequest = OnAsyncToolTipRequest;
 

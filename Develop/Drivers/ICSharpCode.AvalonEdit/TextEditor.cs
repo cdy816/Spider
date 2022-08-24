@@ -537,6 +537,19 @@ namespace ICSharpCode.AvalonEdit
 		#endregion
 
 		#region TextBoxBase-like methods
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="textData"></param>
+		public void ReplaceText(string textData)
+        {
+			var document = GetDocument();
+			document.Remove(0, document.TextLength);
+			document.Insert(0, textData);
+			
+		}
+
 		/// <summary>
 		/// Appends text to the end of the document.
 		/// </summary>

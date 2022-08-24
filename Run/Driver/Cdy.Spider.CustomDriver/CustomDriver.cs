@@ -391,7 +391,7 @@ $WriteValue$
         /// <param name="values">byte[]\list\Object</param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        protected string BytesToStirng(object values, Encoding encoding)
+        public string BytesToStirng(object values, Encoding encoding)
         {
             if (values is byte[])
             {
@@ -413,7 +413,7 @@ $WriteValue$
         /// <param name="values"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        protected string BytesToStirng(byte[] values,Encoding encoding)
+        public string BytesToStirng(byte[] values,Encoding encoding)
         {
             return encoding.GetString(values);
         }
@@ -426,7 +426,7 @@ $WriteValue$
         /// <param name="len"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        protected string BytesToStirng(byte[] values,int start,int len, Encoding encoding)
+        public string BytesToStirng(byte[] values,int start,int len, Encoding encoding)
         {
             return encoding.GetString(values,start,len);
         }
@@ -514,6 +514,35 @@ $WriteValue$
         public virtual void WriteValue(string deviceInfo, object value, byte valueType)
         {
 
+        }
+
+        /// <summary>
+        /// 获取该设备定义的变量名称列表
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> ListTags()
+        {
+            return Owner.Device.ListTags().Select(e=>e.DeviceInfo).ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public byte[] WriteToDeviceSync(byte[] value)
+        {
+            return Owner.SendAndWait(value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool WriteToDeviceAsync(byte[] value)
+        {
+            return Owner.Send(value);
         }
     }
     /// <summary>

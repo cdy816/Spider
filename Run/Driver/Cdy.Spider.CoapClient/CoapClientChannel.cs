@@ -162,7 +162,21 @@ namespace Cdy.Spider.CoapClient
         /// <returns></returns>
         protected override byte[] SendAndWaitInner(Span<byte> data, int timeout, out bool result)
         {
-            return base.SendAndWaitInner(data, timeout, out result);
+            var re = Post(data.ToArray());
+            result = re != null;
+            return re;
+        }
+
+       
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        protected override bool SendInner(Span<byte> data)
+        {
+            return Post(data.ToArray())!=null;
         }
 
         /// <summary>

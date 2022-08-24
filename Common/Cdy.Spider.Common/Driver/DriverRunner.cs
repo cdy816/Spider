@@ -395,7 +395,7 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected object WriteValue(string key,object value)
+        public object WriteValue(string key,object value)
         {
             if (!mComm.IsConnected) return false;
 
@@ -421,7 +421,7 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected bool WriteValueNoWait(string key, object value)
+        public bool WriteValueNoWait(string key, object value)
         {
             if (!mComm.IsConnected) return false;
 
@@ -471,7 +471,7 @@ namespace Cdy.Spider
         /// <param name="data"></param>
         /// <param name="waitresultcount"></param>
         /// <returns></returns>
-        protected byte[] SendAndWait(Span<byte> data, int waitresultcount)
+        public byte[] SendAndWait(Span<byte> data, int waitresultcount)
         {
             byte[] re = null;
             if (!mComm.IsConnected) return null;
@@ -498,7 +498,7 @@ namespace Cdy.Spider
         /// <param name="startByte"></param>
         /// <param name="endByte"></param>
         /// <returns></returns>
-        protected byte[] SendAndWait(Span<byte> data, byte startByte, byte endByte)
+        public byte[] SendAndWait(Span<byte> data, byte startByte, byte endByte)
         {
             byte[] re = null;
             if (!mComm.IsConnected) return null;
@@ -525,7 +525,7 @@ namespace Cdy.Spider
         /// <param name="key"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        protected bool Send(Span<byte> data)
+        public bool Send(Span<byte> data)
         {
             if (!mComm.IsConnected) return false;
 

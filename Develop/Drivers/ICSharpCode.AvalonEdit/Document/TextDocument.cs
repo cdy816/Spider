@@ -890,8 +890,15 @@ namespace ICSharpCode.AvalonEdit.Document
 		public DocumentLine GetLineByNumber(int number)
 		{
 			VerifyAccess();
-			if (number < 1 || number > lineTree.LineCount)
-				throw new ArgumentOutOfRangeException("number", number, "Value must be between 1 and " + lineTree.LineCount);
+			if (number < 1)
+            {
+				return lineTree.GetByNumber(1);
+			}
+			else if (number > lineTree.LineCount)
+            {
+				return lineTree.GetByNumber(lineTree.LineCount);
+			}
+			//	throw new ArgumentOutOfRangeException("number", number, "Value must be between 1 and " + lineTree.LineCount);
 			return lineTree.GetByNumber(number);
 		}
 

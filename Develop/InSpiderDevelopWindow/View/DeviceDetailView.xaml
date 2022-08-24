@@ -34,6 +34,7 @@
         <CheckBox x:Name="proxyele" IsChecked="{Binding IsMonitMode}" Visibility="Hidden" />
         <TabControl SelectedIndex="{Binding SelectIndex,Mode=TwoWay}"  ItemContainerStyle="{DynamicResource TabControlItemContainerStyle1}"  Style="{DynamicResource TabControlStyle1}" Background="Transparent" BorderThickness="0,1,0,0">
             <TabItem Header="{local:ResMarker Communication}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <Grid  Background="#0FE5E5E5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="36"/>
@@ -71,6 +72,7 @@
                         <ContentControl Margin="10,0" Content="{Binding ChannelConfig}"/>
                     </Grid>
                 </Grid>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="{local:ResMarker Tags}" Selector.IsSelected="True" >
                 <Grid  Background="#0FE5E5E5">
