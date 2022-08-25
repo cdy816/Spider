@@ -122,14 +122,14 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:CustomWindowBase}">
-                    <Border BorderThickness="1" BorderBrush="DarkGray">
-                        <Grid Background="{TemplateBinding Background}" x:Name="head" >
+                    <Border BorderThickness="1" BorderBrush="DarkGray" x:Name="bd">
+                        <Grid Background="{TemplateBinding Background}"  x:Name="main">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="32" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Grid Background="#9F000000">
+                            <Grid Background="#9F000000" x:Name="head">
                                 <Image Margin="5,0"  Source="{Binding Icon,RelativeSource={RelativeSource AncestorType=Window}}" Height="16" HorizontalAlignment="Left" Width="24" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
                                 <Label Margin="30,0,115,0" VerticalContentAlignment="Center" Content="{Binding Title,RelativeSource={RelativeSource AncestorType=Window}}" Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Window}}"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

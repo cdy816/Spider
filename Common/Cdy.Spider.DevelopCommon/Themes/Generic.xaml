@@ -25,7 +25,7 @@
                 <ControlTemplate TargetType="{x:Type local:CustomWindowBase}">
                     <Border >
                         <Border BorderThickness="1" BorderBrush="DarkGray" Margin="1" x:Name="bd" Background="#EF777777" >
-                            <Grid>
+                            <Grid x:Name="main">
                                 <Grid Background="{TemplateBinding Background}" >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="32" />

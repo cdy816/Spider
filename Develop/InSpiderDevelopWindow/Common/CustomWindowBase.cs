@@ -19,6 +19,39 @@ using System.Windows.Media.Imaging;
 
 namespace InSpiderDevelopWindow
 {
+    internal enum AccentState
+    {
+        ACCENT_DISABLED = 0,
+        ACCENT_ENABLE_GRADIENT = 1,
+        ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
+        ACCENT_ENABLE_BLURBEHIND = 3,
+        ACCENT_INVALID_STATE = 4
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct AccentPolicy
+    {
+        public AccentState AccentState;
+        public int AccentFlags;
+        public int GradientColor;
+        public int AnimationId;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct WindowCompositionAttributeData
+    {
+        public WindowCompositionAttribute Attribute;
+        public IntPtr Data;
+        public int SizeOfData;
+    }
+
+    internal enum WindowCompositionAttribute
+    {
+        // ...
+        WCA_ACCENT_POLICY = 19
+        // ...
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -26,35 +59,14 @@ namespace InSpiderDevelopWindow
     {
         #region ... Variables  ...
 
-        //[DllImport("user32.dll")]
-        //static extern int GetWindowLong(IntPtr hwnd, int index);
-
-        //[DllImport("user32.dll")]
-        //static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
-
-        //[DllImport("user32.dll")]
-        //static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
-        //           int x, int y, int width, int height, uint flags);
-
-        //[DllImport("user32.dll")]
-        //static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
-
-        //private const int GWL_EXSTYLE = -20;
-        //private const int WS_EX_DLGMODALFRAME = 0x0001;
-        //private const int SWP_NOSIZE = 0x0001;
-        //private const int SWP_NOMOVE = 0x0002;
-        //private const int SWP_NOZORDER = 0x0004;
-        //private const int SWP_FRAMECHANGED = 0x0020;
-        //private const uint WM_SETICON = 0x0080;
-
-        //private const int GWL_STYLE = -16;
-        //private const int WS_MAXIMIZEBOX = 0x00010000;
-        //private const int WS_MINIMIZEBOX = 0x00020000;
+        [DllImport("user32.dll")]
+        internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
 
         private ContentControl mContentHost;
 
         private Grid mHead;
-
+        private Grid mMain;
+        private Border mBorder;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -217,6 +229,7 @@ namespace InSpiderDevelopWindow
         private void CustomWindowBase_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= (CustomWindowBase_Loaded);
+            EnableBlur();
             if (!string.IsNullOrEmpty(IconString))
             {
                 this.Icon = new BitmapImage(new Uri(IconString));
@@ -233,6 +246,9 @@ namespace InSpiderDevelopWindow
             mContentHost = this.GetTemplateChild("content_host") as ContentControl;
             mHead = this.GetTemplateChild("head") as Grid;
             mHead.MouseLeftButtonDown += MHead_MouseLeftButtonDown;
+
+            mMain = this.GetTemplateChild("main") as Grid;
+
             (this.GetTemplateChild("minB") as Button).Click += minB_Click;
             if (this.IsEnableMax)
             {
@@ -245,7 +261,50 @@ namespace InSpiderDevelopWindow
 
             (this.GetTemplateChild("closeB") as Button).Click += closeB_Click;
 
+            mBorder = this.GetTemplateChild("bd") as Border;
+            if (mBorder != null)
+            {
+                mBorder.SizeChanged += MBorder_SizeChanged;
+                InitBd();
+            }
+
         }
+        private void MBorder_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            mBorder.Clip = new System.Windows.Media.RectangleGeometry() { Rect = new Rect(1, 1, mBorder.ActualWidth - 2, mBorder.ActualHeight - 2), RadiusX = 5, RadiusY = 5 };
+        }
+
+        private void InitBd()
+        {
+            Border bd = new Border();
+            Grid.SetRowSpan(bd, 3);
+            bd.BorderThickness = new Thickness(2);
+            bd.BorderBrush = System.Windows.Media.Brushes.DarkGray;
+            bd.CornerRadius = new CornerRadius(5);
+            mMain.Children.Add(bd);
+        }
+        internal void EnableBlur()
+        {
+            var windowHelper = new WindowInteropHelper(this);
+
+            var accent = new AccentPolicy();
+            accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
+
+            var accentStructSize = Marshal.SizeOf(accent);
+
+            var accentPtr = Marshal.AllocHGlobal(accentStructSize);
+            Marshal.StructureToPtr(accent, accentPtr, false);
+
+            var data = new WindowCompositionAttributeData();
+            data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
+            data.SizeOfData = accentStructSize;
+            data.Data = accentPtr;
+
+            SetWindowCompositionAttribute(windowHelper.Handle, ref data);
+
+            Marshal.FreeHGlobal(accentPtr);
+        }
+
 
         /// <summary>
         /// 

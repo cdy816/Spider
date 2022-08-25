@@ -20,6 +20,39 @@ using System.Windows.Media.Imaging;
 
 namespace Cdy.Spider.DevelopCommon
 {
+    internal enum AccentState
+    {
+        ACCENT_DISABLED = 0,
+        ACCENT_ENABLE_GRADIENT = 1,
+        ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
+        ACCENT_ENABLE_BLURBEHIND = 3,
+        ACCENT_INVALID_STATE = 4
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct AccentPolicy
+    {
+        public AccentState AccentState;
+        public int AccentFlags;
+        public int GradientColor;
+        public int AnimationId;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct WindowCompositionAttributeData
+    {
+        public WindowCompositionAttribute Attribute;
+        public IntPtr Data;
+        public int SizeOfData;
+    }
+
+    internal enum WindowCompositionAttribute
+    {
+        // ...
+        WCA_ACCENT_POLICY = 19
+        // ...
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -27,35 +60,14 @@ namespace Cdy.Spider.DevelopCommon
     {
         #region ... Variables  ...
 
-        //[DllImport("user32.dll")]
-        //static extern int GetWindowLong(IntPtr hwnd, int index);
-
-        //[DllImport("user32.dll")]
-        //static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
-
-        //[DllImport("user32.dll")]
-        //static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
-        //           int x, int y, int width, int height, uint flags);
-
-        //[DllImport("user32.dll")]
-        //static extern IntPtr SendMessage(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
-
-        //private const int GWL_EXSTYLE = -20;
-        //private const int WS_EX_DLGMODALFRAME = 0x0001;
-        //private const int SWP_NOSIZE = 0x0001;
-        //private const int SWP_NOMOVE = 0x0002;
-        //private const int SWP_NOZORDER = 0x0004;
-        //private const int SWP_FRAMECHANGED = 0x0020;
-        //private const uint WM_SETICON = 0x0080;
-
-        //private const int GWL_STYLE = -16;
-        //private const int WS_MAXIMIZEBOX = 0x00010000;
-        //private const int WS_MINIMIZEBOX = 0x00020000;
+        [DllImport("user32.dll")]
+        internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
 
         private ContentControl mContentHost;
 
         private Grid mHead;
-
+        private Grid mMain;
+        private Border mBorder;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -186,6 +198,29 @@ namespace Cdy.Spider.DevelopCommon
         #endregion ...Properties...
 
         #region ... Methods    ...
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="window"></param>
+        //public static void RemoveIcon(Window window)
+        //{
+        //    IntPtr hwnd = new WindowInteropHelper(window).Handle;
+        //    int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+        //    SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_DLGMODALFRAME);
+        //    SendMessage(hwnd, WM_SETICON, new IntPtr(1), IntPtr.Zero);
+        //    SendMessage(hwnd, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
+        //}
+
+        ///// <summary>
+        ///// Disables the minimizebox.
+        ///// </summary>
+        ///// <param name="window">The window.</param>
+        //public static void DisableMinimizebox(Window window)
+        //{
+        //    var hwnd = new WindowInteropHelper(window).Handle;
+        //    var value = GetWindowLong(hwnd, GWL_STYLE);
+        //    SetWindowLong(hwnd, GWL_STYLE, (int)(value & ~WS_MINIMIZEBOX));
+        //}
 
         /// <summary>
         /// 
@@ -195,12 +230,12 @@ namespace Cdy.Spider.DevelopCommon
         private void CustomWindowBase_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= (CustomWindowBase_Loaded);
+            EnableBlur();
             if (!string.IsNullOrEmpty(IconString))
             {
                 this.Icon = new BitmapImage(new Uri(IconString));
             }
             this.Activate();
-            
         }
 
         /// <summary>
@@ -212,6 +247,9 @@ namespace Cdy.Spider.DevelopCommon
             mContentHost = this.GetTemplateChild("content_host") as ContentControl;
             mHead = this.GetTemplateChild("head") as Grid;
             mHead.MouseLeftButtonDown += MHead_MouseLeftButtonDown;
+
+            mMain = this.GetTemplateChild("main") as Grid;
+
             (this.GetTemplateChild("minB") as Button).Click += minB_Click;
             if (this.IsEnableMax)
             {
@@ -223,109 +261,51 @@ namespace Cdy.Spider.DevelopCommon
             }
 
             (this.GetTemplateChild("closeB") as Button).Click += closeB_Click;
-            var bdv = (this.GetTemplateChild("bdb") as Border);
-            var bdh = this.GetTemplateChild("rtb") as Border;
 
-            var bdvh = this.GetTemplateChild("rbdb") as Border;
-
-            bdv.MouseLeftButtonDown += bdv_MouseLeftButtonDown;
-            bdv.MouseMove += Bdv_MouseMove;
-            bdv.MouseLeftButtonUp += Bd_MouseLeftButtonUp;
-
-
-            bdh.MouseLeftButtonDown += bdh_MouseLeftButtonDown;
-            bdh.MouseMove += Bdh_MouseMove;
-            bdh.MouseLeftButtonUp += Bd_MouseLeftButtonUp;
-
-            bdvh.MouseLeftButtonDown += Bdvh_MouseLeftButtonDown;
-            bdvh.MouseMove += Bdvh_MouseMove;
-            bdvh.MouseLeftButtonUp += Bd_MouseLeftButtonUp;
-        }
-
-        private void Bdvh_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            mBorder = this.GetTemplateChild("bd") as Border;
+            if (mBorder != null)
             {
-                var vpp = e.GetPosition(this);
-                var ddy = vpp.Y;
-                var ddx = vpp.X;
-                this.Width += (ddx - dx);
-                this.Height += (ddy - dy);
-                dy = ddy;
-                dx = ddx;
+                mBorder.SizeChanged += MBorder_SizeChanged;
+                InitBd();
             }
-        }
 
-        private void Bdvh_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        }
+        private void MBorder_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            (sender as Border).CaptureMouse();
-            var vpp = e.GetPosition(this);
-            dy = vpp.Y;
-            dx = vpp.X;
-            e.Handled = true;
+            mBorder.Clip = new System.Windows.Media.RectangleGeometry() { Rect = new Rect(1, 1, mBorder.ActualWidth - 2, mBorder.ActualHeight - 2), RadiusX = 5, RadiusY = 5 };
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Bd_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void InitBd()
         {
-            (sender as Border).ReleaseMouseCapture();
-            e.Handled = true;
+            Border bd = new Border();
+            Grid.SetRowSpan(bd, 3);
+            bd.BorderThickness = new Thickness(2);
+            bd.BorderBrush = System.Windows.Media.Brushes.DarkGray;
+            bd.CornerRadius = new CornerRadius(5);
+            mMain.Children.Add(bd);
         }
-
-        private double dx,dy;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Bdv_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        internal void EnableBlur()
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                var ddy = e.GetPosition(this).Y;
-                this.Height += (ddy - dy);
-                dy = ddy;
-            }
+            var windowHelper = new WindowInteropHelper(this);
+
+            var accent = new AccentPolicy();
+            accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
+
+            var accentStructSize = Marshal.SizeOf(accent);
+
+            var accentPtr = Marshal.AllocHGlobal(accentStructSize);
+            Marshal.StructureToPtr(accent, accentPtr, false);
+
+            var data = new WindowCompositionAttributeData();
+            data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
+            data.SizeOfData = accentStructSize;
+            data.Data = accentPtr;
+
+            SetWindowCompositionAttribute(windowHelper.Handle, ref data);
+
+            Marshal.FreeHGlobal(accentPtr);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Bdh_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                var ddx = e.GetPosition(this).X;
-                this.Width += (ddx - dx);
-                dx = ddx;
-            }
-        }
-
-        private void bdv_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            (sender as Border).CaptureMouse();
-            dy =  e.GetPosition(this).Y;
-            e.Handled = true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void bdh_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            (sender as Border).CaptureMouse();
-            dx = e.GetPosition(this).X;
-            e.Handled = true;
-        }
 
         /// <summary>
         /// 
