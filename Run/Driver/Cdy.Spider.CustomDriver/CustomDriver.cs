@@ -526,19 +526,18 @@ $WriteValue$
         }
 
         /// <summary>
-        /// 
+        /// 写入数据到设备并等待
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
+        /// <param name="value">Byte 值</param>
         public byte[] WriteToDeviceSync(byte[] value)
         {
             return Owner.SendAndWait(value);
         }
 
         /// <summary>
-        /// 
+        /// 写入数据到设备无需等待
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Byte 值</param>
         /// <returns></returns>
         public bool WriteToDeviceAsync(byte[] value)
         {
