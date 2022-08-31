@@ -306,7 +306,62 @@ $WriteValue$
         public ICommChannel2 Comm { get; set; }
 
         /// <summary>
-        /// 写入值到变量
+        /// 获取变量的值
+        /// </summary>
+        /// <param name="tagfullname">变量的全名:Tag.device1.tag1</param>
+        /// <returns></returns>
+        protected object GetTagValue(string tagfullname)
+        {
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+            var tags = GetDeviceAndTagsName(tagfullname);
+            if (!string.IsNullOrEmpty(tags[0]))
+            {
+                var dev = manager.GetDevice(tags[0]);
+                if (dev != null)
+                {
+                    var vtag = dev.GetTag(tags[1]);
+                    if(vtag != null)
+                    return vtag.Value;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 设置变量的值
+        /// </summary>
+        /// <param name="tagfullname">变量的全名:Tag.device1.tag1</param>
+        /// <param name="value">值</param>
+        /// <returns></returns>
+        protected void SetTagValue(string tagfullname,object value)
+        {
+            var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
+            var tags = GetDeviceAndTagsName(tagfullname);
+            if (!string.IsNullOrEmpty(tags[0]))
+            {
+                var dev = manager.GetDevice(tags[0]);
+                if (dev != null)
+                {
+                    var vtag = dev.GetTag(tags[1]);
+                    vtag.Value=value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        private string[] GetDeviceAndTagsName(string tag)
+        {
+            string stag = tag.Substring(tag.LastIndexOf(".") + 1);
+            string sdevice = tag.Replace("Tag.", "").Replace("." + stag, "");
+            return new string[2] { sdevice, stag };
+        }
+
+        /// <summary>
+        /// 通过寄存器名称写入值到一个或多个变量
         /// </summary>
         /// <param name="deviceInfo">寄存器名称</param>
         /// <param name="value">值</param>
@@ -614,6 +669,313 @@ $WriteValue$
         public static string ToJsonString(this object value)
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(value);
+        }
+
+        /// <summary>
+        /// 将Byte 数组转化成字符串
+        /// </summary>
+        /// <param name="value">值</param>
+        /// <param name="encoding">编码</param>
+        /// <returns></returns>
+        public static string ToString(this byte[] value,Encoding encoding)
+        {
+            return encoding.GetString(value);
+        }
+
+
+        /// <summary>
+        /// 将Byte 数组转化成Hex字符串
+        /// </summary>
+        /// <param name="value">值</param>
+        /// <returns></returns>
+        public static string ToHexString(this byte[] value)
+        {
+            return Convert.ToHexString(value);
+        }
+
+
+        /// <summary>
+        /// 将Byte 数组转化成Base64字符串
+        /// </summary>
+        /// <param name="value">值</param>
+        /// <returns></returns>
+        public static string ToBase64String(this byte[] value)
+        {
+            return Convert.ToBase64String(value);
+        }
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(double value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(float value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(short value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(ushort value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(int value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(uint value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(long value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(ulong value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+
+        /// <summary>
+        /// 转换成字节数组
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToBytes(bool value)
+        {
+            return BitConverter.GetBytes(value);
+        }
+
+        /// <summary>
+        /// 转换成Double
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static double ToDouble(this object value)
+        {
+            return Convert.ToDouble(value);
+        }
+
+        /// <summary>
+        /// 转换成Float
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static float ToFloat(this byte[] value)
+        {
+            return BitConverter.ToSingle(value);
+        }
+
+
+        /// <summary>
+        /// 转换成Float
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startindex"></param>
+        /// <returns></returns>
+        public static float ToFloat(this byte[] value,int startindex)
+        {
+            return BitConverter.ToSingle(value,startindex);
+        }
+
+
+        /// <summary>
+        /// 转换成Double
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static double ToDouble(this byte[] value)
+        {
+            return BitConverter.ToDouble(value);
+        }
+
+
+        /// <summary>
+        /// 转换成Double
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startindex"></param>
+        /// <returns></returns>
+        public static double ToDouble(this byte[] value, int startindex)
+        {
+            return BitConverter.ToDouble(value, startindex);
+        }
+
+
+        /// <summary>
+        /// 转换成int
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int ToInt(this byte[] value)
+        {
+            return BitConverter.ToInt32(value);
+        }
+
+
+        /// <summary>
+        /// 转换成int
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startindex"></param>
+        /// <returns></returns>
+        public static int ToInt(this byte[] value, int startindex)
+        {
+            return BitConverter.ToInt32(value, startindex);
+        }
+
+        /// <summary>
+        /// 转换成long
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static long ToLong(this byte[] value)
+        {
+            return BitConverter.ToInt64(value);
+        }
+
+
+        /// <summary>
+        /// 转换成long
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startindex"></param>
+        /// <returns></returns>
+        public static long ToLong(this byte[] value, int startindex)
+        {
+            return BitConverter.ToInt64(value, startindex);
+        }
+
+
+        /// <summary>
+        /// 转换成Short
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static short ToShort(this byte[] value)
+        {
+            return BitConverter.ToInt16(value);
+        }
+
+
+        /// <summary>
+        /// 转换成Short
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="startindex"></param>
+        /// <returns></returns>
+        public static short ToShort(this byte[] value, int startindex)
+        {
+            return BitConverter.ToInt16(value, startindex);
+        }
+
+        /// <summary>
+        /// 转换成Float
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static float ToFloat(this object value)
+        {
+            return Convert.ToSingle(value);
+        }
+
+        /// <summary>
+        /// 串转换成Int
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int ToInt(this object value)
+        {
+            return Convert.ToInt32(value);
+        }
+
+        /// <summary>
+        /// 转换成Long
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static long ToLong(this object value)
+        {
+            return Convert.ToInt64(value);
+        }
+
+        /// <summary>
+        /// 转换成Datetime
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static DateTime ToDateTime(this object value)
+        {
+            return Convert.ToDateTime(value);
+        }
+
+        /// <summary>
+        /// 转换成byte
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte ToByte(this object value)
+        {
+            return Convert.ToByte(value);
+        }
+
+        /// <summary>
+        /// 转换成byte
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static short ToShort(this object value)
+        {
+            return Convert.ToInt16(value);
         }
     }
 
