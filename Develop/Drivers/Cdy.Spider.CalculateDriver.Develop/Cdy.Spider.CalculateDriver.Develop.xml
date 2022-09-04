@@ -51,12 +51,22 @@
             
             </summary>
         </member>
+        <member name="T:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.Data">
             <summary>
             
             </summary>
         </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.TypeName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.CalculateDriverDevelop.Desc">
             <summary>
             
             </summary>
@@ -623,6 +633,11 @@
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Command">
             <summary>
               查找类似 Command 的本地化字符串。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.Desc">
+            <summary>
+              查找类似 Calculate Driver 的本地化字符串。
             </summary>
         </member>
         <member name="P:Cdy.Spider.CalculateDriver.Develop.Properties.Resources.DoubleClickToInsert">

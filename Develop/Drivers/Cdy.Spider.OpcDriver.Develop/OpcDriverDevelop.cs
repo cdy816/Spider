@@ -35,6 +35,10 @@ namespace Cdy.Spider.OpcDriver.Develop
         /// </summary>
         public override string TypeName => "OpcDriver";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string Desc => Res.Get("Desc");
 
         #endregion ...Properties...
 

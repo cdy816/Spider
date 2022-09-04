@@ -132,6 +132,9 @@
   <data name="DataType" xml:space="preserve">
     <value>数据类型</value>
   </data>
+  <data name="Desc" xml:space="preserve">
+    <value>Opc 驱动</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>描述</value>
   </data>

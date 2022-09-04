@@ -49,6 +49,11 @@ namespace Cdy.Spider
         /// </summary>
         public abstract string TypeName { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual string Desc { get; }
+
         ///// <summary>
         ///// 
         ///// </summary>

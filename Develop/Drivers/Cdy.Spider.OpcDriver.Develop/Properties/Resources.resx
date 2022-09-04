@@ -132,6 +132,9 @@
   <data name="DataType" xml:space="preserve">
     <value>DataType</value>
   </data>
+  <data name="Desc" xml:space="preserve">
+    <value>Opc driver</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>

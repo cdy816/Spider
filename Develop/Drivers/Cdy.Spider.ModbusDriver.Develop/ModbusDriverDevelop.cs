@@ -57,6 +57,11 @@ namespace Cdy.Spider.ModbusDriver.Develop
 
         private TagType mTagType;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string Desc => Res.Get("Desc");
+
         #endregion ...Properties...
 
         #region ... Methods    ...

@@ -185,7 +185,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
-        byte[] Read(int count);
+        byte[] Read(int count, out int receivecount);
 
         /// <summary>
         /// 直接从底层IO设备进行读取,接收指定数量的数据
@@ -195,6 +195,16 @@ namespace Cdy.Spider
         /// <param name="receivecount">实际接受的数量</param>
         /// <returns></returns>
         byte[] Read(int count, int timecount, out int receivecount);
+
+        /// <summary>
+        /// 直接从底层IO设备进行读取,接收指定数量的数据
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        int Read(byte[] buffer, int offset, int len,int timeount);
+
 
         /// <summary>
         /// 直接从底层IO设备进行读取,接收指定数量的数据

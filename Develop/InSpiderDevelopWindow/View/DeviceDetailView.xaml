@@ -42,13 +42,26 @@
                         <RowDefinition Height="36"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid   Background="#0FE5E5E5">
+                    <Grid   Background="#0FE5E5E5" Grid.IsSharedSizeScope="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="gg"/>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{local:ResMarker Protocol,:}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0" />
-                        <ComboBox  Grid.Column="1" Width="300"  HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding ProtocolList}"  SelectedItem="{Binding ProtocolName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                            <ComboBox  Grid.Column="1"   HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding ProtocolList}"  SelectedItem="{Binding SelectProtocol,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ToolTip="{Binding Desc}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="ggg" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Name}"  Margin="2,0,10,0"  VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Desc}" Grid.Column="1" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                     </Grid>
                     <Grid Grid.Row="1">
                         <ContentControl Margin="10,1" Content="{Binding DriverConfig}" />

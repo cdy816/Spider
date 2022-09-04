@@ -526,9 +526,9 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
-        public virtual byte[] Read(int count)
+        public virtual byte[] Read(int count, out int receivecount)
         {
-            return null;
+            return Read(count,this.Data.Timeout,out receivecount);
         }
 
         /// <summary>
@@ -544,6 +544,18 @@ namespace Cdy.Spider
             return null;
         }
 
+        /// <summary>
+        /// 直接从底层IO读取指定数量的数据
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public virtual int Read(byte[] buffer, int offset, int len)
+        {
+            return Read(buffer,offset,len,this.Data.Timeout);
+        }
 
         /// <summary>
         /// 直接从底层IO读取指定数量的数据
@@ -551,8 +563,9 @@ namespace Cdy.Spider
         /// <param name="buffer"></param>
         /// <param name="offset"></param>
         /// <param name="len"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
-        public virtual int Read(byte[] buffer, int offset, int len)
+        public virtual int Read(byte[] buffer, int offset, int len,int timeout)
         {
             return 0;
         }

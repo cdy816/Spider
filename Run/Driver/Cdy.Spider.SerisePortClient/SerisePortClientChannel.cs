@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -238,13 +240,19 @@ namespace Cdy.Spider.SerisePortClient
         }
 
 
-        private int CopyReceiveBufferData(byte[] btmp,int offset,int count)
+        private int CopyReceiveBufferData(byte[] btmp,int offset,int count,int timeount=-1)
         {
             //byte[] btmp = new byte[count];
             int cc = 0;
             //int offset = 0;
             int removecount = 0;
             byte[] vdata;
+
+            Stopwatch sw = Stopwatch.StartNew();
+            if(timeount>0)
+            {
+                sw.Start();
+            }
             while (cc < count)
             {
                 lock (mLockObj)
@@ -274,6 +282,16 @@ namespace Cdy.Spider.SerisePortClient
                 }
                 offset += vdata.Length;
                 removecount += vdata.Length;
+
+
+                if (timeount > 0 && sw.ElapsedMilliseconds>timeount)
+                {
+                    break;
+                }
+            }
+            if (timeount > 0)
+            {
+                sw.Stop();
             }
             lock (mLockObj)
             {
@@ -282,6 +300,9 @@ namespace Cdy.Spider.SerisePortClient
             }
             return cc;
         }
+
+
+        
 
         /// <summary>
         /// 
@@ -518,32 +539,58 @@ namespace Cdy.Spider.SerisePortClient
             return bval;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public override byte[] Read(int count)
-        {
-            if (mClient != null && mClient.IsOpen)
-            {
-                if(!mEnableSyncRead)
-                {
-                    var bval = CopyReceiveBufferData(count);
-                    return bval;
-                }
-                else
-                {
-                    byte[] bval = new byte[count];
-                    mClient.Read(bval, 0, count);
-                    return bval;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="count"></param>
+        ///// <returns></returns>
+        //public override byte[] Read(int count)
+        //{
+        //    if (mClient != null && mClient.IsOpen)
+        //    {
+        //        if(!mEnableSyncRead)
+        //        {
+        //            var bval = CopyReceiveBufferData(count);
+        //            return bval;
+        //        }
+        //        else
+        //        {
+        //            byte[] bval = new byte[count];
+        //            mClient.Read(bval, 0, count);
+        //            return bval;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="buffer"></param>
+        ///// <param name="offset"></param>
+        ///// <param name="len"></param>
+        ///// <returns></returns>
+        //public override int Read(byte[] buffer, int offset, int len)
+        //{
+        //    if (mClient != null && mClient.IsOpen)
+        //    {
+        //        if(!mEnableSyncRead)
+        //        {
+        //           return  CopyReceiveBufferData(buffer, offset, len);
+        //        }
+        //        else
+        //        {
+        //            return mClient.Read(buffer, offset, len);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return 0;
+        //    }
+        //}
 
         /// <summary>
         /// 
@@ -551,18 +598,32 @@ namespace Cdy.Spider.SerisePortClient
         /// <param name="buffer"></param>
         /// <param name="offset"></param>
         /// <param name="len"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
-        public override int Read(byte[] buffer, int offset, int len)
+        public override int Read(byte[] buffer, int offset, int len, int timeout)
         {
             if (mClient != null && mClient.IsOpen)
             {
-                if(!mEnableSyncRead)
+                if (!mEnableSyncRead)
                 {
-                   return  CopyReceiveBufferData(buffer, offset, len);
+                    return CopyReceiveBufferData(buffer, offset, len,timeout);
                 }
                 else
                 {
-                    return mClient.Read(buffer, offset, len);
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
+                    int count = 0;
+                    while (count < len)
+                    {
+                        count += mClient.Read(buffer, offset + count, len - count);
+                        if (sw.ElapsedMilliseconds > timeout)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(timeout / 10);
+                    }
+                    sw.Stop();
+                    return count;
                 }
             }
             else
@@ -571,7 +632,7 @@ namespace Cdy.Spider.SerisePortClient
             }
         }
 
-       
+
         ///// <summary>
         ///// 
         ///// </summary>

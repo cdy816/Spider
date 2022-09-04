@@ -123,6 +123,9 @@
   <data name="DataSize" xml:space="preserve">
     <value>数据长度</value>
   </data>
+  <data name="Desc" xml:space="preserve">
+    <value>Modbus 以太网协议驱动</value>
+  </data>
   <data name="DoubleFormate" xml:space="preserve">
     <value>Double 格式</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>扫描周期</value>
+  </data>
+  <data name="SeriesDesc" xml:space="preserve">
+    <value>Modbus 串口协议驱动</value>
   </data>
   <data name="StringEncoding" xml:space="preserve">
     <value>String 格式</value>

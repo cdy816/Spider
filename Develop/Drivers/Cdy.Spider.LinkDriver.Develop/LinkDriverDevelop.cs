@@ -31,6 +31,12 @@ namespace Cdy.Spider.LinkDriver.Develop
         /// 
         /// </summary>
         public override string TypeName => "LinkDriver";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string Desc => Res.Get("Desc");
+
         #endregion ...Properties...
 
         #region ... Methods    ...

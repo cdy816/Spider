@@ -123,6 +123,9 @@
   <data name="DataSize" xml:space="preserve">
     <value>DataSize</value>
   </data>
+  <data name="Desc" xml:space="preserve">
+    <value>Modbus network driver</value>
+  </data>
   <data name="DoubleFormate" xml:space="preserve">
     <value>DoubleFormate</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>ScanCircle</value>
+  </data>
+  <data name="SeriesDesc" xml:space="preserve">
+    <value>Modbus serise driver</value>
   </data>
   <data name="StringEncoding" xml:space="preserve">
     <value>StringEncoding</value>

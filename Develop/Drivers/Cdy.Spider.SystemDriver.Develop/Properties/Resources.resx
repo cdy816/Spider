@@ -120,6 +120,9 @@
   <data name="Active" xml:space="preserve">
     <value>Active</value>
   </data>
+  <data name="Desc" xml:space="preserve">
+    <value>Spider driver</value>
+  </data>
   <data name="Passivity" xml:space="preserve">
     <value>Passivity</value>
   </data>

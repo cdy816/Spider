@@ -70,6 +70,11 @@
             
             </summary>
         </member>
+        <member name="P:Cdy.Spider.CustomDriver.Develop.CustomDriverDevelop.Desc">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Cdy.Spider.CustomDriver.Develop.CustomDriverDevelop.Data">
             <summary>
             
@@ -297,6 +302,11 @@
         <member name="P:Cdy.Spider.CustomDriver.Develop.Properties.Resources.Apply">
             <summary>
               查找类似 Apply 的本地化字符串。
+            </summary>
+        </member>
+        <member name="P:Cdy.Spider.CustomDriver.Develop.Properties.Resources.Desc">
+            <summary>
+              查找类似 Custom driver 的本地化字符串。
             </summary>
         </member>
         <member name="P:Cdy.Spider.CustomDriver.Develop.Properties.Resources.InitExpress">

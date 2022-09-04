@@ -35,6 +35,14 @@ namespace InSpiderDevelopWindow.ViewModel
     /// <summary>
     /// 
     /// </summary>
+    public class ProtocolItem
+    {
+        public string Name { get; set; }
+        public string Desc { get; set; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
     public class DeviceDetailViewModel:ViewModelBase, IModeSwitch, IDeviceDevelopService
     {
 
@@ -93,7 +101,7 @@ namespace InSpiderDevelopWindow.ViewModel
         private List<int> mIdCach = new List<int>();
 
         static List<string> mChannelList = new List<string>();
-        static List<string> mProtocolList = new List<string>();
+        static List<ProtocolItem> mProtocolList = new List<ProtocolItem>();
 
         private ICollectionView mChannelView;
 
@@ -115,6 +123,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private bool mIsMonitMode = false;
 
+        private ProtocolItem mSelectProtocol;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -128,8 +138,8 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         static DeviceDetailViewModel()
         {
-            mProtocolList.Add("");
-            mProtocolList.AddRange(ServiceLocator.Locator.Resolve<IDriverFactory>().ListDevelopInstance().Select(e=>e.TypeName));
+            mProtocolList.Add(new ProtocolItem());
+            mProtocolList.AddRange(ServiceLocator.Locator.Resolve<IDriverFactory>().ListDevelopInstance().Select(e=>new ProtocolItem() { Name = e.TypeName, Desc = e.Desc }));
             mChannelList.Insert(0, "");
             mChannelList.AddRange(ServiceLocator.Locator.Resolve<ICommChannelFactory2>().ListDevelopInstance().Select(e => e.TypeName));
         }
@@ -307,7 +317,7 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
         /// 
         /// </summary>
-        public List<string> ProtocolList
+        public List<ProtocolItem> ProtocolList
         {
             get
             {
@@ -824,6 +834,27 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
             /// 
             /// </summary>
+        public ProtocolItem SelectProtocol
+        {
+            get
+            {
+                return mSelectProtocol;
+            }
+            set
+            {
+                if (mSelectProtocol != value)
+                {
+                    mSelectProtocol = value;
+                    ProtocolName = value != null ? value.Name : "";
+                    OnPropertyChanged("SelectProtocol");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string ProtocolName
         {
             get
@@ -1175,11 +1206,21 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     driver.CheckTagDeviceInfo(vv.Value);
                 }
+                var vitems = this.ProtocolList.Where(e=>e.Name == mProtocolName);
+                if(vitems.Any())
+                {
+                    this.mSelectProtocol =vitems.FirstOrDefault();
+                }
+                else
+                {
+                    this.mSelectProtocol = this.ProtocolList[0];
+                }
             }
             else
             {
                 DriverConfig = null;
                 mProtocolName = string.Empty;
+                this.mSelectProtocol = this.ProtocolList[0];
             }
             OnPropertyChanged("ProtocolName");
             UpdateShareChannelText();

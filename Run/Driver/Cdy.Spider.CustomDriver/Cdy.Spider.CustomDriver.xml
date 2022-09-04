@@ -116,9 +116,31 @@
             通信对象
             </summary>
         </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.GetTagValue(System.String)">
+            <summary>
+            获取变量的值
+            </summary>
+            <param name="tagfullname">变量的全名:Tag.device1.tag1</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.SetTagValue(System.String,System.Object)">
+            <summary>
+            设置变量的值
+            </summary>
+            <param name="tagfullname">变量的全名:Tag.device1.tag1</param>
+            <param name="value">值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.CustomImp.GetDeviceAndTagsName(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="tag"></param>
+            <returns></returns>
+        </member>
         <member name="M:Cdy.Spider.CustomDriver.CustomImp.UpdateValue(System.String,System.Object)">
             <summary>
-            写入值到变量
+            通过寄存器名称写入值到一个或多个变量
             </summary>
             <param name="deviceInfo">寄存器名称</param>
             <param name="value">值</param>
@@ -241,16 +263,15 @@
         </member>
         <member name="M:Cdy.Spider.CustomDriver.CustomImp.WriteToDeviceSync(System.Byte[])">
             <summary>
-            
+            写入数据到设备并等待
             </summary>
-            <param name="key"></param>
-            <param name="value"></param>
+            <param name="value">Byte 值</param>
         </member>
         <member name="M:Cdy.Spider.CustomDriver.CustomImp.WriteToDeviceAsync(System.Byte[])">
             <summary>
-            
+            写入数据到设备无需等待
             </summary>
-            <param name="value"></param>
+            <param name="value">Byte 值</param>
             <returns></returns>
         </member>
         <member name="T:Cdy.Spider.CustomDriver.ImpExtends">
@@ -283,6 +304,215 @@
         <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToJsonString(System.Object)">
             <summary>
             将对象转化成Json 字符串
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToString(System.Byte[],System.Text.Encoding)">
+            <summary>
+            将Byte 数组转化成字符串
+            </summary>
+            <param name="value">值</param>
+            <param name="encoding">编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToHexString(System.Byte[])">
+            <summary>
+            将Byte 数组转化成Hex字符串
+            </summary>
+            <param name="value">值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBase64String(System.Byte[])">
+            <summary>
+            将Byte 数组转化成Base64字符串
+            </summary>
+            <param name="value">值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.Double)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.Single)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.Int16)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.UInt16)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.Int32)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.UInt32)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.Int64)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.UInt64)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToBytes(System.Boolean)">
+            <summary>
+            转换成字节数组
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToDouble(System.Object)">
+            <summary>
+            转换成Double
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToFloat(System.Byte[])">
+            <summary>
+            转换成Float
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToFloat(System.Byte[],System.Int32)">
+            <summary>
+            转换成Float
+            </summary>
+            <param name="value"></param>
+            <param name="startindex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToDouble(System.Byte[])">
+            <summary>
+            转换成Double
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToDouble(System.Byte[],System.Int32)">
+            <summary>
+            转换成Double
+            </summary>
+            <param name="value"></param>
+            <param name="startindex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToInt(System.Byte[])">
+            <summary>
+            转换成int
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToInt(System.Byte[],System.Int32)">
+            <summary>
+            转换成int
+            </summary>
+            <param name="value"></param>
+            <param name="startindex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToLong(System.Byte[])">
+            <summary>
+            转换成long
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToLong(System.Byte[],System.Int32)">
+            <summary>
+            转换成long
+            </summary>
+            <param name="value"></param>
+            <param name="startindex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToShort(System.Byte[])">
+            <summary>
+            转换成Short
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToShort(System.Byte[],System.Int32)">
+            <summary>
+            转换成Short
+            </summary>
+            <param name="value"></param>
+            <param name="startindex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToFloat(System.Object)">
+            <summary>
+            转换成Float
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToInt(System.Object)">
+            <summary>
+            串转换成Int
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToLong(System.Object)">
+            <summary>
+            转换成Long
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToDateTime(System.Object)">
+            <summary>
+            转换成Datetime
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToByte(System.Object)">
+            <summary>
+            转换成byte
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cdy.Spider.CustomDriver.ImpExtends.ToShort(System.Object)">
+            <summary>
+            转换成byte
             </summary>
             <param name="value"></param>
             <returns></returns>

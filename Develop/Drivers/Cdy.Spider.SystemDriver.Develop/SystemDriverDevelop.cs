@@ -55,6 +55,11 @@ namespace Cdy.Spider.SystemDriver.Develop
         /// </summary>
         public override string[] SupportRegistors => null;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string Desc => Res.Get("Desc");
+
         #endregion ...Properties...
 
         #region ... Methods    ...

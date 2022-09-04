@@ -120,6 +120,9 @@
   <data name="Active" xml:space="preserve">
     <value>主动</value>
   </data>
+  <data name="Desc" xml:space="preserve">
+    <value>Spider 自定义协议驱动</value>
+  </data>
   <data name="Passivity" xml:space="preserve">
     <value>被动</value>
   </data>

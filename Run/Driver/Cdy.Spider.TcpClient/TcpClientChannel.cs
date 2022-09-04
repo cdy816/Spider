@@ -87,6 +87,7 @@ namespace Cdy.Spider.TcpClient
                 mReceiveThread.IsBackground = true;
                 mReceiveThread.Start();
 
+                ConnectedChanged(mIsConnected);
             }
             catch
             {
@@ -141,6 +142,7 @@ namespace Cdy.Spider.TcpClient
                         mIsConnected = mClient.Connected;
                         if (mClient.Connected)
                         {
+                            ConnectedChanged(mIsConnected);
                             LoggerService.Service.Info("TcpClient", $"Connect {mData.ServerIp}:{mData.Port} successful.");
                             break;
                         }
@@ -460,27 +462,50 @@ namespace Cdy.Spider.TcpClient
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                Thread.Sleep(timeout / 10);
-
-                while (mReceiveDataLen != count)
+                if (!mEnableSyncRead)
                 {
                     Thread.Sleep(timeout / 10);
-                    if (sw.ElapsedMilliseconds > timeout)
-                    {
-                        break;
-                    }
-                }
-                sw.Stop();
 
-                if (mReceiveDataLen < count)
-                {
-                    receivecount = mReceiveDataLen;
-                    bval = CopyReceiveBufferData(receivecount);
+                    while (mReceiveDataLen < count)
+                    {
+                        Thread.Sleep(timeout / 10);
+                        if (sw.ElapsedMilliseconds > timeout)
+                        {
+                            break;
+                        }
+                    }
+                    sw.Stop();
+
+                    if (mReceiveDataLen < count)
+                    {
+                        receivecount = mReceiveDataLen;
+                        bval = CopyReceiveBufferData(receivecount);
+                    }
+                    else
+                    {
+                        receivecount = count;
+                        bval = CopyReceiveBufferData(count);
+                    }
                 }
                 else
                 {
-                    receivecount = count;
-                    bval = CopyReceiveBufferData(count);
+                  int tmp=0;
+                    bval = new byte[count];
+                    while(tmp < count)
+                    {
+                        count += mClient.Receive(bval, count, count - tmp, SocketFlags.None);
+                        if (sw.ElapsedMilliseconds>timeout)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(timeout / 10);
+                    }
+                    receivecount = tmp;
+                    if(tmp < count)
+                    {
+                        bval = bval.AsSpan(tmp).ToArray();
+                    }
+
                 }
             }
             else
@@ -493,18 +518,82 @@ namespace Cdy.Spider.TcpClient
         }
 
 
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="buffer"></param>
+        ///// <param name="offset"></param>
+        ///// <param name="len"></param>
+        ///// <returns></returns>
+        //public override int Read(byte[] buffer, int offset, int len)
+        //{
+        //    if (mClient != null && IsOnline(mClient))
+        //    {
+        //        return mClient.Receive(buffer, offset, len, SocketFlags.None);
+        //    }
+        //    else
+        //    {
+        //        StartConnect();
+        //    }
+        //    return 0;
+        //}
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="offset"></param>
         /// <param name="len"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
-        public override int Read(byte[] buffer, int offset, int len)
+        public override int Read(byte[] buffer, int offset, int len, int timeout)
         {
+            Stopwatch sw = new Stopwatch();
+            int count = 0;
+            //mClient.ReceiveTimeout = timeout;
             if (mClient != null && IsOnline(mClient))
             {
-                return mClient.Receive(buffer, offset, len, SocketFlags.None);
+                sw.Start();
+                if (!mEnableSyncRead)
+                {
+                    while (mReceiveDataLen < len)
+                    {
+                        Thread.Sleep(timeout / 10);
+                        if (sw.ElapsedMilliseconds > timeout)
+                        {
+                            break;
+                        }
+                    }
+                    byte[] bval;
+                    if (mReceiveDataLen < count)
+                    {
+                        count = mReceiveDataLen;
+                        bval = CopyReceiveBufferData(count);
+                    }
+                    else
+                    {
+                        count = len;
+                        bval = CopyReceiveBufferData(count);
+                    }
+
+                    Array.Copy(bval,0,buffer,offset,count);
+
+                }
+                else
+                {
+                  
+                    while (count < len)
+                    {
+                        count += mClient.Receive(buffer, offset + count, len - count, SocketFlags.None);
+                        if (sw.ElapsedMilliseconds > timeout)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(timeout / 10);
+                    }
+                    sw.Stop();
+                }
+                return count;
             }
             else
             {
@@ -513,24 +602,38 @@ namespace Cdy.Spider.TcpClient
             return 0;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public override byte[] Read(int count)
-        {
-            if (mClient != null && IsOnline(mClient))
-            {
-                var bval = CopyReceiveBufferData(count);
-                return bval;
-            }
-            else
-            {
-                StartConnect();
-                return null;
-            }
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="count"></param>
+        ///// <returns></returns>
+        //public override byte[] Read(int count)
+        //{
+        //    if (mClient != null && IsOnline(mClient))
+        //    {
+        //        if (!mEnableSyncRead)
+        //        {
+        //            var bval = CopyReceiveBufferData(count);
+        //            return bval;
+        //        }
+        //        else
+        //        {
+        //            int tmp = 0;
+        //            var bval = new byte[count];
+        //            while (tmp < count)
+        //            {
+        //                count += mClient.Receive(bval, count, count - tmp, SocketFlags.None);
+        //                Thread.Sleep(1);
+        //            }
+        //            return bval;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        StartConnect();
+        //        return null;
+        //    }
+        //}
 
 
         ///// <summary>

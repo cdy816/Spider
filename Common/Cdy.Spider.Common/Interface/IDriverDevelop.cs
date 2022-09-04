@@ -45,6 +45,11 @@ namespace Cdy.Spider
         /// </summary>
         string TypeName { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        string Desc { get;}
+
         ///// <summary>
         ///// 支持的通道类型
         ///// </summary>

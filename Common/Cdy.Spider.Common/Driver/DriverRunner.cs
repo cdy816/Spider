@@ -544,6 +544,57 @@ namespace Cdy.Spider
             return tre;
         }
 
+
+        /// <summary>
+        /// 异步发送数据
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public byte[] Read(int len,int timeount)
+        {
+            if (!mComm.IsConnected) return null;
+            byte[] re = null;
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    re = mComm.Read(len, timeount, out int rcount);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 异步发送数据
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public int Read(byte[] buffer, int offset, int len,int timeout)
+        {
+            if (!mComm.IsConnected) return 0;
+            int re = 0;
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    re = mComm.Read(buffer, offset, len,timeout);
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return re;
+        }
+
         ///// <summary>
         ///// 
         ///// </summary>

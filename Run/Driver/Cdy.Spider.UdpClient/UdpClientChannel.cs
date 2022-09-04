@@ -368,26 +368,63 @@ namespace Cdy.Spider.UdpClient
             {
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
-                Thread.Sleep(timeout / 10);
 
-                while (mReceiveDataLen != count)
+                if (!mEnableSyncRead)
                 {
                     Thread.Sleep(timeout / 10);
-                    if (sw.ElapsedMilliseconds > timeout)
+
+                    while (mReceiveDataLen != count)
                     {
-                        break;
+                        Thread.Sleep(timeout / 10);
+                        if (sw.ElapsedMilliseconds > timeout)
+                        {
+                            break;
+                        }
                     }
-                }
-                sw.Stop();
-                if (mReceiveDataLen < count)
-                {
-                    receivecount = mReceiveDataLen;
-                    bval = CopyReceiveBufferData(receivecount);
+                    sw.Stop();
+                    if (mReceiveDataLen < count)
+                    {
+                        receivecount = mReceiveDataLen;
+                        bval = CopyReceiveBufferData(receivecount);
+                    }
+                    else
+                    {
+                        receivecount = count;
+                        bval = CopyReceiveBufferData(count);
+                    }
                 }
                 else
                 {
-                    receivecount = count;
-                    bval = CopyReceiveBufferData(count);
+                    int tmp = 0;
+                    bval = new byte[count];
+                    while (tmp < count)
+                    {
+                        var vd = mClient.Receive(ref rp);
+                        if (vd != null && vd.Length>0)
+                        {
+                            if (vd.Length + tmp <= count)
+                            {
+                                Array.Copy(vd, 0, bval, tmp, vd.Length);
+                            }
+                            else
+                            {
+                                Array.Copy(vd, 0, bval, tmp, count - tmp);
+                            }
+
+                            tmp += vd.Length;
+                        }
+
+                        if (sw.ElapsedMilliseconds > timeout)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(timeout / 10);
+                    }
+                    receivecount = tmp;
+                    if (tmp < count)
+                    {
+                        bval = bval.AsSpan(tmp).ToArray();
+                    }
                 }
             }
             else
@@ -397,45 +434,50 @@ namespace Cdy.Spider.UdpClient
             return bval;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public override byte[] Read(int count)
-        {
-            byte[] bval = null;
-            if (mClient != null)
-                bval = CopyReceiveBufferData(count);
-            return bval;
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="count"></param>
+        ///// <returns></returns>
+        //public override byte[] Read(int count)
+        //{
+        //    byte[] bval = null;
+        //    if (mClient != null)
+        //    {
+        //        if (!mEnableSyncRead)
+        //        {
+        //            bval = CopyReceiveBufferData(count);
+        //        }
+        //        else
+        //        {
+        //            int tmp = 0;
+        //            bval = new byte[count];
+        //            while (tmp < count)
+        //            {
+        //                var vd = mClient.Receive(ref rp);
+        //                if (vd != null && vd.Length > 0)
+        //                {
+        //                    if (vd.Length + tmp <= count)
+        //                    {
+        //                        Array.Copy(vd, 0, bval, tmp, vd.Length);
+        //                    }
+        //                    else
+        //                    {
+        //                        Array.Copy(vd, 0, bval, tmp, count - tmp);
+        //                    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="len"></param>
-        /// <returns></returns>
-        public override int Read(byte[] buffer, int offset, int len)
-        {
-            if ((mReceiveBuffer.Length - mReceiveBuffer.Position) < len)
-            {
-                var count = mClient.Receive(ref rp);
-                mReceiveBuffer.Write(count, 0, count.Length);
-                mReceiveBuffer.Position = 0;
-            }
-
-            if ((mReceiveBuffer.Length - mReceiveBuffer.Position) >= len)
-            {
-                return mReceiveBuffer.Read(buffer, offset, len);
-            }
-            else
-            {
-                return mReceiveBuffer.Read(buffer, offset, (int)mReceiveBuffer.Length);
-            }
-
-        }
+        //                    tmp += vd.Length;
+        //                }
+        //                Thread.Sleep(10);
+        //            }
+        //            if (tmp < count)
+        //            {
+        //                bval = bval.AsSpan(tmp).ToArray();
+        //            }
+        //        }
+        //    }
+        //    return bval;
+        //}
 
         ///// <summary>
         ///// 
@@ -444,12 +486,91 @@ namespace Cdy.Spider.UdpClient
         ///// <param name="offset"></param>
         ///// <param name="len"></param>
         ///// <returns></returns>
-        //public override bool Write(byte[] buffer, int offset, int len)
+        //public override int Read(byte[] buffer, int offset, int len)
         //{
-        //    mReceiveBuffer.SetLength(0);
-        //    return mClient.Client.Send(buffer,offset,len,SocketFlags.None)> 0;
+        //    if ((mReceiveBuffer.Length - mReceiveBuffer.Position) < len)
+        //    {
+        //        var count = mClient.Receive(ref rp);
+        //        mReceiveBuffer.Write(count, 0, count.Length);
+        //        mReceiveBuffer.Position = 0;
+        //    }
+
+        //    if ((mReceiveBuffer.Length - mReceiveBuffer.Position) >= len)
+        //    {
+        //        return mReceiveBuffer.Read(buffer, offset, len);
+        //    }
+        //    else
+        //    {
+        //        return mReceiveBuffer.Read(buffer, offset, (int)mReceiveBuffer.Length);
+        //    }
+
         //}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public override int Read(byte[] buffer, int offset, int len, int timeout)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            if (!mEnableSyncRead)
+            {
+                while ((mReceiveBuffer.Length - mReceiveBuffer.Position) < len)
+                {
+                    var count = mClient.Receive(ref rp);
+                    mReceiveBuffer.Write(count, 0, count.Length);
+                    mReceiveBuffer.Position = 0;
+                    if (sw.ElapsedMilliseconds > timeout)
+                    {
+                        break;
+                    }
+                }
+                sw.Stop();
+
+                if ((mReceiveBuffer.Length - mReceiveBuffer.Position) >= len)
+                {
+                    return mReceiveBuffer.Read(buffer, offset, len);
+                }
+                else
+                {
+                    return mReceiveBuffer.Read(buffer, offset, (int)mReceiveBuffer.Length);
+                }
+            }
+            else
+            {
+                int tmp = 0;
+                while (tmp < len)
+                {
+                    var vd = mClient.Receive(ref rp);
+                    if (vd != null && vd.Length > 0)
+                    {
+                        if (vd.Length + tmp <= len)
+                        {
+                            Array.Copy(vd, 0, buffer, tmp, vd.Length);
+                            tmp += vd.Length;
+                        }
+                        else
+                        {
+                            Array.Copy(vd, 0, buffer, tmp, len - tmp);
+                            tmp =len;
+                        }
+                    }
+
+                    if (sw.ElapsedMilliseconds > timeout)
+                    {
+                        break;
+                    }
+                    Thread.Sleep(timeout / 10);
+                }
+                sw.Stop();
+                return tmp;
+            }
+        }
 
         /// <summary>
         /// 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Cdy.Spider.CalculateDriver.Develop
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CalculateDriverDevelop : DriverDevelop
     {
 
@@ -33,10 +36,15 @@ namespace Cdy.Spider.CalculateDriver.Develop
         /// </summary>
         public override string TypeName => "CalculateDriver";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string Desc => Res.Get("Desc");
+
         #endregion ...Properties...
 
         #region ... Methods    ...
-        
+
         /// <summary>
         /// 
         /// </summary>

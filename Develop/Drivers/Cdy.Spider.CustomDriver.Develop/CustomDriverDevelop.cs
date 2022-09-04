@@ -16,7 +16,7 @@ namespace Cdy.Spider.CustomDriver.Develop
 
         #region ... Variables  ...
         private CustomDriverData mData;
-      
+
 
         #endregion ...Variables...
 
@@ -29,6 +29,12 @@ namespace Cdy.Spider.CustomDriver.Develop
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public override string Desc => Res.Get("Desc");
+
         /// <summary>
         /// 
         /// </summary>
