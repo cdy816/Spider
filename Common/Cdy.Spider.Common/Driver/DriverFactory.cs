@@ -59,7 +59,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public IDriverDevelop GetDevelopInstance(string type)
         {
-            if (mDevelopManagers.ContainsKey(type))
+            if (!string.IsNullOrEmpty(type) && mDevelopManagers.ContainsKey(type))
             {
                 return mDevelopManagers[type].NewDriver();
             }
@@ -73,7 +73,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public IDriverRuntime GetRuntimeInstance(string type)
         {
-            if (mRuntimeManagers.ContainsKey(type))
+            if (!string.IsNullOrEmpty(type) && mRuntimeManagers.ContainsKey(type))
             {
                 return mRuntimeManagers[type].NewApi();
             }

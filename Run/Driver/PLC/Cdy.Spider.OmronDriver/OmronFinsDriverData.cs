@@ -18,7 +18,7 @@ namespace Cdy.Spider.OmronDriver
         private int mDA2;
         private int mSA2;
         private int mSID;
-        private DataFormat mDataFormate;
+        private DataFormat mDataFormate = DataFormat.CDAB;
         #endregion ...Variables...
 
         #region ... Events     ...

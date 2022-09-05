@@ -9,9 +9,11 @@
 
 using Cdy.Spider.DevelopCommon;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.DirectoryServices.ActiveDirectory;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
@@ -34,9 +36,23 @@ namespace Cdy.Spider.OmronFins.Develop
 
         #region ... Constructor...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public OmronFinsRegistorConfigModel()
+        {
+            
+        }
+
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        public List<string> Areas
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// 
@@ -76,6 +92,7 @@ namespace Cdy.Spider.OmronFins.Develop
                 if (mRegistor != value)
                 {
                     mRegistor = value;
+                    UpdateRegistorCallBack?.Invoke(value);
                     OnPropertyChanged("Registor");
                 }
             }
@@ -147,4 +164,22 @@ namespace Cdy.Spider.OmronFins.Develop
 
         #endregion ...Interfaces...
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class AreasProvider : ISuggestionProvider
+    {
+        public List<string> Areas;
+
+        public AreasProvider()
+        {
+            Areas = new List<string>() { "DR", "dr", "IR", "ir", "DM", "dm", "D", "d", "TIM", "tim", "CNT", "cnt", "CIO", "cio", "C", "c", "WR", "wr", "W", "w", "HR", "hr", "H", "h", "AR", "ar", "A", "a", "EM", "em", "E", "e" };
+        }
+        public IEnumerable GetSuggestions(string filter)
+        {
+            return Areas.Where(x => x.Contains(filter));
+        }
+    }
+
 }

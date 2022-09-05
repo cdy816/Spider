@@ -136,7 +136,7 @@
     <value>设备标识号</value>
   </data>
   <data name="StringTagInfo" xml:space="preserve">
-    <value>地址上追加字符":"和数值，用于指定文本使用的字节长度</value>
+    <value>存储区+数字表示一个地址(例如:DM100);  取某一Bit位地址:在地址后追加"."+数字(例如:DM100.1) ;  地址上追加字符":"和数值，用于指定文本使用的字节长度</value>
   </data>
   <data name="WorkModel" xml:space="preserve">
     <value>工作模式</value>

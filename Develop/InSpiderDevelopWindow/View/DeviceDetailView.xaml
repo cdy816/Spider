@@ -48,7 +48,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{local:ResMarker Protocol,:}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0" />
-                            <ComboBox  Grid.Column="1"   HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding ProtocolList}"  SelectedItem="{Binding SelectProtocol,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+                        <ComboBox  Grid.Column="1"  MinWidth="200"  HorizontalAlignment="Left" Margin="5,0" VerticalContentAlignment="Center" Height="26" BorderThickness="1" ItemsSource="{Binding ProtocolList}"  SelectedItem="{Binding SelectProtocol,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid ToolTip="{Binding Desc}">
@@ -195,7 +195,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="{local:ResMarker Direction}" MinWidth="160">
+                            <DataGridTemplateColumn Header="{local:ResMarker Direction}" Width="160">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Margin="5,0" Foreground="{DynamicResource Window.Forground}" Text="{Binding DirectionString}" VerticalAlignment="Center" />
@@ -208,7 +208,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="{local:ResMarker DatabaseTagName}" Width="300" >
+                            <DataGridTemplateColumn Header="{local:ResMarker DatabaseTagName}" Width="200" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Margin="5,0" Foreground="{DynamicResource Window.Forground}" Text="{Binding DatabaseName}"  VerticalAlignment="Center" />
@@ -232,7 +232,7 @@
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn  Header="{local:ResMarker Convert}" MinWidth="300" >
+                            <DataGridTemplateColumn  Header="{local:ResMarker Convert}" Width="160" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock  Margin="5,0" Foreground="{DynamicResource Window.Forground}" Text="{Binding ConvertString}" VerticalAlignment="Center" />

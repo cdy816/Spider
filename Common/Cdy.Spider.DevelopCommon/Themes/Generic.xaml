@@ -3,6 +3,10 @@
                     xmlns:local="clr-namespace:Cdy.Spider.DevelopCommon"
                      >
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Cdy.Spider.DevelopCommon;component/Control/AutoComplete/editors/themes/generic.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
     <BooleanToVisibilityConverter x:Key="bvc" />
 
     <Style TargetType="{x:Type local:CustomWindowBase}">
