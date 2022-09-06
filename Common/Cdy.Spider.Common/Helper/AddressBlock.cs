@@ -187,11 +187,14 @@ namespace Cdy.Spider.Common.Helper
                     TagType = TagType.Byte;
                     break;
                 case "short":
+                case "int16":
                     TagType = TagType.Short;
                     break;
                 case "ushort":
+                case "uint16":
                     TagType = TagType.UShort;
                     break;
+                case "int32":
                 case "int":
                     if (PerAddressLength == 4)
                     {
@@ -206,6 +209,7 @@ namespace Cdy.Spider.Common.Helper
                         TagType = TagType.IntPoint3;
                     }
                     break;
+                case "uint32":
                 case "uint":
                     if (PerAddressLength == 4)
                     {
@@ -220,6 +224,7 @@ namespace Cdy.Spider.Common.Helper
                         TagType = TagType.UIntPoint3;
                     }
                     break;
+                case "int64":
                 case "long":
                     if (PerAddressLength == 8)
                     {
@@ -234,6 +239,7 @@ namespace Cdy.Spider.Common.Helper
                         TagType = TagType.LongPoint3;
                     }
                     break;
+                case "uint64":
                 case "ulong":
                     if (PerAddressLength == 8)
                     {
@@ -250,6 +256,12 @@ namespace Cdy.Spider.Common.Helper
                     break;
                 case "datetime":
                     TagType = TagType.DateTime;
+                    break;
+                case "single":
+                    TagType = TagType.Float;
+                    break;
+                case "double":
+                    TagType = TagType.Double;
                     break;
                 case "string":
                     TagType = TagType.String;

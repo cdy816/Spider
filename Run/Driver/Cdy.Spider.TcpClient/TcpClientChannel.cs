@@ -82,12 +82,12 @@ namespace Cdy.Spider.TcpClient
                 mClient.ReceiveTimeout = mData.Timeout;
                 mClient.NoDelay = true;
                 
-                mIsConnected = true;
+                //mIsConnected = true;
                 mReceiveThread = new Thread(ThreadPro);
                 mReceiveThread.IsBackground = true;
                 mReceiveThread.Start();
 
-                ConnectedChanged(mIsConnected);
+                ConnectedChanged(true);
             }
             catch
             {
@@ -491,9 +491,13 @@ namespace Cdy.Spider.TcpClient
                 {
                   int tmp=0;
                     bval = new byte[count];
-                    while(tmp < count)
+                    while (tmp < count)
                     {
-                        count += mClient.Receive(bval, count, count - tmp, SocketFlags.None);
+                        if (mClient.Available > 0)
+                        {
+                            var rec = mClient.Receive(bval, tmp, Math.Min( count - tmp,mClient.Available), SocketFlags.None);
+                            tmp += rec;
+                        }
                         if (sw.ElapsedMilliseconds>timeout)
                         {
                             break;

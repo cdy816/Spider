@@ -220,15 +220,15 @@ namespace Cdy.Spider.Common
                 else
                 {
                     byte[] operateResult3 = this.Receive( netMessage.ProtocolHeadBytesLength, timeOut);
-                    if (operateResult3==null)
+                    if (operateResult3==null || operateResult3.Length==0)
                     {
                         result = operateResult3;
                     }
                     else
                     {
                         int num2 = netMessage.PependedUselesByteLength(operateResult3);
-                        bool flag11 = num2 > 0;
-                        if (flag11)
+                        //bool flag11 = num2 > 0;
+                        if (num2 > 0)
                         {
                             byte[] operateResult4 = this.Receive( num2, timeOut);
                             if (operateResult4==null)

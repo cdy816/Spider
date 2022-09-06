@@ -186,7 +186,7 @@ namespace Cdy.Spider.OmronDriver
         public override bool InitializationOnConnect()
         {
             byte[] operateResult = this.ReadFromCoreServer(this.handSingle, true, false);
-            if (operateResult==null)
+            if (operateResult==null||operateResult.Length==0)
             {
                 return false;
             }

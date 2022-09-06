@@ -22,6 +22,9 @@ namespace Cdy.Spider.OmronDriver
         private AddressManager mAddressManager;
 
         private OmronFinsDriverData mData;
+
+        private bool mIsReady = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -39,6 +42,10 @@ namespace Cdy.Spider.OmronDriver
         /// </summary>
         public override string TypeName => "OmronFins";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override DriverData Data => mData;
 
         #endregion ...Properties...
 
@@ -51,13 +58,18 @@ namespace Cdy.Spider.OmronDriver
         {
             base.Init();
 
-            if(this.mComm.Type == ChannelType.TcpClient)
+            if(this.mComm.TypeName == "TcpClient")
             {
                 var mnp = new OmronFinsNetProxy(this);
-                mnp.SA2 = (byte)this.mData.SA2;
-                mnp.DA2 = (byte)this.mData.DA2;
-                mnp.SID = (byte)this.mData.SID;
+                //mnp.SA2 = (byte)this.mData.SA2;
+                //mnp.DA2 = (byte)this.mData.DA2;
+                //mnp.SID = (byte)this.mData.SID;
+                mnp.SA1 = mnp.DA1 = 1;
                 mnp.ByteTransform.DataFormat = this.mData.DataFormate;
+
+                mnp.ReceiveTimeOut = 5000;
+                
+
                 mProxy = mnp;
             }
             else
@@ -89,6 +101,7 @@ namespace Cdy.Spider.OmronDriver
                         mAddressManager.Add(vv.Type, operateResult.AddressStart, vv.DeviceInfo, true, 0);
                 }
             }
+            this.mComm.EnableSyncRead(true);
 
         }
 
@@ -175,7 +188,15 @@ namespace Cdy.Spider.OmronDriver
         {
             if(result && mProxy is OmronFinsNetProxy)
             {
-                (mProxy as OmronFinsNetProxy)?.InitializationOnConnect();
+                var val = (mProxy as OmronFinsNetProxy)?.InitializationOnConnect();
+                if(val != null)
+                {
+                    mIsReady = val.Value;
+                }
+            }
+            else if(!result && mProxy is OmronFinsNetProxy)
+            {
+                mIsReady = false;
             }
             base.OnCommChanged(result);
         }
@@ -185,7 +206,7 @@ namespace Cdy.Spider.OmronDriver
         /// </summary>
         protected override void ProcessTimerElapsed()
         {
-            if (!mComm.IsConnected)
+            if (!mComm.IsConnected||!mIsReady)
                 return;
 
             bool result = false;
@@ -424,7 +445,7 @@ namespace Cdy.Spider.OmronDriver
         {
             mData = new OmronFinsDriverData();
             mData.LoadFromXML(xe);
-            base.Load(xe);
+            //base.Load(xe);
         }
 
         #endregion ...Methods...
