@@ -60,7 +60,7 @@
 1. [文档](https://github.com/cdy816/Spider/blob/master/Doc)
 
 ## 版本发布
-* [V0.5](https://github.com/cdy816/Spider/releases/tag/V0.5) 。
+* [V0.6](https://github.com/cdy816/Spider/releases/tag/V0.6) 。
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
