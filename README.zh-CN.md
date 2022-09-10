@@ -41,15 +41,15 @@
 2. OPC UA
 3. Modbus
 4. coap
-5.Siements plc
-6.AllenBradley plc
-7.Fatek plc
-8.Fuju plc
-9.Melsec plc
-10.Omron plc
-11.Panasonic plc
-12.Keyence plc
-13.Lsis plc
+5. Siements plc
+6. AllenBradley plc
+7. Fatek plc
+8. Fuju plc
+9. Melsec plc
+10. Omron plc
+11. Panasonic plc
+12. Keyence plc
+13. Lsis plc
 
 ## 运行环境
 系统平台采用.net 5 平台开发,实现了跨平台性，可以运行在桌面系统以及嵌入设备中（例如:树莓派等）。
