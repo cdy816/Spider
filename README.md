@@ -43,6 +43,15 @@ cross platform(Window、Linux、Iot) equipment Internet of things collection pla
 2. OPC UA
 3. Modbus
 4. Coap
+5. Siements plc
+6. AllenBradley plc
+7. Fatek plc
+8. Fuju plc
+9. Melsec plc
+10. Omron plc
+11. Panasonic plc
+12. Keyence plc
+13. Lsis plc
 
 ## Runtime Environment
 The system platform is developed on. Net 5 platform, which can run on desktop system and embedded devices (such as raspberry pi)
@@ -53,7 +62,7 @@ The system platform is developed on. Net 5 platform, which can run on desktop sy
 1. [Document](https://github.com/cdy816/Spider/blob/master/Doc)
 
 ## Rlease
-* [V0.5](https://github.com/cdy816/Spider/releases/tag/V0.5)
+* [V0.6](https://github.com/cdy816/Spider/releases/tag/V0.6)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
