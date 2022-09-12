@@ -9,8 +9,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml.Linq;
 
 namespace Cdy.Spider
@@ -544,9 +547,30 @@ namespace Cdy.Spider
             return tre;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public bool ClearReveiceCach()
+        {
+            if (!mComm.IsConnected) return false;
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    mComm.ClearBuffer();
+                }
+                finally
+                {
+                    mComm.Release();
+                }
+            }
+            return tre;
+        }
 
         /// <summary>
-        /// 异步发送数据
+        /// 接收指定长度数据
         /// </summary>
         /// <param name="key"></param>
         /// <param name="data"></param>
@@ -564,6 +588,65 @@ namespace Cdy.Spider
                 }
                 finally
                 {
+                    mComm.Release();
+                }
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 读取数据
+        /// </summary>
+        /// <param name="timeount"></param>
+        /// <param name="datacheckcallback"></param>
+        /// <returns></returns>
+        public byte[] Read(int timeount,Func<MemoryStream,bool> datacheckcallback)
+        {
+            if (!mComm.IsConnected) return null;
+            byte[] re = null;
+            var tre = mComm.Take();
+            if (tre)
+            {
+                try
+                {
+                    MemoryStream ms = new MemoryStream();
+                    int icount = timeount / 10;
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
+                    //DateTime dt = DateTime.Now;
+                    //for (int i = 0; i < icount; i++)
+                    while(true)
+                    {
+                        DateTime dnow = DateTime.Now;
+                        if (sw.ElapsedMilliseconds < timeount)
+                        {
+                            var len = mComm.AvaiableLenght();
+                            if (len > 0)
+                            {
+                                ms.Write(mComm.Read(len, out int rcount));
+
+                                if(datacheckcallback!=null)
+                                {
+                                    if(datacheckcallback(ms))
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                            Thread.Sleep(10);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        
+                    }
+                    sw.Stop();
+                    return ms.ToArray();
+                }
+                finally
+                {
+                   
                     mComm.Release();
                 }
             }

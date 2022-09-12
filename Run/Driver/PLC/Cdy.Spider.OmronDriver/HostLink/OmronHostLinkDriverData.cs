@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Cdy.Spider.OmronDriver
+namespace Cdy.Spider.OmronDriver.HostLink
 {
     /// <summary>
     /// 
@@ -19,7 +19,7 @@ namespace Cdy.Spider.OmronDriver
         private int mSA2;
         private int mSID;
         private int mUnitNumber;
-        private DataFormat mDataFormate;
+        private DataFormat mDataFormate = DataFormat.CDAB;
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -134,10 +134,10 @@ namespace Cdy.Spider.OmronDriver
         public override XElement SaveToXML()
         {
             var re = base.SaveToXML();
-            re.SetAttributeValue("DA2", this.DA2);
-            re.SetAttributeValue("SA2", this.SA2);
-            re.SetAttributeValue("SID", this.SID);
-            re.SetAttributeValue("DataFormate", (byte)this.DataFormate);
+            re.SetAttributeValue("DA2", DA2);
+            re.SetAttributeValue("SA2", SA2);
+            re.SetAttributeValue("SID", SID);
+            re.SetAttributeValue("DataFormate", (byte)DataFormate);
             re.SetAttributeValue("UnitNumber", UnitNumber);
             return re;
         }
@@ -149,11 +149,11 @@ namespace Cdy.Spider.OmronDriver
         public override void LoadFromXML(XElement xe)
         {
             base.LoadFromXML(xe);
-            this.DA2 = xe.Attribute("DA2") != null ? int.Parse(xe.Attribute("DA2").Value) : 0;
-            this.SA2 = xe.Attribute("SA2") != null ? int.Parse(xe.Attribute("SA2").Value) : 0;
-            this.SID = xe.Attribute("SID") != null ? int.Parse(xe.Attribute("SID").Value) : 0;
-            this.DataFormate = (DataFormat)(int.Parse(xe.Attribute("DataFormate").Value));
-            this.UnitNumber = xe.Attribute("UnitNumber") != null ? int.Parse(xe.Attribute("UnitNumber").Value) : 0;
+            DA2 = xe.Attribute("DA2") != null ? int.Parse(xe.Attribute("DA2").Value) : 0;
+            SA2 = xe.Attribute("SA2") != null ? int.Parse(xe.Attribute("SA2").Value) : 0;
+            SID = xe.Attribute("SID") != null ? int.Parse(xe.Attribute("SID").Value) : 0;
+            DataFormate = (DataFormat)int.Parse(xe.Attribute("DataFormate").Value);
+            UnitNumber = xe.Attribute("UnitNumber") != null ? int.Parse(xe.Attribute("UnitNumber").Value) : 0;
         }
 
         #endregion ...Methods...

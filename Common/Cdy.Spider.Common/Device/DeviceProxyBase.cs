@@ -248,7 +248,7 @@ namespace Cdy.Spider.Common
         public virtual short[] ReadInt16(string address, ushort length,out bool res)
         {
             var re = this.Read(address, this.GetWordLength(address, (int)length, 1),out res);
-            if (res)
+            if (res && re.Length>0)
                 return this.ByteTransform.TransInt16(re, 0, (int)length);
             else
             {
@@ -285,7 +285,7 @@ namespace Cdy.Spider.Common
         public virtual ushort[] ReadUInt16(string address, ushort length,out bool res)
         {
             var re = this.Read(address, this.GetWordLength(address, (int)length, 1), out res);
-            if (res)
+            if (res && re.Length > 0)
                 return this.ByteTransform.TransUInt16(re, 0, (int)length);
             else
             {
@@ -322,7 +322,7 @@ namespace Cdy.Spider.Common
         public virtual int[] ReadInt32(string address, ushort length,out bool res)
         {
             var re = this.Read(address, this.GetWordLength(address, (int)length, 2), out res);
-            if (res)
+            if (res && re.Length > 0)
                 return this.ByteTransform.TransInt32(re, 0, (int)length);
             else
             {
@@ -359,7 +359,7 @@ namespace Cdy.Spider.Common
         public virtual uint[] ReadUInt32(string address, ushort length,out bool res)
         {
             var re = this.Read(address, this.GetWordLength(address, (int)length, 2), out res);
-            if (res)
+            if (res && re.Length > 0)
                 return this.ByteTransform.TransUInt32(re, 0, (int)length);
             else
             {
@@ -395,7 +395,7 @@ namespace Cdy.Spider.Common
         public virtual float[] ReadFloat(string address, ushort length,out bool res)
         {
             var re = this.Read(address, this.GetWordLength(address, (int)length, 2), out res);
-            if (res)
+            if (res && re.Length>0)
                 return this.ByteTransform.TransSingle(re, 0, (int)length);
             else
             {
@@ -427,7 +427,7 @@ namespace Cdy.Spider.Common
         public virtual long[]  ReadInt64(string address, ushort length, out bool res)
         {
             var re = this.Read(address, this.GetWordLength(address, (int)length, 4), out res);
-            if (res)
+            if (res && re.Length > 0)
                 return this.ByteTransform.TransInt64(re, 0, (int)length);
             else
             {
@@ -465,7 +465,7 @@ namespace Cdy.Spider.Common
         public virtual ulong[] ReadUInt64(string address, ushort length, out bool res)
         {
             var re = this.Read(address, this.GetWordLength(address, (int)length, 4), out res);
-            if(res)
+            if(res && re.Length > 0)
             return this.ByteTransform.TransUInt64(re, 0, (int)length);
              else
             {
@@ -502,7 +502,7 @@ namespace Cdy.Spider.Common
         public virtual double[] ReadDouble(string address, ushort length, out bool res)
         {
             var re = this.Read(address, this.GetWordLength(address, (int)length, 4), out res);
-            if (res)
+            if (res && re.Length > 0)
                 return this.ByteTransform.TransDouble(re, 0, (int)length);
             else
             {
@@ -533,7 +533,7 @@ namespace Cdy.Spider.Common
         public virtual string ReadString(string address, ushort length, Encoding encoding,out bool res)
         {
             var re = this.Read(address, length,out  res);
-            if(res)
+            if(res && re.Length > 0)
             {
                 return this.ByteTransform.TransString(re, 0, re.Length, encoding);
             }

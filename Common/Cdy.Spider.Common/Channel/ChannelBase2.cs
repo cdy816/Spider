@@ -803,6 +803,15 @@ namespace Cdy.Spider
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual int AvaiableLenght()
+        {
+            return 0;
+        }
+
         #endregion ...Methods...
 
         #region ... Interfaces ...

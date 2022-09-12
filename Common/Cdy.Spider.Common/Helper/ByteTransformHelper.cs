@@ -25,6 +25,7 @@ namespace Cdy.Spider.Common
 
         #region ... Methods    ...
 
+
         /// <summary>
         /// 结果转换操作的基础方法，需要支持类型，及转换的委托，并捕获转换时的异常方法
         /// </summary>

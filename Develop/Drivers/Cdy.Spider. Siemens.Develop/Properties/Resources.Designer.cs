@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cdy.Spider.OmronFins.Develop.Properties {
+namespace Cdy.Spider.Siemens.Develop.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Cdy.Spider.OmronFins.Develop.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cdy.Spider.OmronFins.Develop.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Cdy.Spider.Siemens.Develop.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,25 +61,16 @@ namespace Cdy.Spider.OmronFins.Develop.Properties {
         }
         
         /// <summary>
-        ///   查找类似 DA 的本地化字符串。
+        ///   查找类似 ConnectionType 的本地化字符串。
         /// </summary>
-        internal static string DA {
+        internal static string ConnectionType {
             get {
-                return ResourceManager.GetString("DA", resourceCulture);
+                return ResourceManager.GetString("ConnectionType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 DataFormat 的本地化字符串。
-        /// </summary>
-        internal static string DataFormat {
-            get {
-                return ResourceManager.GetString("DataFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Omron fins driver 的本地化字符串。
+        ///   查找类似 Siemens S7  的本地化字符串。
         /// </summary>
         internal static string Desc {
             get {
@@ -88,20 +79,29 @@ namespace Cdy.Spider.OmronFins.Develop.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Omron HostLink driver 的本地化字符串。
+        ///   查找类似 LocalTSAP 的本地化字符串。
         /// </summary>
-        internal static string OmronHostLinkDesc {
+        internal static string LocalTSAP {
             get {
-                return ResourceManager.GetString("OmronHostLinkDesc", resourceCulture);
+                return ResourceManager.GetString("LocalTSAP", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 SA 的本地化字符串。
+        ///   查找类似 PlcType 的本地化字符串。
         /// </summary>
-        internal static string SA {
+        internal static string PLCType {
             get {
-                return ResourceManager.GetString("SA", resourceCulture);
+                return ResourceManager.GetString("PLCType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rack 的本地化字符串。
+        /// </summary>
+        internal static string Rack {
+            get {
+                return ResourceManager.GetString("Rack", resourceCulture);
             }
         }
         
@@ -115,20 +115,11 @@ namespace Cdy.Spider.OmronFins.Develop.Properties {
         }
         
         /// <summary>
-        ///   查找类似 SID 的本地化字符串。
+        ///   查找类似 Slot 的本地化字符串。
         /// </summary>
-        internal static string SID {
+        internal static string Slot {
             get {
-                return ResourceManager.GetString("SID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Station Id 的本地化字符串。
-        /// </summary>
-        internal static string Station {
-            get {
-                return ResourceManager.GetString("Station", resourceCulture);
+                return ResourceManager.GetString("Slot", resourceCulture);
             }
         }
         

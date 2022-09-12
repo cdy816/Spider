@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Cdy.Spider.Common
 {
@@ -9,8 +11,334 @@ namespace Cdy.Spider.Common
     /// </summary>
     public static class DataExtend
     {
-        /// <inheritdoc cref="M:HslCommunication.BasicFramework.SoftBasic.ArrayRemoveDouble``1(``0[],System.Int32,System.Int32)" />
-        // Token: 0x060000CA RID: 202 RVA: 0x00013E59 File Offset: 0x00012059
+        public static Random HslRandom { get; private set; } = new Random();
+
+        public static bool[] ToBoolArray(this byte[] InBytes)
+        {
+            return ByteToBoolArray(InBytes);
+        }
+
+        /// <summary>
+        /// 根据当前的位偏移地址及读取位长度信息，计算出实际的字节索引，字节数，字节位偏移
+        /// </summary>
+        /// <param name="addressStart">起始地址</param>
+        /// <param name="length">读取的长度</param>
+        /// <param name="newStart">返回的新的字节的索引，仍然按照位单位</param>
+        /// <param name="byteLength">字节长度</param>
+        /// <param name="offset">当前偏移的信息</param>
+        public static void CalculateStartBitIndexAndLength(int addressStart, ushort length, out int newStart, out ushort byteLength, out int offset)
+        {
+            byteLength = (ushort)((addressStart + (int)length - 1) / 8 - addressStart / 8 + 1);
+            offset = addressStart % 8;
+            newStart = addressStart - offset;
+        }
+
+        /// <summary>
+        /// 将指定的数据按照指定长度进行分割，例如int[10]，指定长度4，就分割成int[4],int[4],int[2]，然后拼接list<br />
+        /// Divide the specified data according to the specified length, such as int [10], and specify the length of 4 to divide into int [4], int [4], int [2], and then concatenate the list
+        /// </summary>
+        /// <typeparam name="T">数组的类型</typeparam>
+        /// <param name="array">等待分割的数组</param>
+        /// <param name="length">指定的长度信息</param>
+        /// <returns>分割后结果内容</returns>
+        /// <example>
+        /// </example>
+        public static List<T[]> ArraySplitByLength<T>(T[] array, int length)
+        {
+            List<T[]> result;
+            if (array == null)
+            {
+                result = new List<T[]>();
+            }
+            else
+            {
+                List<T[]> list = new List<T[]>();
+                int i = 0;
+                while (i < array.Length)
+                {
+                    bool flag2 = i + length < array.Length;
+                    if (flag2)
+                    {
+                        T[] array2 = new T[length];
+                        Array.Copy(array, i, array2, 0, length);
+                        i += length;
+                        list.Add(array2);
+                    }
+                    else
+                    {
+                        T[] array3 = new T[array.Length - i];
+                        Array.Copy(array, i, array3, 0, array3.Length);
+                        i += length;
+                        list.Add(array3);
+                    }
+                }
+                result = list;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="paraName"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public static int ExtractParameter(ref string address, string paraName, int defaultValue)
+        {
+            return ExtractParameter(ref address, paraName);
+        }
+
+        /// <summary>
+        /// 解析地址的附加参数方法，比如你的地址是s=100;D100，可以提取出"s"的值的同时，修改地址本身，如果"s"不存在的话，返回错误的消息内容<br />
+        /// The method of parsing additional parameters of the address, for example, if your address is s=100;D100, you can extract the value of "s" and modify the address itself. 
+        /// If "s" does not exist, return the wrong message content
+        /// </summary>
+        /// <param name="address">复杂的地址格式，比如：s=100;D100</param>
+        /// <param name="paraName">等待提取的参数名称</param>
+        /// <returns>解析后的参数结果内容</returns>
+        // Token: 0x06002340 RID: 9024 RVA: 0x000BA058 File Offset: 0x000B8258
+        public static int ExtractParameter(ref string address, string paraName)
+        {
+            int result =default(int);
+            try
+            {
+                Match match = Regex.Match(address, paraName + "=[0-9A-Fa-fxX]+;");
+                if(match.Success)
+                {
+                    string text = match.Value.Substring(paraName.Length + 1, match.Value.Length - paraName.Length - 2);
+                    int value = (text.StartsWith("0x") || text.StartsWith("0X")) ? Convert.ToInt32(text.Substring(2), 16) : (text.StartsWith("0") ? Convert.ToInt32(text, 8) : Convert.ToInt32(text));
+                    address = address.Replace(match.Value, "");
+                    result = value;
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 从字节构建一个ASCII格式的数据内容<br />
+        /// Build an ASCII-formatted data content from bytes
+        /// </summary>
+        /// <param name="value">数据</param>
+        /// <returns>ASCII格式的字节数组</returns>
+        public static byte[] BuildAsciiBytesFrom(byte value)
+        {
+            return Encoding.ASCII.GetBytes(value.ToString("X2"));
+        }
+
+        /// <summary>
+        /// 将原始的byte数组转换成ascii格式的byte数组<br />
+        /// Converts the original byte array to an ASCII-formatted byte array
+        /// </summary>
+        /// <param name="inBytes">等待转换的byte数组</param>
+        /// <returns>转换后的数组</returns>
+        public static byte[] BytesToAsciiBytes(byte[] inBytes)
+        {
+            return Encoding.ASCII.GetBytes(ByteToHexString(inBytes));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InBytes"></param>
+        /// <returns></returns>
+        public static string ByteToHexString(byte[] InBytes)
+        {
+            return ByteToHexString(InBytes, '\0');
+        }
+
+        /// <summary>
+        /// 将16进制的字符串转化成Byte数据，将检测每2个字符转化，也就是说，中间可以是任意字符<br />
+        /// Converts a 16-character string into byte data, which will detect every 2 characters converted, that is, the middle can be any character
+        /// </summary>
+        /// <param name="hex">十六进制的字符串，中间可以是任意的分隔符</param>
+        /// <returns>转换后的字节数组</returns>
+        /// <remarks>参数举例：AA 01 34 A8</remarks>
+        /// <example>
+        /// </example>
+        public static byte[] HexStringToBytes(string hex)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+            for (int i = 0; i < hex.Length; i++)
+            {
+                bool flag = i + 1 < hex.Length;
+                if (flag)
+                {
+                    bool flag2 = GetHexCharIndex(hex[i]) >= 0 && GetHexCharIndex(hex[i + 1]) >= 0;
+                    if (flag2)
+                    {
+                        memoryStream.WriteByte((byte)(GetHexCharIndex(hex[i]) * 16 + GetHexCharIndex(hex[i + 1])));
+                        i++;
+                    }
+                }
+            }
+            byte[] result = memoryStream.ToArray();
+            memoryStream.Dispose();
+            return result;
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <returns></returns>
+        private static int GetHexCharIndex(char ch)
+        {
+            switch (ch)
+            {
+                case '0':
+                    return 0;
+                case '1':
+                    return 1;
+                case '2':
+                    return 2;
+                case '3':
+                    return 3;
+                case '4':
+                    return 4;
+                case '5':
+                    return 5;
+                case '6':
+                    return 6;
+                case '7':
+                    return 7;
+                case '8':
+                    return 8;
+                case '9':
+                    return 9;
+                case ':':
+                case ';':
+                case '<':
+                case '=':
+                case '>':
+                case '?':
+                case '@':
+                    goto IL_D6;
+                case 'A':
+                    break;
+                case 'B':
+                    goto IL_BD;
+                case 'C':
+                    goto IL_C2;
+                case 'D':
+                    goto IL_C7;
+                case 'E':
+                    goto IL_CC;
+                case 'F':
+                    goto IL_D1;
+                default:
+                    switch (ch)
+                    {
+                        case 'a':
+                            break;
+                        case 'b':
+                            goto IL_BD;
+                        case 'c':
+                            goto IL_C2;
+                        case 'd':
+                            goto IL_C7;
+                        case 'e':
+                            goto IL_CC;
+                        case 'f':
+                            goto IL_D1;
+                        default:
+                            goto IL_D6;
+                    }
+                    break;
+            }
+            return 10;
+        IL_BD:
+            return 11;
+        IL_C2:
+            return 12;
+        IL_C7:
+            return 13;
+        IL_CC:
+            return 14;
+        IL_D1:
+            return 15;
+        IL_D6:
+            return -1;
+        }
+
+
+        public static string ToHexString(this byte[] InBytes, char segment)
+        {
+            return ByteToHexString(InBytes, segment);
+        }
+
+        public static string ByteToHexString(byte[] InBytes, char segment)
+        {
+            return ByteToHexString(InBytes, segment, 0);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InBytes"></param>
+        /// <param name="segment"></param>
+        /// <param name="newLineCount"></param>
+        /// <returns></returns>
+        public static string ByteToHexString(byte[] InBytes, char segment, int newLineCount)
+        {
+            string result;
+            if (InBytes == null)
+            {
+                result = string.Empty;
+            }
+            else
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                long num = 0L;
+                foreach (byte b in InBytes)
+                {
+                    if (segment == '\0')
+                    {
+                        stringBuilder.Append(string.Format("{0:X2}", b));
+                    }
+                    else
+                    {
+                        stringBuilder.Append(string.Format("{0:X2}{1}", b, segment));
+                    }
+                    num += 1L;
+                    if (newLineCount > 0 && num >= (long)newLineCount)
+                    {
+                        stringBuilder.Append(Environment.NewLine);
+                        num = 0L;
+                    }
+                }
+                bool flag4 = segment != '\0' && stringBuilder.Length > 1 && stringBuilder[stringBuilder.Length - 1] == segment;
+                if (flag4)
+                {
+                    stringBuilder.Remove(stringBuilder.Length - 1, 1);
+                }
+                result = stringBuilder.ToString();
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static string GetUniqueStringByGuidAndRandom()
+        {
+            return Guid.NewGuid().ToString("N") + HslRandom.Next(1000, 10000).ToString();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="leftLength"></param>
+        /// <param name="rightLength"></param>
+        /// <returns></returns>
         public static T[] RemoveDouble<T>(this T[] value, int leftLength, int rightLength)
         {
             return ArrayRemoveDouble<T>(value, leftLength, rightLength);
@@ -24,10 +352,8 @@ namespace Cdy.Spider.Common
         /// <param name="leftLength">前面的位数</param>
         /// <param name="rightLength">后面的位数</param>
         /// <returns>新的数组</returns>
-        /// <exception cref="T:System.RankException"></exception>
         /// <example>
         /// </example> 
-        // Token: 0x06002B98 RID: 11160 RVA: 0x000E37D8 File Offset: 0x000E19D8
         public static T[] ArrayRemoveDouble<T>(T[] value, int leftLength, int rightLength)
         {
             T[] result;
@@ -246,6 +572,20 @@ namespace Cdy.Spider.Common
                 }
             }
             return array2;
+        }
+
+        /// <summary>
+        /// 从Byte数组中提取所有的位数组<br />
+        /// Extracts a bit array from a byte array, length represents the number of digits
+        /// </summary>
+        /// <param name="InBytes">原先的字节数组</param>
+        /// <returns>转换后的bool数组</returns>
+        /// <example>
+        /// </example> 
+        // Token: 0x06002B97 RID: 11159 RVA: 0x000E37C4 File Offset: 0x000E19C4
+        public static bool[] ByteToBoolArray(byte[] InBytes)
+        {
+            return (InBytes == null) ? null : ByteToBoolArray(InBytes, InBytes.Length * 8);
         }
 
         /// <summary>

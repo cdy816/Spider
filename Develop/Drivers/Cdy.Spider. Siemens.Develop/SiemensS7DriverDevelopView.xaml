@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="Cdy.Spider.Siemens.Develop.SiemensS7DriverDevelopView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cdy.Spider.Siemens.Develop"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker WorkModel,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker ScanCircle,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="2"/>
+
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker Rack,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="3"/>
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker Slot,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="4"/>
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker ConnectionType,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="5"/>
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker LocalTSAP,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="6"/>
+
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker PLCType,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="7"/>
+        
+        <!--<Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker DataFormat}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="7"/>-->
+        <!--<Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker PackageCount,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="1"/>-->
+        
+        <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="5,0,0,0" SelectedIndex="{Binding WorkModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="190">
+            <ComboBoxItem Content="{local:ResMarker Active}" />
+            <!--<ComboBoxItem Content="{local:ResMarker Passivity}" />-->
+        </ComboBox>
+        <TextBox  Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="2" Text="{Binding ScanCircle,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        <Label Foreground="{DynamicResource Window.Forground}" Content="ms" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Margin="200,0,0,0"/>
+        <Label Visibility="{Binding PublishVisibility}"  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker PublishCircleInfo}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Margin="240,0,0,0"/>
+        <!--<TextBox   Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="1" Text="{Binding PackageCount,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>-->
+
+        <TextBox  Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="3" Text="{Binding Rack,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        <TextBox  Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="4" Text="{Binding Slot,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        <TextBox  Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="5" Text="{Binding ConnectionType,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        <TextBox  Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="6" Text="{Binding LocalTSAP,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        
+        <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="5,0,0,0" SelectedIndex="{Binding PlcType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="190" Grid.Row="7" >
+            <ComboBoxItem Content="S1200" />
+            <ComboBoxItem Content="S300" />
+            <ComboBoxItem Content="S400" />
+            <ComboBoxItem Content="S1500" />
+            <ComboBoxItem Content="S200Smart" />
+            <ComboBoxItem Content="S200" />
+        </ComboBox>
+
+        <!--<ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="5,0,0,0" SelectedIndex="{Binding DataFormate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="190" Grid.Row="6" >
+            <ComboBoxItem Content="ABCD" />
+            <ComboBoxItem Content="BADC" />
+            <ComboBoxItem Content="CDAB" />
+            <ComboBoxItem Content="DCBA" />
+        </ComboBox>-->
+    </Grid>
+</UserControl>

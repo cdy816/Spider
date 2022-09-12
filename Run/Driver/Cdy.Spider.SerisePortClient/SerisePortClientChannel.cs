@@ -84,24 +84,24 @@ namespace Cdy.Spider.SerisePortClient
             mClient.DtrEnable = mData.EnableDTR;
             mClient.RtsEnable = mData.EnableRTS;
 
-            mReceiveThread = new Thread(ThreadPro);
-            mReceiveThread.IsBackground = true;
-            mReceiveThread.Start();
-
             try
             {
                 mClient.Open();
-                mIsConnected = true;
+                //mIsConnected = true;
+                ConnectedChanged(true);
                 LoggerService.Service.Info("SerisePort", $"Open {mData.PortName} successful.");
             }
             catch
             {
-                LoggerService.Service.Warn("OpcUA", $"connect to {this.mData.PortName} failed.");
+                LoggerService.Service.Warn("SerisePort", $"connect to {this.mData.PortName} failed.");
                 Task.Run(() => {
 
                     TryConnect();
                 });
             }
+            mReceiveThread = new Thread(ThreadPro);
+            mReceiveThread.IsBackground = true;
+            mReceiveThread.Start();
 
             return base.InnerOpen();
         }
@@ -118,7 +118,8 @@ namespace Cdy.Spider.SerisePortClient
                 {
                     if(!mClient.IsOpen)
                     mClient.Open();
-                    mIsConnected = true;
+                    //mIsConnected = true;
+                    ConnectedChanged(true);
                     LoggerService.Service.Info("SerisePort", $"Open {mData.PortName} successful.");
                     break;
                 }
@@ -138,6 +139,7 @@ namespace Cdy.Spider.SerisePortClient
             try
             {
                 mIsConnected = false;
+                ConnectedChanged(false);
                 if (mClient != null)
                 {
                     mClient.Close();
@@ -301,8 +303,27 @@ namespace Cdy.Spider.SerisePortClient
             return cc;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int AvaiableLenght()
+        {
+            if (!mEnableSyncRead)
+            {
+                int icount = 0;
+                foreach(var vv in mReceiveBuffers)
+                {
+                    icount+=vv.Length;
+                }
+                return icount;
+            }
+            else
+            {
+                return mClient.BytesToRead;
+            }
+        }
 
-        
 
         /// <summary>
         /// 

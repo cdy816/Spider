@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Cdy.Spider.OmronDriver
+namespace Cdy.Spider.SiemensDriver
 {
     /// <summary>
-    /// Omron Fins 驱动
+    /// Siemens S7 驱动
     /// </summary>
-    public class OmronFinsNetDriver : TimerDriverRunner
+    public class SiemensS7NetDriver : TimerDriverRunner
     {
 
         #region ... Variables  ...
@@ -21,7 +21,7 @@ namespace Cdy.Spider.OmronDriver
 
         private AddressManager mAddressManager;
 
-        private OmronFinsDriverData mData;
+        private SiemensS7DriverData mData;
 
         private bool mIsReady = false;
 
@@ -40,7 +40,7 @@ namespace Cdy.Spider.OmronDriver
         /// <summary>
         /// 
         /// </summary>
-        public override string TypeName => "OmronFins";
+        public override string TypeName => "SiemensS7";
 
         /// <summary>
         /// 
@@ -60,27 +60,28 @@ namespace Cdy.Spider.OmronDriver
 
             if(this.mComm.TypeName == "TcpClient")
             {
-                var mnp = new OmronFinsNetProxy(this);
-                mnp.SA2 = (byte)this.mData.SA2;
-                mnp.DA2 = (byte)this.mData.DA2;
-                mnp.SID = (byte)this.mData.SID;
+                var mnp = new SiemensS7NetProxy((SiemensPLCS)this.mData.PlcType,this);
+                mnp.ConnectionType = (byte)this.mData.ConnectionType;
+                mnp.LocalTSAP = (byte)this.mData.LocalTSAP;
+                mnp.Rack = (byte)this.mData.Rack;
+                mnp.Slot = (byte)this.mData.Slot;
                 //mnp.SA1 = mnp.DA1 = 1;
-                mnp.ByteTransform.DataFormat = this.mData.DataFormate;
+                //mnp.ByteTransform.DataFormat = this.mData.DataFormate;
 
                 mnp.ReceiveTimeOut = 5000;
                 
 
                 mProxy = mnp;
             }
-            else
-            {
-                var mnp = new OmronFinsUDPProxy(this);
-                mnp.SA2 = (byte)this.mData.SA2;
-                mnp.DA2 = (byte)this.mData.DA2;
-                mnp.SID = (byte)this.mData.SID;
-                mnp.ByteTransform.DataFormat = this.mData.DataFormate;
-                mProxy = mnp;
-            }
+            //else
+            //{
+            //    var mnp = new OmronFinsUDPProxy(this);
+            //    mnp.SA2 = (byte)this.mData.SA2;
+            //    mnp.DA2 = (byte)this.mData.DA2;
+            //    mnp.SID = (byte)this.mData.SID;
+            //    mnp.ByteTransform.DataFormat = this.mData.DataFormate;
+            //    mProxy = mnp;
+            //}
             mAddressManager = new AddressManager();
 
             foreach (var vv in this.Device.ListTags())
@@ -88,16 +89,16 @@ namespace Cdy.Spider.OmronDriver
                 if (vv.Type == TagType.String)
                 {
                     var vss = vv.DeviceInfo.Split(":");
-                    var operateResult = OmronFinsAddress.ParseFrom(vss[0], 1, out bool result);
-                    if(result)
+                    var operateResult = S7AddressData.ParseFrom(vss[0]);
+                    if(operateResult!=null)
                     {
                         mAddressManager.Add(vv.Type, operateResult.AddressStart, vss[0], true, int.Parse(vss[1]));
                     }
                 }
                 else
                 {
-                    var operateResult = OmronFinsAddress.ParseFrom(vv.DeviceInfo, 1, out bool result);
-                    if (result)
+                    var operateResult = S7AddressData.ParseFrom(vv.DeviceInfo);
+                    if (operateResult!=null)
                         mAddressManager.Add(vv.Type, operateResult.AddressStart, vv.DeviceInfo, true, 0);
                 }
             }
@@ -186,17 +187,13 @@ namespace Cdy.Spider.OmronDriver
         /// <param name="result"></param>
         protected override void OnCommChanged(bool result)
         {
-            if(result && mProxy is OmronFinsNetProxy)
+            if(result && mProxy is SiemensS7NetProxy)
             {
-                var val = (mProxy as OmronFinsNetProxy)?.InitializationOnConnect();
+                var val = (mProxy as SiemensS7NetProxy)?.InitializationOnConnect();
                 if(val != null)
                 {
                     mIsReady = val.Value;
                 }
-            }
-            else if(!result && mProxy is OmronFinsNetProxy)
-            {
-                mIsReady = false;
             }
             base.OnCommChanged(result);
         }
@@ -434,7 +431,7 @@ namespace Cdy.Spider.OmronDriver
         /// <returns></returns>
         public override IDriverRuntime NewApi()
         {
-            return new OmronFinsNetDriver();
+            return new SiemensS7NetDriver();
         }
 
         /// <summary>
@@ -443,9 +440,8 @@ namespace Cdy.Spider.OmronDriver
         /// <param name="xe"></param>
         public override void Load(XElement xe)
         {
-            mData = new OmronFinsDriverData();
+            mData = new SiemensS7DriverData();
             mData.LoadFromXML(xe);
-            //base.Load(xe);
         }
 
         #endregion ...Methods...

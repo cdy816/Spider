@@ -188,6 +188,12 @@ namespace Cdy.Spider
         byte[] Read(int count, out int receivecount);
 
         /// <summary>
+        /// 获取可读数据字节数
+        /// </summary>
+        /// <returns></returns>
+        int AvaiableLenght();
+
+        /// <summary>
         /// 直接从底层IO设备进行读取,接收指定数量的数据
         /// </summary>
         /// <param name="count">字节数量</param>

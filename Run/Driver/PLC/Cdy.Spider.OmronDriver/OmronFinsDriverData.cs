@@ -131,6 +131,7 @@ namespace Cdy.Spider.OmronDriver
             this.DA2 = xe.Attribute("DA2")!=null?int.Parse(xe.Attribute("DA2").Value):0;
             this.SA2 = xe.Attribute("SA2") != null ? int.Parse(xe.Attribute("SA2").Value):0;
             this.SID = xe.Attribute("SID") != null ? int.Parse(xe.Attribute("SID").Value):0;
+            this.DataFormate = xe.Attribute("DataFormate") != null ? (DataFormat)int.Parse(xe.Attribute("DataFormate").Value) : DataFormat.CDAB;
         }
 
         #endregion ...Methods...

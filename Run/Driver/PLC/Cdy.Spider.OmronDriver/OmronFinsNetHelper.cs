@@ -139,7 +139,6 @@ namespace Cdy.Spider.OmronDriver
                     response[13],
                     response[12]
                 }, 0);
-                bool flag2 = num > 0;
                 if (num > 0)
                 {
                     err=GetStatusDescription(num);

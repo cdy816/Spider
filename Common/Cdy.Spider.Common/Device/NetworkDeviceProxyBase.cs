@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -51,7 +52,7 @@ namespace Cdy.Spider.Common
         /// <returns></returns>
         public virtual byte[] UnpackResponseContent(byte[] send, byte[] response)
         {
-            return null;
+            return response;
         }
 
         /// <summary>
@@ -169,7 +170,7 @@ namespace Cdy.Spider.Common
                     byte[] bytes = BitConverter.GetBytes(netMessage.ProtocolHeadBytesLength);
                     int num = (int)(bytes[3] & 15);
                     byte[] operateResult = null;
-                    bool flag3 = num == 1;
+                    //bool flag3 = num == 1;
                     if (num == 1)
                     {
                         operateResult = this.ReceiveCommandLineFromSocket( bytes[1], timeOut);
@@ -284,6 +285,7 @@ namespace Cdy.Spider.Common
                     byte[] operateResult = this.Receive(1, timeout);
                     if (operateResult==null)
                     {
+                        //return null;
                         break;
                     }
                     list.AddRange(operateResult);
@@ -296,6 +298,10 @@ namespace Cdy.Spider.Common
                 if (flag)
                 {
                     result = list.ToArray();
+                }
+                else
+                {
+                    Debug.Print("超时");
                 }
             }
             catch (Exception ex)

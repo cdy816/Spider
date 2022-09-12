@@ -8,6 +8,10 @@
         <local:OmronFinsDriverDevelopView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type local:OmronHostLinkDriverDevelopViewModel}">
+        <local:OmronHostLinkDriverDevelopView />
+    </DataTemplate>
+
     <local:AreasProvider x:Key="ap" />
 
     <DataTemplate DataType="{x:Type local:OmronFinsRegistorConfigModel}">

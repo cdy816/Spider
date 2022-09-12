@@ -464,11 +464,11 @@ namespace Cdy.Spider.TcpClient
                 sw.Start();
                 if (!mEnableSyncRead)
                 {
-                    Thread.Sleep(timeout / 10);
+                    Thread.Sleep(10);
 
                     while (mReceiveDataLen < count)
                     {
-                        Thread.Sleep(timeout / 10);
+                        Thread.Sleep(10);
                         if (sw.ElapsedMilliseconds > timeout)
                         {
                             break;
@@ -498,19 +498,24 @@ namespace Cdy.Spider.TcpClient
                             var rec = mClient.Receive(bval, tmp, Math.Min( count - tmp,mClient.Available), SocketFlags.None);
                             tmp += rec;
                         }
+                        //else
+                        //{
+                        //    Thread.Sleep(10);
+                        //}
                         if (sw.ElapsedMilliseconds>timeout)
                         {
                             break;
                         }
-                        Thread.Sleep(timeout / 10);
+                        //Thread.Sleep(timeout / 10);
                     }
                     receivecount = tmp;
                     if(tmp < count)
                     {
                         bval = bval.AsSpan(tmp).ToArray();
                     }
-
+                    sw.Stop();
                 }
+                //Console.WriteLine(sw.ElapsedMilliseconds);
             }
             else
             {
@@ -562,7 +567,7 @@ namespace Cdy.Spider.TcpClient
                 {
                     while (mReceiveDataLen < len)
                     {
-                        Thread.Sleep(timeout / 10);
+                        Thread.Sleep( 10);
                         if (sw.ElapsedMilliseconds > timeout)
                         {
                             break;
@@ -588,12 +593,19 @@ namespace Cdy.Spider.TcpClient
                   
                     while (count < len)
                     {
-                        count += mClient.Receive(buffer, offset + count, len - count, SocketFlags.None);
+                        if (mClient.Available > 0)
+                        {
+                            count += mClient.Receive(buffer, offset + count, len - count, SocketFlags.None);
+                        }
+                        else
+                        {
+                            Thread.Sleep(10);
+                        }
                         if (sw.ElapsedMilliseconds > timeout)
                         {
                             break;
                         }
-                        Thread.Sleep(timeout / 10);
+
                     }
                     sw.Stop();
                 }
@@ -604,6 +616,27 @@ namespace Cdy.Spider.TcpClient
                 StartConnect();
             }
             return 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int AvaiableLenght()
+        {
+            if (!mEnableSyncRead)
+            {
+                int icount = 0;
+                foreach (var vv in mReceiveBuffers)
+                {
+                    icount += vv.Length;
+                }
+                return icount;
+            }
+            else
+            {
+                return mClient.Available;
+            }
         }
 
         ///// <summary>
@@ -652,7 +685,7 @@ namespace Cdy.Spider.TcpClient
         //    if (mClient != null && IsOnline(mClient))
         //    {
         //        var re = mClient.Send(buffer, offset, len, SocketFlags.None) > 0;
-                
+
         //        return re;
         //    }
         //    else

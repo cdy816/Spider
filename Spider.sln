@@ -139,7 +139,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.OpcDA.Develop", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.OmronFins.Develop", "Develop\Drivers\Cdy.Spider.OmronFins.Develop\Cdy.Spider.OmronFins.Develop.csproj", "{2368516D-BCEC-4DAB-8F05-C423CD12E94B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider. Siemens.Develop", "Develop\Drivers\Cdy.Spider. Siemens.Develop\Cdy.Spider. Siemens.Develop.csproj", "{E6920D09-BD20-4435-9010-9449818E3F9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.Siemens.Develop", "Develop\Drivers\Cdy.Spider. Siemens.Develop\Cdy.Spider.Siemens.Develop.csproj", "{E6920D09-BD20-4435-9010-9449818E3F9C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.Melsec.Develop", "Develop\Drivers\Cdy.Spider.Melsec.Develop\Cdy.Spider.Melsec.Develop.csproj", "{212D5727-0859-43DE-AA59-503958FEACC3}"
 EndProject
@@ -159,7 +159,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.Panasonic.Develo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PLC", "PLC", "{3D7302D7-8174-4501-BC3B-D2308DF0703D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.OmronDriver", "Run\Driver\PLC\Cdy.Spider.OmronDriver\Cdy.Spider.OmronDriver.csproj", "{76879B95-8639-4D1F-966A-793C09888436}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.OmronDriver", "Run\Driver\PLC\Cdy.Spider.OmronDriver\Cdy.Spider.OmronDriver.csproj", "{76879B95-8639-4D1F-966A-793C09888436}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.SiemensDriver", "Run\Driver\PLC\Cdy.Spider.SiemensDriver\Cdy.Spider.SiemensDriver.csproj", "{40DBBDB4-1CAD-40B3-9F6F-F5B6D5480C74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -427,6 +429,10 @@ Global
 		{76879B95-8639-4D1F-966A-793C09888436}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76879B95-8639-4D1F-966A-793C09888436}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76879B95-8639-4D1F-966A-793C09888436}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40DBBDB4-1CAD-40B3-9F6F-F5B6D5480C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40DBBDB4-1CAD-40B3-9F6F-F5B6D5480C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40DBBDB4-1CAD-40B3-9F6F-F5B6D5480C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40DBBDB4-1CAD-40B3-9F6F-F5B6D5480C74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -508,6 +514,7 @@ Global
 		{05589A72-EE75-4390-B9EE-AF7B8B95EF08} = {CB000681-7DA8-4BD6-9169-CD9ACE6B8B34}
 		{3D7302D7-8174-4501-BC3B-D2308DF0703D} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
 		{76879B95-8639-4D1F-966A-793C09888436} = {3D7302D7-8174-4501-BC3B-D2308DF0703D}
+		{40DBBDB4-1CAD-40B3-9F6F-F5B6D5480C74} = {3D7302D7-8174-4501-BC3B-D2308DF0703D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}

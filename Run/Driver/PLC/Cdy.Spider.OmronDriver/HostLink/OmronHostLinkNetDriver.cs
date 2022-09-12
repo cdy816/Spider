@@ -1,5 +1,6 @@
 ﻿using Cdy.Spider.Common;
 using Cdy.Spider.Common.Helper;
+using Cdy.Spider.OmronDriver.HostLink;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,17 @@ using System.Xml.Linq;
 namespace Cdy.Spider.OmronDriver
 {
     /// <summary>
-    /// Omron Fins 驱动
+    /// Host Link 驱动
     /// </summary>
-    public class OmronFinsNetDriver : TimerDriverRunner
+    public class OmronHostLinkNetDriver : TimerDriverRunner
     {
 
         #region ... Variables  ...
-        private NetworkDeviceProxyBase mProxy;
+        private DeviceProxyBase mProxy;
 
         private AddressManager mAddressManager;
 
-        private OmronFinsDriverData mData;
+        private OmronHostLinkDriverData mData;
 
         private bool mIsReady = false;
 
@@ -40,7 +41,7 @@ namespace Cdy.Spider.OmronDriver
         /// <summary>
         /// 
         /// </summary>
-        public override string TypeName => "OmronFins";
+        public override string TypeName => "OmronHostLink";
 
         /// <summary>
         /// 
@@ -60,25 +61,25 @@ namespace Cdy.Spider.OmronDriver
 
             if(this.mComm.TypeName == "TcpClient")
             {
-                var mnp = new OmronFinsNetProxy(this);
+                var mnp = new OmronHostLinkOverTcpProxy(this);
                 mnp.SA2 = (byte)this.mData.SA2;
                 mnp.DA2 = (byte)this.mData.DA2;
                 mnp.SID = (byte)this.mData.SID;
-                //mnp.SA1 = mnp.DA1 = 1;
+                mnp.UnitNumber = (byte)this.mData.UnitNumber;
                 mnp.ByteTransform.DataFormat = this.mData.DataFormate;
-
                 mnp.ReceiveTimeOut = 5000;
-                
-
                 mProxy = mnp;
             }
             else
             {
-                var mnp = new OmronFinsUDPProxy(this);
+                var mnp = new OmronHostLinkSeriseProxy(this);
                 mnp.SA2 = (byte)this.mData.SA2;
                 mnp.DA2 = (byte)this.mData.DA2;
                 mnp.SID = (byte)this.mData.SID;
+                mnp.SID = (byte)this.mData.SID;
                 mnp.ByteTransform.DataFormat = this.mData.DataFormate;
+                mnp.SleepTime = 10;
+                mnp.ReceiveTimeOut = 5000;
                 mProxy = mnp;
             }
             mAddressManager = new AddressManager();
@@ -186,17 +187,21 @@ namespace Cdy.Spider.OmronDriver
         /// <param name="result"></param>
         protected override void OnCommChanged(bool result)
         {
-            if(result && mProxy is OmronFinsNetProxy)
+            if (result && mProxy is OmronHostLinkOverTcpProxy)
             {
-                var val = (mProxy as OmronFinsNetProxy)?.InitializationOnConnect();
-                if(val != null)
+                var val = (mProxy as OmronHostLinkOverTcpProxy)?.InitializationOnConnect();
+                if (val != null)
                 {
                     mIsReady = val.Value;
                 }
             }
-            else if(!result && mProxy is OmronFinsNetProxy)
+            else if (!result && mProxy is OmronHostLinkOverTcpProxy)
             {
                 mIsReady = false;
+            }
+            else if(result && mProxy is OmronHostLinkSeriseProxy)
+            {
+                mIsReady = true;
             }
             base.OnCommChanged(result);
         }
@@ -434,7 +439,7 @@ namespace Cdy.Spider.OmronDriver
         /// <returns></returns>
         public override IDriverRuntime NewApi()
         {
-            return new OmronFinsNetDriver();
+            return new OmronHostLinkNetDriver();
         }
 
         /// <summary>
@@ -443,9 +448,8 @@ namespace Cdy.Spider.OmronDriver
         /// <param name="xe"></param>
         public override void Load(XElement xe)
         {
-            mData = new OmronFinsDriverData();
+            mData = new OmronHostLinkDriverData();
             mData.LoadFromXML(xe);
-            //base.Load(xe);
         }
 
         #endregion ...Methods...

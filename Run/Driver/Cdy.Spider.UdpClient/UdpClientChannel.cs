@@ -576,6 +576,27 @@ namespace Cdy.Spider.UdpClient
         /// 
         /// </summary>
         /// <returns></returns>
+        public override int AvaiableLenght()
+        {
+            if (!mEnableSyncRead)
+            {
+                int icount = 0;
+                foreach (var vv in mReceiveBuffers)
+                {
+                    icount += vv.Length;
+                }
+                return icount;
+            }
+            else
+            {
+                return mClient.Available;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override ICommChannel2 NewApi()
         {
             return new UdpClientChannel();

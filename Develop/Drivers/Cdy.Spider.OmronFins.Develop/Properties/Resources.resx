@@ -126,6 +126,9 @@
   <data name="Desc" xml:space="preserve">
     <value>Omron fins driver</value>
   </data>
+  <data name="OmronHostLinkDesc" xml:space="preserve">
+    <value>Omron HostLink driver</value>
+  </data>
   <data name="SA" xml:space="preserve">
     <value>SA</value>
   </data>
@@ -134,6 +137,9 @@
   </data>
   <data name="SID" xml:space="preserve">
     <value>SID</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Station Id</value>
   </data>
   <data name="StringTagInfo" xml:space="preserve">
     <value>Append char ':' and number to special string length</value>

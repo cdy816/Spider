@@ -117,29 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DA" xml:space="preserve">
-    <value>PLC 单元号</value>
-  </data>
-  <data name="DataFormat" xml:space="preserve">
-    <value>数据格式</value>
+  <data name="ConnectionType" xml:space="preserve">
+    <value>连接方式</value>
   </data>
   <data name="Desc" xml:space="preserve">
-    <value>欧姆龙 fins 协议驱动</value>
+    <value>西门子S7协议</value>
   </data>
-  <data name="OmronHostLinkDesc" xml:space="preserve">
-    <value>欧姆龙 HostLink 协议驱动</value>
+  <data name="LocalTSAP" xml:space="preserve">
+    <value>本地TSAP参数</value>
   </data>
-  <data name="SA" xml:space="preserve">
-    <value>上位机单元号</value>
+  <data name="PLCType" xml:space="preserve">
+    <value>Plc类型</value>
+  </data>
+  <data name="Rack" xml:space="preserve">
+    <value>机架号</value>
   </data>
   <data name="ScanCircle" xml:space="preserve">
     <value>扫描周期</value>
   </data>
-  <data name="SID" xml:space="preserve">
-    <value>设备标识号</value>
-  </data>
-  <data name="Station" xml:space="preserve">
-    <value>站号</value>
+  <data name="Slot" xml:space="preserve">
+    <value>槽号</value>
   </data>
   <data name="StringTagInfo" xml:space="preserve">
     <value>存储区+数字表示一个地址(例如:DM100);  取某一Bit位地址:在地址后追加"."+数字(例如:DM100.1) ;  地址上追加字符":"和数值，用于指定文本使用的字节长度</value>
