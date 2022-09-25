@@ -13,6 +13,32 @@ namespace Cdy.Spider.Common
     {
         public static Random HslRandom { get; private set; } = new Random();
 
+        /// <summary>
+        /// 判断当前的字符串表示的地址，是否以索引为结束
+        /// </summary>
+        /// <param name="address">PLC的字符串地址信息</param>
+        /// <returns>是否以索引结束</returns>
+        // Token: 0x06002352 RID: 9042 RVA: 0x000BA84C File Offset: 0x000B8A4C
+        public static bool IsAddressEndWithIndex(string address)
+        {
+            return Regex.IsMatch(address, "\\[[0-9]+\\]$");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static byte[] ToHexBytes(this string value)
+        {
+            return HexStringToBytes(value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InBytes"></param>
+        /// <returns></returns>
         public static bool[] ToBoolArray(this byte[] InBytes)
         {
             return ByteToBoolArray(InBytes);

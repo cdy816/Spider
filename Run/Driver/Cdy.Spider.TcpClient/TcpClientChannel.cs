@@ -437,7 +437,15 @@ namespace Cdy.Spider.TcpClient
         {
             if (mClient != null && IsOnline(mClient))
             {
-                return mClient.Send(data)>0;
+                if (data.Length > 0)
+                {
+                    return mClient.Send(data) > 0;
+                }
+                else
+                {
+                    mClient.Send(data);
+                    return true;
+                }
             }
             else
             {
@@ -593,6 +601,7 @@ namespace Cdy.Spider.TcpClient
                   
                     while (count < len)
                     {
+                        if (mClient == null) break;
                         if (mClient.Available > 0)
                         {
                             count += mClient.Receive(buffer, offset + count, len - count, SocketFlags.None);

@@ -56,10 +56,6 @@ namespace Cdy.Spider.Common
         /// The current data transformation mechanism is required when you need to convert type data from byte data.
         /// </summary>
         /// <remarks>
-        /// 在HSL里提供了三种数据变换机制，分别是 <see cref="T:HslCommunication.Core.RegularByteTransform" />, <see cref="T:HslCommunication.Core.ReverseBytesTransform" />,
-        /// <see cref="T:HslCommunication.Core.ReverseWordTransform" />，各自的<see cref="T:HslCommunication.Core.DataFormat" />属性也可以自定调整，基本满足所有的情况使用。<br />
-        /// Three data transformation mechanisms are provided in HSL, namely <see cref="T:HslCommunication.Core.RegularByteTransform" />, <see cref="T:HslCommunication.Core.ReverseBytesTransform" />, 
-        /// <see cref="T:HslCommunication.Core.ReverseWordTransform" />, and their respective <see cref="T:HslCommunication.Core.DataFormat" /> property can also be adjusted by itself, basically satisfying all situations.
         /// </remarks>
         /// <example>
         /// 主要是用来转换数据类型的，下面仅仅演示了2个方法，其他的类型转换，类似处理。

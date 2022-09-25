@@ -135,7 +135,7 @@ namespace Cdy.Spider
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MComm_CommChangedEvent(object sender, EventArgs e)
+        protected void MComm_CommChangedEvent(object sender, EventArgs e)
         {
             OnCommChanged(mComm.IsConnected);
         }
@@ -148,6 +148,20 @@ namespace Cdy.Spider
         protected virtual void UpdateValue(string deviceInfo,object value)
         {
             if(mCachTags.ContainsKey(deviceInfo))
+            {
+                UpdateValue(mCachTags[deviceInfo], value);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deviceInfo"></param>
+        /// <param name="value"></param>
+        /// <param name="quality"></param>
+        protected virtual void UpdateValue(string deviceInfo, object value,byte quality)
+        {
+            if (mCachTags.ContainsKey(deviceInfo))
             {
                 UpdateValue(mCachTags[deviceInfo], value);
             }
@@ -177,6 +191,25 @@ namespace Cdy.Spider
                 Device?.UpdateDeviceValue(id, value);
             }
             catch(Exception ex)
+            {
+                LoggerService.Service.Warn(this.Name, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <param name="quality"></param>
+        protected virtual void UpdateValue(List<int> id, object value,byte quality)
+        {
+            try
+            {
+                foreach(var vv in id)
+                Device?.UpdateDeviceValue(vv, value, quality);
+            }
+            catch (Exception ex)
             {
                 LoggerService.Service.Warn(this.Name, ex.Message);
             }
