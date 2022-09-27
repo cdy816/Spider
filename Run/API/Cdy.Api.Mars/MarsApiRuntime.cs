@@ -429,7 +429,7 @@ namespace Cdy.Api.Mars
         {
             var manager = ServiceLocator.Locator.Resolve<IDeviceRuntimeManager>();
 
-            LoggerService.Service.Info("MarsApi", "首次数据同步...");
+            //LoggerService.Service.Info("MarsApi", "首次数据同步...");
 
             foreach (var vv in manager.ListDevice())
             {
@@ -684,7 +684,7 @@ namespace Cdy.Api.Mars
                 mProxy.SetTagValueAndQuality(rdb);
             }
 
-            LoggerService.Service.Info("MarsApi", "首次数据同步完成...");
+            //LoggerService.Service.Info("MarsApi", "首次数据同步完成...");
         }
 
         /// <summary>
@@ -818,10 +818,7 @@ namespace Cdy.Api.Mars
                     foreach (var vv in mChangedTags.Where(e => e.Value).ToList())
                     {
                         Tagbase stag = vv.Key;
-                        lock (mChangedTags)
-                        {
-                            mChangedTags[stag] = false;
-                        }
+                        mChangedTags[stag] = false;
                         //lock(mChangedTags)
                         //stag = mChangedTags.Dequeue();
 

@@ -44,7 +44,7 @@ namespace Cdy.Spider.IEC60870Driver
         /// <summary>
         /// 
         /// </summary>
-        public override string TypeName => "IEC60870_104";
+        public override string TypeName => "IEC60870_101";
 
         /// <summary>
         /// 
@@ -102,7 +102,11 @@ namespace Cdy.Spider.IEC60870Driver
             {
                 mnp.OwnAddress = mData.OwnAddress;
             }
-
+            else
+            {
+                mnp.AddSlave(mData.StationId);
+            }
+            
             mProxy = mnp;
             mnp.SetASDUReceivedHandler(OnC101DataRecevice, null);
             this.mComm.EnableSyncRead(true);
@@ -131,14 +135,21 @@ namespace Cdy.Spider.IEC60870Driver
         /// </summary>
         protected override void ProcessTimerElapsed()
         {
+            if (!mData.Balanced)
+            {
+                mProxy.PollSingleSlave(mData.StationId);
+                mProxy.Run();
+            }
+
             if (mProxy.GetLinkLayerState() == lib60870.linklayer.LinkLayerState.AVAILABLE)
             {
+   
                 mProxy.SendInterrogationCommand(CauseOfTransmission.ACTIVATION, mData.StationId, 20);
             }
-            else
-            {
-                Console.WriteLine("Link layer: " + mProxy.GetLinkLayerState().ToString());
-            }
+            //else
+            //{
+            //    Console.WriteLine("Link layer: " + mProxy.GetLinkLayerState().ToString());
+            //}
 
             base.ProcessTimerElapsed();
         }
