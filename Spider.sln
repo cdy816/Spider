@@ -167,7 +167,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.AllenBradleyDriv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.IEC60870Driver", "Run\Driver\Cdy.Spider.IEC60870Driver\Cdy.Spider.IEC60870Driver.csproj", "{0EE710FD-9ED8-48B5-BA2D-FFFCB1BC91F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.IEC60870Driver.Develop", "Develop\Drivers\Cdy.Spider.IEC60870Driver.Develop\Cdy.Spider.IEC60870Driver.Develop.csproj", "{DCD26BE9-7977-48F2-8E85-D402CD901622}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.IEC60870Driver.Develop", "Develop\Drivers\Cdy.Spider.IEC60870Driver.Develop\Cdy.Spider.IEC60870Driver.Develop.csproj", "{DCD26BE9-7977-48F2-8E85-D402CD901622}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Api.OpcUAServer", "Run\API\Cdy.Api.OpcUAServer\Cdy.Api.OpcUAServer.csproj", "{87518B7D-EFEC-4FDC-BE2C-FC92688D1277}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Api.OpcUAServer.Develop", "Develop\Api\Cdy.Api.OpcUAServer.Develop\Cdy.Api.OpcUAServer.Develop.csproj", "{7C22C6EC-0BB1-4200-B041-8FE335E759C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -451,6 +455,14 @@ Global
 		{DCD26BE9-7977-48F2-8E85-D402CD901622}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCD26BE9-7977-48F2-8E85-D402CD901622}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCD26BE9-7977-48F2-8E85-D402CD901622}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87518B7D-EFEC-4FDC-BE2C-FC92688D1277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87518B7D-EFEC-4FDC-BE2C-FC92688D1277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87518B7D-EFEC-4FDC-BE2C-FC92688D1277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87518B7D-EFEC-4FDC-BE2C-FC92688D1277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C22C6EC-0BB1-4200-B041-8FE335E759C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C22C6EC-0BB1-4200-B041-8FE335E759C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C22C6EC-0BB1-4200-B041-8FE335E759C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C22C6EC-0BB1-4200-B041-8FE335E759C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -536,6 +548,8 @@ Global
 		{B08F067A-1586-4735-B1DD-0D179D70B3E4} = {3D7302D7-8174-4501-BC3B-D2308DF0703D}
 		{0EE710FD-9ED8-48B5-BA2D-FFFCB1BC91F1} = {E2F1A3EC-4BBF-4D2E-B3DA-263E0FA4164A}
 		{DCD26BE9-7977-48F2-8E85-D402CD901622} = {AD24B2A3-9440-45D2-971D-D806942C5B4A}
+		{87518B7D-EFEC-4FDC-BE2C-FC92688D1277} = {8FC96F2E-A4E1-485E-BE86-774865C6C37B}
+		{7C22C6EC-0BB1-4200-B041-8FE335E759C3} = {59C072B0-0327-4483-8AA6-E90AADCF9546}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}
