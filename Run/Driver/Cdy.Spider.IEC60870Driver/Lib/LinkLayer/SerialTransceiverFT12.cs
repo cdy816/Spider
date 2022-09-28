@@ -44,10 +44,10 @@ namespace lib60870.linklayer
         private LinkLayerParameters linkLayerParameters;
 
         // timeout used to wait for the message start character
-        private int messageTimeout = 50;
+        private int messageTimeout = 500;
 
         // timeout to wait for next character in a message
-        private int characterTimeout = 50;
+        private int characterTimeout = 500;
 
         private bool fatalError = false;
 
@@ -117,45 +117,46 @@ namespace lib60870.linklayer
         // read the next block of the message
         private int ReadBytesWithTimeout(byte[] buffer, int startIndex, int count, int timeout)
         {
-            int readByte;
-            int readBytes = 0;
+            return serialStream.Read(buffer, startIndex, count, timeout);
+            //int readByte;
+            //int readBytes = startIndex;
 
-            try
-            {
-                //serialStream.ReadTimeout = timeout * count;
-                //readByte = serialStream.Read(buffer, readBytes,count-readBytes, timeout);
-                while ((readByte = serialStream.Read(buffer, readBytes, count - readBytes, timeout))>0)
-                {
+            //try
+            //{
+            //    //serialStream.ReadTimeout = timeout * count;
+            //    //readByte = serialStream.Read(buffer, readBytes,count-readBytes, timeout);
+            //    while ((readByte = serialStream.Read(buffer, readBytes, count - readBytes, timeout))>0)
+            //    {
 
-                    readBytes+=readByte;
+            //        readBytes+=readByte;
 
-                    //buffer[startIndex++] = (byte)readByte;
+            //        //buffer[startIndex++] = (byte)readByte;
 
-                    //readBytes++;
+            //        //readBytes++;
 
-                    if (readBytes >= count)
-                        break;
-                }
-            }
-            catch (TimeoutException)
-            {
-            }
-            catch(IOException ex)
-            {
-                DebugLog("READ: IOException - " + ex.Message);	
-            }
-            catch (UnauthorizedAccessException)
-            {
-                if (fatalError == false)
-                {
-                    if (accessDenied != null)
-                        accessDenied(this, EventArgs.Empty);
+            //        if (readBytes >= count)
+            //            break;
+            //    }
+            //}
+            //catch (TimeoutException)
+            //{
+            //}
+            //catch(IOException ex)
+            //{
+            //    DebugLog("READ: IOException - " + ex.Message);	
+            //}
+            //catch (UnauthorizedAccessException)
+            //{
+            //    if (fatalError == false)
+            //    {
+            //        if (accessDenied != null)
+            //            accessDenied(this, EventArgs.Empty);
 
-                    fatalError = true;
-                }
-            }
+            //        fatalError = true;
+            //    }
+            //}
 
-            return readBytes;
+            //return readBytes;
         }
 
         private event EventHandler accessDenied = null;

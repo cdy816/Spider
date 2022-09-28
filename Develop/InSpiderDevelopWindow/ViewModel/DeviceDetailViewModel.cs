@@ -1223,6 +1223,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 this.mSelectProtocol = this.ProtocolList[0];
             }
             OnPropertyChanged("ProtocolName");
+            OnPropertyChanged("SelectProtocol");
             UpdateShareChannelText();
             UpdateSupportChannel(driver);
             mDriver = driver;

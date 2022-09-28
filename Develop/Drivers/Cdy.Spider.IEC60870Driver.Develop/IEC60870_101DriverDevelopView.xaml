@@ -26,7 +26,7 @@
         </ComboBox>
 
         <TextBox Height="24" VerticalContentAlignment="Center" Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="1" Text="{Binding StationId,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
-        <CheckBox IsChecked="{Binding Balanced}" BorderBrush="{DynamicResource Window.Forground}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0" Background="Transparent" />
+        <CheckBox IsChecked="{Binding Balanced}" Foreground="{DynamicResource Window.Forground}" BorderBrush="{DynamicResource Window.Forground}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0" Background="Transparent" />
 
     </Grid>
 </UserControl>

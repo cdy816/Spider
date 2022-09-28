@@ -29,6 +29,8 @@ namespace Cdy.Spider.IEC60870Driver
 
         private bool mIsReady = false;
 
+        private bool mIsStarted = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -110,6 +112,7 @@ namespace Cdy.Spider.IEC60870Driver
             mProxy = mnp;
             mnp.SetASDUReceivedHandler(OnC101DataRecevice, null);
             this.mComm.EnableSyncRead(true);
+           
         }
 
         /// <summary>
@@ -118,7 +121,8 @@ namespace Cdy.Spider.IEC60870Driver
         public override void Start()
         {
             base.Start();
-            mProxy.Start();
+            mIsStarted = true;
+            StartScan();
         }
 
         /// <summary>
@@ -127,7 +131,7 @@ namespace Cdy.Spider.IEC60870Driver
         public override void Stop()
         {
             base.Stop();
-            mProxy.Stop();
+            mIsStarted = false;
         }
 
         /// <summary>
@@ -135,22 +139,20 @@ namespace Cdy.Spider.IEC60870Driver
         /// </summary>
         protected override void ProcessTimerElapsed()
         {
-            if (!mData.Balanced)
+            if (mIsReady)
             {
-                mProxy.PollSingleSlave(mData.StationId);
-                mProxy.Run();
-            }
+                if (!mData.Balanced)
+                {
+                    mProxy.PollSingleSlave(mData.StationId);
+                }
 
-            if (mProxy.GetLinkLayerState() == lib60870.linklayer.LinkLayerState.AVAILABLE)
-            {
-   
-                mProxy.SendInterrogationCommand(CauseOfTransmission.ACTIVATION, mData.StationId, 20);
-            }
-            //else
-            //{
-            //    Console.WriteLine("Link layer: " + mProxy.GetLinkLayerState().ToString());
-            //}
+                //
+                if (mProxy.GetLinkLayerState() == lib60870.linklayer.LinkLayerState.AVAILABLE)
+                {
 
+                    mProxy.SendInterrogationCommand(CauseOfTransmission.ACTIVATION, mData.StationId, 20);
+                }
+            }
             base.ProcessTimerElapsed();
         }
 
@@ -164,10 +166,10 @@ namespace Cdy.Spider.IEC60870Driver
         {
             if (asdu.TypeId == TypeID.M_SP_NA_1)
             {
-
                 for (int i = 0; i < asdu.NumberOfElements; i++)
                 {
                     var val = (SinglePointInformation)asdu.GetElement(i);
+                    Console.WriteLine("  IOA: " + val.ObjectAddress + " value: " + val.Value);
                     UpdateValue(val.ObjectAddress.ToString(), val.Value);
                 }
             }
@@ -176,9 +178,9 @@ namespace Cdy.Spider.IEC60870Driver
 
                 for (int i = 0; i < asdu.NumberOfElements; i++)
                 {
-
                     var msv = (MeasuredValueScaledWithCP56Time2a)asdu.GetElement(i);
-                    UpdateValue(msv.ObjectAddress.ToString(), msv.ScaledValue,msv.Quality.EncodedValue);
+                    Console.WriteLine("  IOA: " + msv.ObjectAddress + " value: " + msv.ScaledValue.Value);
+                    UpdateValue(msv.ObjectAddress.ToString(), msv.ScaledValue.Value,msv.Quality.EncodedValue);
                 }
 
             }
@@ -187,6 +189,7 @@ namespace Cdy.Spider.IEC60870Driver
                 for (int i = 0; i < asdu.NumberOfElements; i++)
                 {
                     var mfv = (MeasuredValueShortWithCP56Time2a)asdu.GetElement(i);
+                    Console.WriteLine("  IOA: " + mfv.ObjectAddress + " value: " + mfv.Value);
                     UpdateValue(mfv.ObjectAddress.ToString(), mfv.Value, mfv.Quality.EncodedValue);
                 }
             }
@@ -195,6 +198,7 @@ namespace Cdy.Spider.IEC60870Driver
                 for (int i = 0; i < asdu.NumberOfElements; i++)
                 {
                     var val = (SinglePointWithCP56Time2a)asdu.GetElement(i);
+                    Console.WriteLine("  IOA: " + val.ObjectAddress + " value: " + val.Value);
                     UpdateValue(val.ObjectAddress.ToString(), val.Value, val.Quality.EncodedValue);
                 }
             }
@@ -203,6 +207,7 @@ namespace Cdy.Spider.IEC60870Driver
                 for (int i = 0; i < asdu.NumberOfElements; i++)
                 {
                     var mfv = (MeasuredValueShort)asdu.GetElement(i);
+                    Console.WriteLine("  IOA: " + mfv.ObjectAddress + " value: " + mfv.Value);
                     UpdateValue(mfv.ObjectAddress.ToString(), mfv.Value, mfv.Quality.EncodedValue);
                 }
             }
@@ -211,7 +216,8 @@ namespace Cdy.Spider.IEC60870Driver
                 for (int i = 0; i < asdu.NumberOfElements; i++)
                 {
                     var msv = (MeasuredValueScaled)asdu.GetElement(i);
-                    UpdateValue(msv.ObjectAddress.ToString(), msv.ScaledValue, msv.Quality.EncodedValue);
+                    Console.WriteLine("  IOA: " + msv.ObjectAddress + " value: " + msv.ScaledValue.Value);
+                    UpdateValue(msv.ObjectAddress.ToString(), msv.ScaledValue.Value, msv.Quality.EncodedValue);
                 }
 
             }
@@ -220,16 +226,17 @@ namespace Cdy.Spider.IEC60870Driver
                 for (int i = 0; i < asdu.NumberOfElements; i++)
                 {
                     var msv = (MeasuredValueNormalizedWithoutQuality)asdu.GetElement(i);
+                    Console.WriteLine("  IOA: " + msv.ObjectAddress + " value: " + msv.NormalizedValue);
                     UpdateValue(msv.ObjectAddress.ToString(), msv.NormalizedValue);
                 }
 
             }
             else if (asdu.TypeId == TypeID.C_IC_NA_1)
             {
-                if (asdu.Cot == CauseOfTransmission.ACTIVATION_CON)
-                    Console.WriteLine((asdu.IsNegative ? "Negative" : "Positive") + "confirmation for interrogation command");
-                else if (asdu.Cot == CauseOfTransmission.ACTIVATION_TERMINATION)
-                    Console.WriteLine("Interrogation command terminated");
+                //if (asdu.Cot == CauseOfTransmission.ACTIVATION_CON)
+                //    Console.WriteLine((asdu.IsNegative ? "Negative" : "Positive") + "confirmation for interrogation command");
+                //else if (asdu.Cot == CauseOfTransmission.ACTIVATION_TERMINATION)
+                //    Console.WriteLine("Interrogation command terminated");
             }
             else
             {
@@ -292,6 +299,7 @@ namespace Cdy.Spider.IEC60870Driver
             if(result)
             {
                 mIsReady = true;
+                this.mComm.ClearBuffer();
             }
             else
             {
@@ -300,6 +308,32 @@ namespace Cdy.Spider.IEC60870Driver
             base.OnCommChanged(result);
         }
 
+
+        private Thread mScanThread;
+
+        private void StartScan()
+        {
+            mScanThread = new Thread(ScanProcess);
+            mScanThread.IsBackground = true;
+            mScanThread.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ScanProcess()
+        {
+
+            while (mIsStarted)
+            {
+                if (mIsReady)
+                {
+                    while (mComm.AvaiableLenght() > 0)
+                        mProxy.Run();
+                }
+                Thread.Sleep(1);
+            }
+        }
 
 
         /// <summary>
