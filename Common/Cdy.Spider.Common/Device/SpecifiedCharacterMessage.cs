@@ -32,8 +32,9 @@ namespace Cdy.Spider.Common
 
         public virtual bool CheckHeadBytesLegal(byte[] token)
         {
-            bool flag = this.HeadBytes == null;
-            return !flag;
+            //bool flag = this.HeadBytes == null;
+            //return !flag;
+            return this.HeadBytes != null;
         }
     }
 

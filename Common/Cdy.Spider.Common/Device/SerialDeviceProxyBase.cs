@@ -88,6 +88,29 @@ namespace Cdy.Spider.Common
         /// </summary>
         /// <param name="send"></param>
         /// <returns></returns>
+        public byte[] ReadFromCoreServer(IEnumerable<byte[]> send)
+        {
+            List<byte> list = new List<byte>();
+            foreach (byte[] arg in send)
+            {
+                byte[] operateResult = ReadFromCoreServer(arg);
+                if (operateResult == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    list.AddRange(operateResult);
+                }
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="send"></param>
+        /// <returns></returns>
         public virtual byte[] ReadFromCoreServer(byte[] send)
         {
             return this.ReadFromCoreServer(send, true, true);

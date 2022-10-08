@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -112,7 +113,12 @@ namespace Cdy.Spider.Common
         /// <returns></returns>
         public static int ExtractParameter(ref string address, string paraName, int defaultValue)
         {
-            return ExtractParameter(ref address, paraName);
+            var re = ExtractParameter(ref address, paraName,out bool res);
+            if(!res)
+            {
+                re = defaultValue;
+            }
+            return re;
         }
 
         /// <summary>
@@ -123,8 +129,7 @@ namespace Cdy.Spider.Common
         /// <param name="address">复杂的地址格式，比如：s=100;D100</param>
         /// <param name="paraName">等待提取的参数名称</param>
         /// <returns>解析后的参数结果内容</returns>
-        // Token: 0x06002340 RID: 9024 RVA: 0x000BA058 File Offset: 0x000B8258
-        public static int ExtractParameter(ref string address, string paraName)
+        public static int ExtractParameter(ref string address, string paraName,out bool res)
         {
             int result =default(int);
             try
@@ -140,7 +145,10 @@ namespace Cdy.Spider.Common
             }
             catch (Exception)
             {
+                res = false;
+                return -1;
             }
+            res = true;
             return result;
         }
 
@@ -153,6 +161,39 @@ namespace Cdy.Spider.Common
         public static byte[] BuildAsciiBytesFrom(byte value)
         {
             return Encoding.ASCII.GetBytes(value.ToString("X2"));
+        }
+
+        /// <summary>
+        /// 从short构建一个ASCII格式的数据内容<br />
+        /// Constructing an ASCII-formatted data content from a short
+        /// </summary>
+        /// <param name="value">数据</param>
+        /// <returns>ASCII格式的字节数组</returns>
+        public static byte[] BuildAsciiBytesFrom(short value)
+        {
+            return Encoding.ASCII.GetBytes(value.ToString("X4"));
+        }
+
+        /// <summary>
+        /// 从ushort构建一个ASCII格式的数据内容<br />
+        /// Constructing an ASCII-formatted data content from ushort
+        /// </summary>
+        /// <param name="value">数据</param>
+        /// <returns>ASCII格式的字节数组</returns>
+        public static byte[] BuildAsciiBytesFrom(ushort value)
+        {
+            return Encoding.ASCII.GetBytes(value.ToString("X4"));
+        }
+
+        /// <summary>
+        /// 从uint构建一个ASCII格式的数据内容<br />
+        /// Constructing an ASCII-formatted data content from uint
+        /// </summary>
+        /// <param name="value">数据</param>
+        /// <returns>ASCII格式的字节数组</returns>
+        public static byte[] BuildAsciiBytesFrom(uint value)
+        {
+            return Encoding.ASCII.GetBytes(value.ToString("X8"));
         }
 
         /// <summary>
@@ -913,6 +954,391 @@ namespace Cdy.Spider.Common
                 }
             }
             return result;
+        }
+
+
+        /// <summary>
+        /// 根据传入的原始字节数组，计算和校验信息，可以指定起始的偏移地址和尾部的字节数量信息<br />
+        /// Calculate and check the information according to the incoming original byte array, you can specify the starting offset address and the number of bytes at the end
+        /// </summary>
+        /// <param name="buffer">原始字节数组信息</param>
+        /// <param name="headCount">起始的偏移地址信息</param>
+        /// <param name="lastCount">尾部的字节数量信息</param>
+        /// <returns>和校验的结果</returns>
+        public static int CalculateAcc(byte[] buffer, int headCount, int lastCount)
+        {
+            int num = 0;
+            for (int i = headCount; i < buffer.Length - lastCount; i++)
+            {
+                num += (int)buffer[i];
+            }
+            return num;
+        }
+
+        /// <summary>
+        /// 计算数据的和校验，并且输入和校验的值信息<br />
+        /// Calculate the sum check of the data, and enter the value information of the sum check
+        /// </summary>
+        /// <param name="buffer">原始字节数组信息</param>
+        /// <param name="headCount">起始的偏移地址信息</param>
+        /// <param name="lastCount">尾部的字节数量信息</param>
+        public static void CalculateAccAndFill(byte[] buffer, int headCount, int lastCount)
+        {
+            byte b = (byte)CalculateAcc(buffer, headCount, lastCount);
+            Encoding.ASCII.GetBytes(b.ToString("X2")).CopyTo(buffer, buffer.Length - lastCount);
+        }
+
+        /// <summary>
+        /// 计算数据的和校验，并且和当前已经存在的和校验信息进行匹配，返回是否匹配成功<br />
+        /// Calculate the sum check of the data, and match it with the existing sum check information, and return whether the match is successful
+        /// </summary>
+        /// <param name="buffer">原始字节数组信息</param>
+        /// <param name="headCount">起始的偏移地址信息</param>
+        /// <param name="lastCount">尾部的字节数量信息</param>
+        /// <returns>和校验是否检查通过</returns>
+        public static bool CalculateAccAndCheck(byte[] buffer, int headCount, int lastCount)
+        {
+            return ((byte)CalculateAcc(buffer, headCount, lastCount)).ToString("X2") == Encoding.ASCII.GetString(buffer, buffer.Length - lastCount, 2);
+        }
+
+
+        /// <summary>
+        /// 获取地址信息的位索引，在地址最后一个小数点的位置
+        /// </summary>
+        /// <param name="address">地址信息</param>
+        /// <returns>位索引的位置</returns>
+        // Token: 0x06002345 RID: 9029 RVA: 0x000BA430 File Offset: 0x000B8630
+        public static int GetBitIndexInformation(ref string address)
+        {
+            int result = 0;
+            int num = address.LastIndexOf('.');
+            bool flag = num > 0 && num < address.Length - 1;
+            if (flag)
+            {
+                string text = address.Substring(num + 1);
+                bool flag2 = text.Contains("A") || text.Contains("B") || text.Contains("C") || text.Contains("D") || text.Contains("E") || text.Contains("F");
+                if (flag2)
+                {
+                    result = Convert.ToInt32(text, 16);
+                }
+                else
+                {
+                    result = Convert.ToInt32(text);
+                }
+                address = address.Substring(0, num);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 切割当前的地址数据信息，根据读取的长度来分割成多次不同的读取内容，需要指定地址，总的读取长度，切割读取长度<br />
+        /// Cut the current address data information, and divide it into multiple different read contents according to the read length. 
+        /// You need to specify the address, the total read length, and the cut read length
+        /// </summary>
+        /// <param name="address">整数的地址信息</param>
+        /// <param name="length">读取长度信息</param>
+        /// <param name="segment">切割长度信息</param>
+        /// <returns>切割结果</returns>
+        public static Tuple<int[], int[]> SplitReadLength(int address, ushort length, ushort segment)
+        {
+            int[] array = SplitIntegerToArray((int)length, (int)segment);
+            int[] array2 = new int[array.Length];
+            for (int i = 0; i < array2.Length; i++)
+            {
+                bool flag = i == 0;
+                if (flag)
+                {
+                    array2[i] = address;
+                }
+                else
+                {
+                    array2[i] = array2[i - 1] + array[i - 1];
+                }
+            }
+            return new Tuple<int[], int[]>(array2, array);
+        }
+
+        /// <summary>
+        /// 来校验对应的接收数据的CRC校验码，默认多项式码为0xA001<br />
+        /// To verify the CRC check code corresponding to the received data, the default polynomial code is 0xA001
+        /// </summary>
+        /// <param name="value">需要校验的数据，带CRC校验码</param>
+        /// <returns>返回校验成功与否</returns>
+        public static bool CheckCRC16(byte[] value)
+        {
+            return CheckCRC16(value, 160, 1);
+        }
+
+        /// <summary>
+        /// 指定多项式码来校验对应的接收数据的CRC校验码<br />
+        /// Specifies a polynomial code to validate the corresponding CRC check code for the received data
+        /// </summary>
+        /// <param name="value">需要校验的数据，带CRC校验码</param>
+        /// <param name="CH">多项式码高位</param>
+        /// <param name="CL">多项式码低位</param>
+        /// <returns>返回校验成功与否</returns>
+        public static bool CheckCRC16(byte[] value, byte CH, byte CL)
+        {
+            bool flag = value == null;
+            bool result;
+            if (flag)
+            {
+                result = false;
+            }
+            else
+            {
+                bool flag2 = value.Length < 2;
+                if (flag2)
+                {
+                    result = false;
+                }
+                else
+                {
+                    int num = value.Length;
+                    byte[] array = new byte[num - 2];
+                    Array.Copy(value, 0, array, 0, array.Length);
+                    byte[] array2 = CRC16(array, CH, CL, byte.MaxValue, byte.MaxValue);
+                    bool flag3 = array2[num - 2] == value[num - 2] && array2[num - 1] == value[num - 1];
+                    result = flag3;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取对应的数据的CRC校验码，默认多项式码为0xA001<br />
+        /// Get the CRC check code of the corresponding data, the default polynomial code is 0xA001
+        /// </summary>
+        /// <param name="value">需要校验的数据，不包含CRC字节</param>
+        /// <returns>返回带CRC校验码的字节数组，可用于串口发送</returns>
+        public static byte[] CRC16(byte[] value)
+        {
+            return CRC16(value, 160, 1, byte.MaxValue, byte.MaxValue);
+        }
+
+        /// <summary>
+        /// 通过指定多项式码来获取对应的数据的CRC校验码<br />
+        /// The CRC check code of the corresponding data is obtained by specifying the polynomial code
+        /// </summary>
+        /// <param name="value">需要校验的数据，不包含CRC字节</param>
+        /// <param name="CL">多项式码地位</param>
+        /// <param name="CH">多项式码高位</param>
+        /// <param name="preH">预置的高位值</param>
+        /// <param name="preL">预置的低位值</param>
+        /// <returns>返回带CRC校验码的字节数组，可用于串口发送</returns>
+        public static byte[] CRC16(byte[] value, byte CH, byte CL, byte preH = 255, byte preL = 255)
+        {
+            byte[] array = new byte[value.Length + 2];
+            value.CopyTo(array, 0);
+            byte b = preL;
+            byte b2 = preH;
+            for (int i = 0; i < value.Length; i++)
+            {
+                b ^= value[i];
+                for (int j = 0; j <= 7; j++)
+                {
+                    byte b3 = b2;
+                    byte b4 = b;
+                    b2 = (byte)(b2 >> 1);
+                    b = (byte)(b >> 1);
+                    //bool flag = (b3 & 1) == 1;
+                    if ((b3 & 1) == 1)
+                    {
+                        b |= 128;
+                    }
+                    //bool flag2 = (b4 & 1) == 1;
+                    if ((b4 & 1) == 1)
+                    {
+                        b2 ^= CH;
+                        b ^= CL;
+                    }
+                }
+            }
+            array[array.Length - 2] = b;
+            array[array.Length - 1] = b2;
+            return array;
+        }
+
+        /// <summary>
+        /// 通过指定多项式码来获取对应的数据的CRC校验码<br />
+        /// The CRC check code of the corresponding data is obtained by specifying the polynomial code
+        /// </summary>
+        /// <param name="value">需要校验的数据，不包含CRC字节</param>
+        /// <param name="index">计算的起始字节索引</param>
+        /// <param name="length">计算的字节长度</param>
+        /// <param name="CL">多项式码地位</param>
+        /// <param name="CH">多项式码高位</param>
+        /// <param name="preH">预置的高位值</param>
+        /// <param name="preL">预置的低位值</param>
+        /// <returns>返回带CRC校验码的字节数组，可用于串口发送</returns>
+        public static byte[] CRC16Only(byte[] value, int index, int length, byte CH, byte CL, byte preH = 255, byte preL = 255)
+        {
+            byte b = preL;
+            byte b2 = preH;
+            for (int i = index; i < index + length; i++)
+            {
+                b ^= value[i];
+                for (int j = 0; j <= 7; j++)
+                {
+                    byte b3 = b2;
+                    byte b4 = b;
+                    b2 = (byte)(b2 >> 1);
+                    b = (byte)(b >> 1);
+                    //bool flag = (b3 & 1) == 1;
+                    if ((b3 & 1) == 1)
+                    {
+                        b |= 128;
+                    }
+                    //bool flag2 = (b4 & 1) == 1;
+                    if ((b4 & 1) == 1)
+                    {
+                        b2 ^= CH;
+                        b ^= CL;
+                    }
+                }
+            }
+            return new byte[]
+            {
+                b,
+                b2
+            };
+        }
+
+        /// <summary>
+        /// 获取对应的数据的LRC校验码<br />
+        /// Class for LRC validation that provides a standard validation method
+        /// </summary>
+        /// <param name="value">需要校验的数据，不包含LRC字节</param>
+        /// <returns>返回带LRC校验码的字节数组，可用于串口发送</returns>
+        public static byte[] LRC(byte[] value)
+        {
+            byte[] result;
+            if (value == null)
+            {
+                result = null;
+            }
+            else
+            {
+                int num = 0;
+                for (int i = 0; i < value.Length; i++)
+                {
+                    num += (int)value[i];
+                }
+                num %= 256;
+                num = 256 - num;
+                byte[] array = new byte[]
+                {
+                    (byte)num
+                };
+                result = SpliceArray<byte>(new byte[][]
+                {
+                    value,
+                    array
+                });
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 检查数据是否符合LRC的验证<br />
+        /// Check data for compliance with LRC validation
+        /// </summary>
+        /// <param name="value">等待校验的数据，是否正确</param>
+        /// <returns>是否校验成功</returns>
+        public static bool CheckLRC(byte[] value)
+        {
+            bool result;
+            if (value == null)
+            {
+                result = false;
+            }
+            else
+            {
+                int num = value.Length;
+                byte[] array = new byte[num - 1];
+                Array.Copy(value, 0, array, 0, array.Length);
+                byte[] array2 = LRC(array);
+                result = array2[num - 1] == value[num - 1];
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 将ascii格式的byte数组转换成原始的byte数组<br />
+        /// Converts an ASCII-formatted byte array to the original byte array
+        /// </summary>
+        /// <param name="inBytes">等待转换的byte数组</param>
+        /// <returns>转换后的数组</returns>
+        public static byte[] AsciiBytesToBytes(byte[] inBytes)
+        {
+            return HexStringToBytes(Encoding.ASCII.GetString(inBytes));
+        }
+
+        /// <summary>
+        /// 解析地址的附加 参数方法，比如你的地址是format=ABCD;D100，可以提取出"format"的值的同时，修改地址本身，如果"format"不存在的话，返回默认的 对象<br />
+        /// Parse the additional   parameter method of the address. For example, if your address is format=ABCD;D100,
+        /// you can extract the value of "format" and modify the address itself. If "format" does not exist, 
+        /// Return the default   object
+        /// </summary>
+        /// <param name="address">复杂的地址格式，比如：format=ABCD;D100</param>
+        /// <param name="defaultTransform">默认的数据转换信息</param>
+        /// <returns>解析后的参数结果内容</returns>
+        public static IByteTransform ExtractTransformParameter(ref string address, IByteTransform defaultTransform)
+        {
+            try
+            {
+                string text = "format";
+                Match match = Regex.Match(address, text + "=(ABCD|BADC|DCBA|CDAB);", RegexOptions.IgnoreCase);
+                if (!match.Success)
+                {
+                    return defaultTransform;
+                }
+                else
+                {
+                    string text2 = match.Value.Substring(text.Length + 1, match.Value.Length - text.Length - 2);
+                    DataFormat dataFormat = defaultTransform.DataFormat;
+                    string text3 = text2.ToUpper();
+                    string a = text3;
+                    if (!(a == "ABCD"))
+                    {
+                        if (!(a == "BADC"))
+                        {
+                            if (!(a == "DCBA"))
+                            {
+                                if (a == "CDAB")
+                                {
+                                    dataFormat = DataFormat.CDAB;
+                                }
+                            }
+                            else
+                            {
+                                dataFormat = DataFormat.DCBA;
+                            }
+                        }
+                        else
+                        {
+                            dataFormat = DataFormat.BADC;
+                        }
+                    }
+                    else
+                    {
+                        dataFormat = DataFormat.ABCD;
+                    }
+                    address = address.Replace(match.Value, "");
+                    if (dataFormat != defaultTransform.DataFormat)
+                    {
+                        return defaultTransform.CreateByDateFormat(dataFormat);
+                    }
+                    else
+                    {
+                        return defaultTransform;
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

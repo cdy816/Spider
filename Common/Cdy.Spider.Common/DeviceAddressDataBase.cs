@@ -52,6 +52,15 @@ namespace Cdy.Spider.Common
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="address"></param>
+        public virtual void Parse(string address)
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <returns></returns>
         public override string ToString()
         {

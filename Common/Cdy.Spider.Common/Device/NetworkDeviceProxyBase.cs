@@ -80,6 +80,29 @@ namespace Cdy.Spider.Common
         /// </summary>
         /// <param name="send"></param>
         /// <returns></returns>
+        public byte[] ReadFromCoreServer(IEnumerable<byte[]> send)
+        {
+            List<byte> list = new List<byte>();
+            foreach (byte[] arg in send)
+            {
+                byte[] operateResult = ReadFromCoreServer(arg);
+                if (operateResult==null)
+                {
+                    return null;
+                }
+                else
+                {
+                    list.AddRange(operateResult);
+                }
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="send"></param>
+        /// <returns></returns>
         public virtual byte[] ReadFromCoreServer(byte[] send)
         {
             return this.ReadFromCoreServer(send, true, true);
@@ -164,8 +187,8 @@ namespace Cdy.Spider.Common
             }
             else
             {
-                bool flag2 = netMessage.ProtocolHeadBytesLength < 0;
-                if (flag2)
+                //bool flag2 = netMessage.ProtocolHeadBytesLength < 0;
+                if (netMessage.ProtocolHeadBytesLength < 0)
                 {
                     byte[] bytes = BitConverter.GetBytes(netMessage.ProtocolHeadBytesLength);
                     int num = (int)(bytes[3] & 15);

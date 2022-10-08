@@ -1,0 +1,31 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:control="clr-namespace:Cdy.Spider.DevelopCommon;assembly=Cdy.Spider.DevelopCommon"
+    xmlns:local="clr-namespace:Cdy.Spider.DeltaDriver.Develop">
+    <DataTemplate DataType="{x:Type local:DeltaSerialDriverDevelopViewModel}">
+        <local:DeltaSerialDriverDevelopView />
+    </DataTemplate>
+    <local:DeltaAreasProvider x:Key="ap" />
+    <DataTemplate DataType="{x:Type local:DeltaRegistorConfigModel}">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <control:AutoCompleteTextBox Provider="{StaticResource ap}" SuggestionBackground="#5F000000" Text="{Binding Registor,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" Foreground="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" BorderThickness="0,0,1,0" VerticalAlignment="Stretch" Margin="0,-1" Padding="3,2,0,0"/>
+            <Button Grid.Column="1" Command="{Binding HelpCommand}" Width="20" Height="20" Padding="0" BorderThickness="0"  ToolTipService.BetweenShowDelay="200" ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="10000" >
+                <Button.Content>
+                    <Grid Width="14" Height="14">
+                        <Ellipse Fill="DarkOrange" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <TextBlock Text="?" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </Button.Content>
+                <Button.ToolTip>
+                    <TextBlock Text="{local:ResMarker StringTagInfo}" MaxWidth="240" TextWrapping="Wrap"  />
+                </Button.ToolTip>
+            </Button>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>
