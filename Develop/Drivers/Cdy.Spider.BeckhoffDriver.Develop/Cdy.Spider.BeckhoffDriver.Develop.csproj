@@ -8,11 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Cdy.Spider.DevelopCommon\Cdy.Spider.DevelopCommon.csproj" />
-    <ProjectReference Include="..\..\..\Run\Driver\PLC\Cdy.Spider.DeltaDriver\Cdy.Spider.DeltaDriver.csproj" />
+    <ProjectReference Include="..\..\..\Run\Driver\Cdy.Spider.CustomDriver\Cdy.Spider.CustomDriver.csproj" />
+    <ProjectReference Include="..\..\..\Run\Driver\PLC\Cdy.Spider.BeckhoffDriver\Cdy.Spider.BeckhoffDriver.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="DeltaSerialDriverDevelopView.xaml.cs">
+    <Compile Update="BeckhoffDriverDevelopView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -34,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="DeltaSerialDriverDevelopView.xaml">
+    <Page Update="BeckhoffDriverDevelopView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

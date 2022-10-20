@@ -72,6 +72,11 @@ namespace Cdy.Spider
         /// </summary>
         public virtual ValueWriteType ValueType { get { return ValueWriteType.Bytes; } }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommChannel2 RawChannel { get { return mComm; } }
+
         #endregion ...Properties...
 
         #region ... Methods    ...

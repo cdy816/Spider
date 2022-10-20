@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="Cdy.Spider.BeckhoffDriver.Develop.BeckhoffDriverDevelopView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Cdy.Spider.BeckhoffDriver.Develop"
+             xmlns:comm="clr-namespace:Cdy.Spider.Common;assembly=Cdy.Spider.DevelopCommon"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <comm:BoolInvertConvert x:Key="biv" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker WorkModel,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker ScanCircle,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="2"/>
+
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker UseAutoAmsNetID,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="3"/>
+
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker AmsPort,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="4"/>
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker SenderAMSNetId,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="5"/>
+
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker TargetAmsNetID,:}" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Grid.Row="6"/>
+
+        <ComboBox Grid.Column="1" HorizontalAlignment="Left" Margin="5,0,0,0" SelectedIndex="{Binding WorkModel,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="190">
+            <ComboBoxItem Content="{local:ResMarker Active}" />
+        </ComboBox>
+        <TextBox  Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="2" Text="{Binding ScanCircle,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        <Label Foreground="{DynamicResource Window.Forground}" Content="ms" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Margin="200,0,0,0"/>
+
+        <CheckBox x:Name="autonetid" IsChecked="{Binding UseAutoAmsNetID}"  Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" BorderThickness="1" BorderBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="3"  VerticalAlignment="Center" />
+
+        <TextBox IsEnabled="{Binding IsChecked,ElementName=autonetid}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="4" Text="{Binding AmsPort,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        <Label  Foreground="{DynamicResource Window.Forground}" Content="{local:ResMarker AmsPortInfo,:}" HorizontalAlignment="Left" Margin="200,0,0,0" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4"/>
+        
+        <TextBox  IsEnabled="{Binding IsChecked,ElementName=autonetid,Converter={StaticResource biv}}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="5" Text="{Binding SenderAMSNetId,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+
+        <TextBox  IsEnabled="{Binding IsChecked,ElementName=autonetid,Converter={StaticResource biv}}" Grid.Column="1" HorizontalAlignment="Left" Foreground="{DynamicResource Window.Forground}" CaretBrush="{DynamicResource Window.Forground}"  Background="#1FFFFFFF" Margin="5,0,0,0" Grid.Row="6" Text="{Binding TargetAmsNetID,Mode=TwoWay,UpdateSourceTrigger=LostFocus}" TextWrapping="Wrap" VerticalAlignment="Center" Width="190"/>
+        
+    </Grid>
+</UserControl>

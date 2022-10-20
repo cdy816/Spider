@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,6 +63,17 @@ namespace Cdy.Spider.TcpClient
         /// 
         /// </summary>
         public override string RemoteDescription => mData.ServerIp+":"+mData.Port;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public EndPoint LocalEndPoint
+        {
+            get
+            {
+                return mClient.LocalEndPoint;
+            }
+        }
 
         #endregion ...Properties...
 

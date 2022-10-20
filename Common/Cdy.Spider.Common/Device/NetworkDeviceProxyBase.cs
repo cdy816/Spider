@@ -145,28 +145,44 @@ namespace Cdy.Spider.Common
                         bool flag10 = newNetMessage != null && !newNetMessage.CheckHeadBytesLegal(Token.ToByteArray());
                         if(flag10)
                         {
+                            this.ExtraAfterReadFromCoreServer(null);
                             return null;
                         }
                         else
                         {
-                            return usePackAndUnpack ? this.UnpackResponseContent(array, operateResult2) : operateResult2;
+                            var re = usePackAndUnpack ? this.UnpackResponseContent(array, operateResult2) : operateResult2;
+                            this.ExtraAfterReadFromCoreServer(re);
+                            return re;
                         }
                     }
                     else
                     {
+                        this.ExtraAfterReadFromCoreServer(null);
                         return null;
                     }
                 }
                 else
                 {
+                    this.ExtraAfterReadFromCoreServer(new byte[0]);
                     return new byte[0];
                 }
             }
             else
             {
+                this.ExtraAfterReadFromCoreServer(null);
                 return null;
             }
 
+        }
+
+        /// <summary>
+        /// 和服务器交互完成的时候调用的方法，可以根据读写结果进行一些额外的操作，具体的操作需要根据实际的需求来重写实现<br />
+        /// The method called when the interaction with the server is completed can perform some additional operations based on the read and write results. 
+        /// The specific operations need to be rewritten according to actual needs.
+        /// </summary>
+        /// <param name="read">读取结果</param>
+        protected virtual void ExtraAfterReadFromCoreServer(byte[] read)
+        {
         }
 
         /// <summary>

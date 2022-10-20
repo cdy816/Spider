@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
-    <ProjectReference Include="..\Run\Driver\Cdy.Spider.ModbusDriver\Cdy.Spider.ModbusDriver.csproj" />
+    <ProjectReference Include="..\..\..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
+    <ProjectReference Include="..\..\Cdy.Spider.ModbusDriver\Cdy.Spider.ModbusDriver.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
