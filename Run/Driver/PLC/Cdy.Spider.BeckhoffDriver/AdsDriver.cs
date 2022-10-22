@@ -242,7 +242,7 @@ namespace Cdy.Spider.BeckhoffDriver
                         }
                         break;
                     case TagType.Short:
-                        var svals = mProxy.ReadInt16(vv.Address, (ushort)vv.SubAddress.Count, out result);
+                        var svals = mProxy.ReadInt16(vv.Address, (ushort)(vv.SubAddress.Count), out result);
                         if (svals != null && svals.Length == vv.SubAddress.Count && result)
                         {
                             for (int i = 0; i < svals.Length; i++)
@@ -252,7 +252,7 @@ namespace Cdy.Spider.BeckhoffDriver
                         }
                         break;
                     case TagType.UShort:
-                        var usvals = mProxy.ReadUInt16(vv.Address, (ushort)vv.SubAddress.Count, out result);
+                        var usvals = mProxy.ReadUInt16(vv.Address, (ushort)(vv.SubAddress.Count), out result);
                         if (usvals != null && usvals.Length == vv.SubAddress.Count && result)
                         {
                             for (int i = 0; i < usvals.Length; i++)
@@ -262,7 +262,7 @@ namespace Cdy.Spider.BeckhoffDriver
                         }
                         break;
                     case TagType.Int:
-                        var ivals = mProxy.ReadInt32(vv.Address, (ushort)vv.SubAddress.Count, out result);
+                        var ivals = mProxy.ReadInt32(vv.Address, (ushort)(vv.SubAddress.Count), out result);
                         if (ivals != null && ivals.Length == vv.SubAddress.Count && result)
                         {
                             for (int i = 0; i < ivals.Length; i++)

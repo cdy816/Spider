@@ -79,6 +79,7 @@ namespace Cdy.Spider.BeckhoffDriver
             this.sourceAMSNetId[4] = 1;
             this.sourceAMSNetId[5] = 1;
             base.ByteTransform = new RegularByteTransform();
+            WordLength = 2;
         }
 
         #endregion ...Constructor...
