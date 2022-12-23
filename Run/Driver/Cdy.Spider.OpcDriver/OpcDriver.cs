@@ -45,6 +45,34 @@ namespace Cdy.Spider
         /// <summary>
         /// 
         /// </summary>
+        public override void Init()
+        {
+            base.Init();
+            mCachTags.Clear();
+            foreach (var vv in Device.ListTags())
+            {
+                if (!string.IsNullOrEmpty(vv.DeviceInfo))
+                {
+                    string sname = vv.DeviceInfo;
+                    if (sname.LastIndexOf("||") > 0)
+                    {
+                        sname = sname.Substring(0, sname.LastIndexOf("||"));
+                    }
+                    if (mCachTags.ContainsKey(sname))
+                    {
+                        mCachTags[sname].Add(vv.Id);
+                    }
+                    else
+                    {
+                        mCachTags.Add(sname, new List<int>() { vv.Id });
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Prepare()
         {
             using (ChannelPrepareContext ctx = new ChannelPrepareContext())
