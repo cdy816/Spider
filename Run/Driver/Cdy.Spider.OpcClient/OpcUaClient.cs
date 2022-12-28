@@ -1768,7 +1768,7 @@ namespace Cdy.Spider.OpcClient
         private EventHandler m_ConnectComplete;
         private EventHandler<OpcUaStatusEventArgs> m_OpcStatusChange;
 
-        private Dictionary<string, Subscription> dic_subscriptions;        // 系统所有的节点信息
+        private Dictionary<string, Subscription> dic_subscriptions=new Dictionary<string, Subscription>();        // 系统所有的节点信息
 
         #endregion Private Fields
     }

@@ -99,11 +99,14 @@ namespace Cdy.Link.Mqtt
                 }
             };
 
-            options.Credentials = new MqttClientCredentials
+            if (mData.ServerUser != null)
             {
-                Username = mData.ServerUser,
-                Password = Encoding.UTF8.GetBytes(mData.ServerPassword)
-            };
+                options.Credentials = new MqttClientCredentials
+                {
+                    Username = mData.ServerUser,
+                    Password = mData.ServerPassword != null ? Encoding.UTF8.GetBytes(mData.ServerPassword) : null
+                };
+            }
 
             options.CleanSession = true;
             options.KeepAlivePeriod = TimeSpan.FromMilliseconds(5000);
