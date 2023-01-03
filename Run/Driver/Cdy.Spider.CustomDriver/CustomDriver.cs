@@ -133,7 +133,7 @@ $WriteValue$
             string scname = "C" + Guid.NewGuid().ToString().Replace("-", "");
             sb.Replace("$ClassName$", scname);
             sb.Replace("$VariableBody$", mData.VariableExpress);
-            sb.Replace("$OnReceiveDataBody$", mData.OnReceiveDataFunExpress);
+            sb.Replace("$OnReceiveDataBody$",string.IsNullOrEmpty(mData.OnReceiveDataFunExpress)?"return null;":mData.OnReceiveDataFunExpress);
             sb.Replace("$WriteValue$", mData.OnSetTagValueToDeviceFunExpress);
             sb.Replace("$ProcessTimerElapsed$", mData.OnTimerFunExpress);
 
