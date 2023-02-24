@@ -60,6 +60,17 @@
         <view:MonitorSettingView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type local:LoginViewModel}">
+        <view:LoginView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:ServerUserManagerViewModel}">
+        <view:ServerUserGroupDetailView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:ServerUserEditorViewModel}">
+        <view:ServerUserEditorView />
+    </DataTemplate>
 
     <BooleanToVisibilityConverter x:Key="bvc" />
     <!--<SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>

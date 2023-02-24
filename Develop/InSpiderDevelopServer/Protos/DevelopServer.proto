@@ -1,0 +1,203 @@
+syntax = "proto3";
+
+option csharp_namespace = "InSpiderDevelopServer";
+
+package InSpiderDevelopServer;
+
+service DevelopServer {
+ 
+  rpc Login (LoginRequest) returns (LoginResponse);
+
+  rpc Logout (CommonRequest) returns (BoolResponse);
+
+  rpc IsAdmin(CommonRequest) returns (BoolResponse);
+
+  //数据库开发服务权限操纵
+  //新建用户
+  rpc NewUser(NewUserRequest) returns (BoolResponse);
+
+  //修改当前用户密码
+  rpc ModifyPassword(ModifyPasswordRequest) returns (BoolResponse);
+
+  rpc ReNameUser(ReNameUserRequest) returns (BoolResponse);
+
+  //修改用户信息
+  rpc UpdateUser(UpdateUserRequest) returns (BoolResponse);
+
+    //更新用户密码
+  rpc UpdateUserPassword(UpdatePasswordRequest) returns (BoolResponse);
+
+  //删除用户
+  rpc RemoveUser(RemoveUserRequest) returns (BoolResponse);
+
+  //获取开发者用户
+  rpc GetUsers(CommonRequest) returns (GetUsersReplay);
+
+
+  rpc MachineList (CommonRequest) returns (MachineListResponse);
+
+  rpc MachineUpdate (MachineUpdateRequest) returns (BoolResponse);
+
+  rpc MachineReName (MachineReNameRequest) returns (BoolResponse);
+  
+  rpc MachineDelete (MachineDeleteRequest) returns (BoolResponse);
+
+  rpc MachineNew (MachineNewRequest) returns (MachineNewResponse);
+
+  rpc CanNewMachine (CommonRequest) returns (BoolResponse);
+
+  rpc Save(MachineCommonRequest) returns (BoolResponse);
+
+  rpc Cancel(MachineCommonRequest) returns (BoolResponse);
+
+  //是否运行
+  rpc IsMachineRunning(MachineCommonRequest) returns (BoolResponse);
+
+  //运行Machine
+  rpc Start(MachineCommonRequest) returns (BoolResponse);
+
+  //
+  rpc Stop(MachineCommonRequest) returns (BoolResponse);
+
+}
+
+message GetUsersReplay
+{
+    bool Result =1;
+    string ErroMessage=2;
+   repeated UserMessage Users=3;
+}
+
+message UserMessage
+{
+    string userName=1;
+    bool IsAdmin=2;
+    bool NewDatabase=3;
+    repeated string Machine=4;
+}
+
+//新建用户
+message NewUserRequest
+{
+   string Token =1;
+   string userName=2;
+   string password=3;
+   bool IsAdmin=4;
+   bool NewDatabasePermission=5;
+   repeated string Machine=6;
+}
+
+//更新用户密码
+message ModifyPasswordRequest
+{
+    string Token=1;
+    string userName=2;
+    string password=3;
+    string newpassword=4;
+}
+
+//修改用户信息
+message UpdateUserRequest
+{
+    string Token=1;
+    string userName=2;
+    bool IsAdmin=3;
+    bool NewDatabasePermission=4;
+    repeated string Database=5;
+}
+
+message ReNameUserRequest
+{
+   string Token =1;
+   string OldName=2;
+   string NewName=3;
+}
+
+message RemoveUserRequest
+{
+    string Token=1;
+    string userName=2;
+}
+
+//更新用户密码
+message UpdatePasswordRequest
+{
+    string Token=1;
+    string userName=2;
+    string password=3;
+}
+
+message LoginRequest
+{
+	string UserName=1;
+	string Password=2;
+}
+
+message LoginResponse
+{
+	string Token=1;
+}
+
+message BoolResponse
+{
+	bool Result=1;
+}
+
+message CommonRequest
+{
+	string Token=1;
+}
+
+message MachineCommonRequest
+{
+	string Token=1;
+	string Machine=2;
+}
+
+message MachineListResponse
+{
+	string Token=1;
+	repeated MachineItem Machines=2;
+}
+
+message MachineNewRequest
+{
+	string Token=1;
+	string Name=2;
+}
+
+message MachineNewResponse
+{
+	bool Result=1;
+	string Name=2;
+}
+
+message MachineUpdateRequest
+{
+	string Token=1;
+	MachineItem machine=2;
+}
+
+
+message MachineReNameRequest
+{
+	string Token=1;
+	string oldName=2;
+	string newName=3;
+}
+
+message MachineDeleteRequest
+{
+	string Token=1;
+	string Name=2;
+}
+
+message MachineItem
+{
+	string name=1;
+	string Api=2;
+	string Channel=3;
+	string Device=4;
+	string Driver=5;
+	string Link=6;
+}

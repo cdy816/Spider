@@ -84,6 +84,30 @@ namespace InSpiderDevelop
         /// 
         /// </summary>
         /// <param name="sfile"></param>
+        /// <returns></returns>
+        public LinkDocument LoadFromString(string sfile)
+        {
+            if (!string.IsNullOrEmpty(sfile))
+            {
+                string sname = System.IO.Path.GetTempFileName();
+                System.IO.File.WriteAllText(sname, sfile);
+                XElement xx = XElement.Load(sname);
+                foreach (var vv in xx.Elements())
+                {
+                    string tname = vv.Attribute("TypeName").Value;
+                    var asb = ServiceLocator.Locator.Resolve<ILinkFactory>()?.GetDevelopInstance(tname);
+                    asb.Load(vv);
+                    mLink = asb;
+                }
+                System.IO.File.Delete(sname);
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sfile"></param>
         public void Load(string sfile)
         {
             if (System.IO.File.Exists(sfile))
@@ -113,6 +137,23 @@ namespace InSpiderDevelop
             Save(sfile);
         }
 
+        public void SaveTo(string dir)
+        {
+            string sfile = System.IO.Path.Combine(dir, "Link.cfg");
+            CheckDirExistOrCreat(sfile);
+            Save(sfile);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        public void SaveWithString(string content)
+        {
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Link.cfg");
+            System.IO.File.WriteAllText(sfile, content);
+        }
+
         private void CheckDirExistOrCreat(string sfile)
         {
             string sdir = System.IO.Path.GetDirectoryName(sfile);
@@ -120,6 +161,20 @@ namespace InSpiderDevelop
             {
                 System.IO.Directory.CreateDirectory(sdir);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string SaveToString()
+        {
+            System.IO.MemoryStream sb = new System.IO.MemoryStream();
+            XElement xx = new XElement("Links");
+            if (mLink != null)
+                xx.Add(mLink.Save());
+            xx.Save(sb);
+            return Encoding.UTF8.GetString(sb.ToArray());
         }
 
         /// <summary>

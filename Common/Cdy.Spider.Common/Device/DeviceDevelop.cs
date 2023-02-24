@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Text;
 using System.Xml.Linq;
 
@@ -99,6 +100,12 @@ namespace Cdy.Spider
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsDirty { get; set; } = false;
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -111,7 +118,10 @@ namespace Cdy.Spider
             //if (this.Driver != null)
             //    this.Driver.Name = FullName;
             if (this.Driver != null)
+            {
                 mDriverManager?.ReName(this.Driver, FullName);
+                IsDirty = true;
+            }
         }
 
         /// <summary>
@@ -149,6 +159,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public XElement Save()
         {
+            IsDirty = false;
             return this.Data.SaveToXML();
         }
 

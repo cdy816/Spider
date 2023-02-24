@@ -24,21 +24,30 @@
     <None Remove="Image\devices.png" />
     <None Remove="Image\idevices.png" />
     <None Remove="Image\link.png" />
+    <None Remove="Image\log-out.png" />
     <None Remove="Image\max.png" />
     <None Remove="Image\maximize.png" />
     <None Remove="Image\minus.png" />
     <None Remove="Image\monitor.png" />
     <None Remove="Image\ok.png" />
+    <None Remove="Image\PROJECT.png" />
     <None Remove="Image\publish.png" />
+    <None Remove="Image\PublishAll.png" />
     <None Remove="Image\reload.png" />
     <None Remove="Image\remove.png" />
     <None Remove="Image\rowselect.png" />
     <None Remove="Image\save.png" />
+    <None Remove="Image\server-security.png" />
     <None Remove="Image\settings.png" />
     <None Remove="Image\spider.ico" />
     <None Remove="Image\Spider.jpg" />
     <None Remove="Image\spider.png" />
+    <None Remove="Image\start.png" />
+    <None Remove="Image\stop.png" />
+    <None Remove="Image\user.png" />
+    <None Remove="Image\UserSettings.png" />
     <None Remove="Image\文件夹.png" />
+    <None Remove="Image\登录.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,6 +78,7 @@
     <ProjectReference Include="..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\Run\Driver\Cdy.Spider.SerisePortClient\Cdy.Spider.SerisePortClient.csproj" />
     <ProjectReference Include="..\Drivers\Cdy.Spider.CalculateExpressEditor\Cdy.Spider.CalculateExpressEditor.csproj" />
+    <ProjectReference Include="..\InSpiderDevelopServerClientAPI\InSpiderDevelopServerClientAPI.csproj" />
     <ProjectReference Include="..\InSpiderDevelop\InSpiderDevelop.csproj" />
   </ItemGroup>
 
@@ -83,20 +93,29 @@
     <Resource Include="Image\devices.png" />
     <Resource Include="Image\idevices.png" />
     <Resource Include="Image\link.png" />
+    <Resource Include="Image\log-out.png" />
     <Resource Include="Image\max.png" />
     <Resource Include="Image\minus.png" />
     <Resource Include="Image\monitor.png" />
     <Resource Include="Image\ok.png" />
+    <Resource Include="Image\PROJECT.png" />
     <Resource Include="Image\publish.png" />
+    <Resource Include="Image\PublishAll.png" />
     <Resource Include="Image\reload.png" />
     <Resource Include="Image\remove.png" />
     <Resource Include="Image\rowselect.png" />
     <Resource Include="Image\save.png" />
+    <Resource Include="Image\server-security.png" />
     <Resource Include="Image\settings.png" />
     <Resource Include="Image\spider.ico" />
     <Resource Include="Image\Spider.jpg" />
     <Resource Include="Image\spider.png" />
+    <Resource Include="Image\start.png" />
+    <Resource Include="Image\stop.png" />
+    <Resource Include="Image\user.png" />
+    <Resource Include="Image\UserSettings.png" />
     <Resource Include="Image\文件夹.png" />
+    <Resource Include="Image\登录.png" />
   </ItemGroup>
 
   <ItemGroup>

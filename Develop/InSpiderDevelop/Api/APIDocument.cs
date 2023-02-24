@@ -83,6 +83,41 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="sval"></param>
+        /// <returns></returns>
+        public APIDocument LoadFromString(string sval)
+        {
+            try
+            {
+                string sname = System.IO.Path.GetTempFileName();
+                System.IO.File.WriteAllText(sname, sval);
+
+                XElement xx = XElement.Load(sname);
+                foreach (var vv in xx.Elements())
+                {
+                    string tname = vv.Attribute("TypeName").Value;
+                    var asb = ServiceLocator.Locator.Resolve<IApiFactory>()?.GetDevelopInstance(tname);
+                    asb.Load(vv);
+                    mApi = asb;
+                }
+
+                if (mApi == null)
+                {
+                    mApi = ServiceLocator.Locator.Resolve<IApiFactory>()?.GetDevelopInstance();
+                }
+
+                System.IO.File.Delete(sname);
+            }
+            catch
+            {
+
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="sfile"></param>
         public void Load(string sfile)
         {
@@ -111,6 +146,39 @@ namespace InSpiderDevelop
             string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg");
             CheckDirExistOrCreat(sfile);
             Save(sfile);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SaveTo(string dir)
+        {
+            string sfile = System.IO.Path.Combine(dir, "Api.cfg");
+            CheckDirExistOrCreat(sfile);
+            Save(sfile);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        public void SaveWithString(string content)
+        {
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg");
+            System.IO.File.WriteAllText(sfile, content);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string SaveToString()
+        {
+            System.IO.MemoryStream sb = new System.IO.MemoryStream();
+            XElement xx = new XElement("Apis");
+            xx.Add(mApi.Save());
+            xx.Save(sb);
+            return Encoding.UTF8.GetString(sb.ToArray());
         }
 
         private void CheckDirExistOrCreat(string sfile)

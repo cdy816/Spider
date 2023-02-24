@@ -32,6 +32,13 @@ namespace InSpiderDevelopWindow
             InitBd();
             this.SizeChanged += MainWindow_SizeChanged;
             this.StateChanged += MainWindow_StateChanged;
+            this.Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (ServerHelper.Helper.AutoLogin)
+                (this.DataContext as MainViewModel).AutoLogin();
         }
 
         private void MainWindow_StateChanged(object sender, EventArgs e)
@@ -60,6 +67,7 @@ namespace InSpiderDevelopWindow
 
         private void closeB_Click(object sender, RoutedEventArgs e)
         {
+            (this.DataContext as MainViewModel).CheckAndSave();
             this.Close();
         }
 

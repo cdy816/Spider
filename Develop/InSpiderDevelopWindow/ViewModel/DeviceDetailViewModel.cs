@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -125,6 +126,8 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private ProtocolItem mSelectProtocol;
 
+        private bool mIsDirty = false;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -151,6 +154,30 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
             /// 
             /// </summary>
+        public bool IsDirty
+        {
+            get
+            {
+                return mIsDirty;
+            }
+            set
+            {
+                if (mIsDirty != value)
+                {
+                    mIsDirty = value;
+                    if(mMachineModel!=null&&value)
+                    {
+                        mMachineModel.IsDirty = true;
+                    }
+                    OnPropertyChanged("IsDirty");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsMonitMode
         {
             get
@@ -216,6 +243,7 @@ namespace InSpiderDevelopWindow.ViewModel
                                     if (i < this.grid.SelectedItems.Count)
                                     {
                                         (this.grid.SelectedItems[i] as TagViewModel).DeviceInfo = vv;
+                                        IsDirty= true;
                                     }
                                     i++;
                                 }
@@ -258,6 +286,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 if (mSelectIndex != value)
                 {
                     mSelectIndex = value;
+                    CheckChannelAndDriverChanged();
                     OnPropertyChanged("SelectIndex");
                 }
             }
@@ -283,6 +312,7 @@ namespace InSpiderDevelopWindow.ViewModel
                                 if (i < this.grid.SelectedItems.Count)
                                 {
                                     (this.grid.SelectedItems[i] as TagViewModel).DatabaseName = vv;
+                                    IsDirty = true;
                                 }
                                 i++;
                             }
@@ -963,10 +993,13 @@ namespace InSpiderDevelopWindow.ViewModel
         }
 
 
-
+        private string mDriverConfigString = "";
+        private string mChannelConfigString = "";
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+
 
         /// <summary>
         /// 
@@ -1008,7 +1041,7 @@ namespace InSpiderDevelopWindow.ViewModel
             {
                 TagViewModel.mRegistorList = null;
             }
-
+            IsDirty = true;
             ResetTagEditMode();
         }
 
@@ -1048,6 +1081,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 ChannelConfig = null;
             }
             UpdateShareChannelText();
+            IsDirty = true;
         }
 
         /// <summary>
@@ -1118,7 +1152,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     //vdd.Data.ChannelName = string.Empty;
                     (vdd as DeviceDevelop).Channel = null;
                 }
-
+                IsDirty = true;
             }
             UpdateShareChannelText();
         }
@@ -1189,11 +1223,13 @@ namespace InSpiderDevelopWindow.ViewModel
             {
                 mChannelName = channel.TypeName;
                 ChannelConfig = channel.Config();
+                mChannelConfigString = channel.Save().ToString();
             }
             else
             {
                 ChannelConfig = null;
                 mChannelName = string.Empty;
+                mChannelConfigString = string.Empty;
             }
             OnPropertyChanged("ChannelName");
 
@@ -1215,12 +1251,15 @@ namespace InSpiderDevelopWindow.ViewModel
                 {
                     this.mSelectProtocol = this.ProtocolList[0];
                 }
+
+                mDriverConfigString = driver.Save().ToString();
             }
             else
             {
                 DriverConfig = null;
                 mProtocolName = string.Empty;
                 this.mSelectProtocol = this.ProtocolList[0];
+                mDriverConfigString = "";
             }
             OnPropertyChanged("ProtocolName");
             OnPropertyChanged("SelectProtocol");
@@ -1498,6 +1537,11 @@ namespace InSpiderDevelopWindow.ViewModel
                     ServiceLocator.Locator.Resolve<IProcessNotify>().ShowNotifyValue(((icount * 1.0 / tcount) * 100));
                 }
 
+                if(icount> 0)
+                {
+                    IsDirty= true;
+                }
+
                 if (haserro)
                 {
                     string errofile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(ofd.FileName), "erro.txt");
@@ -1556,6 +1600,7 @@ namespace InSpiderDevelopWindow.ViewModel
                                 break;
                         }
 
+                        IsDirty = true;
                     }
                 }
             }
@@ -1641,7 +1686,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     }
                 }
             }
-
+            IsDirty = true;
             TagCount -= icount;
 
         }
@@ -1710,6 +1755,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     CachTagModelId(vtag.Model);
                 }
             }
+            IsDirty = true;
             TagCount++;
         }
 
@@ -1797,6 +1843,7 @@ namespace InSpiderDevelopWindow.ViewModel
                 }
                 if (tm != null)
                     CurrentSelectTag = tm;
+                IsDirty = true;
             }
             TagCount += mCopyTags.Count;
         }
@@ -1833,6 +1880,36 @@ namespace InSpiderDevelopWindow.ViewModel
             mTags.Clear();
             mIsLoaded = false;
             this.grid = null;
+
+            CheckChannelAndDriverChanged();
+
+
+        }
+
+        public void CheckChannelAndDriverChanged()
+        {
+            var ndrivers = this.mDriver != null ? this.mDriver.Save().ToString() : "";
+            if (ndrivers != mDriverConfigString)
+            {
+                MachineModel.IsDirty = true;
+            }
+            else
+            {
+                string mchls = "";
+                var channel = mMachineModel.Channel.GetChannel(mModel.Data.ChannelName);
+                if (channel != null)
+                {
+                    mchls = channel.Save().ToString();
+                }
+                else
+                {
+                    mchls = "";
+                }
+                if (mchls != mChannelConfigString)
+                {
+                    MachineModel.IsDirty = true;
+                }
+            }
         }
 
         /// <summary>
@@ -2293,10 +2370,23 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public bool IsNew { get; set; }
 
+        private bool mIsChanged;
+
         /// <summary>
         /// 
         /// </summary>
-        public bool IsChanged { get; set; }
+        public bool IsChanged
+        {
+            get { return mIsChanged; }
+            set
+            {
+                mIsChanged = value;
+                if (Machine != null&&value)
+                {
+                    Machine.IsDirty = true;
+                }
+            }
+        }
 
         /// <summary>
         /// 

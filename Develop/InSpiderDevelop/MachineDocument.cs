@@ -10,6 +10,7 @@
 using Cdy.Spider;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace InSpiderDevelop
@@ -65,6 +66,12 @@ namespace InSpiderDevelop
         /// </summary>
         public LinkDocument Link { get; set; }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsDirty { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -111,9 +118,35 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        /// <param name="api"></param>
+        /// <param name="channel"></param>
+        /// <param name="device"></param>
+        /// <param name="driver"></param>
+        /// <param name="link"></param>
+        public bool UpdateWithString(string api,string channel,string device,string driver,string link)
         {
-            if (mIsLoad) return;
+            try
+            {
+                Api.SaveWithString(api);
+                Channel.SaveWithString(channel);
+                Device.SaveWithString(device);
+                Link.SaveWithString(link);
+                Driver.SaveWithString(driver);
+                Reload();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public MachineDocument Load()
+        {
+            if (mIsLoad) return this;
             mIsLoad = true;
             using (Context context = new Context())
             {
@@ -128,6 +161,7 @@ namespace InSpiderDevelop
                 Device.Load(context);
                 Link.Load();
             }
+            return this;
         }
 
         /// <summary>
@@ -177,6 +211,26 @@ namespace InSpiderDevelop
                 Device.Save();
             if (Link != null)
                 Link.Save();
+            IsDirty = false;
+        }
+
+        public void Save(string targetDir)
+        {
+            string sfile = System.IO.Path.Combine(targetDir);
+            if (!System.IO.Directory.Exists(sfile))
+            {
+                System.IO.Directory.CreateDirectory(sfile);
+            }
+            if (Api != null)
+                Api.SaveTo(sfile);
+            if (Channel != null)
+                Channel.SaveTo(sfile);
+            if (Driver != null)
+                Driver.SaveTo(sfile);
+            if (Device != null)
+                Device.SaveTo(sfile);
+            if (Link != null)
+                Link.SaveTo(sfile);
         }
 
         #endregion ...Methods...

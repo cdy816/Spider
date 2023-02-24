@@ -1,7 +1,9 @@
 ﻿using Cdy.Spider;
 using System;
+using System.IO.Pipes;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace InSpiderRun
 {
@@ -14,8 +16,11 @@ namespace InSpiderRun
             LogoHelper.Print();
             Console.WriteLine(Res.Get("WelcomeMsg"));
 
-            Console.CancelKeyPress += Console_CancelKeyPress;
-            AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
+            if (!Console.IsInputRedirected)
+            {
+                Console.CancelKeyPress += Console_CancelKeyPress;
+                AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
+            }
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -28,25 +33,33 @@ namespace InSpiderRun
                 mRunner.Name = args[1];
                 mRunner.Init();
                 mRunner.Start();
+                Console.Title = "InSpiderRun-" + args[1];
+                Task.Run(() => {
+                    StartMonitor(args.Length > 1 ? args[1] : "local");
+                });
             }
 
             while (!mIsClosed)
             {
                 Console.Write(">");
-                while (!Console.KeyAvailable)
+                if (!Console.IsInputRedirected)
                 {
-                    if (mIsClosed)
+                    while (!Console.KeyAvailable)
                     {
-                        break;
+                        if (mIsClosed)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(100);
                     }
-                    Thread.Sleep(100);
                 }
+
                 if (mIsClosed)
                 {
                     break;
                 }
 
-                string smd = Console.ReadLine();
+                string smd = Console.In.ReadLine();
                 string[] cmd = smd.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                 if (cmd.Length == 0) continue;
                 string scmd = cmd[0].ToLower();
@@ -89,6 +102,8 @@ namespace InSpiderRun
                                     mRunner.Start();
                                 }
                                 Console.Title = "InSpiderRun-" + prj;
+
+                                StartMonitor(prj);
                             }
                             else
                             {
@@ -164,6 +179,62 @@ namespace InSpiderRun
             }
             mIsClosed = true;
             e.Cancel = true;
+        }
+
+        private static void StartMonitor(string name)
+        {
+            try
+            {
+                while (!mIsClosed)
+                {
+                    try
+                    {
+                        using (var server = new NamedPipeServerStream("InSpider_"+name, PipeDirection.InOut))
+                        {
+                            server.WaitForConnection();
+                            while (!mIsClosed)
+                            {
+                                try
+                                {
+                                    if (!server.IsConnected) break;
+                                    var cmd = server.ReadByte();
+                                    if (cmd == 0)
+                                    {
+                                        if (mRunner != null && mRunner.IsStarted)
+                                        {
+                                            mRunner.Stop();
+                                        }
+                                        mIsClosed = true;
+                                        server.WriteByte(1);
+                                        server.FlushAsync();
+                                        break;
+                                        //退出系统
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Console.WriteLine(ex.Message);
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LoggerService.Service.Info("Programe", ex.Message);
+                //Console.WriteLine(ex.Message);
+            }
         }
     }
 }

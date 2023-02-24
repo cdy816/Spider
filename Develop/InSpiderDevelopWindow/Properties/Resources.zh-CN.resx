@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
     <value>添加</value>
@@ -210,6 +210,9 @@
   <data name="ImportMode" xml:space="preserve">
     <value>导入模式</value>
   </data>
+  <data name="IsAdmin" xml:space="preserve">
+    <value>超级用户</value>
+  </data>
   <data name="Keyword" xml:space="preserve">
     <value>关键字</value>
   </data>
@@ -222,8 +225,20 @@
   <data name="LinkType" xml:space="preserve">
     <value>级联协议</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>登录</value>
+  </data>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>登录失败!</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>注销</value>
+  </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>Spider 开发平台</value>
+  </data>
+  <data name="Modify" xml:space="preserve">
+    <value>修改</value>
   </data>
   <data name="Monitor" xml:space="preserve">
     <value>监视</value>
@@ -233,6 +248,9 @@
   </data>
   <data name="Name" xml:space="preserve">
     <value>名称</value>
+  </data>
+  <data name="NewProject" xml:space="preserve">
+    <value>新建工程</value>
   </data>
   <data name="NumberToBit" xml:space="preserve">
     <value>数字取位</value>
@@ -246,8 +264,17 @@
   <data name="Password" xml:space="preserve">
     <value>密码</value>
   </data>
+  <data name="PasswordConfirm" xml:space="preserve">
+    <value>确认密码</value>
+  </data>
+  <data name="PasswordNew" xml:space="preserve">
+    <value>新密码</value>
+  </data>
   <data name="Paste" xml:space="preserve">
     <value>粘贴</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>工程</value>
   </data>
   <data name="PropertyCopy" xml:space="preserve">
     <value>拷贝属性</value>
@@ -259,6 +286,9 @@
     <value>协议</value>
   </data>
   <data name="Publish" xml:space="preserve">
+    <value>发布</value>
+  </data>
+  <data name="PublishString" xml:space="preserve">
     <value>发布</value>
   </data>
   <data name="ReadWriteMode" xml:space="preserve">
@@ -300,6 +330,18 @@
   <data name="Server" xml:space="preserve">
     <value>服务器地址</value>
   </data>
+  <data name="ServerIp" xml:space="preserve">
+    <value>服务器</value>
+  </data>
+  <data name="ServerSecurity" xml:space="preserve">
+    <value>安全</value>
+  </data>
+  <data name="SetPasswordfail" xml:space="preserve">
+    <value>修改密码失败。</value>
+  </data>
+  <data name="SetPasswordSeccussful" xml:space="preserve">
+    <value>修改密码成功。</value>
+  </data>
   <data name="ShareChannel" xml:space="preserve">
     <value>通道共享</value>
   </data>
@@ -309,8 +351,17 @@
   <data name="SpiderTitle" xml:space="preserve">
     <value>欢迎来到 Spider 开发平台</value>
   </data>
+  <data name="Start" xml:space="preserve">
+    <value>启动</value>
+  </data>
+  <data name="Start_Tooltip" xml:space="preserve">
+    <value>运行工程</value>
+  </data>
   <data name="Stop" xml:space="preserve">
     <value>停止</value>
+  </data>
+  <data name="Stop_Tooltip" xml:space="preserve">
+    <value>停止工程</value>
   </data>
   <data name="StringFormate" xml:space="preserve">
     <value>字符串格式化</value>
@@ -332,6 +383,12 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>类型</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="UserList" xml:space="preserve">
+    <value>用户列表</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>用户名</value>

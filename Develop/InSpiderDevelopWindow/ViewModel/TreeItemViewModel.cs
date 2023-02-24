@@ -468,7 +468,7 @@ namespace InSpiderDevelopWindow
         #region ... Variables  ...
         private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mChildren = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
 
-        private bool mIsLoaded = false;
+        protected bool mIsLoaded = false;
 
         private ICollectionView mView;
 

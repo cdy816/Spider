@@ -29,6 +29,12 @@ namespace InSpiderDevelopWindow.ViewModel
 
         private string mSelectApiType;
 
+        private bool mIsChanged = false;
+
+        private MachineDocument mMachineModel;
+
+        private string mOldDataString;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -50,6 +56,28 @@ namespace InSpiderDevelopWindow.ViewModel
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsChanged
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                if (value)
+                {
+                    Parent.MachineModel.IsDirty = true;
+                    OnPropertyChanged("IsChanged");
+                }
+            }
+        }
+
+
 
         /// <summary>
         /// 
@@ -124,6 +152,7 @@ namespace InSpiderDevelopWindow.ViewModel
                     Parent.UpdateDataModel(this.mModel);
                     OnPropertyChanged("Model");
                     OnPropertyChanged("ConfigModel");
+                    IsChanged= true;
                 }
                 OnPropertyChanged("SelectApiType");
             }
@@ -134,7 +163,12 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public void Active()
         {
-            
+            if(this.Model!=null)
+            mOldDataString=this.Model.Save().ToString();
+            else
+            {
+                mOldDataString = "";
+            }
         }
 
         /// <summary>
@@ -142,7 +176,11 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public void DeActive()
         {
-            
+            string nstr = this.Model != null ? this.Model.Save().ToString() : "";
+            if (nstr != mOldDataString)
+            {
+                IsChanged = true;
+            }
         }
 
         #endregion ...Properties...

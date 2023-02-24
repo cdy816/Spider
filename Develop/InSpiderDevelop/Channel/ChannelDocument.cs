@@ -160,6 +160,27 @@ namespace InSpiderDevelop
             Load(sfile,context);
         }
 
+        public ChannelDocument LoadFromString(string sfile, Context context)
+        {
+            if (!string.IsNullOrEmpty(sfile))
+            {
+                string sname = System.IO.Path.GetTempFileName();
+                System.IO.File.WriteAllText(sname, sfile);
+                XElement xx = XElement.Load(sname);
+
+                foreach (var vv in xx.Elements())
+                {
+                    string tname = vv.Attribute("TypeName").Value;
+                    var asb = ServiceLocator.Locator.Resolve<ICommChannelFactory2>().GetDevelopIntance(tname);
+                    asb.Load(vv);
+                    AddChannel(asb);
+                }
+                context.Add(typeof(ICommChannelDevelopManager), this);
+                System.IO.File.Delete(sname);
+            }
+            return this;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -191,6 +212,25 @@ namespace InSpiderDevelop
             Save(sfile);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SaveTo(string dir)
+        {
+            string sfile = System.IO.Path.Combine(dir, "Channel.cfg");
+            Save(sfile);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        public void SaveWithString(string content)
+        {
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Channel.cfg");
+            System.IO.File.WriteAllText(sfile, content);
+        }
+
 
         private void CheckDirExistOrCreat(string sfile)
         {
@@ -199,6 +239,23 @@ namespace InSpiderDevelop
             {
                 System.IO.Directory.CreateDirectory(sdir);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string SaveToString()
+        {
+            System.IO.MemoryStream sb = new System.IO.MemoryStream();
+            XElement xx = new XElement("Channels");
+
+            foreach (var vv in mChannels)
+            {
+                xx.Add(vv.Value.Save());
+            }
+            xx.Save(sb);
+            return Encoding.UTF8.GetString(sb.ToArray());
         }
 
         /// <summary>

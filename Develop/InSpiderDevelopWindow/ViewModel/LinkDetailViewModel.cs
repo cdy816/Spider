@@ -18,7 +18,7 @@ namespace InSpiderDevelopWindow.ViewModel
     /// <summary>
     /// 
     /// </summary>
-    public class LinkDetailViewModel : ViewModelBase
+    public class LinkDetailViewModel : ViewModelBase, IModeSwitch
     {
 
         #region ... Variables  ...
@@ -28,6 +28,8 @@ namespace InSpiderDevelopWindow.ViewModel
         private List<string> mApis;
 
         private string mSelectApiType;
+
+        private string mOldDataString;
 
         #endregion ...Variables...
 
@@ -60,6 +62,27 @@ namespace InSpiderDevelopWindow.ViewModel
             get;
             set;
         }
+
+        /// <summary>
+            /// 
+            /// </summary>
+        public bool IsChanged
+        {
+            get
+            {
+                return false;
+            }
+            set
+            {
+                if (value)
+                {
+                    if(Parent!=null)
+                    Parent.MachineModel.IsDirty = true;
+                    OnPropertyChanged("IsChanged");
+                }
+            }
+        }
+
 
 
         /// <summary>
@@ -132,6 +155,7 @@ namespace InSpiderDevelopWindow.ViewModel
                         this.mModel = null;
                         Parent.UpdateDataModel(null);
                     }
+                    IsChanged= true;
                     OnPropertyChanged("Model");
                     OnPropertyChanged("ConfigModel");
                 }
@@ -139,9 +163,36 @@ namespace InSpiderDevelopWindow.ViewModel
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Active()
+        {
+            if (this.Model != null)
+                mOldDataString = this.Model.Save().ToString();
+            else
+            {
+                mOldDataString = "";
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void DeActive()
+        {
+            string nstr = this.Model != null ? this.Model.Save().ToString() : "";
+            if (nstr != mOldDataString)
+            {
+                IsChanged = true;
+            }
+        }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+
 
         #endregion ...Methods...
 

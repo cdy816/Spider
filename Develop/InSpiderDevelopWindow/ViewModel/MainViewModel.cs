@@ -23,6 +23,9 @@ using Cdy.Spider;
 using InSpiderDevelopWindow.ViewModel;
 using InSpiderDevelop;
 using System.Windows.Interop;
+using InSpiderDevelopServerClientAPI;
+using RoslynPad.Roslyn.Diagnostics;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace InSpiderDevelopWindow
 {
@@ -33,7 +36,7 @@ namespace InSpiderDevelopWindow
 
         //private ICommand mLoginCommand;
 
-        private string mDatabase = string.Empty;
+        private string mCurrentMachine = string.Empty;
 
         private ICommand mSaveCommand;
 
@@ -55,6 +58,10 @@ namespace InSpiderDevelopWindow
 
         private ICommand mMonitorSettingCommand;
 
+        private ICommand mStartCommand;
+
+        private ICommand mStopCommand;
+
         private TreeItemViewModel mCurrentSelectTreeItem;
 
         private System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel> mItems = new System.Collections.ObjectModel.ObservableCollection<TreeItemViewModel>();
@@ -75,6 +82,20 @@ namespace InSpiderDevelopWindow
 
         private SpiderInfoViewModel infoModel;
 
+        private ICommand mLogoutCommand;
+
+        private ICommand mLoginCommand;
+
+        private ICommand mPublishCommand;
+
+        private bool mIsLogin = false;
+
+        private bool mIsMachineRunning = false;
+
+        private System.Timers.Timer mCheckRunningTimer;
+
+        private ServerSecurityTreeViewModel sec;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -91,13 +112,130 @@ namespace InSpiderDevelopWindow
             ServiceLocator.Locator.Registor<IProcessNotify>(this);
             infoModel = new SpiderInfoViewModel();
             mContentViewModel = infoModel;
-            Init();
+            mCheckRunningTimer = new System.Timers.Timer(1000);
+          
+
+            DevelopServiceHelper.Helper.OfflineCallBack = new Action(() => {
+               
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Logout();
+                });
+
+                MessageBox.Show(Res.Get("serveroffline"));
+            });
+
+           
         }
 
-        
+
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        public ICommand PublishCommand
+        {
+            get { 
+                if(mPublishCommand == null)
+                {
+                    mPublishCommand = new RelayCommand(() => {
+                        Publish(mCurrentMahineDoc);
+                    }, () => { return IsLogin && mCurrentMahineDoc != null; });
+                }
+                return mPublishCommand; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsMachineRunning
+        {
+            get
+            {
+                return mIsMachineRunning;
+            }
+            set
+            {
+                if (mIsMachineRunning != value)
+                {
+                    mIsMachineRunning = value;
+                    OnPropertyChanged("IsMachineRunning");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand StartCommand
+        {
+            get
+            {
+                if (mStartCommand == null)
+                {
+                    mStartCommand = new RelayCommand(() => {
+                        CheckAndSaveMachine(mCurrentMahineDoc);
+                        IsMachineRunning = DevelopServiceHelper.Helper.StartMachine(mCurrentMachine);
+                    }, () => { return IsLogin && mCurrentMahineDoc!=null && !IsMachineRunning; });
+                }
+                return mStartCommand;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand StopCommand
+        {
+            get
+            {
+                if (mStopCommand == null)
+                {
+                    mStopCommand = new RelayCommand(() => {
+                        IsMachineRunning = !DevelopServiceHelper.Helper.StopMachine(mCurrentMachine);
+
+                    }, () => { return IsLogin && mCurrentMahineDoc != null && IsMachineRunning; });
+                }
+                return mStopCommand;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand LogoutCommand
+        {
+            get
+            {
+                if (mLogoutCommand == null)
+                {
+                    mLogoutCommand = new RelayCommand(() => {
+                        CheckAndSave();
+                        Logout();
+                    }, () => { return IsLogin; });
+                }
+                return mLogoutCommand;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand LoginCommand
+        {
+            get
+            {
+                if (mLoginCommand == null)
+                {
+                    mLoginCommand = new RelayCommand(() => {
+                        Login();
+                    });
+                }
+                return mLoginCommand;
+            }
+        }
 
         /// <summary>
         /// 
@@ -114,7 +252,7 @@ namespace InSpiderDevelopWindow
                         mm.UserName = MonitorParameter.Parameter.UserName;
                         mm.Password = MonitorParameter.Parameter.Password;
                         mm.ScanCircle = MonitorParameter.Parameter.ScanCircle;
-                        if(mm.ShowDialog().Value)
+                        if (mm.ShowDialog().Value)
                         {
                             MonitorParameter.Parameter.Server = mm.Server;
                             MonitorParameter.Parameter.UserName = mm.UserName;
@@ -122,7 +260,7 @@ namespace InSpiderDevelopWindow
                             MonitorParameter.Parameter.ScanCircle = mm.ScanCircle;
                             MonitorParameter.Parameter.Save();
                         }
-                    });
+                    }, () =>{ return IsLogin; });
                 }
                 return mMonitorSettingCommand;
             }
@@ -170,7 +308,7 @@ namespace InSpiderDevelopWindow
                     mMonitorCommand = new RelayCommand(() => {
                         (ContentViewModel as DeviceDetailViewModel).StartMonitCommand.Execute(null);
                         OnPropertyChanged("MonitorString");
-                    },()=> { return ContentViewModel is DeviceDetailViewModel; });
+                    },()=> { return IsLogin && ContentViewModel is DeviceDetailViewModel&& IsMachineRunning; });
                 }
                 return mMonitorCommand;
             }
@@ -208,7 +346,7 @@ namespace InSpiderDevelopWindow
                         {
                             Reload();
                         }
-                    });
+                    }, () => { return IsLogin; });
                 }
                 return mCancelCommand;
             }
@@ -223,7 +361,7 @@ namespace InSpiderDevelopWindow
         {
             get
             {
-                return string.IsNullOrEmpty(Database) ? Res.Get("MainwindowTitle"): Res.Get("MainwindowTitle")+"--"+this.Database;
+                return string.IsNullOrEmpty(CurrentMachine) ? Res.Get("MainwindowTitle"): Res.Get("MainwindowTitle")+"--"+this.CurrentMachine;
             }
         }
 
@@ -231,17 +369,17 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
-        public string Database
+        public string CurrentMachine
         {
             get
             {
-                return mDatabase;
+                return mCurrentMachine;
             }
             set
             {
-                if (mDatabase != value)
+                if (mCurrentMachine != value)
                 {
-                    mDatabase = value;
+                    mCurrentMachine = value;
                     OnPropertyChanged("Database");
                 }
             }
@@ -389,7 +527,7 @@ namespace InSpiderDevelopWindow
                             AddMachine();
                         }
 
-                    }, () => { return mCurrentSelectTreeItem==null || (mCurrentSelectTreeItem != null && mCurrentSelectTreeItem.CanAddChild()); });
+                    }, () => { return IsLogin && mCurrentSelectTreeItem ==null || (mCurrentSelectTreeItem != null && mCurrentSelectTreeItem.CanAddChild()); });
                 }
                 return mAddCommand;
             }
@@ -423,8 +561,9 @@ namespace InSpiderDevelopWindow
                 if(mSaveCommand==null)
                 {
                     mSaveCommand = new RelayCommand(() => {
-
-                        if (DevelopManager.Manager.Save())
+                        UpdateMachine();
+                        //mCurrentMahineDoc.IsDirty=false;
+                        if (DevelopServiceHelper.Helper.Save(CurrentMachine))
                         {
                             MessageBox.Show(Res.Get("SaveSucessfull"));
                         }
@@ -432,8 +571,7 @@ namespace InSpiderDevelopWindow
                         {
                             MessageBox.Show(Res.Get("Savefailed"), Res.Get("erro"), MessageBoxButton.OK, MessageBoxImage.Error);
                         }
-                        
-                    }, () => { return string.IsNullOrEmpty(Database); });
+                    }, () => { return IsLogin && !string.IsNullOrEmpty(CurrentMachine); });
                 }
                 return mSaveCommand;
             }
@@ -507,7 +645,47 @@ namespace InSpiderDevelopWindow
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsLogin
+        {
+            get
+            {
+                return mIsLogin;
+            }
+            set
+            {
+                if (mIsLogin != value)
+                {
+                    mIsLogin = value;
+                    OnPropertyChanged("IsLogin");
+                    OnPropertyChanged("IsLoginOut");
+                }
+            }
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsLoginOut
+        {
+            get
+            {
+                return !IsLogin;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return CurrentUserManager.Manager.UserName;
+            }
+        }
 
         #endregion ...Properties...
 
@@ -516,15 +694,276 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="machine"></param>
+        private void Publish(MachineDocument machine)
+        {
+            SaveFileDialog ofd = new SaveFileDialog();
+            ofd.Filter = "zip file|*.zip";
+            if (ofd.ShowDialog().Value)
+            {
+                string sname = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(ofd.FileName), "tmp" + DateTime.Now.Ticks);
+
+                if(!System.IO.Directory.Exists(sname))
+                    System.IO.Directory.CreateDirectory(sname);
+
+                CopyFile(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location),sname);
+
+                var sdata = System.IO.Path.Combine(sname, "Data",this.mCurrentMahineDoc.Name);
+                System.IO.Directory.CreateDirectory(sdata);
+
+                this.mCurrentMahineDoc.Save(sdata);
+
+                System.IO.Compression.ZipFile.CreateFromDirectory(sname, ofd.FileName);
+
+                System.IO.Directory.Delete(sname, true);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="todirectory"></param>
+        private void CopyFile(string directory,string todirectory)
+        {
+            foreach(var vv in System.IO.Directory.EnumerateFiles(directory))
+            {
+                if(IsFileFilter(vv))
+                System.IO.File.Copy(vv, System.IO.Path.Combine(todirectory,System.IO.Path.GetFileName(vv)), true);
+            }
+
+            foreach (var vv in System.IO.Directory.EnumerateDirectories(directory))
+            {
+                var dname = new DirectoryInfo(vv).Name;
+                if (IsDirectFilter(dname))
+                {
+                    string sname = System.IO.Path.Combine(todirectory, dname);
+                    if (!System.IO.Directory.Exists(sname))
+                    {
+                        System.IO.Directory.CreateDirectory(sname);
+                    }
+                    CopyFile(vv, sname);
+                }
+            }
+
+        }
+
+        private bool IsFileFilter(string sfile)
+        {
+            if (sfile.EndsWith(".Develop.dll") || sfile.EndsWith(".Develop.resources.dll") || sfile.EndsWith("_b") || sfile.EndsWith("Develop.cfg") || sfile.EndsWith(".pdb") || sfile.EndsWith(".xml") || sfile== "InSpiderDevelopWindow.dll" || sfile== "InSpiderStudioServer.exe") return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private bool IsDirectFilter(string name)
+        {
+            if (name == "Data" || name== "CustomTemplate"||name== "TagBrowserCach") return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MCheckRunningTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(mCurrentMachine))
+            {
+                var isrunning = DevelopServiceHelper.Helper.IsMachineRunning(mCurrentMachine);
+                Application.Current?.Dispatcher.BeginInvoke(new Action(() => {
+                    IsMachineRunning = isrunning;
+                }), null);
+            }
+        }
+
+        public void CheckAndSave()
+        {
+            if (CheckMachineIsDirty())
+            {
+                if (MessageBox.Show(Res.Get("saveprompt"), "",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    SaveAllMachine();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="doc"></param>
+        private void CheckAndSaveMachine(MachineDocument doc)
+        {
+            if(doc.IsDirty)
+            {
+                UpdateMachine(doc);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckMachineIsDirty()
+        {
+            foreach (var vv in DevelopManager.Manager.ListMachines())
+            {
+                if(vv.IsDirty)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void SaveAllMachine()
+        {
+            foreach (var vv in DevelopManager.Manager.ListMachines())
+            {
+                if (vv.IsDirty)
+                {
+                    UpdateMachine(vv);
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StartCheckDatabaseRunning()
+        {
+            mCheckRunningTimer.Elapsed += MCheckRunningTimer_Elapsed;
+            mCheckRunningTimer.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StopCheckDatabaseRunning()
+        {
+            mCheckRunningTimer.Elapsed -= MCheckRunningTimer_Elapsed;
+            mCheckRunningTimer.Stop();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Login()
+        {
+            LoginViewModel login = new LoginViewModel();
+            if (login.ShowDialog().Value)
+            {
+                CurrentUserManager.Manager.UserName = login.UserName;
+                CurrentUserManager.Manager.Password = login.Password;
+
+                MonitorParameter.Parameter.Server= "http://"+ login.Server+":23232";
+
+
+                ServerHelper.Helper.Database = CurrentMachine;
+                OnPropertyChanged("UserName");
+                OnPropertyChanged("MainwindowTitle");
+                IsLogin = true;
+
+                Init();
+                StartCheckDatabaseRunning();
+            }
+        }
+
+        public void AutoLogin()
+        {
+            LoginViewModel login = new LoginViewModel();
+            login.Server = ServerHelper.Helper.Server;
+            login.UserName = ServerHelper.Helper.UserName;
+            login.Password= ServerHelper.Helper.Password;
+            if(login.Login())
+            {
+                CurrentUserManager.Manager.UserName = login.UserName;
+                CurrentUserManager.Manager.Password = login.Password;
+
+                MonitorParameter.Parameter.Server = "http://" + login.Server + ":23232";
+
+
+                ServerHelper.Helper.Database = CurrentMachine;
+                OnPropertyChanged("UserName");
+                OnPropertyChanged("MainwindowTitle");
+                IsLogin = true;
+
+                Init();
+                StartCheckDatabaseRunning();
+            }
+        }
+
+        private void Logout()
+        {
+            IsLogin = false;
+            StopCheckDatabaseRunning();
+
+            CurrentUserManager.Manager.UserName = string.Empty;
+            OnPropertyChanged("UserName");
+            if (ContentViewModel != null)
+            {
+
+                ContentViewModel.Dispose();
+            }
+
+            ContentViewModel = infoModel;
+            CurrentMachine = string.Empty;
+
+           
+
+            mItems.Clear();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void AddMachine()
         {
             string sname = DevelopManager.Manager.ListMachinesNames().GetAvaiableName("project");
-            var mm = DevelopManager.Manager.NewMachine(sname);
-            var vmm = new MachineViewModel() { Model = mm,Parent=this };
-            mItems.Add(vmm);
-            vmm.IsExpanded = true;
-            vmm.IsSelected = true;
-            vmm.IsEdit = true;
+            sname = DevelopServiceHelper.Helper.NewMachine(sname) ;
+            if (!string.IsNullOrEmpty(sname))
+            {
+                var mm = DevelopManager.Manager.NewMachine(sname);
+                var vmm = new MachineViewModel() { Model = mm, Parent = this };
+                mItems.Add(vmm);
+                vmm.IsExpanded = true;
+                vmm.IsSelected = true;
+                vmm.IsEdit = true;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        public void UpdateMachine()
+        {
+            var model = DevelopManager.Manager.Machines[CurrentMachine];
+            UpdateMachine(model);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        private void UpdateMachine(MachineDocument model)
+        {
+            Dictionary<string, string> dtmp = new Dictionary<string, string>();
+            dtmp.Add("Api", model.Api.SaveToString());
+            dtmp.Add("Channel", model.Channel.SaveToString());
+            dtmp.Add("Device", model.Device.SaveToString());
+            dtmp.Add("Driver", model.Driver.SaveToString());
+            dtmp.Add("Link", model.Link.SaveToString());
+            if(DevelopServiceHelper.Helper.UpdateMachine(model.Name,dtmp))
+            {
+                model.IsDirty= false;
+            }
+
         }
 
         /// <summary>
@@ -534,9 +973,31 @@ namespace InSpiderDevelopWindow
         public void RemoveMachine(MachineViewModel model)
         {
             model.Parent = null;
-            DevelopManager.Manager.Remove(model.Name);
-            mItems.Remove(model);
+            if (DevelopServiceHelper.Helper.RemoveMachine(model.Name))
+            {
+                DevelopManager.Manager.Remove(model.Name);
+                mItems.Remove(model);
+            }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="oldName"></param>
+        /// <param name="newName"></param>
+        public bool RenameMachine(MachineViewModel model, string oldName,string newName)
+        {
+            if (DevelopServiceHelper.Helper.ReNameMachine(oldName,newName))
+            {
+                DevelopManager.Manager.ReName(oldName,newName);
+                return true;
+            }
+            return false;
+        }
+
+        private ProjectItemViewModel mProject;
+
 
         /// <summary>
         /// 
@@ -544,18 +1005,58 @@ namespace InSpiderDevelopWindow
         public void Init()
         {
             mItems.Clear();
-            ValueConvertManager.manager.Init();
-            DevelopManager.Manager.Load();
-            foreach(var vv in DevelopManager.Manager.ListMachines())
+
+            mProject = new ProjectItemViewModel() { Parent = this };
+
+            mItems.Add(mProject);
+
+            if (!ServerHelper.Helper.AutoLogin)
             {
-                mItems.Add(new MachineViewModel { Model = vv,Parent=this});
+                var sec = new ServerSecurityTreeViewModel();
+                sec.Children.Add(new ServerUserEditorTreeViewModel());
+                if (DevelopServiceHelper.Helper.IsAdmin())
+                {
+                    sec.Children.Add(new ServerUserManagerTreeViewModel());
+                }
+                mItems.Add(sec);
             }
 
-            if(mItems.Count>0)
+            ValueConvertManager.manager.Init();
+
+            DevelopManager.Manager.Clear();
+            try
             {
-                CurrentSelectTreeItem = mItems[0];
-                CurrentSelectTreeItem.IsExpanded = true;
-                CurrentSelectTreeItem.IsSelected = true;
+                foreach (var vv in DevelopServiceHelper.Helper.LoadMachines())
+                {
+                    MachineDocument md = new MachineDocument() { Name = vv.Key };
+                    md.Api = new APIDocument().LoadFromString(vv.Value["Api"]);
+                    using (Context context = new Context())
+                    {
+                        md.Driver = new DriverDocument().LoadFromString(vv.Value["Driver"], context);
+                        md.Channel = new ChannelDocument().LoadFromString(vv.Value["Channel"], context);
+                        md.Device = new DeviceDocument().LoadFromString(vv.Value["Device"], context);
+                        md.Link = new LinkDocument().LoadFromString(vv.Value["Link"]);
+                    }
+                    DevelopManager.Manager.Add(md);
+                }
+
+                foreach (var vv in DevelopManager.Manager.ListMachines())
+                {
+                    mProject.Children.Add(new MachineViewModel { Model = vv, Parent = this });
+                }
+
+                if (mItems.Count > 0)
+                {
+                    CurrentSelectTreeItem = mItems[0];
+                    CurrentSelectTreeItem.IsExpanded = true;
+                    CurrentSelectTreeItem.IsSelected = true;
+                }
+
+                mProject.IsExpanded= true;
+            }
+            catch
+            {
+
             }
         }
 
@@ -564,19 +1065,9 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public void Reload()
         {
-            mItems.Clear();
-            ValueConvertManager.manager.Init();
-            DevelopManager.Manager.ReLoad();
-            foreach (var vv in DevelopManager.Manager.ListMachines())
+            if (DevelopServiceHelper.Helper.Cancel())
             {
-                mItems.Add(new MachineViewModel { Model = vv, Parent = this });
-            }
-
-            if (mItems.Count > 0)
-            {
-                CurrentSelectTreeItem = mItems[0];
-                CurrentSelectTreeItem.IsExpanded = true;
-                CurrentSelectTreeItem.IsSelected = true;
+                Init();
             }
         }
 
@@ -597,7 +1088,34 @@ namespace InSpiderDevelopWindow
             {
                 (ContentViewModel as IModeSwitch).Active();
             }
+            GetCurrentMachine();
+        }
 
+        private MachineDocument mCurrentMahineDoc;
+
+        private void GetCurrentMachine()
+        {
+            var vv = GetToRoot(mCurrentSelectTreeItem);
+            if(vv is MachineViewModel)
+            {
+                CurrentMachine = vv.Name;
+                mCurrentMahineDoc = (vv as MachineViewModel).Model;
+            }
+            else
+            {
+                CurrentMachine = "";
+                mCurrentMahineDoc = null;
+            }
+        }
+
+        private TreeItemViewModel GetToRoot(TreeItemViewModel item)
+        {
+            if(item == null) return null;
+            if(item is MachineViewModel) return item;
+            else
+            {
+                return GetToRoot(item.Parent);
+            }
         }
 
 

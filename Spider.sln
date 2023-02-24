@@ -191,7 +191,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.BeckhoffDriver",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.DeltaDriver", "Run\Driver\PLC\Cdy.Spider.DeltaDriver\Cdy.Spider.DeltaDriver.csproj", "{37C206F1-8F06-458E-9FA4-C19708C87C78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cdy.Spider.BeckhoffDriver.Develop", "Develop\Drivers\Cdy.Spider.BeckhoffDriver.Develop\Cdy.Spider.BeckhoffDriver.Develop.csproj", "{86EF6A27-6B97-4369-A0A1-9DABE1C42BC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cdy.Spider.BeckhoffDriver.Develop", "Develop\Drivers\Cdy.Spider.BeckhoffDriver.Develop\Cdy.Spider.BeckhoffDriver.Develop.csproj", "{86EF6A27-6B97-4369-A0A1-9DABE1C42BC7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InSpiderDevelopServer", "Develop\InSpiderDevelopServer\InSpiderDevelopServer.csproj", "{A36E7A9E-3C71-4A88-9A89-BFBEC62CBCC2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InSpiderStudioServer", "Develop\InSpiderStudioServer\InSpiderStudioServer.csproj", "{7629BE53-4604-42E3-B09F-8B74B34EECFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InSpiderDevelopServerClientAPI", "Develop\InSpiderDevelopServerClientAPI\InSpiderDevelopServerClientAPI.csproj", "{F194F92F-E58C-4913-908A-33D2D9069C54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -523,6 +529,18 @@ Global
 		{86EF6A27-6B97-4369-A0A1-9DABE1C42BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86EF6A27-6B97-4369-A0A1-9DABE1C42BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86EF6A27-6B97-4369-A0A1-9DABE1C42BC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A36E7A9E-3C71-4A88-9A89-BFBEC62CBCC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A36E7A9E-3C71-4A88-9A89-BFBEC62CBCC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A36E7A9E-3C71-4A88-9A89-BFBEC62CBCC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A36E7A9E-3C71-4A88-9A89-BFBEC62CBCC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7629BE53-4604-42E3-B09F-8B74B34EECFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7629BE53-4604-42E3-B09F-8B74B34EECFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7629BE53-4604-42E3-B09F-8B74B34EECFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7629BE53-4604-42E3-B09F-8B74B34EECFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F194F92F-E58C-4913-908A-33D2D9069C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F194F92F-E58C-4913-908A-33D2D9069C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F194F92F-E58C-4913-908A-33D2D9069C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F194F92F-E58C-4913-908A-33D2D9069C54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -620,6 +638,9 @@ Global
 		{B8E432C8-8050-4632-BF19-F95864A3ABDD} = {3D7302D7-8174-4501-BC3B-D2308DF0703D}
 		{37C206F1-8F06-458E-9FA4-C19708C87C78} = {3D7302D7-8174-4501-BC3B-D2308DF0703D}
 		{86EF6A27-6B97-4369-A0A1-9DABE1C42BC7} = {CB000681-7DA8-4BD6-9169-CD9ACE6B8B34}
+		{A36E7A9E-3C71-4A88-9A89-BFBEC62CBCC2} = {A65432DA-5927-478E-8F2C-CD211FFA37F9}
+		{7629BE53-4604-42E3-B09F-8B74B34EECFE} = {A65432DA-5927-478E-8F2C-CD211FFA37F9}
+		{F194F92F-E58C-4913-908A-33D2D9069C54} = {A65432DA-5927-478E-8F2C-CD211FFA37F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}

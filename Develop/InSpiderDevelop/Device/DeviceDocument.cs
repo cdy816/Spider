@@ -100,6 +100,7 @@ namespace InSpiderDevelop
             {
                 return vv;
             }
+            IsDirty=true;
             return vv;
         }
 
@@ -176,6 +177,7 @@ namespace InSpiderDevelop
                 mDevices.Remove(Device.FullName);
                 Device.Name = newName;
                 mDevices.Add(Device.FullName, Device);
+                IsDirty = true;
                 return true;
             }
             return false;
@@ -196,6 +198,7 @@ namespace InSpiderDevelop
             if (!mDevices.ContainsKey(Device.FullName))
             {
                 mDevices.Add(Device.FullName, Device);
+                IsDirty = true;
                 return true;
             }
             return false;
@@ -211,6 +214,7 @@ namespace InSpiderDevelop
             if (mDevices.ContainsKey(name))
             {
                 mDevices.Remove(name);
+                IsDirty = true;
             }
         }
 
@@ -368,11 +372,13 @@ namespace InSpiderDevelop
             if(!mDeviceGroups.ContainsKey(group.FullName))
             {
                 mDeviceGroups.Add(group.FullName, group);
+                IsDirty = true;
                 return true;
             }
             else
             {
                 group.Parent = null;
+                IsDirty = true;
                 return false;
             }
         }
@@ -520,7 +526,7 @@ namespace InSpiderDevelop
         {
             this.mDevices.Clear();
             this.mDeviceGroups.Clear();
-
+            IsDirty = false;
             Load(context);
         }
 
@@ -537,18 +543,44 @@ namespace InSpiderDevelop
         /// 
         /// </summary>
         /// <param name="sfile"></param>
+        /// <param name="context"></param>
+        public DeviceDocument LoadFromString(string sfile, Context context)
+        {
+            if (!string.IsNullOrEmpty(sfile))
+            {
+                string sname = System.IO.Path.GetTempFileName();
+                System.IO.File.WriteAllText(sname, sfile);
+                XElement xx = XElement.Load(sname);
+                foreach (var vv in xx.Element("Devices").Elements())
+                {
+                    DeviceDevelop asb = new DeviceDevelop();
+                    asb.Load(vv, context);
+                    AddDevice(asb);
+                }
+                System.IO.File.Delete(sname);
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sfile"></param>
         public void Load(string sfile, Context context)
         {
             if (System.IO.File.Exists(sfile))
             {
-                XElement xx = XElement.Load(sfile);
+
+               XElement xx = XElement.Load(sfile);
+
                 foreach (var vv in xx.Element("Devices").Elements())
                 {
                     DeviceDevelop asb = new DeviceDevelop();
                     asb.Load(vv,context);
                     AddDevice(asb);
                 }
-              
+
+          
             }
         }
 
@@ -560,6 +592,47 @@ namespace InSpiderDevelop
             string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
             CheckDirExistOrCreat(sfile);
             Save(sfile);
+            IsDirty = false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SaveTo(string dir)
+        {
+            string sfile = System.IO.Path.Combine(dir, "Device.cfg");
+            CheckDirExistOrCreat(sfile);
+            Save(sfile);
+            IsDirty = false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
+        public void SaveWithString(string content)
+        {
+            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
+            System.IO.File.WriteAllText(sfile, content);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string SaveToString()
+        {
+            System.IO.MemoryStream sb = new System.IO.MemoryStream();
+            XElement xx = new XElement("DeviceDocument");
+            xx.SetAttributeValue("Name", this.Name);
+            var xe = new XElement("Devices");
+            foreach (var vv in mDevices)
+            {
+                xe.Add(vv.Value.Save());
+            }
+            xx.Add(xe);
+            xx.Save(sb);
+            return Encoding.UTF8.GetString(sb.ToArray());
         }
 
         /// <summary>
@@ -591,6 +664,7 @@ namespace InSpiderDevelop
             }
             xx.Add(xe);
             xx.Save(sfile);
+            IsDirty = false;
         }
 
 

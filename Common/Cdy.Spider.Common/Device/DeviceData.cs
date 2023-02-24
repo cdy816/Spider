@@ -50,6 +50,8 @@ namespace Cdy.Spider
         /// </summary>
         public string ChannelName { get; set; } = "";
 
+        public bool IsDirty { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -60,6 +62,7 @@ namespace Cdy.Spider
         /// <param name="tag"></param>
         public bool AddTag(Tagbase tag)
         {
+            IsDirty = true;
             return Tags.AddTag(tag);
         }
 
@@ -70,6 +73,7 @@ namespace Cdy.Spider
         /// <returns></returns>
         public bool UpdateOrAdd(Tagbase tag)
         {
+            IsDirty=true;
             return Tags.UpdateOrAdd(tag);
         }
 
@@ -79,6 +83,7 @@ namespace Cdy.Spider
         /// <param name="tag"></param>
         public bool AppendTag(Tagbase tag)
         {
+            IsDirty = true;
             return Tags.AppendTag(tag);
         }
 
@@ -88,6 +93,7 @@ namespace Cdy.Spider
         /// <param name="id"></param>
         public bool RemoveTag(int id)
         {
+            IsDirty = true;
             return Tags.RemoveTagById(id);
         }
 
@@ -97,6 +103,7 @@ namespace Cdy.Spider
         /// <param name="tag"></param>
         public bool RemoveTag(Tagbase tag)
         {
+            IsDirty = true;
             return Tags.RemoveTag(tag);
         }
 

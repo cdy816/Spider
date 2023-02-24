@@ -19,7 +19,7 @@ namespace InSpiderDevelopWindow.Properties {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -340,6 +340,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 IsAdmin 的本地化字符串。
+        /// </summary>
+        internal static string IsAdmin {
+            get {
+                return ResourceManager.GetString("IsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Keyword 的本地化字符串。
         /// </summary>
         internal static string Keyword {
@@ -376,11 +385,47 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Login 的本地化字符串。
+        /// </summary>
+        internal static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Login failed! 的本地化字符串。
+        /// </summary>
+        internal static string LoginFailed {
+            get {
+                return ResourceManager.GetString("LoginFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Logout 的本地化字符串。
+        /// </summary>
+        internal static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Spider Studio 的本地化字符串。
         /// </summary>
         internal static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Modify 的本地化字符串。
+        /// </summary>
+        internal static string Modify {
+            get {
+                return ResourceManager.GetString("Modify", resourceCulture);
             }
         }
         
@@ -408,6 +453,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New Project 的本地化字符串。
+        /// </summary>
+        internal static string NewProject {
+            get {
+                return ResourceManager.GetString("NewProject", resourceCulture);
             }
         }
         
@@ -448,11 +502,38 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Confirm Password 的本地化字符串。
+        /// </summary>
+        internal static string PasswordConfirm {
+            get {
+                return ResourceManager.GetString("PasswordConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 New Password 的本地化字符串。
+        /// </summary>
+        internal static string PasswordNew {
+            get {
+                return ResourceManager.GetString("PasswordNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Paste 的本地化字符串。
         /// </summary>
         internal static string Paste {
             get {
                 return ResourceManager.GetString("Paste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Project 的本地化字符串。
+        /// </summary>
+        internal static string Project {
+            get {
+                return ResourceManager.GetString("Project", resourceCulture);
             }
         }
         
@@ -489,6 +570,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Publish {
             get {
                 return ResourceManager.GetString("Publish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Publish 的本地化字符串。
+        /// </summary>
+        internal static string PublishString {
+            get {
+                return ResourceManager.GetString("PublishString", resourceCulture);
             }
         }
         
@@ -610,6 +700,42 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Server 的本地化字符串。
+        /// </summary>
+        internal static string ServerIp {
+            get {
+                return ResourceManager.GetString("ServerIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Security 的本地化字符串。
+        /// </summary>
+        internal static string ServerSecurity {
+            get {
+                return ResourceManager.GetString("ServerSecurity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Modify password failed. 的本地化字符串。
+        /// </summary>
+        internal static string SetPasswordfail {
+            get {
+                return ResourceManager.GetString("SetPasswordfail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Modify password secussfull. 的本地化字符串。
+        /// </summary>
+        internal static string SetPasswordSeccussful {
+            get {
+                return ResourceManager.GetString("SetPasswordSeccussful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ChannelShare 的本地化字符串。
         /// </summary>
         internal static string ShareChannel {
@@ -637,11 +763,38 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Start 的本地化字符串。
+        /// </summary>
+        internal static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Run project 的本地化字符串。
+        /// </summary>
+        internal static string Start_Tooltip {
+            get {
+                return ResourceManager.GetString("Start_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Stop 的本地化字符串。
         /// </summary>
         internal static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stop project 的本地化字符串。
+        /// </summary>
+        internal static string Stop_Tooltip {
+            get {
+                return ResourceManager.GetString("Stop_Tooltip", resourceCulture);
             }
         }
         
@@ -705,6 +858,24 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User 的本地化字符串。
+        /// </summary>
+        internal static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User List 的本地化字符串。
+        /// </summary>
+        internal static string UserList {
+            get {
+                return ResourceManager.GetString("UserList", resourceCulture);
             }
         }
         

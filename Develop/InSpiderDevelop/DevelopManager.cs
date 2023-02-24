@@ -46,6 +46,10 @@ namespace InSpiderDevelop
 
         #region ... Properties ...
 
+        public Dictionary<string, MachineDocument> Machines
+        { get { return mMachines; } }
+
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -138,6 +142,14 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
+        public void Clear()
+        {
+            mMachines.Clear();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void ReLoad()
         {
             mIsLoaded = false;
@@ -148,17 +160,21 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        public void Load(string sdata="")
         {
             if (mIsLoaded) return;
             mIsLoaded = true;
 
             var data = new System.IO.DirectoryInfo(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data"));
+            if(!string.IsNullOrEmpty(sdata))
+            {
+                data = new System.IO.DirectoryInfo(sdata);
+            }
             if (data.Exists)
             {
                 foreach (var vv in data.EnumerateDirectories())
                 {
-                    mMachines.Add(vv.Name, new MachineDocument() { Name = vv.Name });
+                    mMachines.Add(vv.Name, new MachineDocument() { Name = vv.Name }.Load());
                 }
             }
             else
@@ -167,6 +183,49 @@ namespace InSpiderDevelop
                 local.New();
                 mMachines.Add("local", local);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="machine"></param>
+        public void ReLoadMachine(string machine)
+        {
+            if (mMachines.ContainsKey(machine))
+            {
+                mMachines[machine].Reload();
+            }
+            else
+            {
+                var md = new MachineDocument() { Name = machine };
+                md.Load();
+                mMachines.Add(machine, md);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="machine"></param>
+        /// <param name="api"></param>
+        /// <param name="channel"></param>
+        /// <param name="device"></param>
+        /// <param name="driver"></param>
+        /// <param name="link"></param>
+        public bool UpdateWithString(string machine,string api, string channel, string device, string driver, string link)
+        {
+            try
+            {
+                if (mMachines.ContainsKey(machine))
+                {
+                    return mMachines[machine].UpdateWithString(api, channel, device, driver, link);
+                }
+            }
+            catch
+            {
+
+            }
+            return false;
         }
 
         /// <summary>

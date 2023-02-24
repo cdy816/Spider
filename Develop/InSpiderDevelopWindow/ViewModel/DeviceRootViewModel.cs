@@ -266,11 +266,13 @@ namespace InSpiderDevelopWindow
                     }
 
                 }
+                GetMachineViewModel(this).Model.IsDirty = true;
             }
             else if (CopyPasteHelper.Helper.CopyObj is DeviceGroup)
             {
                 DeviceGroup dgg = CopyPasteHelper.Helper.CopyObj as DeviceGroup;
                 PasteGroup(dgg,this);
+                GetMachineViewModel(this).Model.IsDirty = true;
             }
         }
 
@@ -312,6 +314,7 @@ namespace InSpiderDevelopWindow
                 PasteGroup(vv, vmodel);
             }
             parentViewModel.RefreshView();
+           
         }
 
         /// <summary>
@@ -369,6 +372,7 @@ namespace InSpiderDevelopWindow
                 vmm.IsEdit = true;
             }
             this.IsExpanded = true;
+            GetMachineViewModel(this).Model.IsDirty = true;
             base.AddGroup();
         }
 
@@ -388,6 +392,7 @@ namespace InSpiderDevelopWindow
                 vmm.IsEdit = true;
             }
             this.IsExpanded = true;
+            GetMachineViewModel(this).Model.IsDirty = true;
             base.Add();
         }
         #endregion ...Methods...
@@ -597,7 +602,12 @@ namespace InSpiderDevelopWindow
         /// <returns></returns>
         public override bool OnRename(string oldName, string newName)
         {
-            return mDocument.ReName(this.Model, newName);
+            if(mDocument.ReName(this.Model, newName))
+            {
+                GetMachineViewModel(this).Model.IsDirty= true;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -658,12 +668,15 @@ namespace InSpiderDevelopWindow
                         var driverdoc = GetMachineViewModel(this).Model.Driver;
                         driverdoc?.AddDriver(driver);
                     }
+
+                    GetMachineViewModel(this).Model.IsDirty = true;
                 }
             }
             else if(CopyPasteHelper.Helper.CopyObj is DeviceGroup)
             {
                 DeviceGroup dgg = CopyPasteHelper.Helper.CopyObj as DeviceGroup;
                 PasteGroup(dgg,this.Parent as DeviceGroupViewModel);
+                GetMachineViewModel(this).Model.IsDirty = true;
             }
         }
 
@@ -737,7 +750,7 @@ namespace InSpiderDevelopWindow
             {
                 vp.Children[id].IsSelected = true;
             }
-
+            GetMachineViewModel(this).Model.IsDirty = true;
             base.Remove();
         }
 
@@ -881,8 +894,9 @@ namespace InSpiderDevelopWindow
         {
             if (mode is LinkDetailViewModel)
             {
-                (mode as LinkDetailViewModel).Model = this.Model;
                 (mode as LinkDetailViewModel).Parent = this;
+                (mode as LinkDetailViewModel).Model = this.Model;
+             
                 return mode;
             }
             else

@@ -7,11 +7,16 @@
 //  种道洋
 //==============================================================
 
+using Cdy.Spider;
 using InSpiderDevelop;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls.Ribbon;
+using System.Windows.Input;
 
 namespace InSpiderDevelopWindow
 {
@@ -24,6 +29,9 @@ namespace InSpiderDevelopWindow
         #region ... Variables  ...
         
         private MachineDocument mModel;
+
+        private ICommand mExportCommand;
+        private ICommand mImportCommand;
 
         #endregion ...Variables...
 
@@ -39,6 +47,38 @@ namespace InSpiderDevelopWindow
         #endregion ...Constructor...
 
         #region ... Properties ...
+
+        public ICommand ExportCommand 
+        {
+            get 
+            {
+                if(mExportCommand == null)
+                {
+                    mExportCommand = new RelayCommand(() => {
+                        DoExport();
+                    });
+                }
+                return mExportCommand;
+            } 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand ImportCommand 
+        {
+            get 
+            {
+                if(mImportCommand == null)
+                {
+                    mImportCommand = new RelayCommand(() =>
+                    {
+                        DoImport();
+                    });
+                }
+                return mImportCommand;
+            }
+        }
 
         /// <summary>
         /// 
@@ -62,6 +102,88 @@ namespace InSpiderDevelopWindow
         #endregion ...Properties...
 
         #region ... Methods    ...
+
+        private void DoExport()
+        {
+            SaveFileDialog ofd = new SaveFileDialog();
+            ofd.Filter = "zip file|*.zip";
+            if (ofd.ShowDialog().Value)
+            {
+
+                string spath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(ofd.FileName), "tmp"+DateTime.Now.Ticks);
+                if (!Directory.Exists(spath))
+                    Directory.CreateDirectory(spath);
+
+                this.Model.Api.Save(System.IO.Path.Combine(spath, "Api.cfg"));
+                this.Model.Channel.Save(System.IO.Path.Combine(spath, "Channel.cfg"));
+                this.Model.Device.Save(System.IO.Path.Combine(spath, "Device.cfg"));
+                this.Model.Driver.Save(System.IO.Path.Combine(spath, "Driver.cfg"));
+                this.Model.Link.Save(System.IO.Path.Combine(spath, "Link.cfg"));
+
+                System.IO.Compression.ZipFile.CreateFromDirectory(spath, ofd.FileName);
+
+                System.IO.Directory.Delete(spath,true);
+
+            }
+        }
+
+        private void DoImport()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "zip file|*.zip";
+            if (ofd.ShowDialog().Value)
+            {
+                try
+                {
+                    string spath = System.IO.Path.Combine( System.IO.Path.GetTempPath(), "tmp" + DateTime.Now.Ticks);
+                    if (!Directory.Exists(spath))
+                        Directory.CreateDirectory(spath);
+                    System.IO.Compression.ZipFile.ExtractToDirectory(ofd.FileName,spath,true);
+
+                  
+                    using (Context context = new Context())
+                    {
+                        string sfile = System.IO.Path.Combine(spath, "Api.cfg");
+                        if (System.IO.File.Exists(sfile))
+                        {
+                            this.Model.Api = APIDocument.Manager.LoadFromString(System.IO.File.ReadAllText(sfile));
+                        }
+
+                        sfile = System.IO.Path.Combine(spath, "Channel.cfg");
+                        if (System.IO.File.Exists(sfile))
+                        {
+                            this.Model.Channel = ChannelDocument.Manager.LoadFromString(System.IO.File.ReadAllText(sfile),context);
+                        }
+
+                        sfile = System.IO.Path.Combine(spath, "Driver.cfg");
+                        if (System.IO.File.Exists(sfile))
+                        {
+                            this.Model.Driver = DriverDocument.Manager.LoadFromString(System.IO.File.ReadAllText(sfile),context);
+                        }
+
+                        sfile = System.IO.Path.Combine(spath, "Device.cfg");
+                        if (System.IO.File.Exists(sfile))
+                        {
+                            this.Model.Device = DeviceDocument.Manager.LoadFromString(System.IO.File.ReadAllText(sfile), context);
+                        }
+
+                        sfile = System.IO.Path.Combine(spath, "Link.cfg");
+                        if (System.IO.File.Exists(sfile))
+                        {
+                            this.Model.Link = LinkDocument.Manager.LoadFromString(System.IO.File.ReadAllText(sfile));
+                        }
+                    }
+
+                    System.IO.Directory.Delete(spath, true);
+                    this.LoadData();
+                    MessageBox.Show("导入成功，保存后更新到服务器上!");
+                }
+                catch
+                {
+                    MessageBox.Show("无效数据!");
+                }
+            }
+        }
 
         /// <summary>
         /// 
@@ -102,7 +224,11 @@ namespace InSpiderDevelopWindow
         /// <returns></returns>
         public override bool OnRename(string oldName, string newName)
         {
-            return DevelopManager.Manager.ReName(oldName,newName);
+            if (Parent != null)
+            {
+                return Parent.RenameMachine(this, oldName, newName);
+            }
+            return false;
         }
 
         

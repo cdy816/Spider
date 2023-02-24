@@ -48,6 +48,30 @@ namespace InSpiderDevelopWindow
         /// <param name="e"></param>
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            if (e.Args != null)
+            {
+                foreach (var vv in e.Args)
+                {
+                    if(vv=="/a")
+                    {
+                        ServerHelper.Helper.AutoLogin = true;
+                        //自动登录
+                    }
+                    else if(vv.StartsWith("server="))
+                    {
+                        ServerHelper.Helper.Server = vv.Substring("server=".Length);
+                    }
+                    else if(vv.StartsWith("username="))
+                    {
+                        ServerHelper.Helper.UserName = vv.Substring("username=".Length);
+                    }
+                    else if(vv.StartsWith("password="))
+                    {
+                        ServerHelper.Helper.Password = vv.Substring("password=".Length);
+                    }
+                }
+            }
+
             Cdy.Spider.ApiFactory.Factory.LoadForDevelop();
             Cdy.Spider.ChannelFactory2.Factory.LoadForDevelop();
             Cdy.Spider.DriverFactory.Factory.LoadForDevelop();
