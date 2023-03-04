@@ -146,11 +146,12 @@ namespace Cdy.Spider
             {
                 this.mCommChannel = context.Get<ICommChannelDevelopManager>().GetChannel(this.Data.ChannelName);
             }
-            if (!string.IsNullOrEmpty(this.Name))
-            {
-                this.Driver = context.Get<IDriverDevelopManager>().GetDriver(this.Name);
-            }
             mDriverManager = context.Get<IDriverDevelopManager>();
+            if (!string.IsNullOrEmpty(this.Name) && mDriverManager!=null)
+            {
+                this.Driver = mDriverManager.GetDriver(this.Name);
+            }
+          
         }
 
         /// <summary>

@@ -128,14 +128,14 @@ namespace InSpiderDevelopServerClientAPI
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string,Dictionary<string,string>> LoadMachines()
+        public Dictionary<string,Dictionary<string,string>> LoadMachines(string solution)
         {
             try
             {
                 if (mCurrentClient != null && !string.IsNullOrEmpty(mLoginId))
                 {
                     Dictionary<string, Dictionary<string, string>> dtmp = new Dictionary<string, Dictionary<string, string>>();
-                    var res = mCurrentClient.MachineList(new InSpiderDevelopServer.CommonRequest { Token = mLoginId });
+                    var res = mCurrentClient.MachineList(new InSpiderDevelopServer.MachineListRequest { Token = mLoginId,Solution=solution });
                     foreach ( var item in res.Machines)
                     {
                         Dictionary<string, string> ddd= new Dictionary<string, string>();
@@ -341,13 +341,13 @@ namespace InSpiderDevelopServerClientAPI
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool StartMachine(string name)
+        public bool StartMachine(string solution, string name)
         {
             try
             {
                 if (mCurrentClient != null && !string.IsNullOrEmpty(mLoginId))
                 {
-                    return mCurrentClient.Start(new InSpiderDevelopServer.MachineCommonRequest { Token = mLoginId, Machine=name }).Result;
+                    return mCurrentClient.Start(new InSpiderDevelopServer.MachineCommonRequest { Token = mLoginId, Machine=name, Solution = solution }).Result;
                 }
             }
             catch
@@ -362,13 +362,13 @@ namespace InSpiderDevelopServerClientAPI
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool StopMachine(string name)
+        public bool StopMachine(string solution, string name)
         {
             try
             {
                 if (mCurrentClient != null && !string.IsNullOrEmpty(mLoginId))
                 {
-                    return mCurrentClient.Stop(new InSpiderDevelopServer.MachineCommonRequest { Token = mLoginId, Machine = name }).Result;
+                    return mCurrentClient.Stop(new InSpiderDevelopServer.MachineCommonRequest { Token = mLoginId, Machine = name , Solution = solution }).Result;
                 }
             }
             catch
@@ -383,13 +383,13 @@ namespace InSpiderDevelopServerClientAPI
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool IsMachineRunning(string name)
+        public bool IsMachineRunning(string solution, string name)
         {
             try
             {
                 if (mCurrentClient != null && !string.IsNullOrEmpty(mLoginId))
                 {
-                    return mCurrentClient.IsMachineRunning(new InSpiderDevelopServer.MachineCommonRequest { Token = mLoginId, Machine = name }).Result;
+                    return mCurrentClient.IsMachineRunning(new InSpiderDevelopServer.MachineCommonRequest { Token = mLoginId, Machine = name, Solution = solution }).Result;
                 }
             }
             catch
@@ -405,13 +405,13 @@ namespace InSpiderDevelopServerClientAPI
         /// <param name="oldname"></param>
         /// <param name="newname"></param>
         /// <returns></returns>
-        public bool ReNameMachine(string oldname,string newname)
+        public bool ReNameMachine(string solution, string oldname,string newname)
         {
             try
             {
                 if (mCurrentClient != null && !string.IsNullOrEmpty(mLoginId))
                 {
-                    return mCurrentClient.MachineReName(new InSpiderDevelopServer.MachineReNameRequest { Token = mLoginId,OldName=oldname,NewName=newname }).Result;
+                    return mCurrentClient.MachineReName(new InSpiderDevelopServer.MachineReNameRequest { Token = mLoginId,OldName=oldname,NewName=newname, Solution = solution }).Result;
                 }
             }
             catch
@@ -426,13 +426,13 @@ namespace InSpiderDevelopServerClientAPI
         /// </summary>
         /// <param name="machine"></param>
         /// <returns></returns>
-        public bool RemoveMachine(string machine)
+        public bool RemoveMachine(string solution, string machine)
         {
             try
             {
                 if (mCurrentClient != null && !string.IsNullOrEmpty(mLoginId))
                 {
-                    return mCurrentClient.MachineDelete(new InSpiderDevelopServer.MachineDeleteRequest { Token = mLoginId,Name=machine }).Result;
+                    return mCurrentClient.MachineDelete(new InSpiderDevelopServer.MachineDeleteRequest { Token = mLoginId,Name=machine, Solution = solution }).Result;
                 }
             }
             catch
@@ -447,13 +447,13 @@ namespace InSpiderDevelopServerClientAPI
         /// </summary>
         /// <param name="machine"></param>
         /// <returns></returns>
-        public string NewMachine(string machine)
+        public string NewMachine(string solution,string machine)
         {
             try
             {
                 if (mCurrentClient != null && !string.IsNullOrEmpty(mLoginId))
                 {
-                    return mCurrentClient.MachineNew(new InSpiderDevelopServer.MachineNewRequest { Token = mLoginId, Name = machine }).Name;
+                    return mCurrentClient.MachineNew(new InSpiderDevelopServer.MachineNewRequest { Token = mLoginId, Name = machine, Solution = solution }).Name;
                 }
             }
             catch
@@ -468,7 +468,7 @@ namespace InSpiderDevelopServerClientAPI
         /// </summary>
         /// <param name="mc"></param>
         /// <returns></returns>
-        public bool UpdateMachine(string name ,Dictionary<string, string> mc)
+        public bool UpdateMachine(string solution, string name ,Dictionary<string, string> mc)
         {
             try
             {
@@ -482,6 +482,7 @@ namespace InSpiderDevelopServerClientAPI
                     mr.Machine.Device = mc["Device"];
                     mr.Machine.Driver = mc["Driver"];
                     mr.Machine.Link = mc["Link"];
+                    mr.Machine.Solution = solution;
                     return mCurrentClient.MachineUpdate(mr).Result;
                 }
             }

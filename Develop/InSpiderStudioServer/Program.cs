@@ -159,7 +159,7 @@ namespace InSpiderStudioServer
         /// 
         /// </summary>
         /// <param name="name"></param>
-        public  bool Start(string name)
+        public  bool Start(string solution, string name)
         {
             try
             {
@@ -167,7 +167,7 @@ namespace InSpiderStudioServer
                 {
                     var info = new ProcessStartInfo() { FileName = "InSpiderRun.exe" };
                     info.UseShellExecute = true;
-                    info.Arguments = "start " + name;
+                    info.Arguments = "start " + name+" "+solution;
                     info.WorkingDirectory = System.IO.Path.GetDirectoryName(typeof(Program).Assembly.Location);
                     Process.Start(info).WaitForExit(1000);
                 }
@@ -176,7 +176,7 @@ namespace InSpiderStudioServer
                     var info = new ProcessStartInfo() { FileName = "dotnet" };
                     info.UseShellExecute = true;
                     info.CreateNoWindow = false;
-                    info.Arguments = "./InSpiderRun.dll start " + name;
+                    info.Arguments = "./InSpiderRun.dll start " + name + " " + solution;
                     info.WorkingDirectory = System.IO.Path.GetDirectoryName(typeof(Program).Assembly.Location);
                     Process.Start(info).WaitForExit(1000);
                 }
@@ -197,9 +197,9 @@ namespace InSpiderStudioServer
         /// 
         /// </summary>
         /// <param name="name"></param>
-        public  bool Stop(string name)
+        public  bool Stop(string solution, string name)
         {
-            using (var client = new NamedPipeClientStream(".", "InSpider_" + name, PipeDirection.InOut))
+            using (var client = new NamedPipeClientStream(".", "InSpider_" +solution+"_" + name, PipeDirection.InOut))
             {
                 try
                 {
@@ -239,21 +239,21 @@ namespace InSpiderStudioServer
         }
 
 
-        public bool IsRunning(string name)
+        public bool IsRunning(string solution, string name)
         {
             lock (mLockObj)
             {
-                if (IsMachineRunning(name, out bool isdbrun))
+                if (IsMachineRunning(solution,name, out bool isdbrun))
                 {
                     return true;
                 }
                 else if (!isdbrun) return false;
-
-                using (var client = new NamedPipeClientStream(".", "InSpider_" + name, PipeDirection.InOut))
+               
+                using (var client = new NamedPipeClientStream(".", "InSpider_" + solution + "_" +name, PipeDirection.InOut))
                 {
                     try
                     {
-                        client.Connect(1000);
+                        client.Connect(500);
                         client.Close();
                         return true;
                     }
@@ -271,24 +271,31 @@ namespace InSpiderStudioServer
         /// <param name="database"></param>
         /// <param name="isdbrun"></param>
         /// <returns></returns>
-        public static bool IsMachineRunning(string database, out bool isdbrun)
+        public static bool IsMachineRunning(string solution,string database, out bool isdbrun)
         {
             var pps = System.Diagnostics.Process.GetProcessesByName("InSpiderRun");
             if (pps != null && pps.Length > 0)
             {
                 foreach (var p in pps)
                 {
+                    
                     if (string.Compare(p.MainWindowTitle, "InSpiderRun-" + database, true) == 0)
                     {
                         isdbrun = true;
                         return true;
                     }
                 }
-                isdbrun = true;
+            }
+
+            var mRunInfoFile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(Program).Assembly.Location), solution + "_" + database);
+            if (!System.IO.File.Exists(mRunInfoFile))
+            {
+                isdbrun = false;
+                return false;
             }
             else
             {
-                isdbrun = false;
+                isdbrun = true;
             }
             return false;
         }

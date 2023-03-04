@@ -3,7 +3,7 @@
     "InSpiderDevelopWindow": {
       "commandName": "Executable",
       "executablePath": "C:\\Users\\cdy81\\source\\repos\\cdy816\\Spider\\Output\\InSpiderStudio.exe",
-      "commandLineArgs": "/a server=127.0.0.1 username=Admin password=Admin"
+      "commandLineArgs": "/a server=127.0.0.1 username=Admin password=Admin solution=test"
     }
   }
 }

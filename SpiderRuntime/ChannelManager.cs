@@ -91,9 +91,9 @@ namespace SpiderRuntime
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        public void LoadSolution(string solution)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Channel.cfg");
+            string sfile = string.IsNullOrEmpty(solution)? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Channel.cfg") : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",solution, Name, "Channel.cfg");
             Load(sfile);
         }
 

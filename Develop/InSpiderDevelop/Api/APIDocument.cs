@@ -65,19 +65,19 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Reload()
+        public void Reload(Context context)
         {
             this.mApi = null;
-            Load();
+            Load(context);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        public void Load(Context ctx)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg");
-            Load(sfile);
+            string sfile = string.IsNullOrEmpty(ctx.Solution)? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg") : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",ctx.Solution, Name, "Api.cfg");
+            Load(sfile,ctx);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace InSpiderDevelop
         /// 
         /// </summary>
         /// <param name="sfile"></param>
-        public void Load(string sfile)
+        public void Load(string sfile, Context ctx)
         {
             if (System.IO.File.Exists(sfile))
             {
@@ -141,9 +141,9 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Save()
+        public void SaveToSolution(string solution)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg");
+            string sfile = string.IsNullOrEmpty(solution)? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg") : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",solution, Name, "Api.cfg");
             CheckDirExistOrCreat(sfile);
             Save(sfile);
         }
@@ -163,9 +163,11 @@ namespace InSpiderDevelop
         /// 
         /// </summary>
         /// <param name="content"></param>
-        public void SaveWithString(string content)
+        public void SaveWithString(string content,string solution)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg");
+            string sfile = string.IsNullOrEmpty(solution) ? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Api.cfg") : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", solution, Name, "Api.cfg");
+            CheckDirExistOrCreat(sfile);
+
             System.IO.File.WriteAllText(sfile, content);
         }
         /// <summary>

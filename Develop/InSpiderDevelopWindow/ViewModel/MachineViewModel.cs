@@ -124,6 +124,8 @@ namespace InSpiderDevelopWindow
 
                 System.IO.Directory.Delete(spath,true);
 
+                MessageBox.Show(Res.Get("completely"));
+
             }
         }
 
@@ -176,7 +178,7 @@ namespace InSpiderDevelopWindow
 
                     System.IO.Directory.Delete(spath, true);
                     this.LoadData();
-                    MessageBox.Show("导入成功，保存后更新到服务器上!");
+                    MessageBox.Show(Res.Get("importCompletely"));
                 }
                 catch
                 {
@@ -190,7 +192,7 @@ namespace InSpiderDevelopWindow
         /// </summary>
         protected override void LoadData()
         {
-            this.Model.Load();
+            //this.Model.Load();
             Children.Clear();
             Children.Add(new DeviceRootViewModel() { Document = Model.Device, Parent = this });
             Children.Add(new APITreeViewModel() { Model = Model.Api.Api, Parent = this,MachineModel=Model });
@@ -212,8 +214,11 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public override void Remove()
         {
-            Parent?.RemoveMachine(this);
-            base.Remove();
+            if (MessageBox.Show(Res.Get("RemoveConfirm"), Res.Get("Remove"), MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                Parent?.RemoveMachine(this);
+                base.Remove();
+            }
         }
 
         /// <summary>

@@ -89,7 +89,7 @@ namespace InSpiderDevelopServer.Services
         {
             if(CheckLoginId(request.Token,request.Machine))
             {
-                DevelopManager.Manager.Save(request.Machine);
+                DevelopManager.Manager.Save(request.Solution,request.Machine);
                 return Task.FromResult(new BoolResponse() { Result = true });
             }
             else
@@ -110,7 +110,7 @@ namespace InSpiderDevelopServer.Services
         {
             if (CheckLoginId(request.Token, request.Machine))
             {
-                DevelopManager.Manager.ReLoadMachine(request.Machine);
+                DevelopManager.Manager.ReLoadMachine(request.Solution, request.Machine);
                 return Task.FromResult(new BoolResponse() { Result = true });
             }
             else
@@ -178,7 +178,7 @@ namespace InSpiderDevelopServer.Services
             {
                 return Task.FromResult(new BoolResponse() { Result = false });
             }
-            return Task.FromResult(new BoolResponse() { Result = ServiceLocator.Locator.Resolve<IMachineManager>().IsRunning(request.Machine) });
+            return Task.FromResult(new BoolResponse() { Result = ServiceLocator.Locator.Resolve<IMachineManager>().IsRunning(request.Solution, request.Machine) });
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace InSpiderDevelopServer.Services
             {
                 return Task.FromResult(new BoolResponse() { Result = false });
             }
-            return Task.FromResult(new BoolResponse() { Result = ServiceLocator.Locator.Resolve<IMachineManager>().Stop(request.Machine) });
+            return Task.FromResult(new BoolResponse() { Result = ServiceLocator.Locator.Resolve<IMachineManager>().Stop(request.Solution, request.Machine) });
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace InSpiderDevelopServer.Services
             {
                 return Task.FromResult(new BoolResponse() { Result = false });
             }
-            return Task.FromResult(new BoolResponse() { Result = ServiceLocator.Locator.Resolve<IMachineManager>().Start(request.Machine) });
+            return Task.FromResult(new BoolResponse() { Result = ServiceLocator.Locator.Resolve<IMachineManager>().Start(request.Solution,request.Machine) });
         }
 
         /// <summary>
@@ -217,10 +217,10 @@ namespace InSpiderDevelopServer.Services
         /// <param name="request"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override Task<MachineListResponse> MachineList(CommonRequest request, ServerCallContext context)
+        public override Task<MachineListResponse> MachineList(MachineListRequest request, ServerCallContext context)
         {
             List<MachineDocument> re = new List<MachineDocument>();
-            foreach(var vv in DevelopManager.Manager.ListMachines())
+            foreach(var vv in DevelopManager.Manager.ListMachines(request.Solution))
             {
                 if(CheckLoginId(request.Token,vv.Name))
                 {
@@ -245,7 +245,7 @@ namespace InSpiderDevelopServer.Services
         {
             if(CheckLoginId(request.Token, request.Machine.Name))
             {
-                var re = DevelopManager.Manager.UpdateWithString(request.Machine.Name, request.Machine.Api, request.Machine.Channel, request.Machine.Device, request.Machine.Driver, request.Machine.Link);
+                var re = DevelopManager.Manager.UpdateWithString(request.Machine.Solution,request.Machine.Name, request.Machine.Api, request.Machine.Channel, request.Machine.Device, request.Machine.Driver, request.Machine.Link);
                 return Task.FromResult(new BoolResponse() { Result = re });
             }
             return base.MachineUpdate(request, context);
@@ -261,7 +261,7 @@ namespace InSpiderDevelopServer.Services
         {
             if(HasDeleteDatabasePerssion(request.Token)&&CheckLoginId(request.Token,request.Name))
             {
-                bool re = DevelopManager.Manager.Remove(request.Name);
+                bool re = DevelopManager.Manager.Remove(request.Solution,request.Name);
                 return Task.FromResult(new BoolResponse() { Result = re });
             }
             else
@@ -280,7 +280,7 @@ namespace InSpiderDevelopServer.Services
         {
             if (HasNewDatabasePermission(request.Token))
             {
-                var re = DevelopManager.Manager.NewMachine(request.Name);
+                var re = DevelopManager.Manager.NewMachine(request.Solution, request.Name);
                 return Task.FromResult(new MachineNewResponse() { Result = true,Name=re.Name });
             }
             else
@@ -299,7 +299,7 @@ namespace InSpiderDevelopServer.Services
         {
             if (CheckLoginId(request.Token,request.Token) && CheckLoginId(request.Token, request.OldName))
             {
-                bool re = DevelopManager.Manager.ReName(request.OldName,request.NewName);
+                bool re = DevelopManager.Manager.ReName(request.Solution,request.OldName,request.NewName);
                 return Task.FromResult(new BoolResponse() { Result = re });
             }
             else

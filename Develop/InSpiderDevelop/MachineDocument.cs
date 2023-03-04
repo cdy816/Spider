@@ -42,6 +42,11 @@ namespace InSpiderDevelop
         public string Name { get; set; }
 
         /// <summary>
+        /// 解决方案名称
+        /// </summary>
+        public string Solution { get; set; } = "";
+
+        /// <summary>
         /// 
         /// </summary>
         public APIDocument Api { get; set; }
@@ -111,7 +116,7 @@ namespace InSpiderDevelop
             Channel = new ChannelDocument() { Name = Name };
             Device = new DeviceDocument() { Name = Name };
             Driver = new DriverDocument() { Name = Name };
-            Link = new LinkDocument();
+            Link = new LinkDocument() { Name = Name };
             Link.New();
         }
 
@@ -127,11 +132,11 @@ namespace InSpiderDevelop
         {
             try
             {
-                Api.SaveWithString(api);
-                Channel.SaveWithString(channel);
-                Device.SaveWithString(device);
-                Link.SaveWithString(link);
-                Driver.SaveWithString(driver);
+                Api.SaveWithString(api,this.Solution);
+                Channel.SaveWithString(channel,this.Solution);
+                Device.SaveWithString(device,this.Solution);
+                Link.SaveWithString(link,this.Solution);
+                Driver.SaveWithString(driver,this.Solution);
                 Reload();
             }
             catch
@@ -150,16 +155,17 @@ namespace InSpiderDevelop
             mIsLoad = true;
             using (Context context = new Context())
             {
+                context.Solution=this.Solution;
                 Api = new APIDocument() { Name = Name };
                 Channel = new ChannelDocument() { Name = Name };
                 Device = new DeviceDocument() { Name = Name };
                 Driver = new DriverDocument() { Name = Name };
                 Link = new LinkDocument() { Name = Name };
-                Api.Load();
+                Api.Load(context);
                 Channel.Load(context);
                 Driver.Load(context);
                 Device.Load(context);
-                Link.Load();
+                Link.Load(context);
             }
             return this;
         }
@@ -171,11 +177,12 @@ namespace InSpiderDevelop
         {
             using (Context context = new Context())
             {
-                Api.Reload();
+                context.Solution = this.Solution;
+                Api.Reload(context);
                 Channel.Reload(context);
                 Driver.Reload(context);
                 Device.Reload(context);
-                Link.Reload();
+                Link.Reload(context);
             }
         }
 
@@ -184,7 +191,7 @@ namespace InSpiderDevelop
         /// </summary>
         public void Remove()
         {
-            var sfile1 = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", this.Name);
+            var sfile1 = string.IsNullOrEmpty(this.Solution)? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", this.Name) : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",this.Solution, this.Name);
             if (System.IO.Directory.Exists(sfile1))
             {
                 System.IO.Directory.Delete(sfile1,true);
@@ -202,15 +209,15 @@ namespace InSpiderDevelop
                 System.IO.Directory.CreateDirectory(sfile);
             }
             if (Api != null)
-                Api.Save();
+                Api.SaveToSolution(this.Solution);
             if (Channel != null)
-                Channel.Save();
+                Channel.SaveToSolution(this.Solution);
             if (Driver != null)
-                Driver.Save();
+                Driver.SaveToSolution(this.Solution);
             if (Device != null)
-                Device.Save();
+                Device.SaveToSolution(this.Solution);
             if (Link != null)
-                Link.Save();
+                Link.SaveToSolution(this.Solution);
             IsDirty = false;
         }
 

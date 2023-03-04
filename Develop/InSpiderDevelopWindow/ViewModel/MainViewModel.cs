@@ -26,6 +26,7 @@ using System.Windows.Interop;
 using InSpiderDevelopServerClientAPI;
 using RoslynPad.Roslyn.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis;
 
 namespace InSpiderDevelopWindow
 {
@@ -133,6 +134,11 @@ namespace InSpiderDevelopWindow
 
         #region ... Properties ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Solution { get; set; } = "";
+
         public ICommand PublishCommand
         {
             get { 
@@ -176,7 +182,7 @@ namespace InSpiderDevelopWindow
                 {
                     mStartCommand = new RelayCommand(() => {
                         CheckAndSaveMachine(mCurrentMahineDoc);
-                        IsMachineRunning = DevelopServiceHelper.Helper.StartMachine(mCurrentMachine);
+                        IsMachineRunning = DevelopServiceHelper.Helper.StartMachine(Solution, mCurrentMachine);
                     }, () => { return IsLogin && mCurrentMahineDoc!=null && !IsMachineRunning; });
                 }
                 return mStartCommand;
@@ -193,7 +199,7 @@ namespace InSpiderDevelopWindow
                 if (mStopCommand == null)
                 {
                     mStopCommand = new RelayCommand(() => {
-                        IsMachineRunning = !DevelopServiceHelper.Helper.StopMachine(mCurrentMachine);
+                        IsMachineRunning = !DevelopServiceHelper.Helper.StopMachine(Solution, mCurrentMachine);
 
                     }, () => { return IsLogin && mCurrentMahineDoc != null && IsMachineRunning; });
                 }
@@ -380,6 +386,10 @@ namespace InSpiderDevelopWindow
                 if (mCurrentMachine != value)
                 {
                     mCurrentMachine = value;
+                    Task.Run(() => {
+                        IsMachineRunning = DevelopServiceHelper.Helper.IsMachineRunning(this.Solution, mCurrentMachine);
+                    });
+                   
                     OnPropertyChanged("Database");
                 }
             }
@@ -716,6 +726,8 @@ namespace InSpiderDevelopWindow
                 System.IO.Compression.ZipFile.CreateFromDirectory(sname, ofd.FileName);
 
                 System.IO.Directory.Delete(sname, true);
+
+                MessageBox.Show(Res.Get("completely"));
             }
         }
 
@@ -772,13 +784,19 @@ namespace InSpiderDevelopWindow
         /// <param name="e"></param>
         private void MCheckRunningTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            mCheckRunningTimer.Elapsed -= MCheckRunningTimer_Elapsed;
             if (!string.IsNullOrEmpty(mCurrentMachine))
             {
-                var isrunning = DevelopServiceHelper.Helper.IsMachineRunning(mCurrentMachine);
+                var isrunning = DevelopServiceHelper.Helper.IsMachineRunning(this.Solution,mCurrentMachine);
                 Application.Current?.Dispatcher.BeginInvoke(new Action(() => {
-                    IsMachineRunning = isrunning;
+                    if (IsMachineRunning != isrunning)
+                    {
+                        IsMachineRunning = isrunning;
+                        CommandManager.InvalidateRequerySuggested();
+                    }
                 }), null);
             }
+            mCheckRunningTimer.Elapsed += MCheckRunningTimer_Elapsed;
         }
 
         public void CheckAndSave()
@@ -810,7 +828,7 @@ namespace InSpiderDevelopWindow
         /// <returns></returns>
         private bool CheckMachineIsDirty()
         {
-            foreach (var vv in DevelopManager.Manager.ListMachines())
+            foreach (var vv in DevelopManager.Manager.ListMachines(this.Solution))
             {
                 if(vv.IsDirty)
                 {
@@ -822,7 +840,7 @@ namespace InSpiderDevelopWindow
 
         private void SaveAllMachine()
         {
-            foreach (var vv in DevelopManager.Manager.ListMachines())
+            foreach (var vv in DevelopManager.Manager.ListMachines(this.Solution))
             {
                 if (vv.IsDirty)
                 {
@@ -864,7 +882,7 @@ namespace InSpiderDevelopWindow
                 MonitorParameter.Parameter.Server= "http://"+ login.Server+":23232";
 
 
-                ServerHelper.Helper.Database = CurrentMachine;
+                //ServerHelper.Helper.Database = CurrentMachine;
                 OnPropertyChanged("UserName");
                 OnPropertyChanged("MainwindowTitle");
                 IsLogin = true;
@@ -880,6 +898,8 @@ namespace InSpiderDevelopWindow
             login.Server = ServerHelper.Helper.Server;
             login.UserName = ServerHelper.Helper.UserName;
             login.Password= ServerHelper.Helper.Password;
+            Solution = ServerHelper.Helper.Solution;
+
             if(login.Login())
             {
                 CurrentUserManager.Manager.UserName = login.UserName;
@@ -888,7 +908,7 @@ namespace InSpiderDevelopWindow
                 MonitorParameter.Parameter.Server = "http://" + login.Server + ":23232";
 
 
-                ServerHelper.Helper.Database = CurrentMachine;
+                //ServerHelper.Helper.Database = CurrentMachine;
                 OnPropertyChanged("UserName");
                 OnPropertyChanged("MainwindowTitle");
                 IsLogin = true;
@@ -924,13 +944,13 @@ namespace InSpiderDevelopWindow
         /// </summary>
         public void AddMachine()
         {
-            string sname = DevelopManager.Manager.ListMachinesNames().GetAvaiableName("project");
-            sname = DevelopServiceHelper.Helper.NewMachine(sname) ;
+            string sname = DevelopManager.Manager.ListMachinesNames(this.Solution).GetAvaiableName("project");
+            sname = DevelopServiceHelper.Helper.NewMachine(Solution,sname) ;
             if (!string.IsNullOrEmpty(sname))
             {
-                var mm = DevelopManager.Manager.NewMachine(sname);
+                var mm = DevelopManager.Manager.NewMachine("",sname);
                 var vmm = new MachineViewModel() { Model = mm, Parent = this };
-                mItems.Add(vmm);
+                mProject.Children.Add(vmm);
                 vmm.IsExpanded = true;
                 vmm.IsSelected = true;
                 vmm.IsEdit = true;
@@ -943,7 +963,7 @@ namespace InSpiderDevelopWindow
         /// <param name="model"></param>
         public void UpdateMachine()
         {
-            var model = DevelopManager.Manager.Machines[CurrentMachine];
+            var model = DevelopManager.Manager.Machines[""][CurrentMachine];
             UpdateMachine(model);
         }
 
@@ -959,7 +979,7 @@ namespace InSpiderDevelopWindow
             dtmp.Add("Device", model.Device.SaveToString());
             dtmp.Add("Driver", model.Driver.SaveToString());
             dtmp.Add("Link", model.Link.SaveToString());
-            if(DevelopServiceHelper.Helper.UpdateMachine(model.Name,dtmp))
+            if(DevelopServiceHelper.Helper.UpdateMachine(Solution, model.Name,dtmp))
             {
                 model.IsDirty= false;
             }
@@ -973,10 +993,11 @@ namespace InSpiderDevelopWindow
         public void RemoveMachine(MachineViewModel model)
         {
             model.Parent = null;
-            if (DevelopServiceHelper.Helper.RemoveMachine(model.Name))
+            if (DevelopServiceHelper.Helper.RemoveMachine(Solution, model.Name))
             {
-                DevelopManager.Manager.Remove(model.Name);
-                mItems.Remove(model);
+                DevelopManager.Manager.Remove("", model.Name);
+                mProject.Children.Remove(model);
+                //mItems.Remove(model);
             }
         }
 
@@ -988,9 +1009,9 @@ namespace InSpiderDevelopWindow
         /// <param name="newName"></param>
         public bool RenameMachine(MachineViewModel model, string oldName,string newName)
         {
-            if (DevelopServiceHelper.Helper.ReNameMachine(oldName,newName))
+            if (DevelopServiceHelper.Helper.ReNameMachine(Solution, oldName,newName))
             {
-                DevelopManager.Manager.ReName(oldName,newName);
+                DevelopManager.Manager.ReName("",oldName,newName);
                 return true;
             }
             return false;
@@ -1026,7 +1047,7 @@ namespace InSpiderDevelopWindow
             DevelopManager.Manager.Clear();
             try
             {
-                foreach (var vv in DevelopServiceHelper.Helper.LoadMachines())
+                foreach (var vv in DevelopServiceHelper.Helper.LoadMachines(this.Solution))
                 {
                     MachineDocument md = new MachineDocument() { Name = vv.Key };
                     md.Api = new APIDocument().LoadFromString(vv.Value["Api"]);
@@ -1040,7 +1061,7 @@ namespace InSpiderDevelopWindow
                     DevelopManager.Manager.Add(md);
                 }
 
-                foreach (var vv in DevelopManager.Manager.ListMachines())
+                foreach (var vv in DevelopManager.Manager.ListMachines(""))
                 {
                     mProject.Children.Add(new MachineViewModel { Model = vv, Parent = this });
                 }

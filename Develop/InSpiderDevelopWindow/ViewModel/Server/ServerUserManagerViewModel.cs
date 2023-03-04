@@ -149,10 +149,12 @@ namespace InSpiderDevelopWindow.ViewModel
         //            mModel = value;
         //            OnPropertyChanged("Model");
         //            mPermissionCach = null;
-                    
+
         //        }
         //    }
         //}
+
+        public string Solution { get; set; }
 
         #endregion ...Properties...
 
@@ -239,7 +241,6 @@ namespace InSpiderDevelopWindow.ViewModel
         /// </summary>
         public void QueryUsers()
         {
-           // todo
             ObservableCollection<ServerUserItemViewModel> utmp = new ObservableCollection<ServerUserItemViewModel>();
             var users = DevelopServiceHelper.Helper.GetUsers();
             if (users != null)
@@ -253,7 +254,7 @@ namespace InSpiderDevelopWindow.ViewModel
             Users = utmp;
 
             if (mPermissionCach == null)
-                mPermissionCach = DevelopServiceHelper.Helper.LoadMachines().Keys.ToList();
+                mPermissionCach = DevelopServiceHelper.Helper.LoadMachines(Solution).Keys.ToList();
 
             foreach (var vv in Users)
             {

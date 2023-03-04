@@ -40,7 +40,7 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
-        public string Database { get; set; }
+        public string Solution { get; set; }
         #endregion ...Properties...
 
         #region ... Methods    ...

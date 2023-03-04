@@ -178,6 +178,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Completely! 的本地化字符串。
+        /// </summary>
+        internal static string completely {
+            get {
+                return ResourceManager.GetString("completely", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Convert 的本地化字符串。
         /// </summary>
         internal static string Convert {
@@ -318,6 +327,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string Import {
             get {
                 return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Import completely,please click save menu to update to server. 的本地化字符串。
+        /// </summary>
+        internal static string importCompletely {
+            get {
+                return ResourceManager.GetString("importCompletely", resourceCulture);
             }
         }
         
@@ -628,6 +646,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Are you sure you want to delete? 的本地化字符串。
+        /// </summary>
+        internal static string RemoveConfirm {
+            get {
+                return ResourceManager.GetString("RemoveConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ReName 的本地化字符串。
         /// </summary>
         internal static string ReName {
@@ -705,6 +732,15 @@ namespace InSpiderDevelopWindow.Properties {
         internal static string ServerIp {
             get {
                 return ResourceManager.GetString("ServerIp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Server is offline 的本地化字符串。
+        /// </summary>
+        internal static string serveroffline {
+            get {
+                return ResourceManager.GetString("serveroffline", resourceCulture);
             }
         }
         

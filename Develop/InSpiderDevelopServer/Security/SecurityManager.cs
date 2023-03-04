@@ -151,7 +151,7 @@ namespace InSpiderDevelopServer
             if (Securitys.User.Users.ContainsKey(users))
             {
                 var us = Securitys.User.Users[users];
-                return us.Machines.Contains(database);
+                return  us.Machines.Contains(database);
             }
             return false;
         }

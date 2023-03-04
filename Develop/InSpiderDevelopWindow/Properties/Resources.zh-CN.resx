@@ -156,6 +156,9 @@
   <data name="Communication" xml:space="preserve">
     <value>通信</value>
   </data>
+  <data name="completely" xml:space="preserve">
+    <value>完成!</value>
+  </data>
   <data name="Convert" xml:space="preserve">
     <value>转换</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="Import" xml:space="preserve">
     <value>导入</value>
+  </data>
+  <data name="importCompletely" xml:space="preserve">
+    <value>导入成功，操作保存菜单，将数据更新到服务器!</value>
   </data>
   <data name="ImportErroMsg" xml:space="preserve">
     <value>导入过程发生错误,是否要查看错误日志: erro.txt?</value>
@@ -306,6 +312,9 @@
   <data name="Remove" xml:space="preserve">
     <value>删除</value>
   </data>
+  <data name="RemoveConfirm" xml:space="preserve">
+    <value>确定要删除?</value>
+  </data>
   <data name="ReName" xml:space="preserve">
     <value>重命名</value>
   </data>
@@ -332,6 +341,9 @@
   </data>
   <data name="ServerIp" xml:space="preserve">
     <value>服务器</value>
+  </data>
+  <data name="serveroffline" xml:space="preserve">
+    <value>服务器离线!</value>
   </data>
   <data name="ServerSecurity" xml:space="preserve">
     <value>安全</value>

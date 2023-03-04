@@ -33,19 +33,19 @@ namespace InSpiderDevelopServer
         /// 启动
         /// </summary>
         /// <param name="name"></param>
-        bool Start(string name);
+        bool Start(string solution,string name);
 
         /// <summary>
         /// 停止运行
         /// </summary>
         /// <param name="name"></param>
-        bool Stop(string name);
+        bool Stop(string solution, string name);
 
         /// <summary>
         /// 是否处于运行中
         /// </summary>
         /// <param name="name"></param>
-        bool IsRunning(string name);
+        bool IsRunning(string solution, string name);
 
         #endregion ...Methods...
 

@@ -98,18 +98,18 @@ namespace SpiderRuntime
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static bool CheckExist(string name)
+        public static bool CheckExist(string name,string solution)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(DeviceManager).Assembly.Location), "Data", name, "Device.cfg");
+            string sfile = string.IsNullOrEmpty(solution)? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(DeviceManager).Assembly.Location), "Data", name, "Device.cfg") : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(DeviceManager).Assembly.Location), "Data",solution, name, "Device.cfg");
             return System.IO.File.Exists(sfile);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Load()
+        public void LoadSolution(string solution)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
+            string sfile = string.IsNullOrEmpty(solution)? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg"): System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",solution, Name, "Device.cfg");
             Load(sfile);
         }
 

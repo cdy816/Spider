@@ -69,6 +69,10 @@ namespace InSpiderDevelopWindow
                     {
                         ServerHelper.Helper.Password = vv.Substring("password=".Length);
                     }
+                    else if(vv.StartsWith("solution="))
+                    {
+                        ServerHelper.Helper.Solution= vv.Substring("solution=".Length);
+                    }
                 }
             }
 

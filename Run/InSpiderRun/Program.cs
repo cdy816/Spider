@@ -1,6 +1,9 @@
 ﻿using Cdy.Spider;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
+using System.Diagnostics;
 using System.IO.Pipes;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +14,7 @@ namespace InSpiderRun
     {
         static bool mIsClosed = false;
         static SpiderRuntime.Runer mRunner;
+        static string Solution = "";
         static void Main(string[] args)
         {
             LogoHelper.Print();
@@ -29,13 +33,19 @@ namespace InSpiderRun
 
             if (args.Length>1)
             {
-                mRunner = new SpiderRuntime.Runer() { Name = args[1] };
+                if (args.Length > 2)
+                {
+                    Solution = args[2];
+                }
+
+                mRunner = new SpiderRuntime.Runer() { Name = args[1],Solution=Solution };
                 mRunner.Name = args[1];
                 mRunner.Init();
                 mRunner.Start();
                 Console.Title = "InSpiderRun-" + args[1];
+
                 Task.Run(() => {
-                    StartMonitor(args.Length > 1 ? args[1] : "local");
+                    StartMonitor(Solution, args.Length > 1 ? args[1] : "local");
                 });
             }
 
@@ -87,15 +97,15 @@ namespace InSpiderRun
                         }
                         else
                         {
-                            prj = ListAvaiableProject();
+                            prj = ListAvaiableProject(out Solution);
                         }
 
                         if (!string.IsNullOrEmpty(prj))
                         {
-                            if (SpiderRuntime.Runer.CheckNameExit(prj))
+                            if (SpiderRuntime.Runer.CheckNameExit(prj, Solution))
                             {
                                 if (mRunner == null)
-                                    mRunner = new SpiderRuntime.Runer() { Name = prj };
+                                    mRunner = new SpiderRuntime.Runer() { Name = prj,Solution = Solution };
                                 if (!mRunner.IsStarted)
                                 {
                                     mRunner.Init();
@@ -103,7 +113,7 @@ namespace InSpiderRun
                                 }
                                 Console.Title = "InSpiderRun-" + prj;
 
-                                StartMonitor(prj);
+                                StartMonitor(Solution,prj);
                             }
                             else
                             {
@@ -122,15 +132,51 @@ namespace InSpiderRun
            
         }
 
-        private static string ListAvaiableProject()
+        private static string ListAvaiableProject(out string solution)
         {
             var path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(Program).Assembly.Location), "Data");
             if(System.IO.Directory.Exists(path))
             {
-                var dd = new System.IO.DirectoryInfo(path).GetDirectories();
-                if(dd!=null && dd.Length>0)
+                foreach(var dd in new System.IO.DirectoryInfo(path).GetDirectories())
                 {
-                    return dd[0].Name;
+                    string sfile = System.IO.Path.Combine(dd.FullName, "Device.cfg");
+                    if(System.IO.File.Exists(sfile))
+                    {
+                        solution = "";
+                        return dd.Name;
+                    }
+                    else
+                    {
+                        var sol = ListSolution(dd.FullName);
+                        if(!string.IsNullOrEmpty(sol))
+                        {
+                            solution = dd.Name;
+                            return sol;
+                        }
+                    }
+                }
+                //var dd = new System.IO.DirectoryInfo(path).GetDirectories();
+                //if(dd!=null && dd.Length>0)
+                //{
+                //    return dd[0].Name;
+                //}
+            }
+            solution= string.Empty;
+            return string.Empty;
+        }
+
+        private static string ListSolution(string path)
+        {
+            var data = new System.IO.DirectoryInfo(path);
+            if (data.Exists)
+            {
+                foreach (var vv in data.EnumerateDirectories())
+                {
+                    string sfile = System.IO.Path.Combine(vv.FullName, "Device.cfg");
+                    if (System.IO.File.Exists(sfile))
+                    {
+                        return vv.Name;
+                    }
                 }
             }
             return string.Empty;
@@ -181,7 +227,7 @@ namespace InSpiderRun
             e.Cancel = true;
         }
 
-        private static void StartMonitor(string name)
+        private static void StartMonitor(string solution,string name)
         {
             try
             {
@@ -189,7 +235,7 @@ namespace InSpiderRun
                 {
                     try
                     {
-                        using (var server = new NamedPipeServerStream("InSpider_"+name, PipeDirection.InOut))
+                        using (var server = new NamedPipeServerStream("InSpider_"+solution+"_"+name, PipeDirection.InOut))
                         {
                             server.WaitForConnection();
                             while (!mIsClosed)
@@ -210,9 +256,20 @@ namespace InSpiderRun
                                         break;
                                         //退出系统
                                     }
-                                    else
+                                    else if(cmd == 128)
                                     {
-
+                                        //restart
+                                        if (mRunner != null)
+                                        {
+                                            if (mRunner.IsStarted)
+                                            {
+                                                mRunner.ReStart();
+                                            }
+                                            else
+                                            {
+                                                mRunner.Start();
+                                            }
+                                        }
                                     }
                                 }
                                 catch (Exception)

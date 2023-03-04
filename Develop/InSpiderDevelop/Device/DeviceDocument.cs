@@ -535,7 +535,7 @@ namespace InSpiderDevelop
         /// </summary>
         public void Load(Context context)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
+            string sfile = string.IsNullOrEmpty(context.Solution)? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg") : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",context.Solution, Name, "Device.cfg");
             Load(sfile, context);
         }
 
@@ -587,9 +587,9 @@ namespace InSpiderDevelop
         /// <summary>
         /// 
         /// </summary>
-        public void Save()
+        public void SaveToSolution(string solution)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
+            string sfile = string.IsNullOrEmpty(solution)? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg") : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data",solution, Name, "Device.cfg");
             CheckDirExistOrCreat(sfile);
             Save(sfile);
             IsDirty = false;
@@ -610,9 +610,10 @@ namespace InSpiderDevelop
         /// 
         /// </summary>
         /// <param name="content"></param>
-        public void SaveWithString(string content)
+        public void SaveWithString(string content, string solution)
         {
-            string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
+            //string sfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg");
+            string sfile = string.IsNullOrEmpty(solution) ? System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", Name, "Device.cfg") : System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), "Data", solution, Name, "Device.cfg");
             System.IO.File.WriteAllText(sfile, content);
         }
 

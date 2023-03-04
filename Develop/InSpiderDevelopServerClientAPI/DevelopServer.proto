@@ -34,7 +34,7 @@ service DevelopServer {
   rpc GetUsers(CommonRequest) returns (GetUsersReplay);
 
 
-  rpc MachineList (CommonRequest) returns (MachineListResponse);
+  rpc MachineList (MachineListRequest) returns (MachineListResponse);
 
   rpc MachineUpdate (MachineUpdateRequest) returns (BoolResponse);
 
@@ -152,6 +152,13 @@ message MachineCommonRequest
 {
 	string Token=1;
 	string Machine=2;
+	string Solution=3;
+}
+
+message MachineListRequest
+{
+	string Token=1;
+	string Solution=2;
 }
 
 message MachineListResponse
@@ -164,6 +171,7 @@ message MachineNewRequest
 {
 	string Token=1;
 	string Name=2;
+	string Solution=3;
 }
 
 message MachineNewResponse
@@ -184,12 +192,14 @@ message MachineReNameRequest
 	string Token=1;
 	string oldName=2;
 	string newName=3;
+	string Solution=4;
 }
 
 message MachineDeleteRequest
 {
 	string Token=1;
 	string Name=2;
+	string Solution=3;
 }
 
 message MachineItem
@@ -200,4 +210,5 @@ message MachineItem
 	string Device=4;
 	string Driver=5;
 	string Link=6;
+	string Solution=7;
 }

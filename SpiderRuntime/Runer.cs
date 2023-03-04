@@ -19,6 +19,11 @@ namespace SpiderRuntime
         private APIManager mApi;
         private LinkManager mLink;
 
+        /// <summary>
+        /// 运行指示文件，运行时产生，退出时删除
+        /// </summary>
+        private string mRunInfoFile = "";
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -62,6 +67,11 @@ namespace SpiderRuntime
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Solution { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -71,9 +81,9 @@ namespace SpiderRuntime
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static bool CheckNameExit(string name)
+        public static bool CheckNameExit(string name,string solution)
         {
-            return DeviceManager.CheckExist(name);
+            return DeviceManager.CheckExist(name,solution);
         }
 
         /// <summary>
@@ -122,11 +132,11 @@ namespace SpiderRuntime
         /// </summary>
         private void Load()
         {
-            mDriver.Load();
-            mChannel.Load();
-            mDevice.Load();
-            mApi.Load();
-            mLink.Load();
+            mDriver.LoadSolution(Solution);
+            mChannel.LoadSolution(Solution);
+            mDevice.LoadSolution(Solution);
+            mApi.LoadSolution(Solution);
+            mLink.LoadSolution(Solution);
         }
 
         /// <summary>
@@ -168,7 +178,18 @@ namespace SpiderRuntime
                 Task.Run(() => {
                     Cdy.Spider.RealDataService.WebApiServer.Server.Start();
                 });
-                
+
+                try
+                {
+                    this.mRunInfoFile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location), Solution+"_"+ Name);
+                    var writer = System.IO.File.CreateText(this.mRunInfoFile);
+                    writer.WriteLine(DateTime.Now.ToLocalTime().ToString());
+                    writer.Close();
+                }
+                catch
+                {
+
+                }
 
             }
             catch(Exception ex)
@@ -178,6 +199,35 @@ namespace SpiderRuntime
             mIsStarted = true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ReStart()
+        {
+            Stop();
+
+            Load();
+            InterfaceRegistor();
+
+            foreach (var vv in mLink.Links)
+            {
+                ServiceLocator.Locator.Registor<ILink>(vv);
+                vv.Init();
+            }
+
+            //
+            foreach (var vv in mDevice.Devices)
+            {
+                vv.Init();
+            }
+
+            //
+            foreach (var vv in mApi.Apis)
+            {
+                vv.Init();
+            }
+            Start();
+        }
 
         /// <summary>
         /// 
@@ -201,6 +251,12 @@ namespace SpiderRuntime
 
             Cdy.Spider.RealDataService.WebApiServer.Server.Stop();
             mIsStarted = false;
+
+            if(!string.IsNullOrEmpty(mRunInfoFile))
+            {
+                System.IO.File.Delete(mRunInfoFile);
+                mRunInfoFile = "";
+            }
         }
 
         #endregion ...Methods...
