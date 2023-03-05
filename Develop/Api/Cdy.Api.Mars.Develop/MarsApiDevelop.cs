@@ -45,6 +45,17 @@ namespace Cdy.Api.Mars
         /// </summary>
         public override string TypeName => "MarsApi";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string Database { get; set; }
+
+        public static string Server { get; set; }
+
+        public static string User { get; set; }
+
+        public static string Password { get; set; }
+
         #endregion ...Properties...
 
         #region ... Methods    ...
@@ -86,7 +97,7 @@ namespace Cdy.Api.Mars
         /// <returns></returns>
         public override string ConfigTags()
         {
-            TagBrowserViewModel tmm = new TagBrowserViewModel();
+            TagBrowserViewModel tmm = new TagBrowserViewModel() { ServerAddress = Server, ServerPassword = Password, ServerUserName = User, CurrentDatabase=Database,IsWorkStandard=string.IsNullOrEmpty(Database) };
             if(tmm.ShowDialog().Value)
             {
                 return tmm.SelectTagName;
@@ -100,7 +111,7 @@ namespace Cdy.Api.Mars
         /// <returns></returns>
         public override IEnumerable<string> ConfigMutiTags()
         {
-            TagBrowserViewModel tmm = new TagBrowserViewModel();
+            TagBrowserViewModel tmm = new TagBrowserViewModel() { ServerAddress = Server, ServerPassword = Password, ServerUserName = User, CurrentDatabase = Database, IsWorkStandard = string.IsNullOrEmpty(Database) };
             if (tmm.ShowDialog().Value)
             {
                 return tmm.GetSelectTags();

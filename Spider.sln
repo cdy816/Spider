@@ -197,7 +197,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InSpiderDevelopServer", "De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InSpiderStudioServer", "Develop\InSpiderStudioServer\InSpiderStudioServer.csproj", "{7629BE53-4604-42E3-B09F-8B74B34EECFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InSpiderDevelopServerClientAPI", "Develop\InSpiderDevelopServerClientAPI\InSpiderDevelopServerClientAPI.csproj", "{F194F92F-E58C-4913-908A-33D2D9069C54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InSpiderDevelopServerClientAPI", "Develop\InSpiderDevelopServerClientAPI\InSpiderDevelopServerClientAPI.csproj", "{F194F92F-E58C-4913-908A-33D2D9069C54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{C58C6EEE-FA61-45D4-944D-69E75FDE281F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderDeployService", "Deploy\SpiderDeployService\SpiderDeployService.csproj", "{406B8860-B872-4D31-93EE-B8EB72E7CF36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -541,6 +545,10 @@ Global
 		{F194F92F-E58C-4913-908A-33D2D9069C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F194F92F-E58C-4913-908A-33D2D9069C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F194F92F-E58C-4913-908A-33D2D9069C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{406B8860-B872-4D31-93EE-B8EB72E7CF36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{406B8860-B872-4D31-93EE-B8EB72E7CF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{406B8860-B872-4D31-93EE-B8EB72E7CF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{406B8860-B872-4D31-93EE-B8EB72E7CF36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -641,6 +649,7 @@ Global
 		{A36E7A9E-3C71-4A88-9A89-BFBEC62CBCC2} = {A65432DA-5927-478E-8F2C-CD211FFA37F9}
 		{7629BE53-4604-42E3-B09F-8B74B34EECFE} = {A65432DA-5927-478E-8F2C-CD211FFA37F9}
 		{F194F92F-E58C-4913-908A-33D2D9069C54} = {A65432DA-5927-478E-8F2C-CD211FFA37F9}
+		{406B8860-B872-4D31-93EE-B8EB72E7CF36} = {C58C6EEE-FA61-45D4-944D-69E75FDE281F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1B7A1A5-5460-4168-810B-9F125E7B4977}

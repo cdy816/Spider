@@ -77,6 +77,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Cdy.Spider.Common\Cdy.Spider.Common.csproj" />
     <ProjectReference Include="..\..\Run\Driver\Cdy.Spider.SerisePortClient\Cdy.Spider.SerisePortClient.csproj" />
+    <ProjectReference Include="..\Api\Cdy.Api.Mars.Develop\Cdy.Api.Mars.Develop.csproj" />
     <ProjectReference Include="..\Drivers\Cdy.Spider.CalculateExpressEditor\Cdy.Spider.CalculateExpressEditor.csproj" />
     <ProjectReference Include="..\InSpiderDevelopServerClientAPI\InSpiderDevelopServerClientAPI.csproj" />
     <ProjectReference Include="..\InSpiderDevelop\InSpiderDevelop.csproj" />

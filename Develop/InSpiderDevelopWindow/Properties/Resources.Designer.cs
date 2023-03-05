@@ -70,6 +70,15 @@ namespace InSpiderDevelopWindow.Properties {
         }
         
         /// <summary>
+        ///   查找类似 AddFromDatabase 的本地化字符串。
+        /// </summary>
+        internal static string AddFromDatabase {
+            get {
+                return ResourceManager.GetString("AddFromDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 AddGroup 的本地化字符串。
         /// </summary>
         internal static string AddGroup {

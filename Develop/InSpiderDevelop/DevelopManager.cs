@@ -66,7 +66,7 @@ namespace InSpiderDevelop
                 re.New();
                 var dd = new Dictionary<string, MachineDocument>();
                 dd.Add(name, re);
-                mMachines.Add(name, dd);
+                mMachines.Add(solution, dd);
                 return re;
             }
             else

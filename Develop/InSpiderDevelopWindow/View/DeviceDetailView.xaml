@@ -287,17 +287,45 @@
 
                     </DataGrid>
                     <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.Column="1" Height="32" VerticalAlignment="Bottom"  Background="#0FFFFFFF">
-                        <Button  BorderBrush="Green"  BorderThickness="0,0,0,2"  Content="{local:ResMarker Add}" Command="{Binding AddCommand}" Width="80" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5,0" Padding="0">
-                            <Button.ContentTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button  BorderBrush="Green"  BorderThickness="0,0,0,2"  Content="{local:ResMarker Add}" Command="{Binding AddCommand}" Width="80" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5,0" Padding="0">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="0">
 
-                                        <Image Source="/Image/Add.png" Height="12" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,4,0"/>
-                                        <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding}" Grid.Column="1" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </Button.ContentTemplate>
-                        </Button>
+                                            <Image Source="/Image/Add.png" Height="12" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,4,0"/>
+                                            <TextBlock Foreground="{DynamicResource Window.Forground}" Text="{Binding}" Grid.Column="1" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                            <Popup IsOpen="{Binding IsChecked,ElementName=tbb,Mode=TwoWay}" StaysOpen="False" Placement="Bottom">
+                                <Border BorderThickness="1" BorderBrush="DarkGray">
+                                    <Button x:Name="addgB" BorderThickness="0" BorderBrush="Green"  Content="{local:ResMarker AddFromDatabase}"    Foreground="{DynamicResource Window.Forground}" Command="{Binding AddFromDatabaseCommand}" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5" >
+                                        <Button.ContentTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="0">
+                                                    <Image Source="/Image/Add.png" Height="12" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,4,0"/>
+                                                    <TextBlock Text="{Binding}" Grid.Column="1" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </Button.ContentTemplate>
+                                    </Button>
+                                </Border>
+                            </Popup>
+                            <ToggleButton x:Name="tbb"   Grid.Column="1" Style="{DynamicResource ToggleButtonStyle1}" BorderThickness="0,0,0,2" Width="12"  Height="26"  BorderBrush="Green">
+                                <ToggleButton.ContentTemplate>
+                                    <DataTemplate>
+                                        <Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" Fill="{DynamicResource Window.Forground}" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </ToggleButton.ContentTemplate>
+                            </ToggleButton>
+                        </Grid>
+                        
                         <Button  BorderBrush="IndianRed"  BorderThickness="0,0,0,2" Content="{local:ResMarker Remove}" Command="{Binding RemoveCommand}" Width="80" HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" Margin="5,0" Padding="0" >
                             <Button.ContentTemplate>
                                 <DataTemplate>

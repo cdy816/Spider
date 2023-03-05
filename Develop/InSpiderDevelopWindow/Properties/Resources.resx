@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AddFromDatabase" xml:space="preserve">
+    <value>AddFromDatabase</value>
+  </data>
   <data name="AddGroup" xml:space="preserve">
     <value>AddGroup</value>
   </data>

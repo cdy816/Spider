@@ -27,6 +27,7 @@ using InSpiderDevelopServerClientAPI;
 using RoslynPad.Roslyn.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
+using Cdy.Api.Mars;
 
 namespace InSpiderDevelopWindow
 {
@@ -363,11 +364,11 @@ namespace InSpiderDevelopWindow
         /// <summary>
         /// 
         /// </summary>
-        public string MainwindowTitle
+        public string MainWindowTitle
         {
             get
             {
-                return string.IsNullOrEmpty(CurrentMachine) ? Res.Get("MainwindowTitle"): Res.Get("MainwindowTitle")+"--"+this.CurrentMachine;
+                return string.IsNullOrEmpty(Solution) ? Res.Get("MainWindowTitle"): Res.Get("MainWindowTitle") +"--"+this.Solution;
             }
         }
 
@@ -900,7 +901,8 @@ namespace InSpiderDevelopWindow
             login.Password= ServerHelper.Helper.Password;
             Solution = ServerHelper.Helper.Solution;
 
-            if(login.Login())
+          
+            if (login.Login())
             {
                 CurrentUserManager.Manager.UserName = login.UserName;
                 CurrentUserManager.Manager.Password = login.Password;
@@ -915,6 +917,12 @@ namespace InSpiderDevelopWindow
 
                 Init();
                 StartCheckDatabaseRunning();
+
+                //实现数据库的自动连接
+                MarsApiDevelop.Server = "http://" + login.Server+ ":9000";
+                MarsApiDevelop.User = login.UserName;
+                MarsApiDevelop.Password = login.Password;
+                MarsApiDevelop.Database = Solution;
             }
         }
 

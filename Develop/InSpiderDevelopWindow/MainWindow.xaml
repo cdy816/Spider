@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InSpiderDevelopWindow" AllowsTransparency="True" WindowStyle="None"
         mc:Ignorable="d" Background="Transparent" Foreground="#FFFAFAFA"  FontSize="12" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
-        Title="{local:ResMarker MainWindowTitle}" Icon="/Image/spider.png" Height="768" Width="1024" WindowState="Normal"  FontFamily="Microsoft YaHei">
+        Title="{Binding MainWindowTitle}" Icon="/Image/spider.png" Height="768" Width="1200" WindowState="Normal"  FontFamily="Microsoft YaHei">
     <Window.Resources>
         <local:IndexConverter x:Key="ic" />
         <BooleanToVisibilityConverter x:Key="btv" />

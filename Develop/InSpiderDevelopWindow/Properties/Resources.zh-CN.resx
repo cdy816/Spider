@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>添加</value>
   </data>
+  <data name="AddFromDatabase" xml:space="preserve">
+    <value>从数据库添加</value>
+  </data>
   <data name="AddGroup" xml:space="preserve">
     <value>添加组</value>
   </data>

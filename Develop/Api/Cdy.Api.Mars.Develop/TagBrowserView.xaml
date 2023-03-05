@@ -125,7 +125,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Label Content="{local:ResMarker ServerModel}" VerticalAlignment="Center" Foreground="{DynamicResource Window.Forground}" />
-            <ComboBox Grid.Column="1" SelectedIndex="{Binding ServerModel,Mode=TwoWay}" Width="80" VerticalAlignment="Center" Margin="5,0">
+            <ComboBox Grid.Column="1" IsEnabled="{Binding IsWorkStandard}" SelectedIndex="{Binding ServerModel,Mode=TwoWay}" Width="80" VerticalAlignment="Center" Margin="5,0">
                 <ComboBoxItem Content="{local:ResMarker Local}" />
                 <ComboBoxItem Content="{local:ResMarker Remote}" />
             </ComboBox>
@@ -177,7 +177,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{local:ResMarker Database,:}" VerticalAlignment="Center" Margin="5,0"/>
-                <ComboBox ItemsSource="{Binding Databases}" SelectedValue="{Binding CurrentDatabase,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center" />
+                <ComboBox IsEnabled="{Binding IsWorkStandard}" ItemsSource="{Binding Databases}" SelectedValue="{Binding CurrentDatabase,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Center" />
             </Grid>
             <Grid Grid.Column="1" Grid.RowSpan="2">
                 <Grid.RowDefinitions>

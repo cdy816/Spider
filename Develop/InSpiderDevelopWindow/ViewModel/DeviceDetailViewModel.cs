@@ -7,8 +7,11 @@
 //  CDYWORK
 //==============================================================
 
+using Cdy.Api.Mars;
 using Cdy.Spider;
+using Cdy.Spider.DevelopCommon;
 using InSpiderDevelop;
+using Microsoft.CodeAnalysis;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -67,6 +70,8 @@ namespace InSpiderDevelopWindow.ViewModel
         private ICommand mCellCopyCommand;
         private ICommand mPasteCommand;
         private ICommand mCellPasteCommand;
+
+        private ICommand mAddFromDatabaseCommand;
 
         private ICommand mStartMonitCommand;
 
@@ -742,6 +747,24 @@ namespace InSpiderDevelopWindow.ViewModel
         /// <summary>
         /// 
         /// </summary>
+        public ICommand AddFromDatabaseCommand
+        {
+            get
+            {
+                if(mAddFromDatabaseCommand== null)
+                {
+                    mAddFromDatabaseCommand = new RelayCommand(() =>
+                    {
+                        ProcessFromDatabaseCommand();
+                    });
+                }
+                return mAddFromDatabaseCommand;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand ExportCommand
         {
             get
@@ -999,6 +1022,91 @@ namespace InSpiderDevelopWindow.ViewModel
 
         #region ... Methods    ...
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ProcessFromDatabaseCommand()
+        {
+            TagBrowserViewModel tbm;
+            if (ServerHelper.Helper.AutoLogin)
+            {
+                tbm = new TagBrowserViewModel() { ServerAddress = MarsApiDevelop.Server,IsWorkStandard=false, ServerUserName = MarsApiDevelop.User, ServerPassword = MarsApiDevelop.Password, CurrentDatabase = MarsApiDevelop.Database };
+            }
+            else
+            {
+                tbm = new TagBrowserViewModel();
+            }
+            if (tbm.ShowDialog().Value)
+            {
+                foreach(var vv in tbm.GetSelectedTags())
+                {
+                    string sname = vv.FullName.Replace(tbm.CurrentDatabase + ".", "");
+                    NewTag(sname, (TagType)(Enum.Parse(typeof(TagType),vv.Type)), vv.Desc);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void NewTag(string name,TagType type,string desc)
+        {
+            string sname = CheckAndNewName(name);
+            Tagbase tag = null;
+            switch (type)
+            {
+                case TagType.Bool:
+                    tag = new BoolTag() { Name= sname };
+                    break;
+                case TagType.Byte:
+                    tag = new ByteTag() { Name= sname };
+                    break;
+                case TagType.Short:
+                    tag = new ShortTag() { Name= sname };
+                    break;
+                case TagType.UShort:
+                    tag = new UShortTag() { Name= sname };
+                    break;
+                case TagType.Int:
+                        tag = new IntTag() { Name= sname };
+                    break;
+                case TagType.UInt:
+                    tag = new UIntTag() { Name= sname };
+                    break;
+                case TagType.Long:
+                    tag = new LongTag() { Name= sname };
+                    break;
+                case TagType.ULong:
+                    tag = new ULongTag() { Name= sname };
+                    break;
+                case TagType.Float:
+                    tag = new FloatTag() { Name= sname };
+                    break;
+                case TagType.Double:
+                    tag = new DoubleTag() { Name = sname }; ;
+                    break;
+                case TagType.String:
+                    tag = new StringTag() { Name= sname };
+                    break;
+                case TagType.DateTime:
+                    tag = new DateTimeTag() { Name= sname };
+                    break;
+            }
+            if (tag == null) return;
+            tag.DatabaseName = sname;
+            tag.DataTranseDirection = DataTransType.Both;
+
+            TagViewModel vtag = new TagViewModel() { Model = tag, Document = mModel.Data, Machine = this.MachineModel, Parent = this };
+            mDriver?.CheckTagDeviceInfo(vtag.Model);
+            if (mModel.Data.AppendTag(vtag.Model))
+            {
+                mTags.Add(vtag);
+                CurrentSelectTag = vtag;
+                CachTagModelId(vtag.Model);
+            }
+            IsDirty = true;
+            TagCount++;
+        }
 
 
         /// <summary>
@@ -1786,6 +1894,39 @@ namespace InSpiderDevelopWindow.ViewModel
                 }
             }
             return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private string CheckAndNewName(string baseName = "tag")
+        {
+            if (!mModel.Data.Tags.TagNames.Contains(baseName))
+            {
+                return baseName;
+            }
+
+            string tagName = baseName;
+
+            int number = GetNumberInt(baseName);
+            if (number >= 0)
+            {
+                if (tagName.EndsWith(number.ToString()))
+                {
+                    tagName = tagName.Substring(0, tagName.IndexOf(number.ToString()));
+                }
+            }
+            string sname = tagName;
+            for (int i = 1; i < int.MaxValue; i++)
+            {
+                tagName = sname + i;
+                if (!mModel.Data.Tags.TagNames.Contains(tagName))
+                {
+                    return tagName;
+                }
+            }
+            return tagName;
         }
 
         /// <summary>

@@ -90,6 +90,8 @@ namespace Cdy.Api.Mars
 
         private Tag.RealDatabase mLocalDatabase;
 
+        private bool mIsWorkStandard = true;
+
         #endregion ...Variables...
 
         #region ... Events     ...
@@ -582,6 +584,25 @@ namespace Cdy.Api.Mars
             }
         }
 
+        /// <summary>
+            /// 
+            /// </summary>
+        public bool IsWorkStandard
+        {
+            get
+            {
+                return mIsWorkStandard;
+            }
+            set
+            {
+                if (mIsWorkStandard != value)
+                {
+                    mIsWorkStandard = value;
+                    OnPropertyChanged("IsWorkStandard");
+                }
+            }
+        }
+
 
         #endregion ...Properties...
 
@@ -698,9 +719,12 @@ namespace Cdy.Api.Mars
                 {
                     IsConnected = true;
                     Databases = mHelper.QueryDatabase().Select(e => e.Name).ToList();
-                    if (Databases.Count > 0)
+                    if (string.IsNullOrEmpty(CurrentDatabase))
                     {
-                        CurrentDatabase = Databases[0];
+                        if (Databases.Count > 0)
+                        {
+                            CurrentDatabase = Databases[0];
+                        }
                     }
                 }
                 else
@@ -888,6 +912,8 @@ namespace Cdy.Api.Mars
                 if (mRequery)
                 {
                     mRequery = false;
+                    if (mHelper == null) return;
+
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
                         mTags.Clear();
@@ -905,6 +931,8 @@ namespace Cdy.Api.Mars
                     {
                         foreach (var vv in tags)
                         {
+                            if (vv.Item1 == null) continue;
+
                             var vtag = new TagViewModel() { Name = vv.Item1.Name, Desc = vv.Item1.Desc, Type = vv.Item1.Type.ToString(), ReadWriteMode = vv.Item1.ReadWriteType.ToString(), Group = CurrentGroup != null ? CurrentGroup.FullName : "" };
                             if (vv.Item1 is Cdy.Tag.NumberTagBase)
                             {
@@ -1053,6 +1081,20 @@ namespace Cdy.Api.Mars
             foreach(TagViewModel vv in Grid.SelectedItems)
             {
                 re.Add(vv.FullName.Replace(this.CurrentDatabase+".",""));
+            }
+            return re;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<TagViewModel> GetSelectedTags()
+        {
+            List<TagViewModel> re = new List<TagViewModel>();
+            foreach (TagViewModel vv in Grid.SelectedItems)
+            {
+                re.Add(vv);
             }
             return re;
         }
