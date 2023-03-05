@@ -698,6 +698,14 @@ namespace InSpiderDevelopWindow
             }
         }
 
+        public bool IsStandardMode
+        {
+            get
+            {
+                return !ServerHelper.Helper.AutoLogin;
+            }
+        }
+
         #endregion ...Properties...
 
         #region ... Methods    ...

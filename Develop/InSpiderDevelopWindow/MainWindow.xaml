@@ -137,7 +137,7 @@
             <Grid>
                     
                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
-                        <Grid Margin="10,0,0,0">
+                        <Grid Margin="10,0,0,0" Visibility="{Binding IsStandardMode,Converter={StaticResource btv}}">
                             <Button BorderThickness="0" ToolTip="{local:ResMarker Login}" Visibility="{Binding IsLoginOut,Converter={StaticResource btv}}"  Command="{Binding LoginCommand}" HorizontalAlignment="Left"   Height="32"  VerticalAlignment="Center" Width="80"  >
                                 <Button.ContentTemplate>
                                     <DataTemplate>

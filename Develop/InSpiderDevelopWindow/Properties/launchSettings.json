@@ -2,8 +2,7 @@
   "profiles": {
     "InSpiderDevelopWindow": {
       "commandName": "Executable",
-      "executablePath": "C:\\Users\\cdy81\\source\\repos\\cdy816\\Spider\\Output\\InSpiderStudio.exe",
-      "commandLineArgs": "/a server=127.0.0.1 username=Admin password=Admin solution=Weather"
+      "executablePath": "C:\\Users\\cdy81\\source\\repos\\cdy816\\Spider\\Output\\InSpiderStudio.exe"
     }
   }
 }
