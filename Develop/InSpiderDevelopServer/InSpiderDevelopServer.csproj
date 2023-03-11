@@ -20,8 +20,14 @@
     <ProjectReference Include="..\InSpiderDevelop\InSpiderDevelop.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="mars.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot;  copy &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;copy &quot;$(TargetDir)$(TargetName).deps.json&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).exe&quot;  copy &quot;$(TargetDir)$(TargetName).exe&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).XML&quot; copy &quot;$(TargetDir)$(TargetName).XML&quot; &quot;$(SolutionDir)\Output\Xml&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).pdb&quot;  copy &quot;$(TargetDir)$(TargetName).pdb&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)zh-CN&quot;  copy &quot;$(TargetDir)zh-CN\*.dll&quot; &quot;$(SolutionDir)\Output\zh-CN&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)Config&quot;  copy &quot;$(TargetDir)Config\*.cfg&quot; &quot;$(SolutionDir)\Output\Config&quot; /y" />
+    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot;  copy &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;copy &quot;$(TargetDir)$(TargetName).deps.json&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).exe&quot;  copy &quot;$(TargetDir)$(TargetName).exe&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).XML&quot; copy &quot;$(TargetDir)$(TargetName).XML&quot; &quot;$(SolutionDir)\Output\Xml&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)$(TargetName).pdb&quot;  copy &quot;$(TargetDir)$(TargetName).pdb&quot; &quot;$(SolutionDir)\Output&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)zh-CN&quot;  copy &quot;$(TargetDir)zh-CN\*.dll&quot; &quot;$(SolutionDir)\Output\zh-CN&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)Config&quot;  copy &quot;$(TargetDir)Config\*.cfg&quot; &quot;$(SolutionDir)\Output\Config&quot; /y&#xD;&#xA;if exist  &quot;$(TargetDir)mars.pfx&quot;  copy &quot;$(TargetDir)mars.pfx&quot; &quot;$(SolutionDir)\Output&quot; /y" />
   </Target>
 
 </Project>

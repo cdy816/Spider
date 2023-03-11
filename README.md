@@ -54,7 +54,7 @@ cross platform(Window、Linux、Iot) equipment Internet of things collection pla
 13. Lsis plc
 
 ## Runtime Environment
-The system platform is developed on. Net 5 platform, which can run on desktop system and embedded devices (such as raspberry pi)
+The system platform is developed on. Net 6 platform, which can run on desktop system and embedded devices (such as raspberry pi)
 * runtime system：It can be deployed in windows, Linux, IOT and other operating systems, or in docker. 
 * development system：It adopts graphical configuration interface and CS structure, and is tentatively implemented in desktop mode, running in window system.
 
@@ -62,7 +62,7 @@ The system platform is developed on. Net 5 platform, which can run on desktop sy
 1. [Document](https://github.com/cdy816/Spider/blob/master/Doc)
 
 ## Rlease
-* [V0.6](https://github.com/cdy816/Spider/releases/tag/V0.6)
+* [V0.7](https://github.com/cdy816/Spider/releases/tag/V0.7)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

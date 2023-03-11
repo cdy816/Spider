@@ -52,7 +52,7 @@
 13. Lsis plc
 
 ## 运行环境
-系统平台采用.net 5 平台开发,实现了跨平台性，可以运行在桌面系统以及嵌入设备中（例如:树莓派等）。
+系统平台采用.net 6 平台开发,实现了跨平台性，可以运行在桌面系统以及嵌入设备中（例如:树莓派等）。
 * 运行系统：可部署在window、Linux、IOT等操作系统中,也可以部署在Docker中。 
 * 开发系统：采用图形化的配置界面、CS结构,暂定采用桌面的方式实现，运行在Window系统中。
 
@@ -60,7 +60,7 @@
 1. [文档](https://github.com/cdy816/Spider/blob/master/Doc)
 
 ## 版本发布
-* [V0.6](https://github.com/cdy816/Spider/releases/tag/V0.6) 。
+* [V0.7](https://github.com/cdy816/Spider/releases/tag/V0.7) 。
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
