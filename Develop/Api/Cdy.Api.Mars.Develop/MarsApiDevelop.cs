@@ -97,8 +97,14 @@ namespace Cdy.Api.Mars
         /// <returns></returns>
         public override string ConfigTags()
         {
-            TagBrowserViewModel tmm = new TagBrowserViewModel() { ServerAddress = Server, ServerPassword = Password, ServerUserName = User, CurrentDatabase=Database,IsWorkStandard=string.IsNullOrEmpty(Database) };
-            if(tmm.ShowDialog().Value)
+            TagBrowserViewModel tmm = new TagBrowserViewModel() {CurrentDatabase=Database,IsWorkStandard=string.IsNullOrEmpty(Database) };
+            if(!string.IsNullOrEmpty(Server))
+            {
+                tmm.ServerAddress = Server+":9000";
+                tmm.ServerPassword=Password; 
+                tmm.ServerUserName = User;
+            }
+            if (tmm.ShowDialog().Value)
             {
                 return tmm.SelectTagName;
             }
