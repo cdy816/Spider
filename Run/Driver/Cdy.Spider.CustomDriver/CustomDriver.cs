@@ -136,12 +136,17 @@ $WriteValue$
             sb.Replace("$OnReceiveDataBody$",string.IsNullOrEmpty(mData.OnReceiveDataFunExpress)?"return null;":mData.OnReceiveDataFunExpress);
             sb.Replace("$WriteValue$", mData.OnSetTagValueToDeviceFunExpress);
             sb.Replace("$ProcessTimerElapsed$", mData.OnTimerFunExpress);
+            
+            List<string> ll = new List<string>();
+            //
 
             // 元数据引用
             var references = new List<MetadataReference>
             {
                 MetadataReference.CreateFromFile(typeof(System.Object).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.Collections.SortedList).Assembly.Location),
+                MetadataReference.CreateFromFile(ll.GetType().Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(DriverRunnerBase).Assembly.Location),
                 MetadataReference.CreateFromFile(this.GetType().Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(System.Xml.Linq.XElement).Assembly.Location),
